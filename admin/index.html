@@ -1,5 +1,3 @@
-
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -12,7 +10,10 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>لوحة التحكم | لَحْقها</title>
+    <title>تسجيل الدخول | لوحة التحكم — لَحْقها</title>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
 
@@ -38,6 +39,118 @@
             font-family: Tahoma, Arial, sans-serif;
             background: var(--background);
             color: var(--text);
+        }
+
+        /* =========================
+           شاشة تسجيل الدخول
+        ========================= */
+
+        #login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: var(--background);
+        }
+
+        .login-box {
+            width: min(420px, 100%);
+            background: #fff;
+            border-radius: 20px;
+            padding: 35px 25px;
+            box-shadow: 0 10px 35px rgba(0,0,0,.10);
+            text-align: center;
+        }
+
+        .login-logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .login-box h1 {
+            margin: 0 0 10px;
+            color: var(--primary);
+            font-size: 25px;
+        }
+
+        .login-box p {
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .login-box label {
+            display: block;
+            text-align: right;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 12px 0 7px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .login-box input:focus {
+            border-color: var(--primary);
+        }
+
+        .login-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 13px;
+            border: 0;
+            border-radius: 10px;
+            background: var(--primary);
+            color: #fff;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .login-btn:disabled {
+            opacity: .7;
+            cursor: not-allowed;
+        }
+
+        #login-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 9px;
+            display: none;
+            line-height: 1.6;
+        }
+
+        #login-message.error {
+            display: block;
+            background: #fdeaea;
+            color: var(--danger);
+        }
+
+        #login-message.success {
+            display: block;
+            background: #e9f7eb;
+            color: var(--success);
+        }
+
+        /* =========================
+           لوحة التحكم
+        ========================= */
+
+        #admin-app {
+            display: none;
         }
 
         .admin-header {
@@ -78,10 +191,15 @@
             border: 1px solid rgba(255,255,255,.35);
             border-radius: 9px;
             white-space: nowrap;
+            cursor: pointer;
         }
 
         .header-link:hover {
             background: rgba(255,255,255,.1);
+        }
+
+        .logout-link {
+            background: rgba(198,40,40,.25);
         }
 
         .admin-container {
@@ -412,6 +530,82 @@
 <body>
 
 
+<!-- =========================
+     تسجيل الدخول
+========================= -->
+
+<section id="login-screen">
+
+    <div class="login-box">
+
+        <div class="login-logo">
+            🔐
+        </div>
+
+        <h1>
+            لوحة التحكم — لَحْقها
+        </h1>
+
+        <p>
+            هذه الصفحة مخصصة للإدارة فقط.
+            <br>
+            سجّل الدخول للمتابعة.
+        </p>
+
+
+        <form id="login-form">
+
+            <label for="login-email">
+                البريد الإلكتروني
+            </label>
+
+            <input
+                type="email"
+                id="login-email"
+                placeholder="أدخل بريد المدير"
+                required
+                autocomplete="username"
+            >
+
+
+            <label for="login-password">
+                كلمة المرور
+            </label>
+
+            <input
+                type="password"
+                id="login-password"
+                placeholder="أدخل كلمة المرور"
+                required
+                autocomplete="current-password"
+            >
+
+
+            <button
+                type="submit"
+                class="login-btn"
+                id="login-button"
+            >
+                🔐 تسجيل الدخول
+            </button>
+
+        </form>
+
+
+        <div id="login-message"></div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     تطبيق لوحة التحكم
+========================= -->
+
+<div id="admin-app">
+
+
 <header class="admin-header">
 
     <div class="header-content">
@@ -443,6 +637,14 @@
             >
                 📦 صفحة أصحاب السلع
             </a>
+
+            <button
+                type="button"
+                class="header-link logout-link"
+                onclick="logoutAdmin()"
+            >
+                🚪 تسجيل الخروج
+            </button>
 
         </div>
 
@@ -588,146 +790,595 @@
 </footer>
 
 
+</div>
+
+
 <script>
 
+/* =====================================================
+   إعداد Supabase
+===================================================== */
+
+const SUPABASE_URL =
+    "https://gyyyzavjzvcxzgrtukqu.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+/* =====================================================
+   عناصر تسجيل الدخول
+===================================================== */
+
+const loginScreen =
+    document.getElementById("login-screen");
+
+const adminApp =
+    document.getElementById("admin-app");
+
+const loginForm =
+    document.getElementById("login-form");
+
+const loginButton =
+    document.getElementById("login-button");
+
+const loginMessage =
+    document.getElementById("login-message");
+
+
+/* =====================================================
+   رسائل الدخول
+===================================================== */
+
+function showLoginMessage(
+    message,
+    type = "error"
+) {
+
+    loginMessage.textContent =
+        message;
+
+    loginMessage.className =
+        type;
+
+}
+
+
+function clearLoginMessage() {
+
+    loginMessage.textContent = "";
+
+    loginMessage.className = "";
+
+}
+
+
+/* =====================================================
+   إظهار لوحة التحكم
+===================================================== */
+
+function showAdminPanel() {
+
+    loginScreen.style.display =
+        "none";
+
+    adminApp.style.display =
+        "block";
+
+    document.title =
+        "لوحة التحكم | لَحْقها";
+
+    loadRequests();
+}
+
+
+/* =====================================================
+   إظهار تسجيل الدخول
+===================================================== */
+
+function showLoginPanel() {
+
+    adminApp.style.display =
+        "none";
+
+    loginScreen.style.display =
+        "flex";
+
+    document.title =
+        "تسجيل الدخول | لوحة التحكم — لَحْقها";
+
+}
+
+
+/* =====================================================
+   تسجيل الدخول
+===================================================== */
+
+loginForm.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        clearLoginMessage();
+
+        loginButton.disabled =
+            true;
+
+        loginButton.textContent =
+            "⏳ جاري تسجيل الدخول...";
+
+
+        const email =
+            document.getElementById(
+                "login-email"
+            ).value.trim();
+
+
+        const password =
+            document.getElementById(
+                "login-password"
+            ).value;
+
+
+        try {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+
+            if (error) {
+
+                throw error;
+
+            }
+
+
+            if (!data || !data.user) {
+
+                throw new Error(
+                    "تعذر تسجيل الدخول."
+                );
+
+            }
+
+
+            showLoginMessage(
+                "✅ تم تسجيل الدخول بنجاح.",
+                "success"
+            );
+
+
+            setTimeout(
+                function() {
+
+                    showAdminPanel();
+
+                },
+                300
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Login error:",
+                error
+            );
+
+
+            showLoginMessage(
+                "❌ البريد الإلكتروني أو كلمة المرور غير صحيحة."
+            );
+
+        } finally {
+
+            loginButton.disabled =
+                false;
+
+            loginButton.textContent =
+                "🔐 تسجيل الدخول";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   تسجيل الخروج
+===================================================== */
+
+async function logoutAdmin() {
+
+    try {
+
+        await supabaseClient.auth.signOut();
+
+    } catch (error) {
+
+        console.error(
+            "Logout error:",
+            error
+        );
+
+    }
+
+    showLoginPanel();
+
+    document.getElementById(
+        "login-password"
+    ).value = "";
+
+}
+
+
+/* =====================================================
+   مراقبة حالة تسجيل الدخول
+===================================================== */
+
+supabaseClient.auth.onAuthStateChange(
+    function(event, session) {
+
+        if (session && session.user) {
+
+            showAdminPanel();
+
+        } else {
+
+            showLoginPanel();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   التحقق عند فتح الصفحة
+===================================================== */
+
+(async function checkSession() {
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth.getSession();
+
+
+        if (error) {
+
+            console.error(
+                error
+            );
+
+            showLoginPanel();
+
+            return;
+        }
+
+
+        if (
+            data &&
+            data.session &&
+            data.session.user
+        ) {
+
+            showAdminPanel();
+
+        } else {
+
+            showLoginPanel();
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+        showLoginPanel();
+
+    }
+
+})();
+
+
+/* =====================================================
+   بقية لوحة التحكم الأصلية
+===================================================== */
 
 let currentFilter = "all";
 
 
-// =========================
-// قراءة الطلبات
-// =========================
+/* =========================
+   قراءة الطلبات
+========================= */
 
 function getRequests() {
 
     let requests = [];
 
     try {
-        requests = JSON.parse(
-            localStorage.getItem("sellerRequests") || "[]"
-        );
-        if (!Array.isArray(requests)) requests = [];
+
+        requests =
+            JSON.parse(
+                localStorage.getItem(
+                    "sellerRequests"
+                ) || "[]"
+            );
+
+        if (
+            !Array.isArray(
+                requests
+            )
+        ) {
+            requests = [];
+        }
+
     } catch (error) {
+
         requests = [];
+
     }
 
-    // ترحيل بيانات الاختبار القديمة: أي طلب كان يُحفظ كـ"منشور"
-    // قبل الموافقة يتحول الآن إلى "قيد المراجعة".
+
     let changed = false;
-    requests = requests.map(request => {
-        if (request.status === "منشور" && !request.approvedAt) {
-            changed = true;
-            return { ...request, status: "قيد المراجعة", published: false };
-        }
-        return request;
-    });
+
+    requests =
+        requests.map(
+            request => {
+
+                if (
+                    request.status ===
+                    "منشور" &&
+                    !request.approvedAt
+                ) {
+
+                    changed = true;
+
+                    return {
+                        ...request,
+                        status:
+                            "قيد المراجعة",
+                        published:
+                            false
+                    };
+
+                }
+
+                return request;
+
+            }
+        );
+
 
     if (changed) {
-        localStorage.setItem("sellerRequests", JSON.stringify(requests));
+
+        localStorage.setItem(
+            "sellerRequests",
+            JSON.stringify(
+                requests
+            )
+        );
+
     }
+
 
     return requests;
 }
 
 
-// =========================
-// حفظ الطلبات
-// =========================
+/* =========================
+   حفظ الطلبات
+========================= */
 
-function saveRequests(requests) {
+function saveRequests(
+    requests
+) {
 
     localStorage.setItem(
         "sellerRequests",
-        JSON.stringify(requests)
+        JSON.stringify(
+            requests
+        )
     );
+
 }
 
 
-// =========================
-// قراءة المنتجات المنشورة
-// =========================
+/* =========================
+   قراءة المنتجات المنشورة
+========================= */
 
 function getPublishedProducts() {
 
     let products = [];
 
     try {
-        products = JSON.parse(
-            localStorage.getItem("publishedProducts") || "[]"
-        );
-        if (!Array.isArray(products)) products = [];
+
+        products =
+            JSON.parse(
+                localStorage.getItem(
+                    "publishedProducts"
+                ) || "[]"
+            );
+
+        if (
+            !Array.isArray(
+                products
+            )
+        ) {
+            products = [];
+        }
+
     } catch (error) {
+
         products = [];
+
     }
 
-    const requests = (() => {
-        try {
-            const value = JSON.parse(localStorage.getItem("sellerRequests") || "[]");
-            return Array.isArray(value) ? value : [];
-        } catch (error) {
-            return [];
-        }
-    })();
 
-    // لا يبقى أي منتج في واجهة المشتري إلا إذا كان طلبه معتمدًا.
-    products = products.filter(product => {
-        const request = requests.find(r =>
-            String(r.id) === String(product.requestId)
+    const requests =
+        (() => {
+
+            try {
+
+                const value =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "sellerRequests"
+                        ) || "[]"
+                    );
+
+                return Array.isArray(value)
+                    ? value
+                    : [];
+
+            } catch (error) {
+
+                return [];
+
+            }
+
+        })();
+
+
+    products =
+        products.filter(
+            product => {
+
+                const request =
+                    requests.find(
+                        r =>
+                            String(r.id) ===
+                            String(
+                                product.requestId
+                            )
+                    );
+
+                return (
+                    request &&
+                    request.status ===
+                    "تمت الموافقة"
+                );
+
+            }
         );
-        return request && request.status === "تمت الموافقة";
-    });
 
-    // تنظيف أي بيانات خاصة قديمة كانت محفوظة داخل المنتجات العامة.
-    products = products.map(product => {
-        const clean = { ...product };
-        delete clean.sellerName;
-        delete clean.phone;
-        delete clean.city;
-        delete clean.commission;
-        delete clean.sellerImage;
-        delete clean.ownerImage;
-        delete clean.author;
-        return clean;
-    });
 
-    localStorage.setItem("publishedProducts", JSON.stringify(products));
+    products =
+        products.map(
+            product => {
+
+                const clean =
+                    {
+                        ...product
+                    };
+
+                delete clean.sellerName;
+                delete clean.phone;
+                delete clean.city;
+                delete clean.commission;
+                delete clean.sellerImage;
+                delete clean.ownerImage;
+                delete clean.author;
+
+                return clean;
+
+            }
+        );
+
+
+    localStorage.setItem(
+        "publishedProducts",
+        JSON.stringify(
+            products
+        )
+    );
+
+
     return products;
 }
 
 
-// =========================
-// حفظ المنتجات المنشورة
-// =========================
+/* =========================
+   حفظ المنتجات المنشورة
+========================= */
 
-function savePublishedProducts(products) {
+function savePublishedProducts(
+    products
+) {
 
     localStorage.setItem(
         "publishedProducts",
-        JSON.stringify(products)
+        JSON.stringify(
+            products
+        )
     );
+
 }
 
 
-// =========================
-// حماية النصوص
-// =========================
+/* =========================
+   حماية النصوص
+========================= */
 
-function safe(value) {
+function safe(
+    value
+) {
 
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return String(
+        value ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
 }
 
 
-// =========================
-// الصورة
-// =========================
+/* =========================
+   الصورة
+========================= */
 
-function getRequestImage(request) {
+function getRequestImage(
+    request
+) {
 
     return (
         request.image ||
@@ -737,14 +1388,17 @@ function getRequestImage(request) {
         request.productPhoto ||
         ""
     );
+
 }
 
 
-// =========================
-// تحديث الإحصائيات
-// =========================
+/* =========================
+   تحديث الإحصائيات
+========================= */
 
-function updateStats(requests) {
+function updateStats(
+    requests
+) {
 
     document.getElementById(
         "total-requests"
@@ -757,7 +1411,8 @@ function updateStats(requests) {
     ).textContent =
         requests.filter(
             r =>
-                r.status === "قيد المراجعة"
+                r.status ===
+                "قيد المراجعة"
         ).length;
 
 
@@ -766,7 +1421,8 @@ function updateStats(requests) {
     ).textContent =
         requests.filter(
             r =>
-                r.status === "تمت الموافقة"
+                r.status ===
+                "تمت الموافقة"
         ).length;
 
 
@@ -775,7 +1431,8 @@ function updateStats(requests) {
     ).textContent =
         requests.filter(
             r =>
-                r.status === "مرفوض"
+                r.status ===
+                "مرفوض"
         ).length;
 
 
@@ -783,34 +1440,46 @@ function updateStats(requests) {
         "published-products"
     ).textContent =
         getPublishedProducts().length;
+
 }
 
 
-// =========================
-// حالة الطلب
-// =========================
+/* =========================
+   حالة الطلب
+========================= */
 
-function statusClass(status) {
+function statusClass(
+    status
+) {
 
     if (
-        status === "تمت الموافقة"
+        status ===
+        "تمت الموافقة"
     ) {
+
         return "approved";
+
     }
 
+
     if (
-        status === "مرفوض"
+        status ===
+        "مرفوض"
     ) {
+
         return "rejected";
+
     }
+
 
     return "pending";
+
 }
 
 
-// =========================
-// الفلتر
-// =========================
+/* =========================
+   الفلتر
+========================= */
 
 function setFilter(
     filter,
@@ -822,7 +1491,9 @@ function setFilter(
 
 
     document
-        .querySelectorAll(".tab")
+        .querySelectorAll(
+            ".tab"
+        )
         .forEach(
             tab =>
                 tab.classList.remove(
@@ -837,74 +1508,118 @@ function setFilter(
 
 
     loadRequests();
+
 }
 
 
-// =========================
-// مطابقة الفلتر
-// =========================
+/* =========================
+   مطابقة الفلتر
+========================= */
 
-function matchesFilter(request) {
+function matchesFilter(
+    request
+) {
 
     if (
-        currentFilter === "all"
+        currentFilter ===
+        "all"
     ) {
+
         return true;
+
     }
 
 
     if (
-        currentFilter === "pending" &&
-        request.status === "قيد المراجعة"
+        currentFilter ===
+        "pending" &&
+        request.status ===
+        "قيد المراجعة"
     ) {
+
         return true;
+
     }
 
 
     if (
-        currentFilter === "approved" &&
-        request.status === "تمت الموافقة"
+        currentFilter ===
+        "approved" &&
+        request.status ===
+        "تمت الموافقة"
     ) {
+
         return true;
+
     }
 
 
     if (
-        currentFilter === "rejected" &&
-        request.status === "مرفوض"
+        currentFilter ===
+        "rejected" &&
+        request.status ===
+        "مرفوض"
     ) {
+
         return true;
+
     }
 
 
     return false;
+
 }
 
 
-// =========================
-// تحديث يدوي للوحة التحكم
-// =========================
+/* =========================
+   تحديث يدوي
+========================= */
 
 function refreshAdmin() {
-    const button = document.querySelector(".refresh-btn");
+
+    const button =
+        document.querySelector(
+            ".refresh-btn"
+        );
+
+
     if (button) {
-        button.disabled = true;
-        button.textContent = "⏳ جاري التحديث...";
+
+        button.disabled =
+            true;
+
+        button.textContent =
+            "⏳ جاري التحديث...";
+
     }
+
 
     loadRequests();
 
-    setTimeout(() => {
-        if (button) {
-            button.disabled = false;
-            button.textContent = "🔄 تحديث";
-        }
-    }, 300);
+
+    setTimeout(
+        () => {
+
+            if (button) {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    "🔄 تحديث";
+
+            }
+
+        },
+        300
+    );
+
 }
 
-// =========================
-// تحميل الطلبات
-// =========================
+
+/* =========================
+   تحميل الطلبات
+========================= */
 
 function loadRequests() {
 
@@ -930,7 +1645,8 @@ function loadRequests() {
 
 
     if (
-        requests.length === 0
+        requests.length ===
+        0
     ) {
 
         container.innerHTML = `
@@ -954,6 +1670,7 @@ function loadRequests() {
         `;
 
         return;
+
     }
 
 
@@ -968,14 +1685,17 @@ function loadRequests() {
                     )
             )
             .join("");
+
 }
 
 
-// =========================
-// بطاقة الطلب
-// =========================
+/* =========================
+   بطاقة الطلب
+========================= */
 
-function createRequestCard(request) {
+function createRequestCard(
+    request
+) {
 
     const publishedProducts =
         getPublishedProducts();
@@ -984,8 +1704,12 @@ function createRequestCard(request) {
     const isPublished =
         publishedProducts.some(
             product =>
-                product.requestId ===
-                request.id
+                String(
+                    product.requestId
+                ) ===
+                String(
+                    request.id
+                )
         );
 
 
@@ -1132,17 +1856,42 @@ function createRequestCard(request) {
 
                 ${
                     request.agreementAccepted
-                    ? `
+                    ?
+                    `
                     <div class="request-field">
-                        <strong>الاتفاقية:</strong>
+
+                        <strong>
+                            الاتفاقية:
+                        </strong>
+
                         ✅ تمت موافقة البائع
-                        ${request.agreementAcceptedAt ? ` — ${safe(new Date(request.agreementAcceptedAt).toLocaleString("ar-SA"))}` : ""}
+
+                        ${
+                            request.agreementAcceptedAt
+                            ?
+                            ` — ${safe(
+                                new Date(
+                                    request.agreementAcceptedAt
+                                ).toLocaleString(
+                                    "ar-SA"
+                                )
+                            )}`
+                            :
+                            ""
+                        }
+
                     </div>
                     `
-                    : `
+                    :
+                    `
                     <div class="request-field">
-                        <strong>الاتفاقية:</strong>
+
+                        <strong>
+                            الاتفاقية:
+                        </strong>
+
                         ⚠️ لم تُسجل موافقة البائع
+
                     </div>
                     `
                 }
@@ -1211,7 +1960,8 @@ function createRequestCard(request) {
 
 
             ${
-                request.status === "قيد المراجعة"
+                request.status ===
+                "قيد المراجعة"
                 ?
                 `
 
@@ -1279,7 +2029,8 @@ function createRequestCard(request) {
 
 
             ${
-                request.status === "تمت الموافقة"
+                request.status ===
+                "تمت الموافقة"
                 ?
                 `
 
@@ -1362,7 +2113,8 @@ function createRequestCard(request) {
 
 
             ${
-                request.status === "مرفوض"
+                request.status ===
+                "مرفوض"
                 ?
                 `
 
@@ -1386,14 +2138,17 @@ function createRequestCard(request) {
         </article>
 
     `;
+
 }
 
 
-// =========================
-// إظهار خانة العمولة
-// =========================
+/* =========================
+   إظهار العمولة
+========================= */
 
-function showCommission(id) {
+function showCommission(
+    id
+) {
 
     const box =
         document.getElementById(
@@ -1406,15 +2161,19 @@ function showCommission(id) {
         box.classList.toggle(
             "show"
         );
+
     }
+
 }
 
 
-// =========================
-// اعتماد ونشر تلقائي
-// =========================
+/* =========================
+   اعتماد ونشر
+========================= */
 
-function approveRequest(id) {
+function approveRequest(
+    id
+) {
 
     const requests =
         getRequests();
@@ -1435,6 +2194,7 @@ function approveRequest(id) {
         );
 
         return;
+
     }
 
 
@@ -1459,10 +2219,9 @@ function approveRequest(id) {
         );
 
         return;
+
     }
 
-
-    // اعتماد الطلب
 
     request.status =
         "تمت الموافقة";
@@ -1475,8 +2234,6 @@ function approveRequest(id) {
     request.approvedAt =
         new Date().toISOString();
 
-
-    // نشر المنتج مباشرة
 
     const published =
         publishRequestProduct(
@@ -1497,6 +2254,7 @@ function approveRequest(id) {
         loadRequests();
 
         return;
+
     }
 
 
@@ -1519,12 +2277,13 @@ function approveRequest(id) {
     alert(
         "✅ تمت الموافقة ونُشرت السلعة مباشرة في قسمها."
     );
+
 }
 
 
-// =========================
-// إنشاء المنتج المنشور
-// =========================
+/* =========================
+   إنشاء المنتج
+========================= */
 
 function publishRequestProduct(
     request
@@ -1540,7 +2299,9 @@ function publishRequestProduct(
                 String(
                     product.requestId
                 ) ===
-                String(request.id)
+                String(
+                    request.id
+                )
         );
 
 
@@ -1555,7 +2316,9 @@ function publishRequestProduct(
         id:
             existingIndex >= 0
             ?
-            products[existingIndex].id
+            products[
+                existingIndex
+            ].id
             :
             "PROD-" +
             Date.now(),
@@ -1571,7 +2334,8 @@ function publishRequestProduct(
 
         category:
             String(
-                request.category || ""
+                request.category ||
+                ""
             ).trim(),
 
         price:
@@ -1629,6 +2393,7 @@ function publishRequestProduct(
         products.push(
             product
         );
+
     }
 
 
@@ -1638,14 +2403,17 @@ function publishRequestProduct(
 
 
     return true;
+
 }
 
 
-// =========================
-// نشر منتج تمت الموافقة عليه
-// =========================
+/* =========================
+   نشر منتج
+========================= */
 
-function publishProduct(id) {
+function publishProduct(
+    id
+) {
 
     const requests =
         getRequests();
@@ -1660,7 +2428,9 @@ function publishProduct(id) {
 
 
     if (!request) {
+
         return;
+
     }
 
 
@@ -1674,6 +2444,7 @@ function publishProduct(id) {
         );
 
         return;
+
     }
 
 
@@ -1704,22 +2475,28 @@ function publishProduct(id) {
         alert(
             "🛍️ تم نشر المنتج في القسم."
         );
+
     }
+
 }
 
 
-// =========================
-// إخفاء المنتج
-// =========================
+/* =========================
+   إخفاء المنتج
+========================= */
 
-function unpublishProduct(id) {
+function unpublishProduct(
+    id
+) {
 
     if (
         !confirm(
             "هل تريد إخفاء هذا المنتج من متجر المشتري؟"
         )
     ) {
+
         return;
+
     }
 
 
@@ -1763,25 +2540,31 @@ function unpublishProduct(id) {
         saveRequests(
             requests
         );
+
     }
 
 
     loadRequests();
+
 }
 
 
-// =========================
-// رفض الطلب
-// =========================
+/* =========================
+   رفض الطلب
+========================= */
 
-function rejectRequest(id) {
+function rejectRequest(
+    id
+) {
 
     if (
         !confirm(
             "هل تريد رفض هذا الطلب؟"
         )
     ) {
+
         return;
+
     }
 
 
@@ -1798,7 +2581,9 @@ function rejectRequest(id) {
 
 
     if (!request) {
+
         return;
+
     }
 
 
@@ -1809,8 +2594,6 @@ function rejectRequest(id) {
     request.published =
         false;
 
-
-    // إذا كان المنتج منشورًا نحذفه
 
     let products =
         getPublishedProducts();
@@ -1842,21 +2625,26 @@ function rejectRequest(id) {
     alert(
         "تم رفض الطلب."
     );
+
 }
 
 
-// =========================
-// حذف الطلب
-// =========================
+/* =========================
+   حذف الطلب
+========================= */
 
-function deleteRequest(id) {
+function deleteRequest(
+    id
+) {
 
     if (
         !confirm(
             "هل تريد حذف هذا الطلب نهائيًا؟"
         )
     ) {
+
         return;
+
     }
 
 
@@ -1876,8 +2664,6 @@ function deleteRequest(id) {
         requests
     );
 
-
-    // حذف المنتج المنشور المرتبط
 
     let products =
         getPublishedProducts();
@@ -1899,18 +2685,11 @@ function deleteRequest(id) {
 
 
     loadRequests();
+
 }
-
-
-// =========================
-// التشغيل
-// =========================
-
-loadRequests();
 
 </script>
 
 </body>
 
 </html>
-```
