@@ -1,5 +1,5 @@
 
-
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -12,2251 +12,1905 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <meta
-        name="description"
-        content="لَحْقها — سوق إلكتروني لعرض وشراء السلع بسهولة وأمان."
-    >
-
-    <title>لَحْقها 🛍️ | الرئيسية</title>
-
-    <link rel="stylesheet" href="style.css">
+    <title>لوحة التحكم | لَحْقها</title>
 
     <style>
 
-        /* ==================================================
-           الصفحة الرئيسية
-        ================================================== */
+        :root {
+            --primary: #1e3a5f;
+            --primary-dark: #16314f;
+            --success: #2e7d32;
+            --danger: #c62828;
+            --warning: #9a6100;
+            --background: #f5f7fb;
+            --white: #fff;
+            --text: #333;
+            --muted: #6b7280;
+            --border: #e2e6ec;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
 
         body {
-            background: #f5f7fa;
-        }
-
-        .home-page {
-            width: min(1180px, calc(100% - 30px));
-            margin: 0 auto;
-            padding: 35px 0 90px;
-        }
-
-
-        /* ==================================================
-           الواجهة الرئيسية
-        ================================================== */
-
-        .main-hero {
-            position: relative;
-            overflow: hidden;
-
-            min-height: 390px;
-
-            display: flex;
-            align-items: center;
-
-            border-radius: 28px;
-
-            padding: 55px;
-
-            margin-bottom: 55px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #173a63 0%,
-                    #285784 55%,
-                    #34709b 100%
-                );
-
-            box-shadow:
-                0 18px 45px rgba(25, 55, 85, .18);
-
-            color: #fff;
-        }
-
-
-        .main-hero::before {
-            content: "";
-
-            position: absolute;
-
-            width: 420px;
-            height: 420px;
-
-            border-radius: 50%;
-
-            background: rgba(255,255,255,.055);
-
-            left: -120px;
-            bottom: -190px;
-        }
-
-
-        .main-hero::after {
-            content: "";
-
-            position: absolute;
-
-            width: 280px;
-            height: 280px;
-
-            border-radius: 50%;
-
-            background: rgba(255,255,255,.045);
-
-            right: -90px;
-            top: -120px;
-        }
-
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-
-            max-width: 720px;
-        }
-
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-
-            padding: 8px 15px;
-
-            border-radius: 30px;
-
-            background: rgba(255,255,255,.12);
-
-            border: 1px solid rgba(255,255,255,.18);
-
-            font-size: 14px;
-            font-weight: bold;
-
-            margin-bottom: 18px;
-        }
-
-
-        .hero-badge span {
-            width: 8px;
-            height: 8px;
-
-            border-radius: 50%;
-
-            background: #63d471;
-
-            display: inline-block;
-        }
-
-
-        .main-hero h2 {
-            margin: 0 0 18px;
-
-            font-size: clamp(34px, 5vw, 58px);
-
-            line-height: 1.2;
-
-            font-weight: 900;
-
-            color: #fff;
-        }
-
-
-        .main-hero h2 strong {
-            color: #dceeff;
-        }
-
-
-        .hero-description {
             margin: 0;
-
-            max-width: 650px;
-
-            color: rgba(255,255,255,.9);
-
-            font-size: 19px;
-
-            line-height: 1.9;
+            font-family: Tahoma, Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
         }
 
-
-        .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
-
-            gap: 13px;
-
-            margin-top: 30px;
-        }
-
-
-        .hero-button {
-            display: inline-flex;
-
-            align-items: center;
-            justify-content: center;
-
-            min-width: 175px;
-
-            padding: 14px 24px;
-
-            border-radius: 12px;
-
-            text-decoration: none;
-
-            font-family: inherit;
-
-            font-size: 16px;
-
-            font-weight: 800;
-
-            transition:
-                transform .2s ease,
-                box-shadow .2s ease,
-                background .2s ease;
-        }
-
-
-        .hero-button:hover {
-            transform: translateY(-2px);
-        }
-
-
-        .hero-button.primary {
-            background: #fff;
-
-            color: #173a63;
-
-            box-shadow:
-                0 8px 20px rgba(0,0,0,.12);
-        }
-
-
-        .hero-button.primary:hover {
-            background: #f3f8fc;
-        }
-
-
-        .hero-button.secondary {
-            background: transparent;
-
+        .admin-header {
+            background: var(--primary);
             color: #fff;
-
-            border: 1px solid rgba(255,255,255,.45);
+            padding: 25px 20px;
         }
 
-
-        .hero-button.secondary:hover {
-            background: rgba(255,255,255,.1);
-        }
-
-
-        /* ==================================================
-           قسم المنتجات الحديثة
-        ================================================== */
-
-        .home-section {
-            margin-bottom: 55px;
-        }
-
-
-        .section-heading {
+        .header-content {
+            width: min(1200px, calc(100% - 30px));
+            margin: auto;
             display: flex;
-
-            align-items: flex-end;
-
             justify-content: space-between;
-
+            align-items: center;
             gap: 20px;
-
-            margin-bottom: 22px;
         }
 
-
-        .section-heading-text h2 {
-            margin: 0 0 7px;
-
-            color: #173a63;
-
-            font-size: 28px;
-
-            font-weight: 900;
+        .admin-header h1 {
+            margin: 0 0 5px;
+            font-size: 27px;
         }
 
-
-        .section-heading-text p {
+        .admin-header p {
             margin: 0;
-
-            color: #687585;
-
-            font-size: 15px;
+            opacity: .9;
         }
 
+        .header-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
 
-        .section-link {
-            color: #173a63;
-
+        .header-link {
+            color: #fff;
             text-decoration: none;
-
-            font-weight: 800;
-
+            padding: 10px 15px;
+            border: 1px solid rgba(255,255,255,.35);
+            border-radius: 9px;
             white-space: nowrap;
         }
 
-
-        .section-link:hover {
-            text-decoration: underline;
+        .header-link:hover {
+            background: rgba(255,255,255,.1);
         }
 
+        .admin-container {
+            width: min(1200px, calc(100% - 30px));
+            margin: 30px auto 60px;
+        }
 
-        /* ==================================================
-           المنتجات
-        ================================================== */
-
-        .home-products {
+        .stats {
             display: grid;
-
-            grid-template-columns:
-                repeat(4, minmax(0, 1fr));
-
-            gap: 20px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
-
-        .home-product-card {
-            background: #fff;
-
-            border: 1px solid #e4e9ee;
-
-            border-radius: 18px;
-
-            overflow: hidden;
-
-            box-shadow:
-                0 6px 22px rgba(30,55,80,.06);
-
-            transition:
-                transform .2s ease,
-                box-shadow .2s ease;
+        .stat-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,.07);
         }
 
-
-        .home-product-card:hover {
-            transform: translateY(-4px);
-
-            box-shadow:
-                0 12px 30px rgba(30,55,80,.11);
-        }
-
-
-        .home-product-image {
-            width: 100%;
-
-            height: 210px;
-
-            object-fit: cover;
-
+        .stat-card span {
             display: block;
-
-            background: #eef2f5;
+            color: var(--muted);
+            margin-bottom: 8px;
         }
 
-
-        .home-product-image.empty {
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-size: 52px;
-
-            color: #9aa7b3;
-        }
-
-
-        .home-product-info {
-            padding: 17px;
-        }
-
-
-        .home-product-info h3 {
-            margin: 0 0 9px;
-
-            color: #26384b;
-
-            font-size: 18px;
-
-            line-height: 1.5;
-        }
-
-
-        .home-product-category {
-            color: #74808d;
-
-            font-size: 13px;
-
-            margin: 0 0 10px;
-        }
-
-
-        .home-product-price {
-            margin: 0;
-
-            color: #173a63;
-
-            font-size: 19px;
-
-            font-weight: 900;
-        }
-
-
-        .home-product-seller { display:none !important; 
-            margin: 9px 0 0;
-
-            color: #7b8793;
-
-            font-size: 13px;
-        }
-
-
-        .product-empty {
-            grid-column: 1 / -1;
-
-            background: #fff;
-
-            border: 1px dashed #ccd5dd;
-
-            border-radius: 18px;
-
-            padding: 45px 20px;
-
-            text-align: center;
-
-            color: #6c7884;
-        }
-
-
-        .product-empty-icon {
-            font-size: 48px;
-
-            margin-bottom: 10px;
-        }
-
-
-        .product-empty h3 {
-            margin: 0 0 8px;
-
-            color: #33485d;
-        }
-
-
-        .product-empty p {
-            margin: 0;
-        }
-
-
-        /* ==================================================
-           لماذا لَحْقها؟
-        ================================================== */
-
-        .features-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
-
-            gap: 18px;
-        }
-
-
-        .feature-card {
-            background: #fff;
-
-            border: 1px solid #e4e9ee;
-
-            border-radius: 18px;
-
-            padding: 25px;
-
-            text-align: center;
-
-            box-shadow:
-                0 6px 20px rgba(30,55,80,.05);
-        }
-
-
-        .feature-icon {
-            width: 58px;
-            height: 58px;
-
-            margin: 0 auto 14px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 16px;
-
-            background: #edf4fa;
-
+        .stat-card strong {
             font-size: 28px;
+            color: var(--primary);
         }
 
-
-        .feature-card h3 {
-            margin: 0 0 8px;
-
-            color: #263f59;
-
-            font-size: 18px;
-        }
-
-
-        .feature-card p {
-            margin: 0;
-
-            color: #727f8b;
-
-            line-height: 1.7;
-
-            font-size: 14px;
-        }
-
-
-        /* ==================================================
-           دعوة البائع
-        ================================================== */
-
-        .seller-banner {
+        .tabs {
             display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            gap: 25px;
-
-            padding: 32px;
-
-            border-radius: 22px;
-
-            background: #fff;
-
-            border: 1px solid #dfe6ec;
-
-            box-shadow:
-                0 7px 25px rgba(30,55,80,.06);
-        }
-
-
-        .seller-banner-text h2 {
-            margin: 0 0 8px;
-
-            color: #173a63;
-
-            font-size: 25px;
-        }
-
-
-        .seller-banner-text p {
-            margin: 0;
-
-            color: #697785;
-
-            line-height: 1.7;
-        }
-
-
-        .seller-banner .hero-button {
-            flex-shrink: 0;
-
-            background: #173a63;
-
-            color: #fff;
-        }
-
-
-        .seller-banner .hero-button:hover {
-            background: #214d7b;
-        }
-
-
-        /* ==================================================
-           السلة
-        ================================================== */
-
-        .cart {
-            position: fixed;
-
-            left: 20px;
-            bottom: 20px;
-
-            width: 280px;
-
-            max-width: calc(100% - 40px);
-
-            max-height: 70vh;
-
-            overflow-y: auto;
-
-            background: #fff;
-
-            border: 1px solid #dfe5ea;
-
-            border-radius: 18px;
-
-            padding: 18px;
-
-            box-shadow:
-                0 12px 35px rgba(0,0,0,.16);
-
-            z-index: 1000;
-        }
-
-
-        .cart h2 {
-            margin: 0 0 12px;
-
-            color: #173a63;
-
-            font-size: 21px;
-        }
-
-
-        .cart ul {
-            padding: 0;
-
-            margin: 12px 0;
-
-            list-style: none;
-        }
-
-
-        .cart-item {
-            display: flex;
-
             gap: 10px;
-
-            padding: 10px 0;
-
-            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
         }
 
-
-        .cart-image {
-            width: 52px;
-            height: 52px;
-
-            object-fit: cover;
-
-            border-radius: 8px;
-
-            background: #eee;
-        }
-
-
-        .cart-info {
-            flex: 1;
-
-            min-width: 0;
-        }
-
-
-        .cart-info h4 {
-            margin: 0 0 4px;
-
-            font-size: 14px;
-
-            color: #34495e;
-        }
-
-
-        .cart-info p {
-            margin: 3px 0;
-
-            font-size: 12px;
-
-            color: #687581;
-        }
-
-
-        .cart-buttons {
-            display: flex;
-
-            align-items: center;
-
-            gap: 7px;
-
-            margin-top: 7px;
-        }
-
-
-        .cart-buttons button,
-        .delete {
-            border: 0;
-
-            border-radius: 6px;
-
-            padding: 4px 8px;
-
-            cursor: pointer;
-
+        .tab {
+            border: 1px solid var(--border);
+            background: #fff;
+            padding: 11px 16px;
+            border-radius: 9px;
             font-family: inherit;
-        }
-
-
-        .delete {
-            margin-top: 5px;
-        }
-
-
-        .clear-cart-btn {
-            width: 100%;
-
-            padding: 10px;
-
-            border: 0;
-
-            border-radius: 8px;
-
-            background: #eeeeee;
-
-            color: #444;
-
             cursor: pointer;
-
-            font-family: inherit;
-        }
-
-
-        .checkout-btn {
-            display: block;
-
-            text-align: center;
-
-            margin-top: 9px;
-
-            padding: 11px;
-
-            background: #2d7d32;
-
-            color: #fff;
-
-            text-decoration: none;
-
-            border-radius: 8px;
-
             font-weight: bold;
         }
 
-
-        .secure-payment {
-            text-align: center;
-
-            color: #6d7b87;
-
-            font-size: 12px;
-        }
-
-
-        /* ==================================================
-           التنبيه
-        ================================================== */
-
-        #toast {
-            position: fixed;
-
-            right: 20px;
-            bottom: 20px;
-
-            background: #173a63;
-
+        .tab.active {
+            background: var(--primary);
             color: #fff;
+            border-color: var(--primary);
+        }
 
-            padding: 12px 18px;
+        .requests-box {
+            background: var(--white);
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,.08);
+        }
 
+        .requests-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .requests-head h2 {
+            margin: 0;
+            color: var(--primary);
+        }
+
+        .refresh-btn {
+            border: 0;
+            min-width: 120px;
+            background: var(--primary);
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 9px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--muted);
+        }
+
+        .request-card {
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            background: #fff;
+        }
+
+        .request-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .request-top h3 {
+            margin: 0 0 6px;
+            color: var(--primary);
+        }
+
+        .request-id {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .status.pending {
+            background: #fff4dc;
+            color: var(--warning);
+        }
+
+        .status.approved {
+            background: #e9f7eb;
+            color: var(--success);
+        }
+
+        .status.rejected {
+            background: #fdeaea;
+            color: var(--danger);
+        }
+
+        .request-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px 20px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .request-field strong {
+            color: var(--primary);
+        }
+
+        .request-image-box {
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        .request-image {
+            width: 220px;
+            max-width: 100%;
+            height: 220px;
+            object-fit: contain;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: #f8fafc;
+        }
+
+        .description {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fafafa;
             border-radius: 10px;
-
-            opacity: 0;
-
-            pointer-events: none;
-
-            transition: .3s;
-
-            z-index: 3000;
+            line-height: 1.8;
         }
 
-
-        #toast.show {
-            opacity: 1;
+        .admin-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
         }
 
+        .admin-actions button {
+            border: 0;
+            padding: 10px 15px;
+            border-radius: 9px;
+            color: #fff;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-        /* ==================================================
-           الجوال
-        ================================================== */
+        .approve-btn {
+            background: var(--success);
+        }
 
-        @media (max-width: 1000px) {
+        .reject-btn {
+            background: var(--danger);
+        }
 
-            .home-products {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
+        .delete-btn {
+            background: #555;
+        }
+
+        .commission-box {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #f5f8fc;
+            border-radius: 12px;
+        }
+
+        .commission-box.show {
+            display: block;
+        }
+
+        .commission-box label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .commission-box input {
+            width: 220px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            margin-bottom: 10px;
+        }
+
+        .confirm-approve {
+            padding: 10px 15px;
+            border: 0;
+            border-radius: 8px;
+            background: var(--success);
+            color: #fff;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .published-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            background: #eef7ef;
+            border: 1px solid #c5dfc8;
+        }
+
+        .published-box strong {
+            color: var(--success);
+        }
+
+        .admin-footer {
+            text-align: center;
+            color: var(--muted);
+            padding: 20px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 950px) {
+
+            .stats {
+                grid-template-columns: repeat(3, 1fr);
             }
 
         }
 
+        @media (max-width: 800px) {
 
-        @media (max-width: 750px) {
-
-            .main-hero {
-                padding: 35px 25px;
-
-                min-height: 350px;
-
-                border-radius: 22px;
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-
-            .main-hero h2 {
-                font-size: 37px;
-            }
-
-
-            .hero-description {
-                font-size: 16px;
-            }
-
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-
-            .seller-banner {
+            .header-content {
                 flex-direction: column;
-
-                align-items: stretch;
-
                 text-align: center;
             }
 
+            .request-grid {
+                grid-template-columns: 1fr;
+            }
 
-            .seller-banner .hero-button {
-                width: 100%;
+            .header-links {
+                justify-content: center;
             }
 
         }
 
+        @media (max-width: 500px) {
 
-        @media (max-width: 600px) {
-
-            .home-page {
-                width: min(100% - 20px, 1180px);
-
-                padding-top: 20px;
-            }
-
-
-            .home-products {
+            .stats {
                 grid-template-columns: 1fr;
             }
 
+            .admin-container {
+                width: calc(100% - 20px);
+            }
 
-            .section-heading {
-                align-items: flex-start;
+            .requests-box {
+                padding: 17px;
+            }
 
+            .request-top {
                 flex-direction: column;
             }
 
-
-            .hero-actions {
-                flex-direction: column;
-            }
-
-
-            .hero-button {
+            .header-link {
                 width: 100%;
+                text-align: center;
             }
 
-
-            .cart {
-                left: 10px;
-                right: 10px;
-                bottom: 10px;
-
-                width: auto;
-
-                max-width: none;
+            .commission-box input {
+                width: 100%;
             }
 
         }
 
     </style>
 
-<link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="images/icon.png"><link rel="apple-touch-icon" href="images/icon.png"></head>
+</head>
 
 
 <body>
 
 
-<!-- ==================================================
-     رأس الموقع
-================================================== -->
+<header class="admin-header">
 
-<header class="site-header">
+    <div class="header-content">
 
-    <div class="logo">
+        <div>
 
-        <h1>
-            🛍️ لَحْقها
-        </h1>
+            <h1>
+                🔐 لوحة التحكم — لَحْقها
+            </h1>
 
-        <p>
-            شفتها؟ لَحْقها قبل تروح!
-        </p>
+            <p>
+                إدارة أصحاب السلع والمنتجات قبل عرضها للمشتري
+            </p>
+
+        </div>
+
+        <div class="header-links">
+
+            <a
+                href="../index.html"
+                class="header-link"
+            >
+                🛍️ متجر المشتري
+            </a>
+
+            <a
+                href="../seller/offer.html"
+                class="header-link"
+            >
+                📦 صفحة أصحاب السلع
+            </a>
+
+        </div>
 
     </div>
-
-
-    <nav>
-
-        <a href="index.html">
-            الرئيسية
-        </a>
-
-        <a href="categories.html">
-            الأقسام
-        </a>
-
-        <a href="about.html">
-            من نحن
-        </a>
-
-        <a href="contact.html">
-            اتصل بنا
-        </a>
-
-        <a
-            href="seller/offer.html"
-            class="seller-link"
-        >
-            📦 اعرض سلعتك
-        </a>
-
-        <a
-            href="admin/index.html"
-            class="admin-link"
-        >
-            🔐 لوحة التحكم
-        </a>
-
-    </nav>
 
 </header>
 
 
-<!-- ==================================================
-     المحتوى الرئيسي
-================================================== -->
-
-<main class="home-page">
+<main class="admin-container">
 
 
-    <!-- ==================================================
-         الواجهة الرئيسية
-    ================================================== -->
+    <section class="stats">
 
-    <section class="main-hero">
+        <div class="stat-card">
 
-        <div class="hero-content">
+            <span>
+                إجمالي الطلبات
+            </span>
 
-            <div class="hero-badge">
+            <strong id="total-requests">
+                0
+            </strong>
 
-                <span></span>
+        </div>
 
-                سوق لَحْقها
 
-            </div>
+        <div class="stat-card">
 
+            <span>
+                قيد المراجعة
+            </span>
+
+            <strong id="pending-requests">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                تمت الموافقة
+            </span>
+
+            <strong id="approved-requests">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                مرفوضة
+            </span>
+
+            <strong id="rejected-requests">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                منشورة
+            </span>
+
+            <strong id="published-products">
+                0
+            </strong>
+
+        </div>
+
+    </section>
+
+
+    <div class="tabs">
+
+        <button
+            class="tab active"
+            onclick="setFilter('all', this)"
+        >
+            📋 الكل
+        </button>
+
+        <button
+            class="tab"
+            onclick="setFilter('pending', this)"
+        >
+            ⏳ قيد المراجعة
+        </button>
+
+        <button
+            class="tab"
+            onclick="setFilter('approved', this)"
+        >
+            ✅ معتمدة
+        </button>
+
+        <button
+            class="tab"
+            onclick="setFilter('rejected', this)"
+        >
+            ❌ مرفوضة
+        </button>
+
+    </div>
+
+
+    <section class="requests-box">
+
+        <div class="requests-head">
 
             <h2>
-
-                شفتها؟
-
-                <strong>
-                    لَحْقها!
-                </strong>
-
+                📦 طلبات أصحاب السلع
             </h2>
 
-
-            <p class="hero-description">
-
-                اكتشف السلع المميزة والمعتمدة،
-                وتصفح المنتجات بسهولة من مكان واحد.
-                وإذا كانت لديك سلعة، اعرضها لتصل إلى المشترين.
-
-            </p>
-
-
-            <div class="hero-actions">
-
-                <a
-                    href="categories.html"
-                    class="hero-button primary"
-                >
-                    🛍️ تصفح جميع السلع
-                </a>
-
-
-                <a
-                    href="seller/offer.html"
-                    class="hero-button secondary"
-                >
-                    📦 اعرض سلعتك
-                </a>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ==================================================
-         المنتجات الحديثة
-    ================================================== -->
-
-    <section class="home-section">
-
-        <div class="section-heading">
-
-            <div class="section-heading-text">
-
-                <h2>
-                    أحدث السلع
-                </h2>
-
-                <p>
-                    آخر المنتجات التي تمت إضافتها إلى لَحْقها
-                </p>
-
-            </div>
-
-
-            <a
-                href="categories.html"
-                class="section-link"
+            <button
+                class="refresh-btn"
+                onclick="refreshAdmin()"
             >
-                عرض جميع السلع ←
-            </a>
+                🔄 تحديث
+            </button>
 
         </div>
 
 
-        <div
-            class="home-products"
-            id="latest-products"
-        >
-
-            <div class="product-empty">
-
-                <div class="product-empty-icon">
-                    🛍️
-                </div>
-
-                <h3>
-                    جارٍ تحميل السلع...
-                </h3>
-
-                <p>
-                    نبحث عن أحدث المنتجات المتاحة.
-                </p>
-
-            </div>
-
-        </div>
+        <div id="requests-container"></div>
 
     </section>
-
-
-    <!-- ==================================================
-         لماذا لَحْقها؟
-    ================================================== -->
-
-    <section class="home-section">
-
-        <div class="section-heading">
-
-            <div class="section-heading-text">
-
-                <h2>
-                    لماذا لَحْقها؟
-                </h2>
-
-                <p>
-                    تجربة بسيطة وواضحة للمشتري والبائع
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="features-grid">
-
-
-            <article class="feature-card">
-
-                <div class="feature-icon">
-                    🛍️
-                </div>
-
-                <h3>
-                    سلع متنوعة
-                </h3>
-
-                <p>
-                    تصفح مجموعة متنوعة من السلع
-                    في أقسام واضحة وسهلة.
-                </p>
-
-            </article>
-
-
-            <article class="feature-card">
-
-                <div class="feature-icon">
-                    🔒
-                </div>
-
-                <h3>
-                    طلب آمن
-                </h3>
-
-                <p>
-                    خطوات واضحة لإضافة المنتجات
-                    وإتمام الطلب بسهولة.
-                </p>
-
-            </article>
-
-
-            <article class="feature-card">
-
-                <div class="feature-icon">
-                    📦
-                </div>
-
-                <h3>
-                    عرض سهل
-                </h3>
-
-                <p>
-                    لديك سلعة؟ أرسل بياناتها
-                    ليتم تجهيزها وعرضها في القسم المناسب.
-                </p>
-
-            </article>
-
-
-        </div>
-
-    </section>
-
-
-    <!-- ==================================================
-         دعوة البائع
-    ================================================== -->
-
-    <section class="home-section">
-
-        <div class="seller-banner">
-
-            <div class="seller-banner-text">
-
-                <h2>
-                    هل لديك سلعة تريد عرضها؟
-                </h2>
-
-                <p>
-                    أرسل بيانات سلعتك، وبعد اعتمادها
-                    ستظهر للمشترين في القسم المناسب.
-                </p>
-
-            </div>
-
-
-            <a
-                href="seller/offer.html"
-                class="hero-button"
-            >
-                📤 ابدأ عرض سلعتك
-            </a>
-
-        </div>
-
-    </section>
-
 
 </main>
 
 
-<!-- ==================================================
-     سلة المشتريات
-================================================== -->
+<footer class="admin-footer">
 
-<aside
-    class="cart"
-    id="cart"
->
-
-    <h2>
-        🛒 سلة المشتريات
-    </h2>
-
-
-    <p>
-
-        عدد المنتجات:
-
-        <span id="cart-count">
-            0
-        </span>
-
-    </p>
-
-
-    <ul id="cart-items"></ul>
-
-
-    <h3>
-
-        الإجمالي:
-
-        <span id="total-price">
-            0
-        </span>
-
-        ريال
-
-    </h3>
-
-
-    <button
-        id="clear-cart"
-        type="button"
-        class="clear-cart-btn"
-    >
-        إفراغ السلة
-    </button>
-
-
-    <a
-        href="checkout.html"
-        class="checkout-btn"
-        id="checkout-btn"
-    >
-        🛒 إتمام الطلب بأمان
-    </a>
-
-
-    <p class="secure-payment">
-        🔒 دفع آمن وسريع
-    </p>
-
-</aside>
-
-
-<!-- ==================================================
-     التذييل
-================================================== -->
-
-<footer>
-
-    <p>
-        © 2026 لَحْقها 🛍️
-    </p>
+    © 2026 لَحْقها — لوحة التحكم
 
 </footer>
 
 
-<div id="toast"></div>
-
-
-<!-- ==================================================
-     جافاسكربت
-================================================== -->
-
 <script>
 
-    /* ==================================================
-       حماية النصوص
-    ================================================== */
 
-    function escapeHtml(value) {
-
-        return String(value ?? "").replace(
-            /[&<>"']/g,
-            character => ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#039;"
-            }[character])
-        );
-
-    }
+let currentFilter = "all";
 
 
-    /* ==================================================
-       الصور
-    ================================================== */
+// =========================
+// قراءة الطلبات
+// =========================
 
-    function imageUrl(path) {
+function getRequests() {
 
-        const value =
-            String(path || "").trim();
+    let requests = [];
 
-
-        if (!value) {
-            return "";
-        }
-
-
-        if (
-            /^https?:\/\//i.test(value) ||
-            /^data:image\//i.test(value)
-        ) {
-            return value;
-        }
-
-
-        return encodeURI(
-            value.replace(/^\.\//, "")
-        );
-
-    }
-
-
-    /* ==================================================
-       قراءة المنتجات المنشورة
-    ================================================== */
-
-    function sanitizePublicProduct(product) {
-
-    if (!product || typeof product !== "object") return null;
-
-    // مهم: لا نستخدم ...product هنا حتى لا تنتقل بيانات البائع إلى واجهة المشتري.
-    return {
-        id: product.id || product.requestId || ("public-" + Date.now() + Math.random()),
-        requestId: product.requestId || product.id || "",
-        title: product.title || product.name || product.productName || "سلعة بدون اسم",
-        name: product.name || product.title || product.productName || "سلعة بدون اسم",
-        category: String(product.category || "").trim(),
-        price: Number(product.price || 0),
-        quantity: Number(product.quantity || 0),
-        image: product.image || product.productImage || product.imageUrl || product.photo || "",
-        images: Array.isArray(product.images) ? product.images : [],
-        description: product.description || "",
-        notes: product.notes || "",
-        available: product.available !== false,
-        active: product.active !== false,
-        status: product.status || "منشور",
-        createdAt: product.createdAt || ""
-    };
-}
-
-// تنظيف أي نسخة عامة قديمة مخزنة في المتصفح من بيانات البائع.
-function cleanStoredPublicProducts() {
     try {
-        const raw = localStorage.getItem("publishedProducts");
-        if (!raw) return;
-        const old = JSON.parse(raw);
-        if (!Array.isArray(old)) return;
-        const clean = old.map(sanitizePublicProduct).filter(Boolean);
-        localStorage.setItem("publishedProducts", JSON.stringify(clean));
-    } catch (e) {
-        console.warn("تعذر تنظيف البيانات العامة القديمة", e);
+        requests = JSON.parse(
+            localStorage.getItem("sellerRequests") || "[]"
+        );
+        if (!Array.isArray(requests)) requests = [];
+    } catch (error) {
+        requests = [];
     }
+
+    // ترحيل بيانات الاختبار القديمة: أي طلب كان يُحفظ كـ"منشور"
+    // قبل الموافقة يتحول الآن إلى "قيد المراجعة".
+    let changed = false;
+    requests = requests.map(request => {
+        if (request.status === "منشور" && !request.approvedAt) {
+            changed = true;
+            return { ...request, status: "قيد المراجعة", published: false };
+        }
+        return request;
+    });
+
+    if (changed) {
+        localStorage.setItem("sellerRequests", JSON.stringify(requests));
+    }
+
+    return requests;
 }
 
-// V8: remove any legacy public records that contain private seller fields.
-cleanStoredPublicProducts();
-try {
-  const rawPublic = localStorage.getItem('publishedProducts');
-  if (rawPublic) {
-    const arr = JSON.parse(rawPublic);
-    if (Array.isArray(arr)) {
-      localStorage.setItem('publishedProducts', JSON.stringify(arr.map(p => sanitizePublicProduct(p)).filter(Boolean)));
-    }
-  }
-} catch(e) {}
+
+// =========================
+// حفظ الطلبات
+// =========================
+
+function saveRequests(requests) {
+
+    localStorage.setItem(
+        "sellerRequests",
+        JSON.stringify(requests)
+    );
+}
+
+
+// =========================
+// قراءة المنتجات المنشورة
+// =========================
 
 function getPublishedProducts() {
 
-        try {
-
-            const data =
-                localStorage.getItem(
-                    "publishedProducts"
-                );
-
-
-            if (!data) {
-                return [];
-            }
-
-
-            const products =
-                JSON.parse(data);
-
-
-            if (!Array.isArray(products)) {
-                return [];
-            }
-
-
-            return products
-
-                .filter(product => {
-
-                    return (
-                        product &&
-                        product.active !== false
-                    );
-
-                })
-
-                .map(product => {
-
-                    return {
-
-                        ...product,
-
-                        id:
-                            product.id ||
-                            product.requestId ||
-                            (
-                                "published-" +
-                                Date.now() +
-                                Math.random()
-                            ),
-
-                        title:
-                            product.title ||
-                            product.name ||
-                            product.productName ||
-                            "سلعة بدون اسم",
-
-                        image:
-                            product.image ||
-                            product.productImage ||
-                            product.imageUrl ||
-                            product.photo ||
-                            "",
-
-                        category:
-                            String(
-                                product.category || ""
-                            ).trim(),
-
-                        price:
-                            Number(
-                                product.price || 0
-                            ),
-
-                        active:
-                            product.active !== false
-
-                    };
-
-                });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "خطأ في قراءة السلع المنشورة:",
-                error
-            );
-
-            return [];
-
-        }
-
-    }
-
-
-    /* ==================================================
-       قراءة السلع القديمة من books.json
-    ================================================== */
-
-    async function getOldProducts() {
-
-        try {
-
-            const response =
-                await fetch(
-                    "books.json",
-                    {
-                        cache: "no-store"
-                    }
-                );
-
-
-            if (!response.ok) {
-                return [];
-            }
-
-
-            const products =
-                await response.json();
-
-
-            if (!Array.isArray(products)) {
-                return [];
-            }
-
-
-            return products.map(product => {
-
-                const publicProduct = sanitizePublicProduct(product);
-
-                return {
-
-                    ...publicProduct,
-
-                    id:
-                        product.id ||
-                        (
-                            "old-" +
-                            Math.random()
-                        ),
-
-                    title:
-                        product.title ||
-                        product.name ||
-                        "سلعة بدون اسم",
-
-                    image:
-                        product.image ||
-                        product.productImage ||
-                        product.imageUrl ||
-                        "",
-
-                    category:
-                        String(
-                            product.category || ""
-                        ).trim(),
-
-                    price:
-                        Number(
-                            product.price || 0
-                        ),
-
-                    active:
-                        product.active !== false
-
-                };
-
-            });
-
-        }
-
-        catch (error) {
-
-            console.warn(
-                "تعذر تحميل books.json:",
-                error
-            );
-
-            return [];
-
-        }
-
-    }
-
-
-    /* ==================================================
-       جميع المنتجات
-    ================================================== */
-
-    async function getAllProducts() {
-
-        const oldProducts =
-            await getOldProducts();
-
-
-        const publishedProducts =
-            getPublishedProducts();
-
-
-        return [
-
-            ...oldProducts,
-            ...publishedProducts
-
-        ];
-
-    }
-
-
-    /* ==================================================
-       منع التكرار
-    ================================================== */
-
-    function uniqueProducts(products) {
-
-        const result = [];
-
-        const ids = new Set();
-
-
-        products.forEach(product => {
-
-            const id =
-                String(
-                    product.id ||
-                    product.requestId ||
-                    ""
-                );
-
-
-            if (
-                id &&
-                ids.has(id)
-            ) {
-                return;
-            }
-
-
-            if (id) {
-                ids.add(id);
-            }
-
-
-            result.push(product);
-
-        });
-
-
-        return result;
-
-    }
-
-
-    /* ==================================================
-       عرض أحدث المنتجات
-    ================================================== */
-
-    async function renderLatestProducts() {
-
-        const container =
-            document.getElementById(
-                "latest-products"
-            );
-
-
-        if (!container) {
-            return;
-        }
-
-
-        container.innerHTML = "";
-
-
-        const allProducts =
-            await getAllProducts();
-
-
-        const products =
-            uniqueProducts(
-                allProducts
-            )
-            .slice()
-            .reverse()
-            .slice(0, 4);
-
-
-        if (!products.length) {
-
-            container.innerHTML = `
-
-                <div class="product-empty">
-
-                    <div class="product-empty-icon">
-                        🛍️
-                    </div>
-
-                    <h3>
-                        لا توجد سلع منشورة حاليًا
-                    </h3>
-
-                    <p>
-                        ستظهر أحدث السلع هنا بعد اعتمادها.
-                    </p>
-
-                </div>
-
-            `;
-
-            return;
-
-        }
-
-
-        products.forEach(product => {
-
-            const card =
-                document.createElement(
-                    "article"
-                );
-
-
-            card.className =
-                "home-product-card";
-
-
-            const image =
-                imageUrl(
-                    product.image
-                );
-
-
-            const imageHtml =
-                image
-
-                    ?
-
-                    `
-                    <img
-                        src="${image}"
-                        alt="${escapeHtml(
-                            product.title
-                        )}"
-                        class="home-product-image"
-                        loading="lazy"
-                        onerror="this.style.display='none'"
-                    >
-                    `
-
-                    :
-
-                    `
-                    <div
-                        class="home-product-image empty"
-                    >
-                        📦
-                    </div>
-                    `;
-
-
-            card.innerHTML = `
-
-                ${imageHtml}
-
-                <div class="home-product-info">
-
-                    <h3>
-                        ${escapeHtml(
-                            product.title
-                        )}
-                    </h3>
-
-
-                    <p class="home-product-category">
-
-                        📂
-
-                        ${escapeHtml(
-                            product.category ||
-                            "سلعة"
-                        )}
-
-                    </p>
-
-
-                    <p class="home-product-price">
-
-                        ${Number(
-                            product.price || 0
-                        )}
-
-                        ريال
-
-                    </p>
-</div>
-
-            `;
-
-
-            container.appendChild(
-                card
-            );
-
-        });
-
-    }
-
-
-    /* ==================================================
-       السلة
-    ================================================== */
-
-    let cart = [];
-
+    let products = [];
 
     try {
-
-        cart =
-            JSON.parse(
-                localStorage.getItem(
-                    "cart"
-                ) || "[]"
-            );
-
-
-        if (!Array.isArray(cart)) {
-            cart = [];
-        }
-
+        products = JSON.parse(
+            localStorage.getItem("publishedProducts") || "[]"
+        );
+        if (!Array.isArray(products)) products = [];
+    } catch (error) {
+        products = [];
     }
 
-    catch {
+    const requests = (() => {
+        try {
+            const value = JSON.parse(localStorage.getItem("sellerRequests") || "[]");
+            return Array.isArray(value) ? value : [];
+        } catch (error) {
+            return [];
+        }
+    })();
 
-        cart = [];
+    // لا يبقى أي منتج في واجهة المشتري إلا إذا كان طلبه معتمدًا.
+    products = products.filter(product => {
+        const request = requests.find(r =>
+            String(r.id) === String(product.requestId)
+        );
+        return request && request.status === "تمت الموافقة";
+    });
 
+    // تنظيف أي بيانات خاصة قديمة كانت محفوظة داخل المنتجات العامة.
+    products = products.map(product => {
+        const clean = { ...product };
+        delete clean.sellerName;
+        delete clean.phone;
+        delete clean.city;
+        delete clean.commission;
+        delete clean.sellerImage;
+        delete clean.ownerImage;
+        delete clean.author;
+        return clean;
+    });
+
+    localStorage.setItem("publishedProducts", JSON.stringify(products));
+    return products;
+}
+
+
+// =========================
+// حفظ المنتجات المنشورة
+// =========================
+
+function savePublishedProducts(products) {
+
+    localStorage.setItem(
+        "publishedProducts",
+        JSON.stringify(products)
+    );
+}
+
+
+// =========================
+// حماية النصوص
+// =========================
+
+function safe(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+// =========================
+// الصورة
+// =========================
+
+function getRequestImage(request) {
+
+    return (
+        request.image ||
+        request.imageUrl ||
+        request.productImage ||
+        request.photo ||
+        request.productPhoto ||
+        ""
+    );
+}
+
+
+// =========================
+// تحديث الإحصائيات
+// =========================
+
+function updateStats(requests) {
+
+    document.getElementById(
+        "total-requests"
+    ).textContent =
+        requests.length;
+
+
+    document.getElementById(
+        "pending-requests"
+    ).textContent =
+        requests.filter(
+            r =>
+                r.status === "قيد المراجعة"
+        ).length;
+
+
+    document.getElementById(
+        "approved-requests"
+    ).textContent =
+        requests.filter(
+            r =>
+                r.status === "تمت الموافقة"
+        ).length;
+
+
+    document.getElementById(
+        "rejected-requests"
+    ).textContent =
+        requests.filter(
+            r =>
+                r.status === "مرفوض"
+        ).length;
+
+
+    document.getElementById(
+        "published-products"
+    ).textContent =
+        getPublishedProducts().length;
+}
+
+
+// =========================
+// حالة الطلب
+// =========================
+
+function statusClass(status) {
+
+    if (
+        status === "تمت الموافقة"
+    ) {
+        return "approved";
+    }
+
+    if (
+        status === "مرفوض"
+    ) {
+        return "rejected";
+    }
+
+    return "pending";
+}
+
+
+// =========================
+// الفلتر
+// =========================
+
+function setFilter(
+    filter,
+    button
+) {
+
+    currentFilter =
+        filter;
+
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(
+            tab =>
+                tab.classList.remove(
+                    "active"
+                )
+        );
+
+
+    button.classList.add(
+        "active"
+    );
+
+
+    loadRequests();
+}
+
+
+// =========================
+// مطابقة الفلتر
+// =========================
+
+function matchesFilter(request) {
+
+    if (
+        currentFilter === "all"
+    ) {
+        return true;
     }
 
 
-    const cartItems =
-        document.getElementById(
-            "cart-items"
-        );
-
-
-    const cartCount =
-        document.getElementById(
-            "cart-count"
-        );
-
-
-    const totalPrice =
-        document.getElementById(
-            "total-price"
-        );
-
-
-    const clearCartButton =
-        document.getElementById(
-            "clear-cart"
-        );
-
-
-    const checkoutButton =
-        document.getElementById(
-            "checkout-btn"
-        );
-
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-
-    /* ==================================================
-       التنبيه
-    ================================================== */
-
-    function showToast(message) {
-
-        if (!toast) {
-            return;
-        }
-
-
-        toast.textContent =
-            message;
-
-
-        toast.classList.add(
-            "show"
-        );
-
-
-        clearTimeout(
-            showToast.timer
-        );
-
-
-        showToast.timer =
-            setTimeout(() => {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            }, 2200);
-
+    if (
+        currentFilter === "pending" &&
+        request.status === "قيد المراجعة"
+    ) {
+        return true;
     }
 
 
-    /* ==================================================
-       تحديث السلة
-    ================================================== */
+    if (
+        currentFilter === "approved" &&
+        request.status === "تمت الموافقة"
+    ) {
+        return true;
+    }
 
-    function updateCart() {
 
-        if (!cartItems) {
-            return;
+    if (
+        currentFilter === "rejected" &&
+        request.status === "مرفوض"
+    ) {
+        return true;
+    }
+
+
+    return false;
+}
+
+
+// =========================
+// تحديث يدوي للوحة التحكم
+// =========================
+
+function refreshAdmin() {
+    const button = document.querySelector(".refresh-btn");
+    if (button) {
+        button.disabled = true;
+        button.textContent = "⏳ جاري التحديث...";
+    }
+
+    loadRequests();
+
+    setTimeout(() => {
+        if (button) {
+            button.disabled = false;
+            button.textContent = "🔄 تحديث";
         }
+    }, 300);
+}
+
+// =========================
+// تحميل الطلبات
+// =========================
+
+function loadRequests() {
+
+    const allRequests =
+        getRequests();
 
 
-        cartItems.innerHTML = "";
+    updateStats(
+        allRequests
+    );
 
 
-        let total = 0;
-
-        let count = 0;
-
-
-        cart.forEach(item => {
-
-            item.quantity =
-                Math.max(
-                    1,
-                    Number(
-                        item.quantity
-                    ) || 1
-                );
+    const requests =
+        allRequests.filter(
+            matchesFilter
+        );
 
 
-            const price =
-                Number(
-                    item.price
-                ) || 0;
+    const container =
+        document.getElementById(
+            "requests-container"
+        );
 
 
-            const subtotal =
-                price *
-                item.quantity;
+    if (
+        requests.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div style="font-size:45px;">
+                    📭
+                </div>
+
+                <h3>
+                    لا توجد طلبات في هذا القسم
+                </h3>
+
+                <p>
+                    ستظهر الطلبات هنا عندما تصل إلى المنصة.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
 
 
-            total += subtotal;
-
-            count +=
-                item.quantity;
-
-
-            const li =
-                document.createElement(
-                    "li"
-                );
-
-
-            li.innerHTML = `
-
-                <div class="cart-item">
-
-                    <img
-                        class="cart-image"
-                        src="${imageUrl(
-                            item.image
-                        )}"
-                        alt="${escapeHtml(
-                            item.title ||
-                            item.name
-                        )}"
-                    >
+    container.innerHTML =
+        requests
+            .slice()
+            .reverse()
+            .map(
+                request =>
+                    createRequestCard(
+                        request
+                    )
+            )
+            .join("");
+}
 
 
-                    <div class="cart-info">
+// =========================
+// بطاقة الطلب
+// =========================
 
-                        <h4>
-                            ${escapeHtml(
-                                item.title ||
-                                item.name
-                            )}
-                        </h4>
+function createRequestCard(request) {
 
-
-                        <p>
-                            ${price}
-                            ريال ×
-                            ${item.quantity}
-                        </p>
+    const publishedProducts =
+        getPublishedProducts();
 
 
-                        <strong>
-                            ${subtotal}
-                            ريال
-                        </strong>
+    const isPublished =
+        publishedProducts.some(
+            product =>
+                product.requestId ===
+                request.id
+        );
 
 
-                        <div class="cart-buttons">
-
-                            <button
-                                type="button"
-                                data-action="minus"
-                            >
-                                −
-                            </button>
+    const image =
+        getRequestImage(
+            request
+        );
 
 
-                            <span>
-                                ${item.quantity}
-                            </span>
+    return `
+
+        <article class="request-card">
 
 
-                            <button
-                                type="button"
-                                data-action="plus"
-                            >
-                                +
-                            </button>
+            <div class="request-top">
 
-                        </div>
+                <div>
 
+                    <h3>
+                        📦 ${safe(request.productName)}
+                    </h3>
 
-                        <button
-                            type="button"
-                            class="delete"
-                            data-action="delete"
-                        >
-                            🗑 حذف
-                        </button>
+                    <div class="request-id">
+
+                        رقم الطلب:
+                        ${safe(request.id)}
 
                     </div>
 
                 </div>
 
-            `;
+
+                <span
+                    class="status ${statusClass(request.status)}"
+                >
+                    ${safe(request.status)}
+                </span>
+
+            </div>
 
 
-            li.querySelector(
-                '[data-action="plus"]'
-            ).onclick = () => {
+            ${
+                image
+                ?
+                `
 
-                item.quantity++;
+                <div class="request-image-box">
 
-                saveCart();
+                    <img
+                        src="${safe(image)}"
+                        class="request-image"
+                        alt="${safe(request.productName)}"
+                    >
 
-            };
+                </div>
+
+                `
+                :
+                ""
+            }
 
 
-            li.querySelector(
-                '[data-action="minus"]'
-            ).onclick = () => {
-
-                item.quantity--;
+            <div class="request-grid">
 
 
-                if (
-                    item.quantity <= 0
-                ) {
+                <div class="request-field">
 
-                    cart =
-                        cart.filter(
-                            cartItem =>
-                                String(
-                                    cartItem.id
-                                ) !==
-                                String(
-                                    item.id
-                                )
-                        );
+                    <strong>
+                        صاحب السلعة:
+                    </strong>
 
+                    ${safe(
+                        request.sellerName
+                    )}
+
+                </div>
+
+
+                <div class="request-field">
+
+                    <strong>
+                        رقم التواصل:
+                    </strong>
+
+                    ${safe(
+                        request.phone
+                    )}
+
+                </div>
+
+
+                <div class="request-field">
+
+                    <strong>
+                        المدينة:
+                    </strong>
+
+                    ${safe(
+                        request.city
+                    )}
+
+                </div>
+
+
+                <div class="request-field">
+
+                    <strong>
+                        القسم:
+                    </strong>
+
+                    ${safe(
+                        request.category
+                    )}
+
+                </div>
+
+
+                <div class="request-field">
+
+                    <strong>
+                        السعر:
+                    </strong>
+
+                    ${safe(
+                        request.price
+                    )}
+                    ريال
+
+                </div>
+
+
+                <div class="request-field">
+
+                    <strong>
+                        الكمية:
+                    </strong>
+
+                    ${safe(
+                        request.quantity
+                    )}
+
+                </div>
+
+
+                ${
+                    request.agreementAccepted
+                    ? `
+                    <div class="request-field">
+                        <strong>الاتفاقية:</strong>
+                        ✅ تمت موافقة البائع
+                        ${request.agreementAcceptedAt ? ` — ${safe(new Date(request.agreementAcceptedAt).toLocaleString("ar-SA"))}` : ""}
+                    </div>
+                    `
+                    : `
+                    <div class="request-field">
+                        <strong>الاتفاقية:</strong>
+                        ⚠️ لم تُسجل موافقة البائع
+                    </div>
+                    `
                 }
 
 
-                saveCart();
+                ${
+                    request.commission
+                    ?
+                    `
 
-            };
+                    <div class="request-field">
 
+                        <strong>
+                            العمولة:
+                        </strong>
 
-            li.querySelector(
-                '[data-action="delete"]'
-            ).onclick = () => {
+                        ${safe(
+                            request.commission
+                        )}
 
-                cart =
-                    cart.filter(
-                        cartItem =>
-                            String(
-                                cartItem.id
-                            ) !==
-                            String(
-                                item.id
-                            )
-                    );
+                    </div>
 
-
-                saveCart();
-
-
-                showToast(
-                    "تم حذف المنتج"
-                );
-
-            };
+                    `
+                    :
+                    ""
+                }
 
 
-            cartItems.appendChild(
-                li
-            );
-
-        });
+            </div>
 
 
-        if (!cart.length) {
+            <div class="description">
 
-            cartItems.innerHTML = `
+                <strong>
+                    وصف السلعة:
+                </strong>
 
-                <li>
+                <p>
+                    ${safe(
+                        request.description
+                    )}
+                </p>
 
-                    🛍️ السلة فارغة
+
+                ${
+                    request.notes
+                    ?
+                    `
+
+                    <strong>
+                        ملاحظات:
+                    </strong>
+
+                    <p>
+                        ${safe(
+                            request.notes
+                        )}
+                    </p>
+
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+
+
+            ${
+                request.status === "قيد المراجعة"
+                ?
+                `
+
+                <div class="admin-actions">
+
+                    <button
+                        class="approve-btn"
+                        onclick="showCommission('${safe(request.id)}')"
+                    >
+                        ✅ قبول ونشر
+                    </button>
+
+
+                    <button
+                        class="reject-btn"
+                        onclick="rejectRequest('${safe(request.id)}')"
+                    >
+                        ❌ رفض الطلب
+                    </button>
+
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteRequest('${safe(request.id)}')"
+                    >
+                        🗑️ حذف
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="commission-box"
+                    id="commission-${safe(request.id)}"
+                >
+
+                    <label>
+                        العمولة المتفق عليها
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="commission-input-${safe(request.id)}"
+                        placeholder="مثال: 10% أو 50 ريال"
+                    >
+
 
                     <br>
 
-                    <small>
-                        أضف منتجًا للبدء.
-                    </small>
 
-                </li>
+                    <button
+                        class="confirm-approve"
+                        onclick="approveRequest('${safe(request.id)}')"
+                    >
+                        🚀 اعتماد ونشر مباشرة
+                    </button>
 
-            `;
+                </div>
 
-        }
-
-
-        if (cartCount) {
-
-            cartCount.textContent =
-                count;
-
-        }
-
-
-        if (totalPrice) {
-
-            totalPrice.textContent =
-                total;
-
-        }
-
-
-        localStorage.setItem(
-            "cart",
-            JSON.stringify(cart)
-        );
-
-
-        localStorage.setItem(
-            "totalPrice",
-            total
-        );
-
-
-        localStorage.setItem(
-            "totalItems",
-            count
-        );
-
-    }
-
-
-    /* ==================================================
-       حفظ السلة
-    ================================================== */
-
-    function saveCart() {
-
-        localStorage.setItem(
-            "cart",
-            JSON.stringify(cart)
-        );
-
-
-        updateCart();
-
-    }
-
-
-    /* ==================================================
-       إفراغ السلة
-    ================================================== */
-
-    clearCartButton?.addEventListener(
-        "click",
-        () => {
-
-            if (!cart.length) {
-                return;
+                `
+                :
+                ""
             }
 
 
-            if (
-                confirm(
-                    "هل تريد إفراغ السلة بالكامل؟"
-                )
-            ) {
+            ${
+                request.status === "تمت الموافقة"
+                ?
+                `
 
-                cart = [];
+                <div class="published-box">
 
-                saveCart();
+                    ${
+                        isPublished
+                        ?
+                        `
 
-                showToast(
-                    "تم إفراغ السلة"
-                );
+                        <strong>
+                            🟢 المنتج منشور في متجر المشتري
+                        </strong>
 
+                        <br>
+
+                        المنتج ظاهر الآن في القسم:
+                        ${safe(request.category)}
+
+                        `
+                        :
+                        `
+
+                        <strong>
+                            🟡 تمت الموافقة
+                        </strong>
+
+                        <br>
+
+                        لم يتم العثور على المنتج المنشور.
+
+                        `
+                    }
+
+                </div>
+
+
+                <div class="admin-actions">
+
+                    ${
+                        isPublished
+                        ?
+                        `
+
+                        <button
+                            class="delete-btn"
+                            onclick="unpublishProduct('${safe(request.id)}')"
+                        >
+                            👁️ إخفاء من المتجر
+                        </button>
+
+                        `
+                        :
+                        `
+
+                        <button
+                            class="approve-btn"
+                            onclick="publishProduct('${safe(request.id)}')"
+                        >
+                            🛍️ نشر الآن
+                        </button>
+
+                        `
+                    }
+
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteRequest('${safe(request.id)}')"
+                    >
+                        🗑️ حذف الطلب
+                    </button>
+
+                </div>
+
+                `
+                :
+                ""
             }
 
-        }
+
+            ${
+                request.status === "مرفوض"
+                ?
+                `
+
+                <div class="admin-actions">
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteRequest('${safe(request.id)}')"
+                    >
+                        🗑️ حذف الطلب
+                    </button>
+
+                </div>
+
+                `
+                :
+                ""
+            }
+
+
+        </article>
+
+    `;
+}
+
+
+// =========================
+// إظهار خانة العمولة
+// =========================
+
+function showCommission(id) {
+
+    const box =
+        document.getElementById(
+            "commission-" + id
+        );
+
+
+    if (box) {
+
+        box.classList.toggle(
+            "show"
+        );
+    }
+}
+
+
+// =========================
+// اعتماد ونشر تلقائي
+// =========================
+
+function approveRequest(id) {
+
+    const requests =
+        getRequests();
+
+
+    const request =
+        requests.find(
+            r =>
+                String(r.id) ===
+                String(id)
+        );
+
+
+    if (!request) {
+
+        alert(
+            "لم يتم العثور على الطلب."
+        );
+
+        return;
+    }
+
+
+    const input =
+        document.getElementById(
+            "commission-input-" + id
+        );
+
+
+    const commission =
+        input
+        ?
+        input.value.trim()
+        :
+        "";
+
+
+    if (!commission) {
+
+        alert(
+            "اكتب العمولة المتفق عليها أولًا."
+        );
+
+        return;
+    }
+
+
+    // اعتماد الطلب
+
+    request.status =
+        "تمت الموافقة";
+
+
+    request.commission =
+        commission;
+
+
+    request.approvedAt =
+        new Date().toISOString();
+
+
+    // نشر المنتج مباشرة
+
+    const published =
+        publishRequestProduct(
+            request
+        );
+
+
+    if (!published) {
+
+        alert(
+            "تم اعتماد الطلب ولكن تعذر نشره."
+        );
+
+        saveRequests(
+            requests
+        );
+
+        loadRequests();
+
+        return;
+    }
+
+
+    request.published =
+        true;
+
+
+    request.publishedAt =
+        new Date().toISOString();
+
+
+    saveRequests(
+        requests
     );
 
 
-    /* ==================================================
-       إتمام الطلب
-    ================================================== */
+    loadRequests();
 
-    checkoutButton?.addEventListener(
-        "click",
-        event => {
 
-            if (!cart.length) {
-
-                event.preventDefault();
-
-                showToast(
-                    "السلة فارغة، أضف منتجًا أولًا"
-                );
-
-            }
-
-        }
+    alert(
+        "✅ تمت الموافقة ونُشرت السلعة مباشرة في قسمها."
     );
+}
 
 
-    /* ==================================================
-       تشغيل الصفحة
-    ================================================== */
+// =========================
+// إنشاء المنتج المنشور
+// =========================
 
-    async function initHomePage() {
+function publishRequestProduct(
+    request
+) {
 
-        updateCart();
+    const products =
+        getPublishedProducts();
 
-        await renderLatestProducts();
 
+    const existingIndex =
+        products.findIndex(
+            product =>
+                String(
+                    product.requestId
+                ) ===
+                String(request.id)
+        );
+
+
+    const image =
+        getRequestImage(
+            request
+        );
+
+
+    const product = {
+
+        id:
+            existingIndex >= 0
+            ?
+            products[existingIndex].id
+            :
+            "PROD-" +
+            Date.now(),
+
+        requestId:
+            request.id,
+
+        name:
+            request.productName,
+
+        title:
+            request.productName,
+
+        category:
+            String(
+                request.category || ""
+            ).trim(),
+
+        price:
+            Number(
+                request.price
+            ) || 0,
+
+        quantity:
+            Number(
+                request.quantity
+            ) || 1,
+
+        description:
+            request.description ||
+            "",
+
+        image:
+            image,
+
+        imageUrl:
+            image,
+
+        images:
+            request.images ||
+            (
+                image
+                ?
+                [image]
+                :
+                []
+            ),
+
+        available:
+            true,
+
+        active:
+            true,
+
+        publishedAt:
+            new Date().toISOString()
+
+    };
+
+
+    if (
+        existingIndex >= 0
+    ) {
+
+        products[
+            existingIndex
+        ] = product;
+
+    } else {
+
+        products.push(
+            product
+        );
     }
 
 
-    initHomePage();
+    savePublishedProducts(
+        products
+    );
+
+
+    return true;
+}
+
+
+// =========================
+// نشر منتج تمت الموافقة عليه
+// =========================
+
+function publishProduct(id) {
+
+    const requests =
+        getRequests();
+
+
+    const request =
+        requests.find(
+            r =>
+                String(r.id) ===
+                String(id)
+        );
+
+
+    if (!request) {
+        return;
+    }
+
+
+    if (
+        request.status !==
+        "تمت الموافقة"
+    ) {
+
+        alert(
+            "يجب اعتماد السلعة أولًا."
+        );
+
+        return;
+    }
+
+
+    const published =
+        publishRequestProduct(
+            request
+        );
+
+
+    if (published) {
+
+        request.published =
+            true;
+
+
+        request.publishedAt =
+            new Date().toISOString();
+
+
+        saveRequests(
+            requests
+        );
+
+
+        loadRequests();
+
+
+        alert(
+            "🛍️ تم نشر المنتج في القسم."
+        );
+    }
+}
+
+
+// =========================
+// إخفاء المنتج
+// =========================
+
+function unpublishProduct(id) {
+
+    if (
+        !confirm(
+            "هل تريد إخفاء هذا المنتج من متجر المشتري؟"
+        )
+    ) {
+        return;
+    }
+
+
+    let products =
+        getPublishedProducts();
+
+
+    products =
+        products.filter(
+            product =>
+                String(
+                    product.requestId
+                ) !==
+                String(id)
+        );
+
+
+    savePublishedProducts(
+        products
+    );
+
+
+    const requests =
+        getRequests();
+
+
+    const request =
+        requests.find(
+            r =>
+                String(r.id) ===
+                String(id)
+        );
+
+
+    if (request) {
+
+        request.published =
+            false;
+
+
+        saveRequests(
+            requests
+        );
+    }
+
+
+    loadRequests();
+}
+
+
+// =========================
+// رفض الطلب
+// =========================
+
+function rejectRequest(id) {
+
+    if (
+        !confirm(
+            "هل تريد رفض هذا الطلب؟"
+        )
+    ) {
+        return;
+    }
+
+
+    const requests =
+        getRequests();
+
+
+    const request =
+        requests.find(
+            r =>
+                String(r.id) ===
+                String(id)
+        );
+
+
+    if (!request) {
+        return;
+    }
+
+
+    request.status =
+        "مرفوض";
+
+
+    request.published =
+        false;
+
+
+    // إذا كان المنتج منشورًا نحذفه
+
+    let products =
+        getPublishedProducts();
+
+
+    products =
+        products.filter(
+            product =>
+                String(
+                    product.requestId
+                ) !==
+                String(id)
+        );
+
+
+    savePublishedProducts(
+        products
+    );
+
+
+    saveRequests(
+        requests
+    );
+
+
+    loadRequests();
+
+
+    alert(
+        "تم رفض الطلب."
+    );
+}
+
+
+// =========================
+// حذف الطلب
+// =========================
+
+function deleteRequest(id) {
+
+    if (
+        !confirm(
+            "هل تريد حذف هذا الطلب نهائيًا؟"
+        )
+    ) {
+        return;
+    }
+
+
+    let requests =
+        getRequests();
+
+
+    requests =
+        requests.filter(
+            r =>
+                String(r.id) !==
+                String(id)
+        );
+
+
+    saveRequests(
+        requests
+    );
+
+
+    // حذف المنتج المنشور المرتبط
+
+    let products =
+        getPublishedProducts();
+
+
+    products =
+        products.filter(
+            product =>
+                String(
+                    product.requestId
+                ) !==
+                String(id)
+        );
+
+
+    savePublishedProducts(
+        products
+    );
+
+
+    loadRequests();
+}
+
+
+// =========================
+// التشغيل
+// =========================
+
+loadRequests();
 
 </script>
 
-
-<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(console.error));}</script></body>
+</body>
 
 </html>
+```
