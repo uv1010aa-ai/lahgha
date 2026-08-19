@@ -1,0 +1,456 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>اعرض سلعتك | لَحْقها</title>
+
+    <style>
+        :root {
+            --primary: #1e3a5f;
+            --primary-dark: #16314f;
+            --success: #2e7d32;
+            --background: #f5f7fb;
+            --white: #ffffff;
+            --text: #333;
+            --muted: #666;
+            --border: #e1e6ed;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Tahoma, Arial, sans-serif;
+            direction: rtl;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        .seller-header {
+            background: var(--primary);
+            color: #fff;
+            padding: 22px 20px;
+            text-align: center;
+        }
+
+        .seller-header h1 {
+            margin: 0 0 6px;
+            font-size: 27px;
+        }
+
+        .seller-header p {
+            margin: 0;
+            opacity: .9;
+        }
+
+        .seller-container {
+            width: min(760px, calc(100% - 30px));
+            margin: 35px auto 60px;
+        }
+
+        .seller-intro {
+            background: #fff;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,.08);
+            margin-bottom: 20px;
+        }
+
+        .seller-intro h2 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .seller-intro p {
+            color: var(--muted);
+            line-height: 1.9;
+        }
+
+        .seller-note {
+            padding: 15px;
+            background: #f1f6fb;
+            border-right: 4px solid var(--primary);
+            border-radius: 10px;
+            line-height: 1.8;
+        }
+
+        .seller-form-box {
+            background: #fff;
+            padding: 28px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,.08);
+        }
+
+        .seller-form-box h2 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #f9fafc;
+            font-family: inherit;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(30,58,95,.08);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 8px;
+            padding: 14px;
+            border: 0;
+            border-radius: 11px;
+            background: var(--primary);
+            color: #fff;
+            font-family: inherit;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 18px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .success-message {
+            display: none;
+            margin-top: 20px;
+            padding: 18px;
+            background: #eef8ef;
+            border: 1px solid #cde5cf;
+            border-radius: 12px;
+            color: var(--success);
+            line-height: 1.9;
+            text-align: center;
+        }
+
+        .success-message strong {
+            display: block;
+            font-size: 19px;
+            margin-bottom: 5px;
+        }
+
+        .seller-footer {
+            text-align: center;
+            color: var(--muted);
+            padding: 20px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+
+            .seller-container {
+                width: calc(100% - 20px);
+                margin-top: 20px;
+            }
+
+            .seller-intro,
+            .seller-form-box {
+                padding: 20px 16px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .seller-header h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+<link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="images/icon.png"><link rel="apple-touch-icon" href="images/icon.png"></head>
+
+<body>
+
+<header class="seller-header">
+    <h1>📦 لَحْقها</h1>
+    <p>بوابة أصحاب السلع</p>
+</header>
+
+<main class="seller-container">
+
+    <a href="../index.html" class="back-link">
+        ← العودة إلى الموقع
+    </a>
+
+    <section class="seller-intro">
+
+        <h2>هل لديك سلعة تريد تسويقها؟</h2>
+
+        <p>
+            أرسل لنا تفاصيل سلعتك، وسنراجعها ونتواصل معك
+            لمناقشة طريقة عرضها وتسويقها عبر منصة لَحْقها.
+        </p>
+
+        <div class="seller-note">
+            🔒 هذه الصفحة مخصصة لأصحاب السلع فقط.
+            بياناتك وبيانات المنتج لا تظهر للمشتري.
+        </div>
+
+    </section>
+
+    <section class="seller-form-box">
+
+        <h2>بيانات السلعة</h2>
+
+        <form id="seller-form">
+
+            <div class="form-group">
+                <label for="product-name">اسم السلعة</label>
+                <input
+                    type="text"
+                    id="product-name"
+                    name="productName"
+                    placeholder="مثال: عسل سدر طبيعي"
+                    required
+                >
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label for="category">القسم</label>
+
+                    <select id="category" name="category" required>
+                        <option value="">اختر القسم</option>
+                        <option value="عسل وأغذية">عسل وأغذية</option>
+                        <option value="إلكترونيات">إلكترونيات</option>
+                        <option value="أثاث">أثاث</option>
+                        <option value="ملابس">ملابس</option>
+                        <option value="سيارات">سيارات</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">السعر المطلوب</label>
+
+                    <input
+                        type="number"
+                        id="price"
+                        name="price"
+                        min="0"
+                        placeholder="مثال: 250"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">الكمية المتوفرة</label>
+
+                <input
+                    type="number"
+                    id="quantity"
+                    name="quantity"
+                    min="1"
+                    placeholder="مثال: 20"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="description">وصف السلعة</label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    placeholder="اكتب تفاصيل السلعة وحالتها ومميزاتها..."
+                    required
+                ></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="images">صور السلعة</label>
+
+                <input
+                    type="file"
+                    id="images"
+                    name="images"
+                    accept="image/*"
+                    multiple
+                >
+            </div>
+
+            <h2>بيانات صاحب السلعة</h2>
+
+            <div class="form-group">
+                <label for="seller-name">الاسم</label>
+
+                <input
+                    type="text"
+                    id="seller-name"
+                    name="sellerName"
+                    placeholder="الاسم الكامل"
+                    required
+                >
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label for="phone">رقم التواصل</label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="05xxxxxxxx"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="city">المدينة</label>
+
+                    <input
+                        type="text"
+                        id="city"
+                        name="city"
+                        placeholder="المدينة"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label for="notes">ملاحظات إضافية</label>
+
+                <textarea
+                    id="notes"
+                    name="notes"
+                    placeholder="أي معلومات إضافية تريد إخبارنا بها..."
+                ></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                📤 إرسال السلعة للمراجعة
+            </button>
+
+        </form>
+
+        <div class="success-message" id="success-message">
+            <strong>✅ تم استلام طلبك</strong>
+            سنراجع بيانات السلعة ونتواصل معك لمتابعة الطلب.
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="seller-footer">
+    © 2026 لَحْقها 🛍️ — بوابة أصحاب السلع
+</footer>
+
+<script>
+    const form = document.getElementById("seller-form");
+    const successMessage = document.getElementById("success-message");
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const request = {
+            id: "REQ-" + Date.now(),
+
+            productName:
+                document.getElementById("product-name").value.trim(),
+
+            category:
+                document.getElementById("category").value,
+
+            price:
+                document.getElementById("price").value,
+
+            quantity:
+                document.getElementById("quantity").value,
+
+            description:
+                document.getElementById("description").value.trim(),
+
+            sellerName:
+                document.getElementById("seller-name").value.trim(),
+
+            phone:
+                document.getElementById("phone").value.trim(),
+
+            city:
+                document.getElementById("city").value.trim(),
+
+            notes:
+                document.getElementById("notes").value.trim(),
+
+            status: "قيد المراجعة",
+
+            commission: "",
+
+            createdAt: new Date().toISOString()
+        };
+
+        const requests =
+            JSON.parse(localStorage.getItem("sellerRequests") || "[]");
+
+        requests.push(request);
+
+        localStorage.setItem(
+            "sellerRequests",
+            JSON.stringify(requests)
+        );
+
+        form.style.display = "none";
+        successMessage.style.display = "block";
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تم تأكيد الطلب</title>
+    <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="images/icon.png"><link rel="apple-touch-icon" href="images/icon.png"></head>
+
+<body>
+
+<main class="success-page">
+
+    <h1>🎉 تم تأكيد طلبك بنجاح</h1>
+
+    <p>
+        شكرًا لثقتك بـ لَحْقها.
+    </p>
+
+    <p>
+        سيتم التواصل معك قريبًا لإتمام عملية التوصيل.
+    </p>
+
+   <a href="index.html" class="back-shopping">
+    🛍️ العودة للتسوق
+</a>
+
+<div class="order-success-box">
+<p>رقم الطلب</p><strong id="order-id">—</strong><hr>
+<p>الإجمالي</p><strong><span id="order-total">0</span> ريال</strong>
+</div>
+</main>
+
+<script>
+const order=JSON.parse(localStorage.getItem("lastOrder")||"null");
+if(order){document.getElementById("order-id").textContent=order.id;document.getElementById("order-total").textContent=order.total;}
+</script>
+</body>
+
+</html>

@@ -1,0 +1,274 @@
+[
+  {
+    "id": 1,
+    "title": "المزعجون من الناس",
+    "author": "جوزيف دان",
+    "category": "كتب",
+    "price": 15,
+    "image": "images/book1.jpg",
+    "images": [
+      "images/book1.jpg",
+      "images/book1.jpg",
+      "images/book1.jpg",
+      "images/book1.jpg"
+    ],
+    "description": "المزعجون من الناس كيف تتعامل معهم.",
+    "available": true,
+    "condition": "new"
+  },
+  {
+    "id": 2,
+    "title": "نوافذ ميكروسوفت",
+    "author": "حسين حسن بركات",
+    "category": "كتب",
+    "price": 30,
+    "image": "images/book2.jpg",
+    "description": "تعليم وندوز",
+    "available": true,
+    "condition": "used",
+    "images": [
+      "images/book2.jpg",
+      "images/book2.jpg",
+      "images/book2.jpg",
+      "images/book2.jpg"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "الحكمة المكتسبة بالتعب",
+    "author": "جاثان جانوف",
+    "category": "كتب",
+    "price": 20,
+    "image": "images/book3.jpg",
+    "description": "قصص حقيقية من دهاليز الادارة",
+    "available": true,
+    "condition": "used",
+    "images": [
+      "images/book3.jpg",
+      "images/book3.jpg",
+      "images/book3.jpg",
+      "images/book3.jpg"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "حتى لا يذهب عمرك سدى",
+    "author": "باسل شيخو",
+    "category": "كتب",
+    "price": 35,
+    "image": "images/book4.jpg",
+    "description": "تذكير وتنبيه",
+    "available": true,
+    "condition": "used",
+    "images": [
+      "images/book4.jpg",
+      "images/book4.jpg",
+      "images/book4.jpg",
+      "images/book4.jpg"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "دليل التعامل في سوق الأسهم",
+    "author": "مايكل سنسير",
+    "category": "كتب",
+    "price": 28,
+    "image": "images/book5.jpg",
+    "description": "لا غنى عنه لكل ما تريد معرفته عن سوق الأوراق المالية",
+    "available": true,
+    "condition": "used",
+    "images": [
+      "images/book5.jpg",
+      "images/book5.jpg",
+      "images/book5.jpg",
+      "images/book5.jpg"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "فايث ويمبن",
+    "author": "خطوة خطوه",
+    "category": "كتب",
+    "price": 22,
+    "image": "images/book6.jpg",
+    "description": "تعلم HTML",
+    "available": true,
+    "condition": "used",
+    "images": [
+      "images/book6.jpg",
+      "images/book6.jpg",
+      "images/book6.jpg",
+      "images/book6.jpg"
+    ]
+  },
+  {
+    "id": 7,
+    "title": "مهل",
+    "author": "سعود الشعلان",
+    "category": "كتب",
+    "price": 32,
+    "image": "images/book7.jpg",
+    "description": "رواية نفسية عميقة تستعرض الصراع الداخلي بين الجريمة والضمير.",
+    "available": true,
+    "condition": "used",
+    "images": [
+      "images/book7.jpg",
+      "images/book7.jpg",
+      "images/book7.jpg",
+      "images/book7.jpg"
+    ]
+  },
+  {
+    "id": 8,
+    "title": "الطريق إلى الصحة والعافية",
+    "author": "زويا",
+    "category": "كتب",
+    "price": 5,
+    "image": "images/book8.jpg",
+    "description": "كيف يتغذى المعمرون.",
+    "available": true,
+    "condition": "used",
+    "images": [
+      "images/book8.jpg",
+      "images/book8.jpg",
+      "images/book8.jpg",
+      "images/book8.jpg"
+    ]
+  },
+  {
+    "id": 9,
+    "title": "التواصل غير العنيف لغة حياة",
+    "author": "مارشال بيي",
+    "category": "كتب",
+    "price": 7,
+    "image": "images/book9.jpg",
+    "description": "اجعل حياتك وعلاقاتك منسجمة مع قيمك.",
+    "available": true,
+    "condition": "used",
+    "images": [
+      "images/book9.jpg",
+      "images/book9.jpg",
+      "images/book9.jpg",
+      "images/book9.jpg"
+    ]
+  },
+  {
+    "id": 10,
+    "title": "قصة مدينتين",
+    "author": "تشارلز ديكنز",
+    "category": "كتب",
+    "price": 9,
+    "image": "images/book10.jpg",
+    "description": "رواية.",
+    "available": true,
+    "condition": "used",
+    "images": [
+      "images/book10.jpg",
+      "images/book10.jpg",
+      "images/book10.jpg",
+      "images/book10.jpg"
+    ]
+  },
+  {
+    "id": 11,
+    "title": "أقبلت يا رمضان",
+    "author": "عائض القرني",
+    "category": "كتب",
+    "price": 1,
+    "image": "images/book11.jpg",
+    "description": "",
+    "available": true,
+    "condition": "used",
+    "images": [
+      "images/book11.jpg",
+      "images/book11.jpg",
+      "images/book11.jpg",
+      "images/book11.jpg"
+    ]
+  },
+  {
+    "id": 12,
+    "title": "ديوان عمر بن أبي ربيعه",
+    "author": "عائض القرني",
+    "category": "كتب",
+    "price": 2,
+    "image": "images/book12.jpg",
+    "description": "شعر.",
+    "available": true,
+    "condition": "used",
+    "images": [
+      "images/book12.jpg",
+      "images/book12.jpg",
+      "images/book12.jpg",
+      "images/book12.jpg"
+    ]
+  },
+  {
+    "id": 13,
+    "title": "ذهب مع الريح",
+    "author": "مارغريت متشل",
+    "category": "كتب",
+    "price": 5,
+    "image": "images/book13.jpg",
+    "description": "",
+    "available": true,
+    "condition": "used",
+    "images": [
+      "images/book13.jpg",
+      "images/book13.jpg",
+      "images/book13.jpg",
+      "images/book13.jpg"
+    ]
+  },
+  {
+    "id": 14,
+    "title": "كيف تحفظ القرآن في عشر خطوات",
+    "author": "حسن همام",
+    "category": "كتب",
+    "price": 5,
+    "image": "images/book14.jpg",
+    "description": "",
+    "available": true,
+    "condition": "used",
+    "images": [
+      "images/book14.jpg",
+      "images/book14.jpg",
+      "images/book14.jpg",
+      "images/book14.jpg"
+    ]
+  },
+  {
+    "id": 15,
+    "title": "بين الأصالة والحداثة",
+    "author": "اسم المؤلف",
+    "category": "كتب",
+    "price": 20,
+    "image": "images/book15.jpg",
+    "description": "دراسة بحثية.",
+    "available": true,
+    "condition": "used",
+    "images": [
+      "images/book15.jpg",
+      "images/book15.jpg",
+      "images/book15.jpg",
+      "images/book15.jpg"
+    ]
+  },
+  {
+    "id": 16,
+    "title": "iPhone 16 Pro",
+    "author": "",
+    "category": "جوالات",
+    "price": 1500,
+    "image": "images/phone1.jpg",
+    "images": [
+      "images/phone1.jpg",
+      "images/phone2.jpg",
+      "images/phone3.jpg",
+      "images/phone1.jpg"
+    ],
+    "description": "",
+    "available": true,
+    "condition": "new"
+  }
+]

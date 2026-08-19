@@ -1,0 +1,1046 @@
+
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+
+```
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+    name="description"
+    content="سلع القسم | لَحْقها"
+>
+
+<title>سلع القسم | لَحْقها 🛍️</title>
+
+<link rel="stylesheet" href="style.css">
+```
+
+<link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="images/icon.png"><link rel="apple-touch-icon" href="images/icon.png"></head>
+
+<body>
+
+<header class="site-header">
+
+```
+<div class="logo">
+
+    <h1>🛍️ لَحْقها</h1>
+
+    <p>
+        شفتها؟ لَحْقها قبل تروح!
+    </p>
+
+</div>
+
+<nav>
+
+    <a href="index.html">
+        الرئيسية
+    </a>
+
+    <a href="categories.html">
+        الأقسام
+    </a>
+
+    <a href="about.html">
+        من نحن
+    </a>
+
+    <a href="contact.html">
+        اتصل بنا
+    </a>
+
+</nav>
+```
+
+</header>
+
+<main>
+
+```
+<a
+    href="categories.html"
+    class="back-to-categories"
+>
+    ← العودة إلى الأقسام
+</a>
+
+
+<section class="page-intro">
+
+    <h2 id="category-title">
+        📂 السلع
+    </h2>
+
+    <p id="category-subtitle">
+        السلعة تظهر بصورة واحدة، واضغط على الصورة لاستعراض بقية الصور.
+    </p>
+
+</section>
+
+
+<section
+    class="books"
+    id="category-products"
+></section>
+```
+
+</main>
+
+<aside class="cart" id="cart">
+
+```
+<h2>
+    🛒 سلة المشتريات
+</h2>
+
+<p>
+    عدد المنتجات:
+    <span id="cart-count">0</span>
+</p>
+
+<ul id="cart-items"></ul>
+
+<h3>
+    الإجمالي:
+    <span id="total-price">0</span>
+    ريال
+</h3>
+
+<button
+    id="clear-cart"
+    type="button"
+>
+    إفراغ السلة
+</button>
+
+<a
+    href="checkout.html"
+    class="checkout-btn"
+    id="checkout-btn"
+>
+    🛒 إتمام الطلب بأمان
+</a>
+
+<p class="secure-payment">
+    🔒 دفع آمن وسريع
+</p>
+```
+
+</aside>
+
+<footer>
+
+```
+<p>
+    © 2026 لَحْقها 🛍️
+</p>
+```
+
+</footer>
+
+<div id="toast"></div>
+
+<script>
+
+// =========================
+// قراءة القسم من الرابط
+// =========================
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const selectedCategory =
+    (params.get("category") || "").trim();
+
+
+// =========================
+// العناصر
+// =========================
+
+const productsContainer =
+    document.getElementById(
+        "category-products"
+    );
+
+const categoryTitle =
+    document.getElementById(
+        "category-title"
+    );
+
+const categorySubtitle =
+    document.getElementById(
+        "category-subtitle"
+    );
+
+const cartItems =
+    document.getElementById(
+        "cart-items"
+    );
+
+const cartCount =
+    document.getElementById(
+        "cart-count"
+    );
+
+const totalPrice =
+    document.getElementById(
+        "total-price"
+    );
+
+const clearCartBtn =
+    document.getElementById(
+        "clear-cart"
+    );
+
+const checkoutBtn =
+    document.getElementById(
+        "checkout-btn"
+    );
+
+const toast =
+    document.getElementById(
+        "toast"
+    );
+
+
+// =========================
+// السلة
+// =========================
+
+let cart =
+    JSON.parse(
+        localStorage.getItem("cart") || "[]"
+    );
+
+
+// =========================
+// الصور
+// =========================
+
+function imageUrl(path) {
+
+    const value =
+        String(path || "").trim();
+
+    if (
+        /^https?:\/\//i.test(value)
+    ) {
+        return value;
+    }
+
+    return encodeURI(
+        value.replace(/^\.\//, "")
+    );
+}
+
+
+// =========================
+// حماية النصوص
+// =========================
+
+function escapeHtml(value) {
+
+    return String(value ?? "").replace(
+        /[&<>"']/g,
+        character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+        }[character])
+    );
+}
+
+
+// =========================
+// التنبيه
+// =========================
+
+function showToast(message) {
+
+    if (!toast) return;
+
+    toast.textContent =
+        message;
+
+    toast.classList.add("show");
+
+    clearTimeout(
+        showToast.timer
+    );
+
+    showToast.timer =
+        setTimeout(() => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        }, 2200);
+}
+
+
+// =========================
+// تحديث السلة
+// =========================
+
+function updateCart() {
+
+    if (!cartItems) return;
+
+    cartItems.innerHTML = "";
+
+    let total = 0;
+    let count = 0;
+
+
+    cart.forEach(item => {
+
+        item.quantity =
+            Math.max(
+                1,
+                Number(item.quantity) || 1
+            );
+
+
+        const subtotal =
+            Number(item.price || 0) *
+            item.quantity;
+
+
+        total += subtotal;
+        count += item.quantity;
+
+
+        const li =
+            document.createElement("li");
+
+
+        li.innerHTML = `
+
+            <div class="cart-item">
+
+                <img
+                    src="${imageUrl(item.image)}"
+                    alt="${escapeHtml(item.title || item.name)}"
+                    class="cart-image"
+                >
+
+                <div class="cart-info">
+
+                    <h4>
+                        ${escapeHtml(item.title || item.name)}
+                    </h4>
+
+                    <p>
+                        ${item.price} ريال ×
+                        ${item.quantity}
+                    </p>
+
+                    <strong>
+                        ${subtotal} ريال
+                    </strong>
+
+                    <div class="cart-buttons">
+
+                        <button
+                            type="button"
+                            class="minus"
+                        >
+                            −
+                        </button>
+
+                        <span>
+                            ${item.quantity}
+                        </span>
+
+                        <button
+                            type="button"
+                            class="plus"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="delete"
+                    >
+                        🗑 حذف
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        li.querySelector(".plus").onclick =
+            () => {
+
+                item.quantity++;
+
+                saveCart();
+            };
+
+
+        li.querySelector(".minus").onclick =
+            () => {
+
+                item.quantity--;
+
+                if (
+                    item.quantity <= 0
+                ) {
+
+                    cart =
+                        cart.filter(
+                            cartItem =>
+                                cartItem.id !==
+                                item.id
+                        );
+                }
+
+                saveCart();
+            };
+
+
+        li.querySelector(".delete").onclick =
+            () => {
+
+                cart =
+                    cart.filter(
+                        cartItem =>
+                            cartItem.id !==
+                            item.id
+                    );
+
+                saveCart();
+
+                showToast(
+                    "تم حذف المنتج"
+                );
+            };
+
+
+        cartItems.appendChild(li);
+
+    });
+
+
+    if (!cart.length) {
+
+        cartItems.innerHTML = `
+
+            <li class="cart-empty">
+
+                🛍️ السلة فارغة
+
+                <br>
+
+                <small>
+                    أضف منتجًا للبدء.
+                </small>
+
+            </li>
+
+        `;
+    }
+
+
+    if (cartCount) {
+
+        cartCount.textContent =
+            count;
+    }
+
+
+    if (totalPrice) {
+
+        totalPrice.textContent =
+            total;
+    }
+
+
+    localStorage.setItem(
+        "totalPrice",
+        total
+    );
+
+    localStorage.setItem(
+        "totalItems",
+        count
+    );
+}
+
+
+function saveCart() {
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+    updateCart();
+}
+
+
+// =========================
+// إضافة للسلة
+// =========================
+
+function addToCart(product) {
+
+    const existing =
+        cart.find(
+            item =>
+                String(item.id) ===
+                String(product.id)
+        );
+
+
+    if (existing) {
+
+        existing.quantity++;
+
+    } else {
+
+        cart.push({
+
+            ...product,
+
+            title:
+                product.title ||
+                product.name,
+
+            quantity: 1
+
+        });
+    }
+
+
+    saveCart();
+
+
+    showToast(
+        `تمت إضافة «${product.title || product.name}» إلى السلة`
+    );
+}
+
+
+// =========================
+// تحويل المنتج المنشور
+// إلى الشكل المستخدم في المتجر
+// =========================
+
+function normalizePublishedProduct(product) {
+
+    const publicProduct = sanitizePublicProduct(product);
+
+    return {
+
+        ...publicProduct,
+
+        id:
+            product.id ||
+            ("published-" + Date.now()),
+
+        title:
+            product.title ||
+            product.name ||
+            "سلعة بدون اسم",
+
+        image:
+            product.image ||
+            product.productImage ||
+            product.imageUrl ||
+            "",
+
+        category:
+            String(
+                product.category || ""
+            ).trim(),
+
+        price:
+            Number(
+                product.price || 0
+            ),
+
+        available:
+            product.active !== false,
+
+        description:
+            product.description || "",
+
+    };
+}
+
+
+// =========================
+// تحميل السلع المنشورة
+// =========================
+
+function sanitizePublicProduct(product) {
+
+    if (!product || typeof product !== "object") return null;
+
+    // مهم: لا نستخدم ...product هنا حتى لا تنتقل بيانات البائع إلى واجهة المشتري.
+    return {
+        id: product.id || product.requestId || ("public-" + Date.now() + Math.random()),
+        requestId: product.requestId || product.id || "",
+        title: product.title || product.name || product.productName || "سلعة بدون اسم",
+        name: product.name || product.title || product.productName || "سلعة بدون اسم",
+        category: String(product.category || "").trim(),
+        price: Number(product.price || 0),
+        quantity: Number(product.quantity || 0),
+        image: product.image || product.productImage || product.imageUrl || product.photo || "",
+        images: Array.isArray(product.images) ? product.images : [],
+        description: product.description || "",
+        notes: product.notes || "",
+        available: product.available !== false,
+        active: product.active !== false,
+        status: product.status || "منشور",
+        createdAt: product.createdAt || ""
+    };
+}
+
+// تنظيف أي نسخة عامة قديمة مخزنة في المتصفح من بيانات البائع.
+function cleanStoredPublicProducts() {
+    try {
+        const raw = localStorage.getItem("publishedProducts");
+        if (!raw) return;
+        const old = JSON.parse(raw);
+        if (!Array.isArray(old)) return;
+        const clean = old.map(sanitizePublicProduct).filter(Boolean);
+        localStorage.setItem("publishedProducts", JSON.stringify(clean));
+    } catch (e) {
+        console.warn("تعذر تنظيف البيانات العامة القديمة", e);
+    }
+}
+
+// V8: remove any legacy public records that contain private seller fields.
+cleanStoredPublicProducts();
+try {
+  const rawPublic = localStorage.getItem('publishedProducts');
+  if (rawPublic) {
+    const arr = JSON.parse(rawPublic);
+    if (Array.isArray(arr)) {
+      localStorage.setItem('publishedProducts', JSON.stringify(arr.map(p => sanitizePublicProduct(p)).filter(Boolean)));
+    }
+  }
+} catch(e) {}
+
+function getPublishedProducts() {
+
+    try {
+
+        const products =
+            JSON.parse(
+                localStorage.getItem(
+                    "publishedProducts"
+                ) || "[]"
+            );
+
+        if (!Array.isArray(products)) {
+            return [];
+        }
+
+        return products
+            .filter(
+                product =>
+                    product &&
+                    product.active !== false
+            )
+            .map(
+                normalizePublishedProduct
+            );
+
+    } catch (error) {
+
+        console.error(
+            "خطأ في قراءة publishedProducts:",
+            error
+        );
+
+        return [];
+    }
+}
+
+
+// =========================
+// عرض المنتجات
+// =========================
+
+function renderProducts(products) {
+
+    if (!productsContainer) {
+        return;
+    }
+
+
+    productsContainer.innerHTML = "";
+
+
+    if (!products.length) {
+
+        productsContainer.innerHTML = `
+
+            <div class="no-results">
+
+                <div class="empty-icon">
+                    📭
+                </div>
+
+                <h3>
+                    لا توجد سلع في هذا القسم حاليًا.
+                </h3>
+
+                <p>
+                    عد إلى الأقسام واختر قسمًا آخر.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    products.forEach(product => {
+
+        const card =
+            document.createElement(
+                "article"
+            );
+
+        card.className =
+            "book-card";
+
+
+        card.innerHTML = `
+
+            <a
+                class="book-link"
+                href="book.html?id=${encodeURIComponent(product.id)}"
+            >
+
+                <img
+                    src="${imageUrl(product.image)}"
+                    alt="${escapeHtml(product.title)}"
+                    loading="lazy"
+                    onerror="this.style.display='none'"
+                >
+
+                <div class="book-info">
+
+                    <h3>
+                        ${escapeHtml(product.title)}
+                    </h3>
+
+                    <p>
+                        📂 ${escapeHtml(product.category)}
+                    </p>
+
+                    <p class="price">
+                        ${escapeHtml(product.price)}
+                        ريال
+                    </p>
+<p class="availability">
+
+                        ${
+                            product.available
+                                ?
+                                "🟢 متوفر"
+                                :
+                                "🔴 غير متوفر"
+                        }
+
+                    </p>
+
+                </div>
+
+            </a>
+
+
+            <button
+                class="add-btn"
+                type="button"
+                ${product.available ? "" : "disabled"}
+            >
+
+                ${
+                    product.available
+                        ?
+                        "🛒 أضف إلى السلة"
+                        :
+                        "غير متوفر"
+                }
+
+            </button>
+
+        `;
+
+
+        const addButton =
+            card.querySelector(
+                ".add-btn"
+            );
+
+
+        if (addButton) {
+
+            addButton.onclick =
+                () => {
+
+                    addToCart(
+                        product
+                    );
+
+                };
+        }
+
+
+        productsContainer.appendChild(
+            card
+        );
+
+    });
+}
+
+
+// =========================
+// تحميل القسم
+// =========================
+
+async function loadCategory() {
+
+    if (!selectedCategory) {
+
+        if (categoryTitle) {
+
+            categoryTitle.textContent =
+                "📂 لم يتم اختيار قسم";
+        }
+
+        return;
+    }
+
+
+    if (categoryTitle) {
+
+        categoryTitle.textContent =
+            `📂 ${selectedCategory}`;
+    }
+
+
+    if (categorySubtitle) {
+
+        categorySubtitle.textContent =
+            `جميع السلع المتاحة في قسم ${selectedCategory}.`;
+    }
+
+
+    let oldProducts = [];
+
+
+    // =========================
+    // قراءة الكتب والسلع القديمة
+    // =========================
+
+    try {
+
+        const response =
+            await fetch("books.json");
+
+
+        if (response.ok) {
+
+            const products =
+                await response.json();
+
+
+            if (Array.isArray(products)) {
+
+                oldProducts =
+                    products.map(product => ({
+
+                        ...product,
+
+                        title:
+                            product.title ||
+                            product.name,
+
+                        category:
+                            String(
+                                product.category || ""
+                            ).trim(),
+
+                        available:
+                            product.available !== false
+
+                    }));
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.warn(
+            "تعذر تحميل books.json:",
+            error
+        );
+    }
+
+
+    // =========================
+    // قراءة المنتجات المنشورة
+    // من لوحة التحكم
+    // =========================
+
+    const publishedProducts =
+        getPublishedProducts();
+
+
+    // =========================
+    // دمج المنتجات
+    // =========================
+
+    const allProducts = [
+
+        ...oldProducts,
+
+        ...publishedProducts
+
+    ];
+
+
+    // =========================
+    // فلترة القسم
+    // =========================
+
+    const filtered =
+        allProducts.filter(
+            product =>
+                String(
+                    product.category || ""
+                ).trim() ===
+                selectedCategory
+        );
+
+
+    // =========================
+    // منع التكرار
+    // =========================
+
+    const uniqueProducts = [];
+
+    const usedIds = new Set();
+
+
+    filtered.forEach(product => {
+
+        const id =
+            String(
+                product.id ||
+                product.requestId ||
+                ""
+            );
+
+
+        if (usedIds.has(id)) {
+            return;
+        }
+
+
+        usedIds.add(id);
+
+        uniqueProducts.push(
+            product
+        );
+
+    });
+
+
+    renderProducts(
+        uniqueProducts
+    );
+}
+
+
+// =========================
+// إفراغ السلة
+// =========================
+
+clearCartBtn?.addEventListener(
+    "click",
+    () => {
+
+        if (
+            cart.length &&
+            confirm(
+                "هل تريد إفراغ السلة بالكامل؟"
+            )
+        ) {
+
+            cart = [];
+
+            saveCart();
+
+            showToast(
+                "تم إفراغ السلة"
+            );
+        }
+
+    }
+);
+
+
+// =========================
+// إتمام الطلب
+// =========================
+
+checkoutBtn?.addEventListener(
+    "click",
+    event => {
+
+        if (!cart.length) {
+
+            event.preventDefault();
+
+            showToast(
+                "السلة فارغة، أضف منتجًا أولًا"
+            );
+
+        }
+
+    }
+);
+
+
+// =========================
+// تشغيل الصفحة
+// =========================
+
+updateCart();
+
+loadCategory();
+
+</script>
+
+</body>
+</html>
