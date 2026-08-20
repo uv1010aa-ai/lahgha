@@ -5,6 +5,7 @@ const supabaseClient = supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
+console.log("Supabase connected:", supabaseClient);
 let books = [];
 let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
