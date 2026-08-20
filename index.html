@@ -2,9 +2,13 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <meta
         name="description"
@@ -254,7 +258,7 @@
 
 
         /* ==================================================
-           المنتجات الحديثة
+           المنتجات الحديثة ونتائج البحث
         ================================================== */
 
         .home-section {
@@ -295,7 +299,7 @@
 
 
         /* ==================================================
-           المنتجات
+           بطاقات المنتجات
         ================================================== */
 
         .home-products {
@@ -305,15 +309,18 @@
         }
 
         .home-product-card {
+            display: block;
             background: #fff;
             border: 1px solid #e4e9ee;
             border-radius: 18px;
             overflow: hidden;
             box-shadow: 0 6px 22px rgba(30,55,80,.06);
-
             transition:
                 transform .2s ease,
                 box-shadow .2s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
         }
 
         .home-product-card:hover {
@@ -383,15 +390,6 @@
 
         .product-empty p {
             margin: 0;
-        }
-
-
-        /* ==================================================
-           نتائج البحث
-        ================================================== */
-
-        .search-result-card {
-            cursor: pointer;
         }
 
 
@@ -623,7 +621,8 @@
         @media (max-width: 1000px) {
 
             .home-products {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
             }
 
         }
@@ -1120,7 +1119,7 @@
 
 
 <!-- ==================================================
-     جافاسكربت
+     JavaScript
 ================================================== -->
 
 <script>
@@ -1154,9 +1153,11 @@
         const value =
             String(path || "").trim();
 
+
         if (!value) {
             return "";
         }
+
 
         if (
             /^https?:\/\//i.test(value) ||
@@ -1164,6 +1165,7 @@
         ) {
             return value;
         }
+
 
         return encodeURI(
             value.replace(/^\.\//, "")
@@ -1173,21 +1175,29 @@
 
 
     /* ==================================================
-       تنظيف المنتج
+       تنظيف بيانات المنتج
     ================================================== */
 
     function sanitizePublicProduct(product) {
 
-        if (!product || typeof product !== "object") {
+        if (
+            !product ||
+            typeof product !== "object"
+        ) {
             return null;
         }
+
 
         return {
 
             id:
                 product.id ||
                 product.requestId ||
-                ("public-" + Date.now() + Math.random()),
+                (
+                    "public-" +
+                    Date.now() +
+                    Math.random()
+                ),
 
             requestId:
                 product.requestId ||
@@ -1207,13 +1217,21 @@
                 "سلعة بدون اسم",
 
             category:
-                String(product.category || "").trim(),
+                String(
+                    product.category || ""
+                ).trim(),
 
             price:
-                Number(product.price || 0),
+                Number(
+                    product.price || 0
+                ),
 
             quantity:
-                Number(product.quantity || 0),
+                product.quantity === undefined ||
+                product.quantity === null ||
+                product.quantity === ""
+                    ? null
+                    : Number(product.quantity),
 
             image:
                 product.image ||
@@ -1228,10 +1246,12 @@
                     : [],
 
             description:
-                product.description || "",
+                product.description ||
+                "",
 
             notes:
-                product.notes || "",
+                product.notes ||
+                "",
 
             available:
                 product.available !== false,
@@ -1240,10 +1260,12 @@
                 product.active !== false,
 
             status:
-                product.status || "منشور",
+                product.status ||
+                "منشور",
 
             createdAt:
-                product.createdAt || ""
+                product.createdAt ||
+                ""
 
         };
 
@@ -1251,7 +1273,7 @@
 
 
     /* ==================================================
-       تنظيف المنتجات القديمة
+       تنظيف المنتجات المنشورة
     ================================================== */
 
     function cleanStoredPublicProducts() {
@@ -1263,21 +1285,28 @@
                     "publishedProducts"
                 );
 
+
             if (!raw) {
                 return;
             }
 
+
             const old =
                 JSON.parse(raw);
+
 
             if (!Array.isArray(old)) {
                 return;
             }
 
+
             const clean =
                 old
-                    .map(sanitizePublicProduct)
+                    .map(
+                        sanitizePublicProduct
+                    )
                     .filter(Boolean);
+
 
             localStorage.setItem(
                 "publishedProducts",
@@ -1285,6 +1314,7 @@
             );
 
         }
+
         catch (error) {
 
             console.warn(
@@ -1295,6 +1325,7 @@
         }
 
     }
+
 
     cleanStoredPublicProducts();
 
@@ -1312,16 +1343,20 @@
                     "publishedProducts"
                 );
 
+
             if (!data) {
                 return [];
             }
 
+
             const products =
                 JSON.parse(data);
+
 
             if (!Array.isArray(products)) {
                 return [];
             }
+
 
             return products
 
@@ -1334,13 +1369,9 @@
 
                 })
 
-                .map(product => {
-
-                    return sanitizePublicProduct(
-                        product
-                    );
-
-                })
+                .map(
+                    sanitizePublicProduct
+                )
 
                 .filter(Boolean);
 
@@ -1361,7 +1392,7 @@
 
 
     /* ==================================================
-       السلع الموجودة في books.json
+       المنتجات القديمة من books.json
     ================================================== */
 
     async function getOldProducts() {
@@ -1376,26 +1407,26 @@
                     }
                 );
 
+
             if (!response.ok) {
                 return [];
             }
 
+
             const products =
                 await response.json();
+
 
             if (!Array.isArray(products)) {
                 return [];
             }
 
+
             return products
 
-                .map(product => {
-
-                    return sanitizePublicProduct(
-                        product
-                    );
-
-                })
+                .map(
+                    sanitizePublicProduct
+                )
 
                 .filter(Boolean);
 
@@ -1424,8 +1455,10 @@
         const oldProducts =
             await getOldProducts();
 
+
         const publishedProducts =
             getPublishedProducts();
+
 
         return [
             ...oldProducts,
@@ -1445,6 +1478,7 @@
 
         const ids = new Set();
 
+
         products.forEach(product => {
 
             const id =
@@ -1454,6 +1488,7 @@
                     ""
                 );
 
+
             if (
                 id &&
                 ids.has(id)
@@ -1461,15 +1496,50 @@
                 return;
             }
 
+
             if (id) {
                 ids.add(id);
             }
+
 
             result.push(product);
 
         });
 
+
         return result;
+
+    }
+
+
+    /* ==================================================
+       الانتقال إلى صفحة المنتج
+       هذه هي الإضافة الخاصة بنتائج البحث
+    ================================================== */
+
+    function openProductPage(product) {
+
+        if (!product) {
+            return;
+        }
+
+
+        const productId =
+            product.id ||
+            product.requestId ||
+            "";
+
+
+        if (!productId) {
+            return;
+        }
+
+
+        window.location.href =
+            "book.html?id=" +
+            encodeURIComponent(
+                productId
+            );
 
     }
 
@@ -1484,6 +1554,7 @@
             document.createElement(
                 "article"
             );
+
 
         card.className =
             "home-product-card";
@@ -1503,7 +1574,9 @@
                 `
                 <img
                     src="${image}"
-                    alt="${escapeHtml(product.title)}"
+                    alt="${escapeHtml(
+                        product.title
+                    )}"
                     class="home-product-image"
                     loading="lazy"
                     onerror="this.style.display='none'"
@@ -1513,7 +1586,9 @@
                 :
 
                 `
-                <div class="home-product-image empty">
+                <div
+                    class="home-product-image empty"
+                >
                     📦
                 </div>
                 `;
@@ -1557,6 +1632,22 @@
         `;
 
 
+        /*
+         * الضغط على صورة أو بطاقة نتيجة البحث
+         * يفتح صفحة المنتج ومعرض الصور.
+         */
+        card.addEventListener(
+            "click",
+            () => {
+
+                openProductPage(
+                    product
+                );
+
+            }
+        );
+
+
         return card;
 
     }
@@ -1573,9 +1664,13 @@
                 "latest-products"
             );
 
+
         if (!container) {
             return;
         }
+
+
+        container.innerHTML = "";
 
 
         const allProducts =
@@ -1589,9 +1684,6 @@
                 .slice()
                 .reverse()
                 .slice(0, 4);
-
-
-        container.innerHTML = "";
 
 
         if (!products.length) {
@@ -1621,13 +1713,17 @@
         }
 
 
-        products.forEach(product => {
+        products.forEach(
+            product => {
 
-            container.appendChild(
-                createProductCard(product)
-            );
+                container.appendChild(
+                    createProductCard(
+                        product
+                    )
+                );
 
-        });
+            }
+        );
 
     }
 
@@ -1643,10 +1739,12 @@
                 "product-search"
             );
 
+
         const container =
             document.getElementById(
                 "latest-products"
             );
+
 
         const message =
             document.getElementById(
@@ -1654,7 +1752,10 @@
             );
 
 
-        if (!input || !container) {
+        if (
+            !input ||
+            !container
+        ) {
             return;
         }
 
@@ -1665,12 +1766,15 @@
                 .toLowerCase();
 
 
-        /* إذا كان البحث فارغًا */
+        /*
+         * البحث الفارغ يعيد أحدث المنتجات.
+         */
         if (!searchText) {
 
             if (message) {
                 message.textContent = "";
             }
+
 
             await renderLatestProducts();
 
@@ -1686,42 +1790,59 @@
 
 
         const results =
-            allProducts.filter(product => {
+            allProducts.filter(
+                product => {
 
-                const title =
-                    String(
-                        product.title || ""
-                    ).toLowerCase();
-
-                const category =
-                    String(
-                        product.category || ""
-                    ).toLowerCase();
-
-                const description =
-                    String(
-                        product.description || ""
-                    ).toLowerCase();
-
-                const notes =
-                    String(
-                        product.notes || ""
-                    ).toLowerCase();
+                    const title =
+                        String(
+                            product.title || ""
+                        )
+                        .toLowerCase();
 
 
-                return (
+                    const category =
+                        String(
+                            product.category || ""
+                        )
+                        .toLowerCase();
 
-                    title.includes(searchText) ||
 
-                    category.includes(searchText) ||
+                    const description =
+                        String(
+                            product.description || ""
+                        )
+                        .toLowerCase();
 
-                    description.includes(searchText) ||
 
-                    notes.includes(searchText)
+                    const notes =
+                        String(
+                            product.notes || ""
+                        )
+                        .toLowerCase();
 
-                );
 
-            });
+                    return (
+
+                        title.includes(
+                            searchText
+                        ) ||
+
+                        category.includes(
+                            searchText
+                        ) ||
+
+                        description.includes(
+                            searchText
+                        ) ||
+
+                        notes.includes(
+                            searchText
+                        )
+
+                    );
+
+                }
+            );
 
 
         container.innerHTML = "";
@@ -1762,15 +1883,22 @@
         }
 
 
-        results.forEach(product => {
+        results.forEach(
+            product => {
 
-            container.appendChild(
-                createProductCard(product)
-            );
+                container.appendChild(
+                    createProductCard(
+                        product
+                    )
+                );
 
-        });
+            }
+        );
 
 
+        /*
+         * العودة إلى بداية نتائج البحث.
+         */
         container.scrollIntoView({
             behavior: "smooth",
             block: "start"
@@ -1895,25 +2023,32 @@
             return;
         }
 
+
         toast.textContent =
             message;
+
 
         toast.classList.add(
             "show"
         );
 
+
         clearTimeout(
             showToast.timer
         );
 
+
         showToast.timer =
-            setTimeout(() => {
+            setTimeout(
+                () => {
 
-                toast.classList.remove(
-                    "show"
-                );
+                    toast.classList.remove(
+                        "show"
+                    );
 
-            }, 2200);
+                },
+                2200
+            );
 
     }
 
@@ -1977,10 +2112,13 @@
 
                     <img
                         class="cart-image"
-                        src="${imageUrl(item.image)}"
+                        src="${imageUrl(
+                            item.image
+                        )}"
                         alt="${escapeHtml(
                             item.title ||
-                            item.name
+                            item.name ||
+                            "منتج"
                         )}"
                     >
 
@@ -1989,7 +2127,8 @@
                         <h4>
                             ${escapeHtml(
                                 item.title ||
-                                item.name
+                                item.name ||
+                                "منتج"
                             )}
                         </h4>
 
@@ -2183,6 +2322,7 @@
             JSON.stringify(cart)
         );
 
+
         updateCart();
 
     }
@@ -2267,7 +2407,9 @@
 
 <script>
 
-    if ("serviceWorker" in navigator) {
+    if (
+        "serviceWorker" in navigator
+    ) {
 
         window.addEventListener(
             "load",
@@ -2275,7 +2417,9 @@
 
                 navigator.serviceWorker
                     .register("sw.js")
-                    .catch(console.error);
+                    .catch(
+                        console.error
+                    );
 
             }
         );
