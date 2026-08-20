@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -20,6 +18,19 @@
     <title>لَحْقها 🛍️ | الرئيسية</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <link rel="manifest" href="manifest.json">
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="images/icon.png"
+    >
+
+    <link
+        rel="apple-touch-icon"
+        href="images/icon.png"
+    >
 
     <style>
 
@@ -55,7 +66,7 @@
 
             padding: 55px;
 
-            margin-bottom: 55px;
+            margin-bottom: 35px;
 
             background:
                 linear-gradient(
@@ -246,33 +257,98 @@
         .hero-button.secondary:hover {
             background: rgba(255,255,255,.1);
         }
-<!-- البحث -->
-<section class="search-section">
 
-    <div class="search-box">
-
-        <input
-            type="search"
-            id="product-search"
-            placeholder="🔎 ابحث عن سلعة..."
-            autocomplete="off"
-        >
-
-        <button
-            type="button"
-            id="search-button"
-        >
-            بحث
-        </button>
-
-    </div>
-
-    <p id="search-result-message" class="search-result-message"></p>
-
-</section>
 
         /* ==================================================
-           قسم المنتجات الحديثة
+           البحث
+        ================================================== */
+
+        .search-section {
+            margin-bottom: 45px;
+        }
+
+
+        .search-box {
+            display: flex;
+
+            gap: 10px;
+
+            max-width: 850px;
+
+            margin: 0 auto;
+        }
+
+
+        #product-search {
+            flex: 1;
+
+            min-width: 0;
+
+            padding: 15px 18px;
+
+            border: 1px solid #d7dfe7;
+
+            border-radius: 12px;
+
+            background: #fff;
+
+            color: #26384b;
+
+            font-family: inherit;
+
+            font-size: 16px;
+
+            outline: none;
+        }
+
+
+        #product-search:focus {
+            border-color: #285784;
+
+            box-shadow:
+                0 0 0 3px rgba(40,87,132,.10);
+        }
+
+
+        #search-button {
+            border: 0;
+
+            border-radius: 12px;
+
+            padding: 0 25px;
+
+            background: #173a63;
+
+            color: #fff;
+
+            font-family: inherit;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        #search-button:hover {
+            background: #285784;
+        }
+
+
+        .search-result-message {
+            text-align: center;
+
+            margin: 12px 0 0;
+
+            color: #687585;
+
+            font-size: 14px;
+        }
+
+
+        /* ==================================================
+           الأقسام العامة
         ================================================== */
 
         .home-section {
@@ -428,15 +504,6 @@
             font-size: 19px;
 
             font-weight: 900;
-        }
-
-
-        .home-product-seller { display:none !important; 
-            margin: 9px 0 0;
-
-            color: #7b8793;
-
-            font-size: 13px;
         }
 
 
@@ -611,6 +678,7 @@
             position: fixed;
 
             left: 20px;
+
             bottom: 20px;
 
             width: 280px;
@@ -667,6 +735,7 @@
 
         .cart-image {
             width: 52px;
+
             height: 52px;
 
             object-fit: cover;
@@ -789,6 +858,7 @@
             position: fixed;
 
             right: 20px;
+
             bottom: 20px;
 
             background: #173a63;
@@ -812,73 +882,7 @@
         #toast.show {
             opacity: 1;
         }
-        /* ==================================================
-           البحث
-        ================================================== */
 
-        .search-section {
-            margin-bottom: 35px;
-        }
-
-        .search-box {
-            display: flex;
-            gap: 10px;
-            max-width: 850px;
-            margin: 0 auto;
-        }
-
-        #product-search {
-            flex: 1;
-            min-width: 0;
-            padding: 15px 18px;
-            border: 1px solid #d7dfe7;
-            border-radius: 12px;
-            background: #fff;
-            color: #26384b;
-            font-family: inherit;
-            font-size: 16px;
-            outline: none;
-        }
-
-        #product-search:focus {
-            border-color: #285784;
-            box-shadow: 0 0 0 3px rgba(40,87,132,.10);
-        }
-
-        #search-button {
-            border: 0;
-            border-radius: 12px;
-            padding: 0 25px;
-            background: #173a63;
-            color: #fff;
-            font-family: inherit;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        #search-button:hover {
-            background: #285784;
-        }
-
-        .search-result-message {
-            text-align: center;
-            margin: 12px 0 0;
-            color: #687585;
-            font-size: 14px;
-        }
-
-        @media (max-width: 600px) {
-
-            .search-box {
-                flex-direction: column;
-            }
-
-            #search-button {
-                padding: 13px;
-            }
-
-        }
 
         /* ==================================================
            الجوال
@@ -945,6 +949,16 @@
             }
 
 
+            .search-box {
+                flex-direction: column;
+            }
+
+
+            #search-button {
+                padding: 13px;
+            }
+
+
             .home-products {
                 grid-template-columns: 1fr;
             }
@@ -969,7 +983,9 @@
 
             .cart {
                 left: 10px;
+
                 right: 10px;
+
                 bottom: 10px;
 
                 width: auto;
@@ -981,7 +997,7 @@
 
     </style>
 
-<link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="images/icon.png"><link rel="apple-touch-icon" href="images/icon.png"></head>
+</head>
 
 
 <body>
@@ -1029,10 +1045,6 @@
             class="seller-link"
         >
             📦 اعرض سلعتك
-        </a>
-
-        <a
-         
         </a>
 
     </nav>
@@ -1109,34 +1121,43 @@
 
 
     <!-- ==================================================
+         البحث
+    ================================================== -->
+
+    <section class="search-section">
+
+        <div class="search-box">
+
+            <input
+                type="search"
+                id="product-search"
+                placeholder="🔎 ابحث عن سلعة..."
+                autocomplete="off"
+            >
+
+
+            <button
+                type="button"
+                id="search-button"
+            >
+                🔎 بحث
+            </button>
+
+        </div>
+
+
+        <p
+            id="search-result-message"
+            class="search-result-message"
+        ></p>
+
+    </section>
+
+
+    <!-- ==================================================
          المنتجات الحديثة
     ================================================== -->
-<section class="search-section">
 
-    <div class="search-box">
-
-        <input
-            type="search"
-            id="product-search"
-            placeholder="🔎 ابحث عن سلعة..."
-            autocomplete="off"
-        >
-
-        <button
-            type="button"
-            id="search-button"
-        >
-            🔎 بحث
-        </button>
-
-    </div>
-
-    <p
-        id="search-result-message"
-        class="search-result-message"
-    ></p>
-
-</section>
     <section class="home-section">
 
         <div class="section-heading">
@@ -1451,60 +1472,164 @@
 
 
     /* ==================================================
-       قراءة المنتجات المنشورة
+       تنظيف المنتج العام
     ================================================== */
 
     function sanitizePublicProduct(product) {
 
-    if (!product || typeof product !== "object") return null;
+        if (
+            !product ||
+            typeof product !== "object"
+        ) {
+            return null;
+        }
 
-    // مهم: لا نستخدم ...product هنا حتى لا تنتقل بيانات البائع إلى واجهة المشتري.
-    return {
-        id: product.id || product.requestId || ("public-" + Date.now() + Math.random()),
-        requestId: product.requestId || product.id || "",
-        title: product.title || product.name || product.productName || "سلعة بدون اسم",
-        name: product.name || product.title || product.productName || "سلعة بدون اسم",
-        category: String(product.category || "").trim(),
-        price: Number(product.price || 0),
-        quantity: Number(product.quantity || 0),
-        image: product.image || product.productImage || product.imageUrl || product.photo || "",
-        images: Array.isArray(product.images) ? product.images : [],
-        description: product.description || "",
-        notes: product.notes || "",
-        available: product.available !== false,
-        active: product.active !== false,
-        status: product.status || "منشور",
-        createdAt: product.createdAt || ""
-    };
-}
 
-// تنظيف أي نسخة عامة قديمة مخزنة في المتصفح من بيانات البائع.
-function cleanStoredPublicProducts() {
-    try {
-        const raw = localStorage.getItem("publishedProducts");
-        if (!raw) return;
-        const old = JSON.parse(raw);
-        if (!Array.isArray(old)) return;
-        const clean = old.map(sanitizePublicProduct).filter(Boolean);
-        localStorage.setItem("publishedProducts", JSON.stringify(clean));
-    } catch (e) {
-        console.warn("تعذر تنظيف البيانات العامة القديمة", e);
+        return {
+
+            id:
+                product.id ||
+                product.requestId ||
+                (
+                    "public-" +
+                    Date.now() +
+                    Math.random()
+                ),
+
+            requestId:
+                product.requestId ||
+                product.id ||
+                "",
+
+            title:
+                product.title ||
+                product.name ||
+                product.productName ||
+                "سلعة بدون اسم",
+
+            name:
+                product.name ||
+                product.title ||
+                product.productName ||
+                "سلعة بدون اسم",
+
+            category:
+                String(
+                    product.category || ""
+                ).trim(),
+
+            price:
+                Number(
+                    product.price || 0
+                ),
+
+            quantity:
+                Number(
+                    product.quantity || 0
+                ),
+
+            image:
+                product.image ||
+                product.productImage ||
+                product.imageUrl ||
+                product.photo ||
+                "",
+
+            images:
+                Array.isArray(product.images)
+                    ? product.images
+                    : [],
+
+            description:
+                product.description ||
+                "",
+
+            notes:
+                product.notes ||
+                "",
+
+            available:
+                product.available !== false,
+
+            active:
+                product.active !== false,
+
+            status:
+                product.status ||
+                "منشور",
+
+            createdAt:
+                product.createdAt ||
+                ""
+
+        };
+
     }
-}
 
-// V8: remove any legacy public records that contain private seller fields.
-cleanStoredPublicProducts();
-try {
-  const rawPublic = localStorage.getItem('publishedProducts');
-  if (rawPublic) {
-    const arr = JSON.parse(rawPublic);
-    if (Array.isArray(arr)) {
-      localStorage.setItem('publishedProducts', JSON.stringify(arr.map(p => sanitizePublicProduct(p)).filter(Boolean)));
+
+    /* ==================================================
+       تنظيف المنتجات المنشورة القديمة
+    ================================================== */
+
+    function cleanStoredPublicProducts() {
+
+        try {
+
+            const raw =
+                localStorage.getItem(
+                    "publishedProducts"
+                );
+
+
+            if (!raw) {
+                return;
+            }
+
+
+            const old =
+                JSON.parse(raw);
+
+
+            if (!Array.isArray(old)) {
+                return;
+            }
+
+
+            const clean =
+                old
+                    .map(
+                        sanitizePublicProduct
+                    )
+                    .filter(Boolean);
+
+
+            localStorage.setItem(
+                "publishedProducts",
+                JSON.stringify(clean)
+            );
+
+        }
+
+        catch (error) {
+
+            console.warn(
+                "تعذر تنظيف المنتجات المنشورة القديمة:",
+                error
+            );
+
+        }
+
     }
-  }
-} catch(e) {}
 
-function getPublishedProducts() {
+
+    cleanStoredPublicProducts();
+
+
+    /* ==================================================
+       قراءة المنتجات المنشورة
+    ================================================== */
+
+    function getPublishedProducts() {
 
         try {
 
@@ -1539,50 +1664,11 @@ function getPublishedProducts() {
 
                 })
 
-                .map(product => {
+                .map(
+                    sanitizePublicProduct
+                )
 
-                    return {
-
-                        ...product,
-
-                        id:
-                            product.id ||
-                            product.requestId ||
-                            (
-                                "published-" +
-                                Date.now() +
-                                Math.random()
-                            ),
-
-                        title:
-                            product.title ||
-                            product.name ||
-                            product.productName ||
-                            "سلعة بدون اسم",
-
-                        image:
-                            product.image ||
-                            product.productImage ||
-                            product.imageUrl ||
-                            product.photo ||
-                            "",
-
-                        category:
-                            String(
-                                product.category || ""
-                            ).trim(),
-
-                        price:
-                            Number(
-                                product.price || 0
-                            ),
-
-                        active:
-                            product.active !== false
-
-                    };
-
-                });
+                .filter(Boolean);
 
         }
 
@@ -1601,7 +1687,7 @@ function getPublishedProducts() {
 
 
     /* ==================================================
-       قراءة السلع القديمة من books.json
+       قراءة المنتجات القديمة من books.json
     ================================================== */
 
     async function getOldProducts() {
@@ -1631,13 +1717,17 @@ function getPublishedProducts() {
             }
 
 
-            return products.map(product => {
+            return products
 
-                const publicProduct = sanitizePublicProduct(product);
+                .map(
+                    sanitizePublicProduct
+                )
 
-                return {
+                .filter(Boolean)
 
-                    ...publicProduct,
+                .map(product => ({
+
+                    ...product,
 
                     id:
                         product.id ||
@@ -1646,33 +1736,10 @@ function getPublishedProducts() {
                             Math.random()
                         ),
 
-                    title:
-                        product.title ||
-                        product.name ||
-                        "سلعة بدون اسم",
-
-                    image:
-                        product.image ||
-                        product.productImage ||
-                        product.imageUrl ||
-                        "",
-
-                    category:
-                        String(
-                            product.category || ""
-                        ).trim(),
-
-                    price:
-                        Number(
-                            product.price || 0
-                        ),
-
                     active:
                         product.active !== false
 
-                };
-
-            });
+                }));
 
         }
 
@@ -1704,12 +1771,13 @@ function getPublishedProducts() {
             getPublishedProducts();
 
 
-        return [
+        return uniqueProducts([
 
             ...oldProducts,
+
             ...publishedProducts
 
-        ];
+        ]);
 
     }
 
@@ -1759,10 +1827,10 @@ function getPublishedProducts() {
 
 
     /* ==================================================
-       عرض أحدث المنتجات
+       عرض المنتجات
     ================================================== */
 
-    async function renderLatestProducts() {
+    async function renderProducts(products) {
 
         const container =
             document.getElementById(
@@ -1776,19 +1844,6 @@ function getPublishedProducts() {
 
 
         container.innerHTML = "";
-
-
-        const allProducts =
-            await getAllProducts();
-
-
-        const products =
-            uniqueProducts(
-                allProducts
-            )
-            .slice()
-            .reverse()
-            .slice(0, 4);
 
 
         if (!products.length) {
@@ -1836,32 +1891,38 @@ function getPublishedProducts() {
                 );
 
 
-            const imageHtml =
-                image
+            let imageHtml;
 
-                    ?
 
-                    `
+            if (image) {
+
+                imageHtml = `
+
                     <img
-                        src="${image}"
-                        alt="${escapeHtml(
-                            product.title
-                        )}"
+                        src="${escapeHtml(image)}"
+                        alt="${escapeHtml(product.title)}"
                         class="home-product-image"
                         loading="lazy"
                         onerror="this.style.display='none'"
                     >
-                    `
 
-                    :
+                `;
 
-                    `
+            }
+
+            else {
+
+                imageHtml = `
+
                     <div
                         class="home-product-image empty"
                     >
                         📦
                     </div>
-                    `;
+
+                `;
+
+            }
 
 
             card.innerHTML = `
@@ -1898,7 +1959,8 @@ function getPublishedProducts() {
                         ريال
 
                     </p>
-</div>
+
+                </div>
 
             `;
 
@@ -1910,6 +1972,160 @@ function getPublishedProducts() {
         });
 
     }
+
+
+    /* ==================================================
+       أحدث المنتجات
+    ================================================== */
+
+    async function renderLatestProducts() {
+
+        const allProducts =
+            await getAllProducts();
+
+
+        const products =
+            allProducts
+                .slice()
+                .reverse()
+                .slice(0, 4);
+
+
+        await renderProducts(
+            products
+        );
+
+    }
+
+
+    /* ==================================================
+       البحث
+    ================================================== */
+
+    async function performSearch() {
+
+        const input =
+            document.getElementById(
+                "product-search"
+            );
+
+
+        const message =
+            document.getElementById(
+                "search-result-message"
+            );
+
+
+        if (!input) {
+            return;
+        }
+
+
+        const query =
+            String(
+                input.value || ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+        if (!query) {
+
+            if (message) {
+                message.textContent = "";
+            }
+
+
+            await renderLatestProducts();
+
+            return;
+
+        }
+
+
+        const allProducts =
+            await getAllProducts();
+
+
+        const results =
+            allProducts.filter(product => {
+
+                const title =
+                    String(
+                        product.title || ""
+                    ).toLowerCase();
+
+
+                const category =
+                    String(
+                        product.category || ""
+                    ).toLowerCase();
+
+
+                const description =
+                    String(
+                        product.description || ""
+                    ).toLowerCase();
+
+
+                return (
+                    title.includes(query) ||
+                    category.includes(query) ||
+                    description.includes(query)
+                );
+
+            });
+
+
+        if (message) {
+
+            message.textContent =
+                results.length
+                    ? `تم العثور على ${results.length} سلعة`
+                    : "لم يتم العثور على سلعة مطابقة للبحث.";
+
+        }
+
+
+        await renderProducts(
+            results.slice(0, 12)
+        );
+
+    }
+
+
+    const searchButton =
+        document.getElementById(
+            "search-button"
+        );
+
+
+    const searchInput =
+        document.getElementById(
+            "product-search"
+        );
+
+
+    searchButton?.addEventListener(
+        "click",
+        performSearch
+    );
+
+
+    searchInput?.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                performSearch();
+
+            }
+
+        }
+    );
 
 
     /* ==================================================
@@ -2004,13 +2220,16 @@ function getPublishedProducts() {
 
 
         showToast.timer =
-            setTimeout(() => {
+            setTimeout(
+                () => {
 
-                toast.classList.remove(
-                    "show"
-                );
+                    toast.classList.remove(
+                        "show"
+                    );
 
-            }, 2200);
+                },
+                2200
+            );
 
     }
 
@@ -2074,12 +2293,15 @@ function getPublishedProducts() {
 
                     <img
                         class="cart-image"
-                        src="${imageUrl(
-                            item.image
+                        src="${escapeHtml(
+                            imageUrl(
+                                item.image
+                            )
                         )}"
                         alt="${escapeHtml(
                             item.title ||
-                            item.name
+                            item.name ||
+                            "منتج"
                         )}"
                     >
 
@@ -2089,7 +2311,8 @@ function getPublishedProducts() {
                         <h4>
                             ${escapeHtml(
                                 item.title ||
-                                item.name
+                                item.name ||
+                                "منتج"
                             )}
                         </h4>
 
@@ -2368,6 +2591,34 @@ function getPublishedProducts() {
 </script>
 
 
-<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(console.error));}</script></body>
+<!-- ==================================================
+     Service Worker
+================================================== -->
+
+<script>
+
+    if (
+        "serviceWorker" in navigator
+    ) {
+
+        window.addEventListener(
+            "load",
+            () => {
+
+                navigator.serviceWorker
+                    .register("sw.js")
+                    .catch(
+                        console.error
+                    );
+
+            }
+        );
+
+    }
+
+</script>
+
+
+</body>
 
 </html>
