@@ -246,7 +246,30 @@
         .hero-button.secondary:hover {
             background: rgba(255,255,255,.1);
         }
+<!-- البحث -->
+<section class="search-section">
 
+    <div class="search-box">
+
+        <input
+            type="search"
+            id="product-search"
+            placeholder="🔎 ابحث عن سلعة..."
+            autocomplete="off"
+        >
+
+        <button
+            type="button"
+            id="search-button"
+        >
+            بحث
+        </button>
+
+    </div>
+
+    <p id="search-result-message" class="search-result-message"></p>
+
+</section>
 
         /* ==================================================
            قسم المنتجات الحديثة
@@ -789,7 +812,73 @@
         #toast.show {
             opacity: 1;
         }
+        /* ==================================================
+           البحث
+        ================================================== */
 
+        .search-section {
+            margin-bottom: 35px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        #product-search {
+            flex: 1;
+            min-width: 0;
+            padding: 15px 18px;
+            border: 1px solid #d7dfe7;
+            border-radius: 12px;
+            background: #fff;
+            color: #26384b;
+            font-family: inherit;
+            font-size: 16px;
+            outline: none;
+        }
+
+        #product-search:focus {
+            border-color: #285784;
+            box-shadow: 0 0 0 3px rgba(40,87,132,.10);
+        }
+
+        #search-button {
+            border: 0;
+            border-radius: 12px;
+            padding: 0 25px;
+            background: #173a63;
+            color: #fff;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #search-button:hover {
+            background: #285784;
+        }
+
+        .search-result-message {
+            text-align: center;
+            margin: 12px 0 0;
+            color: #687585;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            #search-button {
+                padding: 13px;
+            }
+
+        }
 
         /* ==================================================
            الجوال
