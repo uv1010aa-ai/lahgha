@@ -1,3 +1,10 @@
+const SUPABASE_URL = "ضع هنا Project URL";
+const SUPABASE_KEY = "ضع هنا Publishable key";
+
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 let books = [];
 let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
