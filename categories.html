@@ -133,63 +133,6 @@
 
 
         /* ==================================================
-           بحث القسم
-        ================================================== */
-
-        .category-search {
-            margin: 0 auto 30px;
-            max-width: 850px;
-        }
-
-        .category-search-box {
-            display: flex;
-            gap: 10px;
-        }
-
-        #category-search-input {
-            flex: 1;
-            min-width: 0;
-            padding: 15px 18px;
-            border: 1px solid #d7dfe7;
-            border-radius: 12px;
-            background: #fff;
-            color: #26384b;
-            font-family: inherit;
-            font-size: 16px;
-            outline: none;
-        }
-
-        #category-search-input:focus {
-            border-color: #1e3a5f;
-            box-shadow: 0 0 0 3px rgba(30,58,95,.10);
-        }
-
-        #category-search-button {
-            border: 0;
-            border-radius: 12px;
-            padding: 0 25px;
-            background: #1e3a5f;
-            color: #fff;
-            font-family: inherit;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        #category-search-button:hover {
-            background: #16314f;
-        }
-
-        #category-search-message {
-            min-height: 20px;
-            margin: 10px 0 0;
-            text-align: center;
-            color: #687585;
-            font-size: 14px;
-        }
-
-
-        /* ==================================================
            المنتجات
         ================================================== */
 
@@ -589,13 +532,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .category-search-box {
-                flex-direction: column;
-            }
-
-            #category-search-button {
-                padding: 13px;
-            }
 
             .cart {
                 left: 10px;
@@ -605,10 +541,12 @@
                 max-width: none;
             }
 
+
             .modal-box {
                 padding: 15px;
                 max-height: 88vh;
             }
+
 
             .modal-main-image {
                 height: 250px;
@@ -724,36 +662,6 @@
             </p>
 
         </div>
-
-
-        <!-- ==================================================
-             البحث داخل القسم
-        ================================================== -->
-
-        <section class="category-search">
-
-            <div class="category-search-box">
-
-                <input
-                    type="search"
-                    id="category-search-input"
-                    placeholder="🔎 ابحث داخل هذا القسم..."
-                    autocomplete="off"
-                    aria-label="البحث داخل القسم"
-                >
-
-                <button
-                    type="button"
-                    id="category-search-button"
-                >
-                    🔎 بحث
-                </button>
-
-            </div>
-
-            <p id="category-search-message"></p>
-
-        </section>
 
 
         <div id="category-products"></div>
@@ -921,44 +829,34 @@ const categoriesView =
         "categories-view"
     );
 
+
 const productsView =
     document.getElementById(
         "products-view"
     );
+
 
 const categoriesList =
     document.getElementById(
         "categories-list"
     );
 
+
 const productsContainer =
     document.getElementById(
         "category-products"
     );
+
 
 const categoryTitle =
     document.getElementById(
         "category-title"
     );
 
+
 const categorySubtitle =
     document.getElementById(
         "category-subtitle"
-    );
-
-const categorySearchInput =
-    document.getElementById(
-        "category-search-input"
-    );
-
-const categorySearchButton =
-    document.getElementById(
-        "category-search-button"
-    );
-
-const categorySearchMessage =
-    document.getElementById(
-        "category-search-message"
     );
 
 
@@ -1064,10 +962,17 @@ function sanitizePublicProduct(product) {
                 product.price || 0
             ),
 
+        /*
+         * مهم:
+         * عدم وجود quantity لا يعني أن المنتج غير متوفر.
+         * الصفر فقط يعني عدم توفر الكمية.
+         */
         quantity:
-            Number(
-                product.quantity || 0
-            ),
+            product.quantity === undefined ||
+            product.quantity === null ||
+            product.quantity === ""
+                ? null
+                : Number(product.quantity),
 
         image:
             product.image ||
@@ -1107,6 +1012,10 @@ function sanitizePublicProduct(product) {
 
 }
 
+
+/* ==================================================
+   تنظيف البيانات العامة
+================================================== */
 
 function cleanStoredPublicProducts() {
 
@@ -1161,6 +1070,10 @@ function cleanStoredPublicProducts() {
 
 cleanStoredPublicProducts();
 
+
+/* ==================================================
+   قراءة المنتجات المنشورة
+================================================== */
 
 function getPublishedProducts() {
 
@@ -1251,11 +1164,9 @@ async function getOldProducts() {
 
 
         return products
-
             .map(
                 sanitizePublicProduct
             )
-
             .filter(Boolean);
 
     }
@@ -1275,7 +1186,7 @@ async function getOldProducts() {
 
 
 /* ==================================================
-   المنتجات الموجودة داخل الأقسام
+   المنتجات داخل الأقسام
 ================================================== */
 
 function getCategoryProducts() {
@@ -1296,16 +1207,16 @@ function getCategoryProducts() {
 
         category.products.forEach(product => {
 
-            products.push({
-                ...product
-            });
+            products.push(
+                sanitizePublicProduct(product)
+            );
 
         });
 
     });
 
 
-    return products;
+    return products.filter(Boolean);
 
 }
 
@@ -1331,9 +1242,7 @@ async function getAllProducts() {
     return [
 
         ...oldProducts,
-
         ...publishedProducts,
-
         ...categoryProducts
 
     ];
@@ -1414,9 +1323,7 @@ async function renderCategories() {
 
 
         const link =
-            document.createElement(
-                "a"
-            );
+            document.createElement("a");
 
 
         link.className =
@@ -1499,25 +1406,30 @@ const cartItems =
         "cart-items"
     );
 
+
 const cartCount =
     document.getElementById(
         "cart-count"
     );
+
 
 const totalPrice =
     document.getElementById(
         "total-price"
     );
 
+
 const clearCartButton =
     document.getElementById(
         "clear-cart"
     );
 
+
 const checkoutButton =
     document.getElementById(
         "checkout-btn"
     );
+
 
 const toast =
     document.getElementById(
@@ -1835,7 +1747,7 @@ function saveCart() {
 
 
 /* ==================================================
-   إضافة للسلة
+   إضافة إلى السلة
 ================================================== */
 
 function addToCart(product) {
@@ -1885,7 +1797,7 @@ function addToCart(product) {
 
 
 /* ==================================================
-   نافذة المنتج
+   نافذة الصور
 ================================================== */
 
 const productModal =
@@ -1893,20 +1805,24 @@ const productModal =
         "product-modal"
     );
 
+
 const modalClose =
     document.getElementById(
         "modal-close"
     );
+
 
 const modalMainImage =
     document.getElementById(
         "modal-main-image"
     );
 
+
 const modalThumbs =
     document.getElementById(
         "modal-thumbs"
     );
+
 
 const modalInfo =
     document.getElementById(
@@ -2101,7 +2017,7 @@ function openProductModal(product) {
 
 
 /* ==================================================
-   إغلاق نافذة المنتج
+   إغلاق نافذة الصور
 ================================================== */
 
 function closeProductModal() {
@@ -2162,9 +2078,7 @@ document.addEventListener(
    عرض منتجات القسم
 ================================================== */
 
-async function renderCategory(
-    searchText = ""
-) {
+async function renderCategory() {
 
     categoriesView.style.display =
         "none";
@@ -2196,76 +2110,19 @@ async function renderCategory(
         await getAllProducts();
 
 
-    let products =
-        allProducts.filter(product => {
-
-            return (
-                String(
-                    product.category || ""
-                ).trim() ===
-                selectedCategory
-            );
-
-        });
-
-
-    products =
+    const products =
         uniqueProducts(
-            products
-        );
+            allProducts.filter(product => {
 
-
-    const query =
-        String(
-            searchText || ""
-        )
-        .trim()
-        .toLocaleLowerCase("ar");
-
-
-    if (query) {
-
-        products =
-            products.filter(product => {
-
-                const text = [
-
-                    product.title || "",
-                    product.name || "",
-                    product.description || "",
-                    product.notes || ""
-
-                ]
-                .join(" ")
-                .toLocaleLowerCase("ar");
-
-
-                return text.includes(
-                    query
+                return (
+                    String(
+                        product.category || ""
+                    ).trim() ===
+                    selectedCategory
                 );
 
-            });
-
-    }
-
-
-    if (categorySearchMessage) {
-
-        if (query) {
-
-            categorySearchMessage.textContent =
-                `تم العثور على ${products.length} سلعة`;
-
-        }
-
-        else {
-
-            categorySearchMessage.textContent =
-                "";
-
-        }
-
-    }
+            })
+        );
 
 
     productsContainer.innerHTML =
@@ -2279,23 +2136,15 @@ async function renderCategory(
             <div class="empty-box">
 
                 <div class="empty-icon">
-                    🔎
+                    📭
                 </div>
 
                 <h3>
-                    ${
-                        query
-                            ? "لم نجد سلعة مطابقة للبحث."
-                            : "لا توجد سلع في هذا القسم حاليًا."
-                    }
+                    لا توجد سلع في هذا القسم حاليًا.
                 </h3>
 
                 <p>
-                    ${
-                        query
-                            ? "جرّب كلمة بحث أخرى."
-                            : "يمكنك العودة إلى الأقسام واختيار قسم آخر."
-                    }
+                    يمكنك العودة إلى الأقسام واختيار قسم آخر.
                 </p>
 
             </div>
@@ -2377,17 +2226,25 @@ async function renderCategory(
                   `;
 
 
+        /*
+         * إذا لم توجد كمية في البيانات،
+         * نرجع إلى available.
+         * وإذا كانت الكمية صفرًا فعلًا،
+         * يعتبر المنتج غير متوفر.
+         */
         const available =
             product.active !== false &&
             product.available !== false &&
-            Number(
-                product.quantity || 0
-            ) > 0;
+            (
+                product.quantity === null ||
+                Number(product.quantity) > 0
+            );
 
 
         card.innerHTML = `
 
             ${imageHtml}
+
 
             <div class="product-info">
 
@@ -2397,12 +2254,14 @@ async function renderCategory(
                     )}
                 </h3>
 
+
                 <p>
                     📂
                     ${escapeHtml(
                         product.category
                     )}
                 </p>
+
 
                 <p class="product-price">
 
@@ -2413,6 +2272,7 @@ async function renderCategory(
                     ريال
 
                 </p>
+
 
                 ${
                     product.description
@@ -2429,6 +2289,7 @@ async function renderCategory(
 
                         : ""
                 }
+
 
                 <p
                     class="${
@@ -2447,6 +2308,7 @@ async function renderCategory(
                 </p>
 
             </div>
+
 
             <button
                 type="button"
@@ -2471,16 +2333,27 @@ async function renderCategory(
             );
 
 
+        /*
+         * الحفاظ على معرض الصور كما هو.
+         * الضغط على الصورة يفتح نفس النافذة
+         * ويعرض جميع صور المنتج.
+         */
         if (imageButton) {
 
-            imageButton.onclick =
-                () => {
+            imageButton.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
 
                     openProductModal(
                         product
                     );
 
-                };
+                }
+            );
 
         }
 
@@ -2496,14 +2369,20 @@ async function renderCategory(
             available
         ) {
 
-            addButton.onclick =
-                () => {
+            addButton.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
 
                     addToCart(
                         product
                     );
 
-                };
+                }
+            );
 
         }
 
@@ -2520,69 +2399,6 @@ async function renderCategory(
     );
 
 }
-
-
-/* ==================================================
-   البحث داخل القسم
-================================================== */
-
-async function performCategorySearch() {
-
-    const query =
-        categorySearchInput
-            ? categorySearchInput.value
-            : "";
-
-
-    await renderCategory(
-        query
-    );
-
-}
-
-
-categorySearchButton?.addEventListener(
-    "click",
-    performCategorySearch
-);
-
-
-categorySearchInput?.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            event.preventDefault();
-
-            performCategorySearch();
-
-        }
-
-    }
-);
-
-
-/* ==================================================
-   البحث المباشر أثناء الكتابة
-================================================== */
-
-categorySearchInput?.addEventListener(
-    "input",
-    () => {
-
-        if (
-            !categorySearchInput.value.trim()
-        ) {
-
-            renderCategory("");
-
-        }
-
-    }
-);
 
 
 /* ==================================================
