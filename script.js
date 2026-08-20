@@ -5,7 +5,7 @@ const supabaseClient = supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
-console.log("Supabase connected:", supabaseClient);
+
 let books = [];
 let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
@@ -101,57 +101,14 @@ const selectedCategory =
 
 
 // =========================
-// حالة المنتجات القديمة
-// =========================
-// نقرأها فقط إذا كان هناك رابط قديم
-// يحتوي على condition.
-// لكنها لم تعد تُستخدم لتقسيم القسم.
-// =========================
-
-const selectedCondition =
-    params.get("condition") === "new" ||
-    params.get("condition") === "used"
-        ? params.get("condition")
-        : "";
-
-
-// =========================
 // واجهة الصفحة
 // =========================
 
 function updateConditionUI() {
 
-    const newOption =
-        document.getElementById("new-option");
-
-    const usedOption =
-        document.getElementById("used-option");
-
-
-    if (newOption) {
-        newOption.classList.toggle(
-            "active",
-            selectedCondition === "new"
-        );
-    }
-
-
-    if (usedOption) {
-        usedOption.classList.toggle(
-            "active",
-            selectedCondition === "used"
-        );
-    }
-
-
     if (!productsHeading) {
         return;
     }
-
-
-    // =========================
-    // قسم محدد
-    // =========================
 
     if (selectedCategory) {
 
@@ -159,7 +116,6 @@ function updateConditionUI() {
             `📂 منتجات ${selectedCategory}`;
 
         if (productsSubtitle) {
-
             productsSubtitle.textContent =
                 `تصفح جميع السلع المتاحة في قسم ${selectedCategory}.`;
         }
@@ -167,16 +123,10 @@ function updateConditionUI() {
         return;
     }
 
-
-    // =========================
-    // لا يوجد قسم
-    // =========================
-
     productsHeading.textContent =
         "🛍️ أحدث المنتجات";
 
     if (productsSubtitle) {
-
         productsSubtitle.textContent =
             "تصفح أحدث المنتجات من جميع الأقسام.";
     }
@@ -248,19 +198,19 @@ function renderBooks(list) {
                         ${escapeHtml(book.title)}
                     </h3>
 
+                    <p>
+                        📂 ${escapeHtml(book.category)}
+                    </p>
+
                     ${
-                        book.author
+                        book.description
                             ? `
                                 <p>
-                                    ✍ ${escapeHtml(book.author)}
+                                    ${escapeHtml(book.description)}
                                 </p>
                             `
                             : ""
                     }
-
-                    <p>
-                        📂 ${escapeHtml(book.category)}
-                    </p>
 
                     <p class="price">
                         ${escapeHtml(book.price)} ريال
@@ -333,9 +283,6 @@ function applyFilters() {
     // =========================
     // القسم
     // =========================
-    // أهم تغيير:
-    // القسم يعرض الجديد والمستعمل معًا
-    // =========================
 
     if (selectedCategory) {
 
@@ -360,8 +307,6 @@ function applyFilters() {
                 const text = `
 
                     ${book.title || ""}
-
-                    ${book.author || ""}
 
                     ${book.category || ""}
 
@@ -662,43 +607,63 @@ searchInput?.addEventListener(
 
 
 // =========================
-// تشغيل الصفحة
+// تحميل المنتجات من Supabase
 // =========================
 
-updateConditionUI();
+async function loadProducts() {
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("products")
+            .select("*")
+            .order("id", {
+                ascending: false
+            });
 
 
-fetch("books.json")
-
-    .then(response => {
-
-        if (!response.ok) {
-
-            throw new Error(
-                "تعذر تحميل books.json"
-            );
+        if (error) {
+            throw error;
         }
 
-        return response.json();
-    })
-
-
-    .then(data => {
 
         books =
-            data.map(book => ({
+            (data || []).map(book => ({
 
-                ...book,
+                id: book.id,
+
+                title:
+                    String(
+                        book.title || ""
+                    ).trim(),
+
+                description:
+                    String(
+                        book.description || ""
+                    ).trim(),
+
+                price:
+                    Number(
+                        book.price || 0
+                    ),
 
                 category:
                     String(
                         book.category || ""
                     ).trim(),
 
-                condition:
-                    book.condition === "new"
-                        ? "new"
-                        : "used"
+                image:
+                    String(
+                        book.image || ""
+                    ).trim(),
+
+                available:
+                    Boolean(
+                        book.available
+                    )
 
             }));
 
@@ -706,12 +671,15 @@ fetch("books.json")
         applyFilters();
 
         updateCart();
-    })
 
 
-    .catch(error => {
+    } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Supabase error:",
+            error
+        );
+
 
         if (booksContainer) {
 
@@ -724,12 +692,21 @@ fetch("books.json")
                     </h3>
 
                     <p>
-                        تأكد من وجود ملف books.json
-                        وأنه بصيغة صحيحة.
+                        حدث خطأ أثناء الاتصال بقاعدة البيانات.
                     </p>
 
                 </div>
 
             `;
         }
-    });
+    }
+}
+
+
+// =========================
+// تشغيل الصفحة
+// =========================
+
+updateConditionUI();
+
+loadProducts();
