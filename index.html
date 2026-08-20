@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -197,68 +198,7 @@
 
 
         /* ==================================================
-           البحث
-        ================================================== */
-
-        .search-section {
-            margin: 0 auto 45px;
-            width: 100%;
-        }
-
-        .search-box {
-            display: flex;
-            gap: 10px;
-            width: min(850px, 100%);
-            margin: 0 auto;
-        }
-
-        #product-search {
-            flex: 1;
-            min-width: 0;
-            padding: 15px 18px;
-            border: 1px solid #d7dfe7;
-            border-radius: 12px;
-            background: #fff;
-            color: #26384b;
-            font-family: inherit;
-            font-size: 16px;
-            outline: none;
-            box-sizing: border-box;
-        }
-
-        #product-search:focus {
-            border-color: #285784;
-            box-shadow: 0 0 0 3px rgba(40,87,132,.10);
-        }
-
-        #search-button {
-            border: 0;
-            border-radius: 12px;
-            padding: 0 28px;
-            background: #173a63;
-            color: #fff;
-            font-family: inherit;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background .2s ease;
-        }
-
-        #search-button:hover {
-            background: #285784;
-        }
-
-        .search-result-message {
-            text-align: center;
-            margin: 12px 0 0;
-            color: #687585;
-            font-size: 14px;
-            min-height: 20px;
-        }
-
-
-        /* ==================================================
-           المنتجات الحديثة ونتائج البحث
+           المنتجات الحديثة
         ================================================== */
 
         .home-section {
@@ -299,7 +239,7 @@
 
 
         /* ==================================================
-           بطاقات المنتجات
+           المنتجات
         ================================================== */
 
         .home-products {
@@ -309,18 +249,15 @@
         }
 
         .home-product-card {
-            display: block;
             background: #fff;
             border: 1px solid #e4e9ee;
             border-radius: 18px;
             overflow: hidden;
             box-shadow: 0 6px 22px rgba(30,55,80,.06);
+
             transition:
                 transform .2s ease,
                 box-shadow .2s ease;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
         }
 
         .home-product-card:hover {
@@ -627,6 +564,7 @@
 
         }
 
+
         @media (max-width: 750px) {
 
             .main-hero {
@@ -659,19 +597,12 @@
 
         }
 
+
         @media (max-width: 600px) {
 
             .home-page {
                 width: min(100% - 20px, 1180px);
                 padding-top: 20px;
-            }
-
-            .search-box {
-                flex-direction: column;
-            }
-
-            #search-button {
-                padding: 13px;
             }
 
             .home-products {
@@ -821,38 +752,6 @@
             </div>
 
         </div>
-
-    </section>
-
-
-    <!-- ==================================================
-         البحث
-    ================================================== -->
-
-    <section class="search-section">
-
-        <div class="search-box">
-
-            <input
-                type="search"
-                id="product-search"
-                placeholder="🔎 ابحث عن سلعة..."
-                autocomplete="off"
-            >
-
-            <button
-                type="button"
-                id="search-button"
-            >
-                🔎 بحث
-            </button>
-
-        </div>
-
-        <p
-            id="search-result-message"
-            class="search-result-message"
-        ></p>
 
     </section>
 
@@ -1175,7 +1074,7 @@
 
 
     /* ==================================================
-       تنظيف بيانات المنتج
+       تنظيف المنتج
     ================================================== */
 
     function sanitizePublicProduct(product) {
@@ -1273,7 +1172,7 @@
 
 
     /* ==================================================
-       تنظيف المنتجات المنشورة
+       تنظيف البيانات القديمة
     ================================================== */
 
     function cleanStoredPublicProducts() {
@@ -1318,7 +1217,7 @@
         catch (error) {
 
             console.warn(
-                "تعذر تنظيف البيانات العامة القديمة",
+                "تعذر تنظيف البيانات العامة القديمة:",
                 error
             );
 
@@ -1392,7 +1291,7 @@
 
 
     /* ==================================================
-       المنتجات القديمة من books.json
+       المنتجات القديمة
     ================================================== */
 
     async function getOldProducts() {
@@ -1513,147 +1412,6 @@
 
 
     /* ==================================================
-       الانتقال إلى صفحة المنتج
-       هذه هي الإضافة الخاصة بنتائج البحث
-    ================================================== */
-
-    function openProductPage(product) {
-
-        if (!product) {
-            return;
-        }
-
-
-        const productId =
-            product.id ||
-            product.requestId ||
-            "";
-
-
-        if (!productId) {
-            return;
-        }
-
-
-        window.location.href =
-            "book.html?id=" +
-            encodeURIComponent(
-                productId
-            );
-
-    }
-
-
-    /* ==================================================
-       إنشاء بطاقة المنتج
-    ================================================== */
-
-    function createProductCard(product) {
-
-        const card =
-            document.createElement(
-                "article"
-            );
-
-
-        card.className =
-            "home-product-card";
-
-
-        const image =
-            imageUrl(
-                product.image
-            );
-
-
-        const imageHtml =
-            image
-
-                ?
-
-                `
-                <img
-                    src="${image}"
-                    alt="${escapeHtml(
-                        product.title
-                    )}"
-                    class="home-product-image"
-                    loading="lazy"
-                    onerror="this.style.display='none'"
-                >
-                `
-
-                :
-
-                `
-                <div
-                    class="home-product-image empty"
-                >
-                    📦
-                </div>
-                `;
-
-
-        card.innerHTML = `
-
-            ${imageHtml}
-
-            <div class="home-product-info">
-
-                <h3>
-                    ${escapeHtml(
-                        product.title
-                    )}
-                </h3>
-
-                <p class="home-product-category">
-
-                    📂
-
-                    ${escapeHtml(
-                        product.category ||
-                        "سلعة"
-                    )}
-
-                </p>
-
-                <p class="home-product-price">
-
-                    ${Number(
-                        product.price || 0
-                    )}
-
-                    ريال
-
-                </p>
-
-            </div>
-
-        `;
-
-
-        /*
-         * الضغط على صورة أو بطاقة نتيجة البحث
-         * يفتح صفحة المنتج ومعرض الصور.
-         */
-        card.addEventListener(
-            "click",
-            () => {
-
-                openProductPage(
-                    product
-                );
-
-            }
-        );
-
-
-        return card;
-
-    }
-
-
-    /* ==================================================
        عرض أحدث المنتجات
     ================================================== */
 
@@ -1713,238 +1471,99 @@
         }
 
 
-        products.forEach(
-            product => {
+        products.forEach(product => {
 
-                container.appendChild(
-                    createProductCard(
-                        product
-                    )
+            const card =
+                document.createElement(
+                    "article"
                 );
 
-            }
-        );
 
-    }
-
-
-    /* ==================================================
-       البحث
-    ================================================== */
-
-    async function performSearch() {
-
-        const input =
-            document.getElementById(
-                "product-search"
-            );
+            card.className =
+                "home-product-card";
 
 
-        const container =
-            document.getElementById(
-                "latest-products"
-            );
+            const image =
+                imageUrl(
+                    product.image
+                );
 
 
-        const message =
-            document.getElementById(
-                "search-result-message"
-            );
+            const imageHtml =
+                image
 
+                    ?
 
-        if (
-            !input ||
-            !container
-        ) {
-            return;
-        }
+                    `
+                    <img
+                        src="${image}"
+                        alt="${escapeHtml(
+                            product.title
+                        )}"
+                        class="home-product-image"
+                        loading="lazy"
+                        onerror="this.style.display='none'"
+                    >
+                    `
 
+                    :
 
-        const searchText =
-            input.value
-                .trim()
-                .toLowerCase();
-
-
-        /*
-         * البحث الفارغ يعيد أحدث المنتجات.
-         */
-        if (!searchText) {
-
-            if (message) {
-                message.textContent = "";
-            }
-
-
-            await renderLatestProducts();
-
-            return;
-
-        }
-
-
-        const allProducts =
-            uniqueProducts(
-                await getAllProducts()
-            );
-
-
-        const results =
-            allProducts.filter(
-                product => {
-
-                    const title =
-                        String(
-                            product.title || ""
-                        )
-                        .toLowerCase();
-
-
-                    const category =
-                        String(
-                            product.category || ""
-                        )
-                        .toLowerCase();
-
-
-                    const description =
-                        String(
-                            product.description || ""
-                        )
-                        .toLowerCase();
-
-
-                    const notes =
-                        String(
-                            product.notes || ""
-                        )
-                        .toLowerCase();
-
-
-                    return (
-
-                        title.includes(
-                            searchText
-                        ) ||
-
-                        category.includes(
-                            searchText
-                        ) ||
-
-                        description.includes(
-                            searchText
-                        ) ||
-
-                        notes.includes(
-                            searchText
-                        )
-
-                    );
-
-                }
-            );
-
-
-        container.innerHTML = "";
-
-
-        if (message) {
-
-            message.textContent =
-                `تم العثور على ${results.length} سلعة`;
-
-        }
-
-
-        if (!results.length) {
-
-            container.innerHTML = `
-
-                <div class="product-empty">
-
-                    <div class="product-empty-icon">
-                        🔎
+                    `
+                    <div
+                        class="home-product-image empty"
+                    >
+                        📦
                     </div>
+                    `;
+
+
+            card.innerHTML = `
+
+                ${imageHtml}
+
+                <div class="home-product-info">
 
                     <h3>
-                        لم نجد السلعة التي تبحث عنها
+                        ${escapeHtml(
+                            product.title
+                        )}
                     </h3>
 
-                    <p>
-                        جرّب كلمة بحث أخرى أو اسم قسم مختلف.
+
+                    <p class="home-product-category">
+
+                        📂
+
+                        ${escapeHtml(
+                            product.category ||
+                            "سلعة"
+                        )}
+
+                    </p>
+
+
+                    <p class="home-product-price">
+
+                        ${Number(
+                            product.price || 0
+                        )}
+
+                        ريال
+
                     </p>
 
                 </div>
 
             `;
 
-            return;
 
-        }
+            container.appendChild(
+                card
+            );
 
-
-        results.forEach(
-            product => {
-
-                container.appendChild(
-                    createProductCard(
-                        product
-                    )
-                );
-
-            }
-        );
-
-
-        /*
-         * العودة إلى بداية نتائج البحث.
-         */
-        container.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
         });
 
     }
-
-
-    /* ==================================================
-       تشغيل البحث
-    ================================================== */
-
-    const searchButton =
-        document.getElementById(
-            "search-button"
-        );
-
-
-    const searchInput =
-        document.getElementById(
-            "product-search"
-        );
-
-
-    searchButton?.addEventListener(
-        "click",
-        performSearch
-    );
-
-
-    searchInput?.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key === "Enter"
-            ) {
-
-                event.preventDefault();
-
-                performSearch();
-
-            }
-
-        }
-    );
 
 
     /* ==================================================
@@ -2430,4 +2049,6 @@
 
 
 </body>
+
 </html>
+```
