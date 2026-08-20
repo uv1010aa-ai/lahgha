@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -134,6 +133,63 @@
 
 
         /* ==================================================
+           بحث القسم
+        ================================================== */
+
+        .category-search {
+            margin: 0 auto 30px;
+            max-width: 850px;
+        }
+
+        .category-search-box {
+            display: flex;
+            gap: 10px;
+        }
+
+        #category-search-input {
+            flex: 1;
+            min-width: 0;
+            padding: 15px 18px;
+            border: 1px solid #d7dfe7;
+            border-radius: 12px;
+            background: #fff;
+            color: #26384b;
+            font-family: inherit;
+            font-size: 16px;
+            outline: none;
+        }
+
+        #category-search-input:focus {
+            border-color: #1e3a5f;
+            box-shadow: 0 0 0 3px rgba(30,58,95,.10);
+        }
+
+        #category-search-button {
+            border: 0;
+            border-radius: 12px;
+            padding: 0 25px;
+            background: #1e3a5f;
+            color: #fff;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #category-search-button:hover {
+            background: #16314f;
+        }
+
+        #category-search-message {
+            min-height: 20px;
+            margin: 10px 0 0;
+            text-align: center;
+            color: #687585;
+            font-size: 14px;
+        }
+
+
+        /* ==================================================
            المنتجات
         ================================================== */
 
@@ -209,15 +265,6 @@
             font-size: 20px;
             font-weight: bold;
             color: #1e3a5f !important;
-        }
-
-
-        .seller-box {
-            margin-top: 14px;
-            padding: 12px;
-            background: #f5f8fb;
-            border-radius: 10px;
-            font-size: 14px;
         }
 
 
@@ -542,6 +589,13 @@
                 grid-template-columns: 1fr;
             }
 
+            .category-search-box {
+                flex-direction: column;
+            }
+
+            #category-search-button {
+                padding: 13px;
+            }
 
             .cart {
                 left: 10px;
@@ -551,12 +605,10 @@
                 max-width: none;
             }
 
-
             .modal-box {
                 padding: 15px;
                 max-height: 88vh;
             }
-
 
             .modal-main-image {
                 height: 250px;
@@ -566,7 +618,11 @@
 
     </style>
 
-<link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="images/icon.png"><link rel="apple-touch-icon" href="images/icon.png"></head>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="images/icon.png">
+    <link rel="apple-touch-icon" href="images/icon.png">
+
+</head>
 
 
 <body>
@@ -604,7 +660,6 @@
         <a href="contact.html">
             اتصل بنا
         </a>
-
 
     </nav>
 
@@ -665,10 +720,40 @@
             </h2>
 
             <p id="category-subtitle">
-                السلعة تظهر بصورة واحدة، واضغط على الصورة لاستعراض بقية الصور.
+                جميع السلع المتاحة في هذا القسم.
             </p>
 
         </div>
+
+
+        <!-- ==================================================
+             البحث داخل القسم
+        ================================================== -->
+
+        <section class="category-search">
+
+            <div class="category-search-box">
+
+                <input
+                    type="search"
+                    id="category-search-input"
+                    placeholder="🔎 ابحث داخل هذا القسم..."
+                    autocomplete="off"
+                    aria-label="البحث داخل القسم"
+                >
+
+                <button
+                    type="button"
+                    id="category-search-button"
+                >
+                    🔎 بحث
+                </button>
+
+            </div>
+
+            <p id="category-search-message"></p>
+
+        </section>
 
 
         <div id="category-products"></div>
@@ -702,11 +787,9 @@
 
 
     <h3>
-
         الإجمالي:
         <span id="total-price">0</span>
         ريال
-
     </h3>
 
 
@@ -795,7 +878,6 @@
 
 <script>
 
-
 /* ==================================================
    القسم المختار
 ================================================== */
@@ -812,8 +894,6 @@ const selectedCategory =
 
 /* ==================================================
    الأقسام
-   تم ربط صور الجوالات الموجودة فعليًا
-   داخل مجلد images
 ================================================== */
 
 const categories = [
@@ -841,34 +921,44 @@ const categoriesView =
         "categories-view"
     );
 
-
 const productsView =
     document.getElementById(
         "products-view"
     );
-
 
 const categoriesList =
     document.getElementById(
         "categories-list"
     );
 
-
 const productsContainer =
     document.getElementById(
         "category-products"
     );
-
 
 const categoryTitle =
     document.getElementById(
         "category-title"
     );
 
-
 const categorySubtitle =
     document.getElementById(
         "category-subtitle"
+    );
+
+const categorySearchInput =
+    document.getElementById(
+        "category-search-input"
+    );
+
+const categorySearchButton =
+    document.getElementById(
+        "category-search-button"
+    );
+
+const categorySearchMessage =
+    document.getElementById(
+        "category-search-message"
     );
 
 
@@ -923,48 +1013,154 @@ function imageUrl(path) {
 
 
 /* ==================================================
-   المنتجات المنشورة من لوحة التحكم
+   المنتجات المنشورة
 ================================================== */
 
 function sanitizePublicProduct(product) {
 
-    if (!product || typeof product !== "object") return null;
-
-    // مهم: لا نستخدم ...product هنا حتى لا تنتقل بيانات البائع إلى واجهة المشتري.
-    return {
-        id: product.id || product.requestId || ("public-" + Date.now() + Math.random()),
-        requestId: product.requestId || product.id || "",
-        title: product.title || product.name || product.productName || "سلعة بدون اسم",
-        name: product.name || product.title || product.productName || "سلعة بدون اسم",
-        category: String(product.category || "").trim(),
-        price: Number(product.price || 0),
-        quantity: Number(product.quantity || 0),
-        image: product.image || product.productImage || product.imageUrl || product.photo || "",
-        images: Array.isArray(product.images) ? product.images : [],
-        description: product.description || "",
-        notes: product.notes || "",
-        available: product.available !== false,
-        active: product.active !== false,
-        status: product.status || "منشور",
-        createdAt: product.createdAt || ""
-    };
-}
-
-// تنظيف أي نسخة عامة قديمة مخزنة في المتصفح من بيانات البائع.
-function cleanStoredPublicProducts() {
-    try {
-        const raw = localStorage.getItem("publishedProducts");
-        if (!raw) return;
-        const old = JSON.parse(raw);
-        if (!Array.isArray(old)) return;
-        const clean = old.map(sanitizePublicProduct).filter(Boolean);
-        localStorage.setItem("publishedProducts", JSON.stringify(clean));
-    } catch (e) {
-        console.warn("تعذر تنظيف البيانات العامة القديمة", e);
+    if (
+        !product ||
+        typeof product !== "object"
+    ) {
+        return null;
     }
+
+
+    return {
+
+        id:
+            product.id ||
+            product.requestId ||
+            (
+                "public-" +
+                Date.now() +
+                Math.random()
+            ),
+
+        requestId:
+            product.requestId ||
+            product.id ||
+            "",
+
+        title:
+            product.title ||
+            product.name ||
+            product.productName ||
+            "سلعة بدون اسم",
+
+        name:
+            product.name ||
+            product.title ||
+            product.productName ||
+            "سلعة بدون اسم",
+
+        category:
+            String(
+                product.category || ""
+            ).trim(),
+
+        price:
+            Number(
+                product.price || 0
+            ),
+
+        quantity:
+            Number(
+                product.quantity || 0
+            ),
+
+        image:
+            product.image ||
+            product.productImage ||
+            product.imageUrl ||
+            product.photo ||
+            "",
+
+        images:
+            Array.isArray(product.images)
+                ? product.images
+                : [],
+
+        description:
+            product.description ||
+            "",
+
+        notes:
+            product.notes ||
+            "",
+
+        available:
+            product.available !== false,
+
+        active:
+            product.active !== false,
+
+        status:
+            product.status ||
+            "منشور",
+
+        createdAt:
+            product.createdAt ||
+            ""
+
+    };
+
 }
+
+
+function cleanStoredPublicProducts() {
+
+    try {
+
+        const raw =
+            localStorage.getItem(
+                "publishedProducts"
+            );
+
+
+        if (!raw) {
+            return;
+        }
+
+
+        const old =
+            JSON.parse(raw);
+
+
+        if (!Array.isArray(old)) {
+            return;
+        }
+
+
+        const clean =
+            old
+                .map(
+                    sanitizePublicProduct
+                )
+                .filter(Boolean);
+
+
+        localStorage.setItem(
+            "publishedProducts",
+            JSON.stringify(clean)
+        );
+
+    }
+
+    catch (error) {
+
+        console.warn(
+            "تعذر تنظيف البيانات العامة القديمة",
+            error
+        );
+
+    }
+
+}
+
 
 cleanStoredPublicProducts();
+
 
 function getPublishedProducts() {
 
@@ -1001,69 +1197,11 @@ function getPublishedProducts() {
 
             })
 
-            .map(product => {
+            .map(
+                sanitizePublicProduct
+            )
 
-                const publicProduct = sanitizePublicProduct(product);
-
-                return {
-
-                    ...publicProduct,
-
-                    id:
-                        product.id ||
-                        product.requestId ||
-                        (
-                            "published-" +
-                            Date.now() +
-                            "-" +
-                            Math.random()
-                        ),
-
-                    title:
-                        product.title ||
-                        product.name ||
-                        product.productName ||
-                        "سلعة بدون اسم",
-
-                    image:
-                        product.image ||
-                        product.productImage ||
-                        product.imageUrl ||
-                        product.photo ||
-                        "",
-
-                    images:
-                        Array.isArray(
-                            product.images
-                        )
-                            ? product.images
-                            : [],
-
-                    category:
-                        String(
-                            product.category || ""
-                        ).trim(),
-
-                    price:
-                        Number(
-                            product.price || 0
-                        ),
-
-                    quantity:
-                        Number(
-                            product.quantity || 0
-                        ),
-
-                    description:
-                        product.description ||
-                        "",
-
-                    active:
-                        product.active !== false
-
-                };
-
-            });
+            .filter(Boolean);
 
     }
 
@@ -1082,7 +1220,7 @@ function getPublishedProducts() {
 
 
 /* ==================================================
-   المنتجات القديمة من books.json
+   المنتجات القديمة
 ================================================== */
 
 async function getOldProducts() {
@@ -1112,64 +1250,13 @@ async function getOldProducts() {
         }
 
 
-        return products.map(product => {
+        return products
 
-            const publicProduct = sanitizePublicProduct(product);
+            .map(
+                sanitizePublicProduct
+            )
 
-            return {
-
-                ...publicProduct,
-
-                id:
-                    product.id ||
-                    (
-                        "old-" +
-                        Math.random()
-                    ),
-
-                title:
-                    product.title ||
-                    product.name ||
-                    "سلعة بدون اسم",
-
-                image:
-                    product.image ||
-                    product.productImage ||
-                    product.imageUrl ||
-                    "",
-
-                images:
-                    Array.isArray(
-                        product.images
-                    )
-                        ? product.images
-                        : [],
-
-                category:
-                    String(
-                        product.category || ""
-                    ).trim(),
-
-                price:
-                    Number(
-                        product.price || 0
-                    ),
-
-                quantity:
-                    Number(
-                        product.quantity || 1
-                    ),
-
-                description:
-                    product.description ||
-                    "",
-
-                available:
-                    product.available !== false
-
-            };
-
-        });
+            .filter(Boolean);
 
     }
 
@@ -1327,7 +1414,9 @@ async function renderCategories() {
 
 
         const link =
-            document.createElement("a");
+            document.createElement(
+                "a"
+            );
 
 
         link.className =
@@ -1335,10 +1424,11 @@ async function renderCategories() {
 
 
         link.href =
-    "categories.html?category=" +
-    encodeURIComponent(
-        category.name
-    );
+            "categories.html?category=" +
+            encodeURIComponent(
+                category.name
+            );
+
 
         link.innerHTML = `
 
@@ -1409,30 +1499,25 @@ const cartItems =
         "cart-items"
     );
 
-
 const cartCount =
     document.getElementById(
         "cart-count"
     );
-
 
 const totalPrice =
     document.getElementById(
         "total-price"
     );
 
-
 const clearCartButton =
     document.getElementById(
         "clear-cart"
     );
 
-
 const checkoutButton =
     document.getElementById(
         "checkout-btn"
     );
-
 
 const toast =
     document.getElementById(
@@ -1445,6 +1530,11 @@ const toast =
 ================================================== */
 
 function showToast(message) {
+
+    if (!toast) {
+        return;
+    }
+
 
     toast.textContent =
         message;
@@ -1461,13 +1551,16 @@ function showToast(message) {
 
 
     showToast.timer =
-        setTimeout(() => {
+        setTimeout(
+            () => {
 
-            toast.classList.remove(
-                "show"
-            );
+                toast.classList.remove(
+                    "show"
+                );
 
-        }, 2200);
+            },
+            2200
+        );
 
 }
 
@@ -1477,6 +1570,11 @@ function showToast(message) {
 ================================================== */
 
 function updateCart() {
+
+    if (!cartItems) {
+        return;
+    }
+
 
     cartItems.innerHTML = "";
 
@@ -1510,7 +1608,6 @@ function updateCart() {
 
         total += subtotal;
 
-
         count +=
             item.quantity;
 
@@ -1532,7 +1629,8 @@ function updateCart() {
                     )}"
                     alt="${escapeHtml(
                         item.title ||
-                        item.name
+                        item.name ||
+                        "منتج"
                     )}"
                 >
 
@@ -1541,7 +1639,8 @@ function updateCart() {
                     <h4>
                         ${escapeHtml(
                             item.title ||
-                            item.name
+                            item.name ||
+                            "منتج"
                         )}
                     </h4>
 
@@ -1686,12 +1785,16 @@ function updateCart() {
     }
 
 
-    cartCount.textContent =
-        count;
+    if (cartCount) {
+        cartCount.textContent =
+            count;
+    }
 
 
-    totalPrice.textContent =
-        total;
+    if (totalPrice) {
+        totalPrice.textContent =
+            total;
+    }
 
 
     localStorage.setItem(
@@ -1782,7 +1885,7 @@ function addToCart(product) {
 
 
 /* ==================================================
-   فتح نافذة المنتج
+   نافذة المنتج
 ================================================== */
 
 const productModal =
@@ -1790,24 +1893,20 @@ const productModal =
         "product-modal"
     );
 
-
 const modalClose =
     document.getElementById(
         "modal-close"
     );
-
 
 const modalMainImage =
     document.getElementById(
         "modal-main-image"
     );
 
-
 const modalThumbs =
     document.getElementById(
         "modal-thumbs"
     );
-
 
 const modalInfo =
     document.getElementById(
@@ -1864,7 +1963,8 @@ function openProductModal(product) {
 
 
         modalMainImage.alt =
-            product.title || "صورة المنتج";
+            product.title ||
+            "صورة المنتج";
 
 
         images.forEach(
@@ -1963,10 +2063,13 @@ function openProductModal(product) {
         </p>
 
         <p class="product-price">
+
             ${Number(
                 product.price || 0
             )}
+
             ريال
+
         </p>
 
         ${
@@ -1980,7 +2083,8 @@ function openProductModal(product) {
                   `
                 : ""
         }
-`;
+
+    `;
 
 
     productModal.classList.add(
@@ -2015,11 +2119,13 @@ function closeProductModal() {
 }
 
 
-modalClose.onclick =
-    closeProductModal;
+modalClose?.addEventListener(
+    "click",
+    closeProductModal
+);
 
 
-productModal.addEventListener(
+productModal?.addEventListener(
     "click",
     event => {
 
@@ -2056,7 +2162,9 @@ document.addEventListener(
    عرض منتجات القسم
 ================================================== */
 
-async function renderCategory() {
+async function renderCategory(
+    searchText = ""
+) {
 
     categoriesView.style.display =
         "none";
@@ -2088,7 +2196,7 @@ async function renderCategory() {
         await getAllProducts();
 
 
-    const filtered =
+    let products =
         allProducts.filter(product => {
 
             return (
@@ -2101,10 +2209,63 @@ async function renderCategory() {
         });
 
 
-    const products =
+    products =
         uniqueProducts(
-            filtered
+            products
         );
+
+
+    const query =
+        String(
+            searchText || ""
+        )
+        .trim()
+        .toLocaleLowerCase("ar");
+
+
+    if (query) {
+
+        products =
+            products.filter(product => {
+
+                const text = [
+
+                    product.title || "",
+                    product.name || "",
+                    product.description || "",
+                    product.notes || ""
+
+                ]
+                .join(" ")
+                .toLocaleLowerCase("ar");
+
+
+                return text.includes(
+                    query
+                );
+
+            });
+
+    }
+
+
+    if (categorySearchMessage) {
+
+        if (query) {
+
+            categorySearchMessage.textContent =
+                `تم العثور على ${products.length} سلعة`;
+
+        }
+
+        else {
+
+            categorySearchMessage.textContent =
+                "";
+
+        }
+
+    }
 
 
     productsContainer.innerHTML =
@@ -2118,15 +2279,23 @@ async function renderCategory() {
             <div class="empty-box">
 
                 <div class="empty-icon">
-                    📭
+                    🔎
                 </div>
 
                 <h3>
-                    لا توجد سلع في هذا القسم حاليًا.
+                    ${
+                        query
+                            ? "لم نجد سلعة مطابقة للبحث."
+                            : "لا توجد سلع في هذا القسم حاليًا."
+                    }
                 </h3>
 
                 <p>
-                    يمكنك العودة إلى الأقسام واختيار قسم آخر.
+                    ${
+                        query
+                            ? "جرّب كلمة بحث أخرى."
+                            : "يمكنك العودة إلى الأقسام واختيار قسم آخر."
+                    }
                 </p>
 
             </div>
@@ -2220,7 +2389,6 @@ async function renderCategory() {
 
             ${imageHtml}
 
-
             <div class="product-info">
 
                 <h3>
@@ -2229,14 +2397,12 @@ async function renderCategory() {
                     )}
                 </h3>
 
-
                 <p>
                     📂
                     ${escapeHtml(
                         product.category
                     )}
                 </p>
-
 
                 <p class="product-price">
 
@@ -2247,7 +2413,6 @@ async function renderCategory() {
                     ريال
 
                 </p>
-
 
                 ${
                     product.description
@@ -2264,7 +2429,6 @@ async function renderCategory() {
 
                         : ""
                 }
-
 
                 <p
                     class="${
@@ -2283,7 +2447,6 @@ async function renderCategory() {
                 </p>
 
             </div>
-
 
             <button
                 type="button"
@@ -2360,10 +2523,73 @@ async function renderCategory() {
 
 
 /* ==================================================
+   البحث داخل القسم
+================================================== */
+
+async function performCategorySearch() {
+
+    const query =
+        categorySearchInput
+            ? categorySearchInput.value
+            : "";
+
+
+    await renderCategory(
+        query
+    );
+
+}
+
+
+categorySearchButton?.addEventListener(
+    "click",
+    performCategorySearch
+);
+
+
+categorySearchInput?.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            event.preventDefault();
+
+            performCategorySearch();
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   البحث المباشر أثناء الكتابة
+================================================== */
+
+categorySearchInput?.addEventListener(
+    "input",
+    () => {
+
+        if (
+            !categorySearchInput.value.trim()
+        ) {
+
+            renderCategory("");
+
+        }
+
+    }
+);
+
+
+/* ==================================================
    إفراغ السلة
 ================================================== */
 
-clearCartButton.addEventListener(
+clearCartButton?.addEventListener(
     "click",
     () => {
 
@@ -2398,7 +2624,7 @@ clearCartButton.addEventListener(
    إتمام الطلب
 ================================================== */
 
-checkoutButton.addEventListener(
+checkoutButton?.addEventListener(
     "click",
     event => {
 
