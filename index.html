@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -20,6 +19,8 @@
 
     <link rel="stylesheet" href="style.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <link rel="manifest" href="manifest.json">
 
     <link
@@ -35,10 +36,6 @@
 
     <style>
 
-        /* ==================================================
-           الصفحة الرئيسية
-        ================================================== */
-
         body {
             background: #f5f7fa;
         }
@@ -48,11 +45,6 @@
             margin: 0 auto;
             padding: 35px 0 90px;
         }
-
-
-        /* ==================================================
-           الواجهة الرئيسية
-        ================================================== */
 
         .main-hero {
             position: relative;
@@ -78,24 +70,24 @@
             color: #fff;
         }
 
-        .main-hero::before {
+        .main-hero::before,
+        .main-hero::after {
             content: "";
             position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,.05);
+        }
+
+        .main-hero::before {
             width: 420px;
             height: 420px;
-            border-radius: 50%;
-            background: rgba(255,255,255,.055);
             left: -120px;
             bottom: -190px;
         }
 
         .main-hero::after {
-            content: "";
-            position: absolute;
             width: 280px;
             height: 280px;
-            border-radius: 50%;
-            background: rgba(255,255,255,.045);
             right: -90px;
             top: -120px;
         }
@@ -165,11 +157,7 @@
             font-family: inherit;
             font-size: 16px;
             font-weight: 800;
-
-            transition:
-                transform .2s ease,
-                box-shadow .2s ease,
-                background .2s ease;
+            transition: .2s;
         }
 
         .hero-button:hover {
@@ -182,24 +170,11 @@
             box-shadow: 0 8px 20px rgba(0,0,0,.12);
         }
 
-        .hero-button.primary:hover {
-            background: #f3f8fc;
-        }
-
         .hero-button.secondary {
             background: transparent;
             color: #fff;
             border: 1px solid rgba(255,255,255,.45);
         }
-
-        .hero-button.secondary:hover {
-            background: rgba(255,255,255,.1);
-        }
-
-
-        /* ==================================================
-           المنتجات الحديثة
-        ================================================== */
 
         .home-section {
             margin-bottom: 55px;
@@ -233,15 +208,6 @@
             white-space: nowrap;
         }
 
-        .section-link:hover {
-            text-decoration: underline;
-        }
-
-
-        /* ==================================================
-           المنتجات
-        ================================================== */
-
         .home-products {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -254,10 +220,7 @@
             border-radius: 18px;
             overflow: hidden;
             box-shadow: 0 6px 22px rgba(30,55,80,.06);
-
-            transition:
-                transform .2s ease,
-                box-shadow .2s ease;
+            transition: .2s;
         }
 
         .home-product-card:hover {
@@ -329,11 +292,6 @@
             margin: 0;
         }
 
-
-        /* ==================================================
-           لماذا لَحْقها؟
-        ================================================== */
-
         .features-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -374,11 +332,6 @@
             font-size: 14px;
         }
 
-
-        /* ==================================================
-           دعوة البائع
-        ================================================== */
-
         .seller-banner {
             display: flex;
             align-items: center;
@@ -409,129 +362,6 @@
             color: #fff;
         }
 
-        .seller-banner .hero-button:hover {
-            background: #214d7b;
-        }
-
-
-        /* ==================================================
-           السلة
-        ================================================== */
-
-        .cart {
-            position: fixed;
-            left: 20px;
-            bottom: 20px;
-            width: 280px;
-            max-width: calc(100% - 40px);
-            max-height: 70vh;
-            overflow-y: auto;
-            background: #fff;
-            border: 1px solid #dfe5ea;
-            border-radius: 18px;
-            padding: 18px;
-            box-shadow: 0 12px 35px rgba(0,0,0,.16);
-            z-index: 1000;
-        }
-
-        .cart h2 {
-            margin: 0 0 12px;
-            color: #173a63;
-            font-size: 21px;
-        }
-
-        .cart ul {
-            padding: 0;
-            margin: 12px 0;
-            list-style: none;
-        }
-
-        .cart-item {
-            display: flex;
-            gap: 10px;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .cart-image {
-            width: 52px;
-            height: 52px;
-            object-fit: cover;
-            border-radius: 8px;
-            background: #eee;
-        }
-
-        .cart-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .cart-info h4 {
-            margin: 0 0 4px;
-            font-size: 14px;
-            color: #34495e;
-        }
-
-        .cart-info p {
-            margin: 3px 0;
-            font-size: 12px;
-            color: #687581;
-        }
-
-        .cart-buttons {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            margin-top: 7px;
-        }
-
-        .cart-buttons button,
-        .delete {
-            border: 0;
-            border-radius: 6px;
-            padding: 4px 8px;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .delete {
-            margin-top: 5px;
-        }
-
-        .clear-cart-btn {
-            width: 100%;
-            padding: 10px;
-            border: 0;
-            border-radius: 8px;
-            background: #eeeeee;
-            color: #444;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .checkout-btn {
-            display: block;
-            text-align: center;
-            margin-top: 9px;
-            padding: 11px;
-            background: #2d7d32;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-        }
-
-        .secure-payment {
-            text-align: center;
-            color: #6d7b87;
-            font-size: 12px;
-        }
-
-
-        /* ==================================================
-           التنبيه
-        ================================================== */
-
         #toast {
             position: fixed;
             right: 20px;
@@ -550,11 +380,6 @@
             opacity: 1;
         }
 
-
-        /* ==================================================
-           الجوال
-        ================================================== */
-
         @media (max-width: 1000px) {
 
             .home-products {
@@ -563,7 +388,6 @@
             }
 
         }
-
 
         @media (max-width: 750px) {
 
@@ -597,7 +421,6 @@
 
         }
 
-
         @media (max-width: 600px) {
 
             .home-page {
@@ -622,26 +445,15 @@
                 width: 100%;
             }
 
-            .cart {
-                left: 10px;
-                right: 10px;
-                bottom: 10px;
-                width: auto;
-                max-width: none;
-            }
-
         }
 
     </style>
+
 </head>
 
 
 <body>
 
-
-<!-- ==================================================
-     رأس الموقع
-================================================== -->
 
 <header class="site-header">
 
@@ -675,9 +487,11 @@
         <a href="contact.html">
             اتصل بنا
         </a>
-<a href="cart.html">
-    🛒 السلة
-</a>
+
+        <a href="cart.html">
+            🛒 السلة
+        </a>
+
         <a
             href="seller/offer.html"
             class="seller-link"
@@ -690,16 +504,8 @@
 </header>
 
 
-<!-- ==================================================
-     المحتوى الرئيسي
-================================================== -->
-
 <main class="home-page">
 
-
-    <!-- ==================================================
-         الواجهة الرئيسية
-    ================================================== -->
 
     <section class="main-hero">
 
@@ -758,10 +564,6 @@
     </section>
 
 
-    <!-- ==================================================
-         المنتجات الحديثة
-    ================================================== -->
-
     <section class="home-section">
 
         <div class="section-heading">
@@ -814,10 +616,6 @@
 
     </section>
 
-
-    <!-- ==================================================
-         لماذا لَحْقها؟
-    ================================================== -->
 
     <section class="home-section">
 
@@ -900,10 +698,6 @@
     </section>
 
 
-    <!-- ==================================================
-         دعوة البائع
-    ================================================== -->
-
     <section class="home-section">
 
         <div class="seller-banner">
@@ -937,72 +731,6 @@
 </main>
 
 
-<!-- ==================================================
-     سلة المشتريات
-================================================== -->
-
-
-    <h2>
-        🛒 سلة المشتريات
-    </h2>
-
-
-    <p>
-
-        عدد المنتجات:
-
-        <span id="cart-count">
-            0
-        </span>
-
-    </p>
-
-
-    <ul id="cart-items"></ul>
-
-
-    <h3>
-
-        الإجمالي:
-
-        <span id="total-price">
-            0
-        </span>
-
-        ريال
-
-    </h3>
-
-
-    <button
-        id="clear-cart"
-        type="button"
-        class="clear-cart-btn"
-    >
-        إفراغ السلة
-    </button>
-
-
-    <a
-        href="checkout.html"
-        class="checkout-btn"
-        id="checkout-btn"
-    >
-        🛒 إتمام الطلب بأمان
-    </a>
-
-
-    <p class="secure-payment">
-        🔒 دفع آمن وسريع
-    </p>
-
-</aside>
-
-
-<!-- ==================================================
-     التذييل
-================================================== -->
-
 <footer>
 
     <p>
@@ -1015,1038 +743,476 @@
 <div id="toast"></div>
 
 
-<!-- ==================================================
-     JavaScript
-================================================== -->
-
 <script>
 
-    /* ==================================================
-       حماية النصوص
-    ================================================== */
+const SUPABASE_URL =
+    "https://gyyyzavjzvcxzgrtukqu.supabase.co";
 
-    function escapeHtml(value) {
+const SUPABASE_KEY =
+    "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-";
 
-        return String(value ?? "").replace(
-            /[&<>"']/g,
-            character => ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#039;"
-            }[character])
-        );
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* ==================================================
+   حماية النصوص
+================================================== */
+
+function escapeHtml(value) {
+
+    return String(value ?? "").replace(
+        /[&<>"']/g,
+        character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+        }[character])
+    );
+
+}
+
+
+/* ==================================================
+   الصور
+================================================== */
+
+function imageUrl(path) {
+
+    const value =
+        String(path || "").trim();
+
+
+    if (!value) {
+        return "";
+    }
+
+
+    if (
+        /^https?:\/\//i.test(value) ||
+        /^data:image\//i.test(value)
+    ) {
+
+        return value;
 
     }
 
 
-    /* ==================================================
-       الصور
-    ================================================== */
+    return encodeURI(
+        value.replace(/^\.\//, "")
+    );
 
-    function imageUrl(path) {
-
-        const value =
-            String(path || "").trim();
+}
 
 
-        if (!value) {
-            return "";
-        }
+/* ==================================================
+   تنظيف المنتج
+================================================== */
 
+function sanitizePublicProduct(product) {
 
-        if (
-            /^https?:\/\//i.test(value) ||
-            /^data:image\//i.test(value)
-        ) {
-            return value;
-        }
+    if (
+        !product ||
+        typeof product !== "object"
+    ) {
 
-
-        return encodeURI(
-            value.replace(/^\.\//, "")
-        );
+        return null;
 
     }
 
 
-    /* ==================================================
-       تنظيف المنتج
-    ================================================== */
+    return {
 
-    function sanitizePublicProduct(product) {
+        id:
+            product.id ||
+            product.requestId ||
+            "",
 
-        if (
-            !product ||
-            typeof product !== "object"
-        ) {
-            return null;
-        }
+        requestId:
+            product.requestId ||
+            product.id ||
+            "",
+
+        title:
+            product.title ||
+            product.name ||
+            "سلعة بدون اسم",
+
+        name:
+            product.name ||
+            product.title ||
+            "سلعة بدون اسم",
+
+        category:
+            String(
+                product.category || ""
+            ).trim(),
+
+        price:
+            Number(
+                product.price || 0
+            ),
+
+        image:
+            product.image ||
+            product.productImage ||
+            product.imageUrl ||
+            product.photo ||
+            "",
+
+        description:
+            product.description ||
+            "",
+
+        available:
+            product.available !== false,
+
+        active:
+            product.active !== false,
+
+        status:
+            product.status ||
+            "منشور",
+
+        createdAt:
+            product.createdAt ||
+            ""
+
+    };
+
+}
 
 
-        return {
+/* ==================================================
+   منع التكرار
+================================================== */
 
-            id:
+function uniqueProducts(products) {
+
+    const result = [];
+
+    const ids = new Set();
+
+
+    products.forEach(product => {
+
+        const id =
+            String(
                 product.id ||
                 product.requestId ||
-                (
-                    "public-" +
-                    Date.now() +
-                    Math.random()
-                ),
-
-            requestId:
-                product.requestId ||
-                product.id ||
-                "",
-
-            title:
-                product.title ||
-                product.name ||
-                product.productName ||
-                "سلعة بدون اسم",
-
-            name:
-                product.name ||
-                product.title ||
-                product.productName ||
-                "سلعة بدون اسم",
-
-            category:
-                String(
-                    product.category || ""
-                ).trim(),
-
-            price:
-                Number(
-                    product.price || 0
-                ),
-
-            quantity:
-                product.quantity === undefined ||
-                product.quantity === null ||
-                product.quantity === ""
-                    ? null
-                    : Number(product.quantity),
-
-            image:
-                product.image ||
-                product.productImage ||
-                product.imageUrl ||
-                product.photo ||
-                "",
-
-            images:
-                Array.isArray(product.images)
-                    ? product.images
-                    : [],
-
-            description:
-                product.description ||
-                "",
-
-            notes:
-                product.notes ||
-                "",
-
-            available:
-                product.available !== false,
-
-            active:
-                product.active !== false,
-
-            status:
-                product.status ||
-                "منشور",
-
-            createdAt:
-                product.createdAt ||
                 ""
-
-        };
-
-    }
-
-
-    /* ==================================================
-       تنظيف البيانات القديمة
-    ================================================== */
-
-    function cleanStoredPublicProducts() {
-
-        try {
-
-            const raw =
-                localStorage.getItem(
-                    "publishedProducts"
-                );
-
-
-            if (!raw) {
-                return;
-            }
-
-
-            const old =
-                JSON.parse(raw);
-
-
-            if (!Array.isArray(old)) {
-                return;
-            }
-
-
-            const clean =
-                old
-                    .map(
-                        sanitizePublicProduct
-                    )
-                    .filter(Boolean);
-
-
-            localStorage.setItem(
-                "publishedProducts",
-                JSON.stringify(clean)
-            );
-
-        }
-
-        catch (error) {
-
-            console.warn(
-                "تعذر تنظيف البيانات العامة القديمة:",
-                error
-            );
-
-        }
-
-    }
-
-
-    cleanStoredPublicProducts();
-
-
-    /* ==================================================
-       المنتجات المنشورة
-    ================================================== */
-
-    function getPublishedProducts() {
-
-        try {
-
-            const data =
-                localStorage.getItem(
-                    "publishedProducts"
-                );
-
-
-            if (!data) {
-                return [];
-            }
-
-
-            const products =
-                JSON.parse(data);
-
-
-            if (!Array.isArray(products)) {
-                return [];
-            }
-
-
-            return products
-
-                .filter(product => {
-
-                    return (
-                        product &&
-                        product.active !== false
-                    );
-
-                })
-
-                .map(
-                    sanitizePublicProduct
-                )
-
-                .filter(Boolean);
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "خطأ في قراءة السلع المنشورة:",
-                error
-            );
-
-            return [];
-
-        }
-
-    }
-
-
-    /* ==================================================
-       المنتجات القديمة
-    ================================================== */
-
-    async function getOldProducts() {
-
-        try {
-
-            const response =
-                await fetch(
-                    "books.json",
-                    {
-                        cache: "no-store"
-                    }
-                );
-
-
-            if (!response.ok) {
-                return [];
-            }
-
-
-            const products =
-                await response.json();
-
-
-            if (!Array.isArray(products)) {
-                return [];
-            }
-
-
-            return products
-
-                .map(
-                    sanitizePublicProduct
-                )
-
-                .filter(Boolean);
-
-        }
-
-        catch (error) {
-
-            console.warn(
-                "تعذر تحميل books.json:",
-                error
-            );
-
-            return [];
-
-        }
-
-    }
-
-
-    /* ==================================================
-       جميع المنتجات
-    ================================================== */
-
-    async function getAllProducts() {
-
-        const oldProducts =
-            await getOldProducts();
-
-
-        const publishedProducts =
-            getPublishedProducts();
-
-
-        return [
-            ...oldProducts,
-            ...publishedProducts
-        ];
-
-    }
-
-
-    /* ==================================================
-       منع التكرار
-    ================================================== */
-
-    function uniqueProducts(products) {
-
-        const result = [];
-
-        const ids = new Set();
-
-
-        products.forEach(product => {
-
-            const id =
-                String(
-                    product.id ||
-                    product.requestId ||
-                    ""
-                );
-
-
-            if (
-                id &&
-                ids.has(id)
-            ) {
-                return;
-            }
-
-
-            if (id) {
-                ids.add(id);
-            }
-
-
-            result.push(product);
-
-        });
-
-
-        return result;
-
-    }
-
-
-    /* ==================================================
-       عرض أحدث المنتجات
-    ================================================== */
-
-    async function renderLatestProducts() {
-
-        const container =
-            document.getElementById(
-                "latest-products"
             );
 
 
-        if (!container) {
-            return;
-        }
-
-
-        container.innerHTML = "";
-
-
-        const allProducts =
-            uniqueProducts(
-                await getAllProducts()
-            );
-
-
-        const products =
-            allProducts
-                .slice()
-                .reverse()
-                .slice(0, 4);
-
-
-        if (!products.length) {
-
-            container.innerHTML = `
-
-                <div class="product-empty">
-
-                    <div class="product-empty-icon">
-                        🛍️
-                    </div>
-
-                    <h3>
-                        لا توجد سلع منشورة حاليًا
-                    </h3>
-
-                    <p>
-                        ستظهر أحدث السلع هنا بعد اعتمادها.
-                    </p>
-
-                </div>
-
-            `;
+        if (
+            id &&
+            ids.has(id)
+        ) {
 
             return;
 
         }
 
 
-        products.forEach(product => {
+        if (id) {
 
-            const card =
-                document.createElement(
-                    "article"
-                );
+            ids.add(id);
 
-
-            card.className =
-                "home-product-card";
+        }
 
 
-            const image =
-                imageUrl(
-                    product.image
-                );
+        result.push(product);
+
+    });
 
 
-            const imageHtml =
-                image
+    return result;
 
-                    ?
-
-                    `
-                    <img
-                        src="${image}"
-                        alt="${escapeHtml(
-                            product.title
-                        )}"
-                        class="home-product-image"
-                        loading="lazy"
-                        onerror="this.style.display='none'"
-                    >
-                    `
-
-                    :
-
-                    `
-                    <div
-                        class="home-product-image empty"
-                    >
-                        📦
-                    </div>
-                    `;
+}
 
 
-            card.innerHTML = `
+/* ==================================================
+   المنتجات من Supabase
+================================================== */
 
-                ${imageHtml}
-
-                <div class="home-product-info">
-
-                    <h3>
-                        ${escapeHtml(
-                            product.title
-                        )}
-                    </h3>
-
-
-                    <p class="home-product-category">
-
-                        📂
-
-                        ${escapeHtml(
-                            product.category ||
-                            "سلعة"
-                        )}
-
-                    </p>
-
-
-                    <p class="home-product-price">
-
-                        ${Number(
-                            product.price || 0
-                        )}
-
-                        ريال
-
-                    </p>
-
-                </div>
-
-            `;
-
-
-            container.appendChild(
-                card
-            );
-
-        });
-
-    }
-
-
-    /* ==================================================
-       السلة
-    ================================================== */
-
-    let cart = [];
-
+async function getAllProducts() {
 
     try {
 
-        cart =
-            JSON.parse(
-                localStorage.getItem(
-                    "cart"
-                ) || "[]"
+        const {
+            data,
+            error
+        } = await supabaseClient
+
+            .from("products")
+
+            .select("*")
+
+            .order(
+                "id",
+                {
+                    ascending: false
+                }
             );
 
 
-        if (!Array.isArray(cart)) {
-            cart = [];
-        }
+        if (error) {
 
-    }
+            throw error;
 
-    catch {
-
-        cart = [];
-
-    }
-
-
-    const cartItems =
-        document.getElementById(
-            "cart-items"
-        );
-
-
-    const cartCount =
-        document.getElementById(
-            "cart-count"
-        );
-
-
-    const totalPrice =
-        document.getElementById(
-            "total-price"
-        );
-
-
-    const clearCartButton =
-        document.getElementById(
-            "clear-cart"
-        );
-
-
-    const checkoutButton =
-        document.getElementById(
-            "checkout-btn"
-        );
-
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-
-    /* ==================================================
-       التنبيه
-    ================================================== */
-
-    function showToast(message) {
-
-        if (!toast) {
-            return;
         }
 
 
-        toast.textContent =
-            message;
+        const supabaseProducts =
+
+            (data || [])
+
+                .map(product =>
+
+                    sanitizePublicProduct({
+
+                        id:
+                            product.id,
+
+                        title:
+                            product.title,
+
+                        name:
+                            product.title,
+
+                        category:
+                            product.category,
+
+                        price:
+                            product.price,
+
+                        image:
+                            product.image,
+
+                        description:
+                            product.description,
+
+                        available:
+                            product.available,
+
+                        active:
+                            true
+
+                    })
+
+                )
+
+                .filter(Boolean);
 
 
-        toast.classList.add(
-            "show"
+        return uniqueProducts(
+            supabaseProducts
         );
-
-
-        clearTimeout(
-            showToast.timer
-        );
-
-
-        showToast.timer =
-            setTimeout(
-                () => {
-
-                    toast.classList.remove(
-                        "show"
-                    );
-
-                },
-                2200
-            );
 
     }
 
+    catch (error) {
 
-    /* ==================================================
-       تحديث السلة
-    ================================================== */
-
-    function updateCart() {
-
-        if (!cartItems) {
-            return;
-        }
+        console.error(
+            "Supabase products error:",
+            error
+        );
 
 
-        cartItems.innerHTML = "";
+        return [];
+
+    }
+
+}
 
 
-        let total = 0;
+/* ==================================================
+   عرض أحدث المنتجات
+================================================== */
 
-        let count = 0;
+async function renderLatestProducts() {
 
-
-        cart.forEach(item => {
-
-            item.quantity =
-                Math.max(
-                    1,
-                    Number(
-                        item.quantity
-                    ) || 1
-                );
+    const container =
+        document.getElementById(
+            "latest-products"
+        );
 
 
-            const price =
-                Number(
-                    item.price
-                ) || 0;
+    if (!container) {
+        return;
+    }
 
 
-            const subtotal =
-                price *
-                item.quantity;
+    container.innerHTML = "";
 
 
-            total += subtotal;
-
-            count +=
-                item.quantity;
-
-
-            const li =
-                document.createElement(
-                    "li"
-                );
+    const products =
+        (
+            await getAllProducts()
+        )
+            .slice(0, 4);
 
 
-            li.innerHTML = `
+    if (!products.length) {
 
-                <div class="cart-item">
+        container.innerHTML = `
 
-                    <img
-                        class="cart-image"
-                        src="${imageUrl(
-                            item.image
-                        )}"
-                        alt="${escapeHtml(
-                            item.title ||
-                            item.name ||
-                            "منتج"
-                        )}"
-                    >
+            <div class="product-empty">
 
-                    <div class="cart-info">
-
-                        <h4>
-                            ${escapeHtml(
-                                item.title ||
-                                item.name ||
-                                "منتج"
-                            )}
-                        </h4>
-
-                        <p>
-                            ${price}
-                            ريال ×
-                            ${item.quantity}
-                        </p>
-
-                        <strong>
-                            ${subtotal}
-                            ريال
-                        </strong>
-
-                        <div class="cart-buttons">
-
-                            <button
-                                type="button"
-                                data-action="minus"
-                            >
-                                −
-                            </button>
-
-                            <span>
-                                ${item.quantity}
-                            </span>
-
-                            <button
-                                type="button"
-                                data-action="plus"
-                            >
-                                +
-                            </button>
-
-                        </div>
-
-                        <button
-                            type="button"
-                            class="delete"
-                            data-action="delete"
-                        >
-                            🗑 حذف
-                        </button>
-
-                    </div>
-
+                <div class="product-empty-icon">
+                    🛍️
                 </div>
 
-            `;
+                <h3>
+                    لا توجد سلع منشورة حاليًا
+                </h3>
+
+                <p>
+                    ستظهر أحدث السلع هنا بعد اعتمادها.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
 
 
-            li.querySelector(
-                '[data-action="plus"]'
-            ).onclick = () => {
+    products.forEach(product => {
 
-                item.quantity++;
-
-                saveCart();
-
-            };
-
-
-            li.querySelector(
-                '[data-action="minus"]'
-            ).onclick = () => {
-
-                item.quantity--;
-
-
-                if (
-                    item.quantity <= 0
-                ) {
-
-                    cart =
-                        cart.filter(
-                            cartItem =>
-                                String(
-                                    cartItem.id
-                                ) !==
-                                String(
-                                    item.id
-                                )
-                        );
-
-                }
-
-
-                saveCart();
-
-            };
-
-
-            li.querySelector(
-                '[data-action="delete"]'
-            ).onclick = () => {
-
-                cart =
-                    cart.filter(
-                        cartItem =>
-                            String(
-                                cartItem.id
-                            ) !==
-                            String(
-                                item.id
-                            )
-                    );
-
-
-                saveCart();
-
-
-                showToast(
-                    "تم حذف المنتج"
-                );
-
-            };
-
-
-            cartItems.appendChild(
-                li
+        const card =
+            document.createElement(
+                "article"
             );
 
-        });
+
+        card.className =
+            "home-product-card";
 
 
-        if (!cart.length) {
-
-            cartItems.innerHTML = `
-
-                <li>
-
-                    🛍️ السلة فارغة
-
-                    <br>
-
-                    <small>
-                        أضف منتجًا للبدء.
-                    </small>
-
-                </li>
-
-            `;
-
-        }
+        const image =
+            imageUrl(
+                product.image
+            );
 
 
-        if (cartCount) {
+        const imageHtml =
 
-            cartCount.textContent =
-                count;
+            image
 
-        }
+                ?
+
+                `
+                <img
+                    src="${image}"
+                    alt="${escapeHtml(
+                        product.title
+                    )}"
+                    class="home-product-image"
+                    loading="lazy"
+                    onerror="this.style.display='none'"
+                >
+                `
+
+                :
+
+                `
+                <div
+                    class="home-product-image empty"
+                >
+                    📦
+                </div>
+                `;
 
 
-        if (totalPrice) {
+        card.innerHTML = `
 
-            totalPrice.textContent =
-                total;
+            ${imageHtml}
 
-        }
+            <div class="home-product-info">
+
+                <h3>
+                    ${escapeHtml(
+                        product.title
+                    )}
+                </h3>
+
+                <p class="home-product-category">
+
+                    📂
+
+                    ${escapeHtml(
+                        product.category ||
+                        "سلعة"
+                    )}
+
+                </p>
+
+                <p class="home-product-price">
+
+                    ${Number(
+                        product.price || 0
+                    )}
+
+                    ريال
+
+                </p>
+
+            </div>
+
+        `;
 
 
-        localStorage.setItem(
-            "cart",
-            JSON.stringify(cart)
+        container.appendChild(
+            card
         );
 
+    });
 
-        localStorage.setItem(
-            "totalPrice",
-            total
-        );
+}
 
 
-        localStorage.setItem(
-            "totalItems",
-            count
-        );
+/* ==================================================
+   تشغيل الصفحة
+================================================== */
 
-    }
-
-
-    /* ==================================================
-       حفظ السلة
-    ================================================== */
-
-    function saveCart() {
-
-        localStorage.setItem(
-            "cart",
-            JSON.stringify(cart)
-        );
-
-
-        updateCart();
-
-    }
-
-
-    /* ==================================================
-       إفراغ السلة
-    ================================================== */
-
-    clearCartButton?.addEventListener(
-        "click",
-        () => {
-
-            if (!cart.length) {
-                return;
-            }
-
-
-            if (
-                confirm(
-                    "هل تريد إفراغ السلة بالكامل؟"
-                )
-            ) {
-
-                cart = [];
-
-                saveCart();
-
-                showToast(
-                    "تم إفراغ السلة"
-                );
-
-            }
-
-        }
-    );
-
-
-    /* ==================================================
-       إتمام الطلب
-    ================================================== */
-
-    checkoutButton?.addEventListener(
-        "click",
-        event => {
-
-            if (!cart.length) {
-
-                event.preventDefault();
-
-                showToast(
-                    "السلة فارغة، أضف منتجًا أولًا"
-                );
-
-            }
-
-        }
-    );
-
-
-    /* ==================================================
-       تشغيل الصفحة
-    ================================================== */
-
-    async function initHomePage() {
-
-        updateCart();
-
-        await renderLatestProducts();
-
-    }
-
-
-    initHomePage();
+renderLatestProducts();
 
 </script>
 
-
-<!-- ==================================================
-     Service Worker
-================================================== -->
 
 <script>
 
-    if (
-        "serviceWorker" in navigator
-    ) {
+if (
+    "serviceWorker" in navigator
+) {
 
-        window.addEventListener(
-            "load",
-            () => {
+    window.addEventListener(
+        "load",
+        () => {
 
-                navigator.serviceWorker
-                    .register("sw.js")
-                    .catch(
-                        console.error
-                    );
+            navigator.serviceWorker
+                .register("sw.js")
+                .catch(
+                    console.error
+                );
 
-            }
-        );
+        }
+    );
 
-    }
+}
 
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </body>
 
 </html>
-```
