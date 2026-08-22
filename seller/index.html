@@ -1,1 +1,3477 @@
-<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=offer.html"><title>اعرض سلعتك | لَحْقها</title></head><body><p style="font-family:Tahoma;text-align:center;margin:40px">جاري فتح صفحة عرض السلعة...</p><script>location.replace("offer.html");</script></body></html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>لوحة التحكم | لَحْقها</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+:root{
+    --primary:#1e3a5f;
+    --primary-dark:#16314f;
+    --success:#2e7d32;
+    --danger:#c62828;
+    --warning:#9a6100;
+    --background:#f5f7fb;
+    --white:#fff;
+    --text:#333;
+    --muted:#6b7280;
+    --border:#e2e6ec;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Tahoma,Arial,sans-serif;
+    background:var(--background);
+    color:var(--text);
+}
+
+button,
+input{
+    font-family:inherit;
+}
+
+
+/* =========================================
+   تسجيل الدخول
+========================================= */
+
+#login-screen{
+
+    min-height:100vh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+}
+
+.login-box{
+
+    width:min(430px,100%);
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:35px 25px;
+
+    box-shadow:0 10px 35px rgba(0,0,0,.1);
+
+    text-align:center;
+
+}
+
+.login-logo{
+    font-size:48px;
+    margin-bottom:10px;
+}
+
+.login-box h1{
+    margin:0 0 10px;
+    color:var(--primary);
+}
+
+.login-box p{
+    color:var(--muted);
+    line-height:1.7;
+}
+
+.login-box label{
+
+    display:block;
+
+    text-align:right;
+
+    font-weight:bold;
+
+    color:var(--primary);
+
+    margin:15px 0 7px;
+
+}
+
+.login-box input{
+
+    width:100%;
+
+    padding:13px;
+
+    border:1px solid var(--border);
+
+    border-radius:10px;
+
+    font-size:15px;
+
+    outline:none;
+
+}
+
+.login-box input:focus{
+    border-color:var(--primary);
+}
+
+.login-btn{
+
+    width:100%;
+
+    margin-top:20px;
+
+    padding:13px;
+
+    border:0;
+
+    border-radius:10px;
+
+    background:var(--primary);
+
+    color:white;
+
+    font-weight:bold;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+.login-btn:disabled{
+
+    opacity:.7;
+
+    cursor:not-allowed;
+
+}
+
+.forgot-password{
+
+    display:block;
+
+    margin-top:15px;
+
+    color:var(--primary);
+
+    font-weight:bold;
+
+    text-decoration:none;
+
+    cursor:pointer;
+
+}
+
+#login-message{
+
+    margin-top:15px;
+
+    padding:10px;
+
+    border-radius:9px;
+
+    display:none;
+
+    line-height:1.7;
+
+}
+
+#login-message.error{
+
+    display:block;
+
+    background:#fdeaea;
+
+    color:var(--danger);
+
+}
+
+#login-message.success{
+
+    display:block;
+
+    background:#e9f7eb;
+
+    color:var(--success);
+
+}
+
+
+/* =========================================
+   نسيت كلمة المرور
+========================================= */
+
+#forgot-screen{
+
+    display:none;
+
+    min-height:100vh;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+}
+
+.forgot-box{
+
+    width:min(430px,100%);
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:35px 25px;
+
+    box-shadow:0 10px 35px rgba(0,0,0,.1);
+
+    text-align:center;
+
+}
+
+.forgot-logo{
+    font-size:48px;
+    margin-bottom:10px;
+}
+
+.forgot-box h2{
+    color:var(--primary);
+}
+
+.forgot-box p{
+    color:var(--muted);
+    line-height:1.8;
+}
+
+.forgot-box label{
+
+    display:block;
+
+    text-align:right;
+
+    font-weight:bold;
+
+    color:var(--primary);
+
+    margin:15px 0 7px;
+
+}
+
+.forgot-box input{
+
+    width:100%;
+
+    padding:13px;
+
+    border:1px solid var(--border);
+
+    border-radius:10px;
+
+    font-size:15px;
+
+}
+
+.reset-btn{
+
+    width:100%;
+
+    margin-top:20px;
+
+    padding:13px;
+
+    border:0;
+
+    border-radius:10px;
+
+    background:var(--primary);
+
+    color:#fff;
+
+    font-weight:bold;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+.reset-btn:disabled{
+
+    opacity:.7;
+
+    cursor:not-allowed;
+
+}
+
+.back-login{
+
+    display:block;
+
+    margin-top:15px;
+
+    color:var(--primary);
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+#forgot-message{
+
+    margin-top:15px;
+
+    padding:10px;
+
+    border-radius:9px;
+
+    display:none;
+
+    line-height:1.7;
+
+}
+
+#forgot-message.error{
+
+    display:block;
+
+    background:#fdeaea;
+
+    color:var(--danger);
+
+}
+
+#forgot-message.success{
+
+    display:block;
+
+    background:#e9f7eb;
+
+    color:var(--success);
+
+}
+
+
+/* =========================================
+   تغيير كلمة المرور
+========================================= */
+
+#reset-screen{
+
+    display:none;
+
+    min-height:100vh;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+}
+
+.reset-box{
+
+    width:min(430px,100%);
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:35px 25px;
+
+    box-shadow:0 10px 35px rgba(0,0,0,.1);
+
+    text-align:center;
+
+}
+
+.reset-box h2{
+    color:var(--primary);
+}
+
+.reset-box label{
+
+    display:block;
+
+    text-align:right;
+
+    font-weight:bold;
+
+    color:var(--primary);
+
+    margin:15px 0 7px;
+
+}
+
+.reset-box input{
+
+    width:100%;
+
+    padding:13px;
+
+    border:1px solid var(--border);
+
+    border-radius:10px;
+
+    font-size:15px;
+
+}
+
+#reset-message{
+
+    margin-top:15px;
+
+    padding:10px;
+
+    border-radius:9px;
+
+    display:none;
+
+    line-height:1.7;
+
+}
+
+#reset-message.error{
+
+    display:block;
+
+    background:#fdeaea;
+
+    color:var(--danger);
+
+}
+
+#reset-message.success{
+
+    display:block;
+
+    background:#e9f7eb;
+
+    color:var(--success);
+
+}
+
+
+/* =========================================
+   لوحة التحكم
+========================================= */
+
+#admin-app{
+    display:none;
+}
+
+.admin-header{
+
+    background:var(--primary);
+
+    color:white;
+
+    padding:25px 20px;
+
+}
+
+.header-content{
+
+    width:min(1200px,calc(100% - 30px));
+
+    margin:auto;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+.admin-header h1{
+    margin:0 0 5px;
+}
+
+.admin-header p{
+    margin:0;
+    opacity:.9;
+}
+
+.header-links{
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+}
+
+.header-link{
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:10px 15px;
+
+    border:1px solid rgba(255,255,255,.35);
+
+    border-radius:9px;
+
+    background:transparent;
+
+    cursor:pointer;
+
+}
+
+.logout-link{
+    background:rgba(198,40,40,.3);
+}
+
+.admin-container{
+
+    width:min(1200px,calc(100% - 30px));
+
+    margin:30px auto 60px;
+
+}
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(5,1fr);
+
+    gap:15px;
+
+    margin-bottom:25px;
+
+}
+
+.stat-card{
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    box-shadow:0 6px 20px rgba(0,0,0,.07);
+
+}
+
+.stat-card span{
+
+    display:block;
+
+    color:var(--muted);
+
+    margin-bottom:8px;
+
+}
+
+.stat-card strong{
+
+    font-size:28px;
+
+    color:var(--primary);
+
+}
+
+.requests-box{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+    margin-bottom:25px;
+
+}
+
+.requests-head{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:20px;
+
+}
+
+.requests-head h2{
+
+    margin:0;
+
+    color:var(--primary);
+
+}
+
+.refresh-btn{
+
+    border:0;
+
+    background:var(--primary);
+
+    color:white;
+
+    padding:10px 15px;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+}
+
+.empty{
+
+    text-align:center;
+
+    padding:45px 20px;
+
+    color:var(--muted);
+
+}
+
+.request-card{
+
+    border:1px solid var(--border);
+
+    border-radius:15px;
+
+    padding:20px;
+
+    margin-bottom:15px;
+
+    background:white;
+
+}
+
+.request-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    margin-bottom:15px;
+
+}
+
+.request-top h3{
+
+    margin:0 0 6px;
+
+    color:var(--primary);
+
+}
+
+.request-id{
+
+    font-size:12px;
+
+    color:var(--muted);
+
+}
+
+.status{
+
+    display:inline-block;
+
+    padding:6px 10px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    height:max-content;
+
+}
+
+.status.pending{
+
+    background:#fff4dc;
+
+    color:var(--warning);
+
+}
+
+.status.approved{
+
+    background:#e9f7eb;
+
+    color:var(--success);
+
+}
+
+.status.rejected{
+
+    background:#fdeaea;
+
+    color:var(--danger);
+
+}
+
+.request-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:10px 20px;
+
+    padding:15px;
+
+    background:#f8fafc;
+
+    border-radius:12px;
+
+}
+
+.request-field strong{
+    color:var(--primary);
+}
+
+.description{
+
+    margin-top:15px;
+
+    padding:15px;
+
+    background:#fafafa;
+
+    border-radius:10px;
+
+    line-height:1.8;
+
+}
+
+
+/* =========================================
+   طلبات المشترين
+========================================= */
+
+.buyer-order{
+
+    border:2px solid #dbe4ee;
+
+    border-radius:16px;
+
+    padding:20px;
+
+    margin-bottom:18px;
+
+    background:#fff;
+
+}
+
+.buyer-order.new-order{
+
+    border-color:#e5b94d;
+
+    background:#fffdf6;
+
+}
+
+.buyer-order-head{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:15px;
+
+    margin-bottom:18px;
+
+}
+
+.buyer-order-title{
+
+    margin:0 0 7px;
+
+    color:var(--primary);
+
+    font-size:20px;
+
+}
+
+.buyer-order-id{
+
+    color:var(--muted);
+
+    font-size:13px;
+
+}
+
+.order-status{
+
+    background:#fff4dc;
+
+    color:var(--warning);
+
+    padding:8px 13px;
+
+    border-radius:20px;
+
+    font-weight:bold;
+
+    white-space:nowrap;
+
+}
+
+.buyer-info{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:10px;
+
+    padding:15px;
+
+    background:#f8fafc;
+
+    border-radius:12px;
+
+}
+
+.buyer-info-item{
+
+    line-height:1.8;
+
+}
+
+.buyer-info-item strong{
+
+    color:var(--primary);
+
+}
+
+.order-products{
+
+    margin-top:15px;
+
+    padding:15px;
+
+    background:#fafafa;
+
+    border-radius:12px;
+
+}
+
+.order-products h4{
+
+    margin:0 0 12px;
+
+    color:var(--primary);
+
+}
+
+.product-row{
+
+    padding:12px 0;
+
+    border-bottom:1px solid var(--border);
+
+    line-height:1.8;
+
+}
+
+.product-row:last-child{
+    border-bottom:0;
+}
+
+.product-name{
+
+    font-weight:bold;
+
+    color:var(--primary);
+
+}
+
+.order-total{
+
+    margin-top:15px;
+
+    padding:15px;
+
+    background:#eef7ef;
+
+    border-radius:12px;
+
+    color:var(--success);
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+.prepare-box{
+
+    margin-top:15px;
+
+    padding:15px;
+
+    background:#f5f8fc;
+
+    border-radius:12px;
+
+}
+
+.prepare-btn{
+
+    border:0;
+
+    padding:11px 18px;
+
+    border-radius:9px;
+
+    background:var(--primary);
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.prepare-btn:disabled{
+
+    opacity:.7;
+
+    cursor:not-allowed;
+
+}
+
+
+/* =========================================
+   أصحاب السلع
+========================================= */
+
+.tabs{
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:20px;
+
+}
+
+.tab{
+
+    border:1px solid var(--border);
+
+    background:white;
+
+    padding:11px 16px;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+}
+
+.tab.active{
+
+    background:var(--primary);
+
+    color:white;
+
+}
+
+.admin-actions{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-top:15px;
+
+}
+
+.admin-actions button{
+
+    border:0;
+
+    padding:10px 15px;
+
+    border-radius:9px;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.approve-btn{
+    background:var(--success);
+}
+
+.reject-btn{
+    background:var(--danger);
+}
+
+.delete-btn{
+    background:#555;
+}
+
+.commission-box{
+
+    display:none;
+
+    margin-top:15px;
+
+    padding:15px;
+
+    background:#f5f8fc;
+
+    border-radius:12px;
+
+}
+
+.commission-box.show{
+    display:block;
+}
+
+.commission-box input{
+
+    width:220px;
+
+    padding:10px;
+
+    border:1px solid var(--border);
+
+    border-radius:8px;
+
+    margin:8px 0;
+
+}
+
+.confirm-approve{
+
+    padding:10px 15px;
+
+    border:0;
+
+    border-radius:8px;
+
+    background:var(--success);
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.published-box{
+
+    margin-top:15px;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    background:#eef7ef;
+
+    border:1px solid #c5dfc8;
+
+}
+
+.published-box strong{
+    color:var(--success);
+}
+
+.admin-footer{
+
+    text-align:center;
+
+    color:var(--muted);
+
+    padding:20px;
+
+    font-size:13px;
+
+}
+
+
+@media(max-width:950px){
+
+    .stats{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+}
+
+@media(max-width:800px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .header-content{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+    .request-grid,
+    .buyer-info{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:500px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .admin-container{
+        width:calc(100% - 20px);
+    }
+
+    .requests-box{
+        padding:17px;
+    }
+
+    .request-top,
+    .buyer-order-head{
+        flex-direction:column;
+    }
+
+    .header-link{
+        width:100%;
+        text-align:center;
+    }
+
+    .commission-box input{
+        width:100%;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     تسجيل الدخول
+========================================= -->
+
+<section id="login-screen">
+
+<div class="login-box">
+
+<div class="login-logo">🔐</div>
+
+<h1>
+لوحة التحكم — لَحْقها
+</h1>
+
+<p>
+هذه الصفحة مخصصة للإدارة فقط.
+<br>
+سجّل الدخول للمتابعة.
+</p>
+
+<form id="login-form">
+
+<label for="login-email">
+البريد الإلكتروني
+</label>
+
+<input
+type="email"
+id="login-email"
+placeholder="أدخل بريد المدير"
+required
+autocomplete="username"
+>
+
+<label for="login-password">
+كلمة المرور
+</label>
+
+<input
+type="password"
+id="login-password"
+placeholder="أدخل كلمة المرور"
+required
+autocomplete="current-password"
+>
+
+<button
+type="submit"
+class="login-btn"
+id="login-button"
+>
+🔐 تسجيل الدخول
+</button>
+
+</form>
+
+<a
+class="forgot-password"
+onclick="showForgotPassword()"
+>
+🔑 نسيت كلمة المرور؟
+</a>
+
+<div id="login-message"></div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     نسيت كلمة المرور
+========================================= -->
+
+<section id="forgot-screen">
+
+<div class="forgot-box">
+
+<div class="forgot-logo">🔑</div>
+
+<h2>
+استعادة كلمة المرور
+</h2>
+
+<p>
+أدخل البريد الإلكتروني المرتبط بحساب لوحة التحكم.
+<br>
+سنرسل لك رابطًا لتعيين كلمة مرور جديدة.
+</p>
+
+<form id="forgot-form">
+
+<label for="forgot-email">
+البريد الإلكتروني
+</label>
+
+<input
+type="email"
+id="forgot-email"
+placeholder="أدخل بريد المدير"
+required
+autocomplete="email"
+>
+
+<button
+type="submit"
+class="reset-btn"
+id="forgot-button"
+>
+📩 إرسال رابط الاستعادة
+</button>
+
+</form>
+
+<span
+class="back-login"
+onclick="showLoginPanel()"
+>
+↩️ العودة لتسجيل الدخول
+</span>
+
+<div id="forgot-message"></div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     تغيير كلمة المرور
+========================================= -->
+
+<section id="reset-screen">
+
+<div class="reset-box">
+
+<div class="forgot-logo">🔐</div>
+
+<h2>
+تعيين كلمة مرور جديدة
+</h2>
+
+<p>
+أدخل كلمة المرور الجديدة لحساب لوحة التحكم.
+</p>
+
+<form id="reset-form">
+
+<label for="new-password">
+كلمة المرور الجديدة
+</label>
+
+<input
+type="password"
+id="new-password"
+placeholder="أدخل كلمة المرور الجديدة"
+required
+minlength="6"
+autocomplete="new-password"
+>
+
+<label for="confirm-password">
+تأكيد كلمة المرور
+</label>
+
+<input
+type="password"
+id="confirm-password"
+placeholder="أعد كتابة كلمة المرور"
+required
+minlength="6"
+autocomplete="new-password"
+>
+
+<button
+type="submit"
+class="reset-btn"
+id="reset-button"
+>
+🔐 حفظ كلمة المرور الجديدة
+</button>
+
+</form>
+
+<div id="reset-message"></div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     لوحة التحكم
+========================================= -->
+
+<div id="admin-app">
+
+<header class="admin-header">
+
+<div class="header-content">
+
+<div>
+
+<h1>
+🔐 لوحة التحكم — لَحْقها
+</h1>
+
+<p>
+متابعة السلع وطلبات المشترين وتجهيزها
+</p>
+
+</div>
+
+<div class="header-links">
+
+<a
+href="../index.html"
+class="header-link"
+>
+🛍️ متجر المشتري
+</a>
+
+<a
+href="../seller/offer.html"
+class="header-link"
+>
+📦 صفحة أصحاب السلع
+</a>
+
+<button
+type="button"
+class="header-link logout-link"
+onclick="logoutAdmin()"
+>
+🚪 تسجيل الخروج
+</button>
+
+</div>
+
+</div>
+
+</header>
+
+
+<main class="admin-container">
+
+
+<!-- =========================================
+     الإحصائيات
+========================================= -->
+
+<section class="stats">
+
+<div class="stat-card">
+
+<span>
+طلبات أصحاب السلع
+</span>
+
+<strong id="total-requests">
+0
+</strong>
+
+</div>
+
+
+<div class="stat-card">
+
+<span>
+قيد المراجعة
+</span>
+
+<strong id="pending-requests">
+0
+</strong>
+
+</div>
+
+
+<div class="stat-card">
+
+<span>
+تمت الموافقة
+</span>
+
+<strong id="approved-requests">
+0
+</strong>
+
+</div>
+
+
+<div class="stat-card">
+
+<span>
+مرفوضة
+</span>
+
+<strong id="rejected-requests">
+0
+</strong>
+
+</div>
+
+
+<div class="stat-card">
+
+<span>
+طلبات المشترين
+</span>
+
+<strong id="buyer-orders-count">
+0
+</strong>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     طلبات المشترين
+========================================= -->
+
+<section class="requests-box">
+
+<div class="requests-head">
+
+<h2>
+🛒 طلبات المشترين
+</h2>
+
+<button
+class="refresh-btn"
+onclick="loadBuyerOrders()"
+>
+🔄 تحديث الطلبات
+</button>
+
+</div>
+
+<div id="buyer-orders-container">
+
+<div class="empty">
+⏳ جاري تحميل طلبات المشترين...
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     فلتر أصحاب السلع
+========================================= -->
+
+<div class="tabs">
+
+<button
+class="tab active"
+onclick="setFilter('all',this)"
+>
+📋 الكل
+</button>
+
+<button
+class="tab"
+onclick="setFilter('pending',this)"
+>
+⏳ قيد المراجعة
+</button>
+
+<button
+class="tab"
+onclick="setFilter('approved',this)"
+>
+✅ معتمدة
+</button>
+
+<button
+class="tab"
+onclick="setFilter('rejected',this)"
+>
+❌ مرفوضة
+</button>
+
+</div>
+
+
+<!-- =========================================
+     طلبات أصحاب السلع
+========================================= -->
+
+<section class="requests-box">
+
+<div class="requests-head">
+
+<h2>
+📦 طلبات أصحاب السلع
+</h2>
+
+<button
+class="refresh-btn"
+onclick="refreshAdmin()"
+>
+🔄 تحديث
+</button>
+
+</div>
+
+<div id="requests-container"></div>
+
+</section>
+
+
+</main>
+
+
+<footer class="admin-footer">
+
+© 2026 لَحْقها — لوحة التحكم
+
+</footer>
+
+</div>
+
+
+<script>
+
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+"https://gyyyzavjzvcxzgrtukqu.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-";
+
+const supabaseClient =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
+);
+
+
+/* =========================================
+   العناصر
+========================================= */
+
+const loginScreen =
+document.getElementById("login-screen");
+
+const forgotScreen =
+document.getElementById("forgot-screen");
+
+const resetScreen =
+document.getElementById("reset-screen");
+
+const adminApp =
+document.getElementById("admin-app");
+
+const loginForm =
+document.getElementById("login-form");
+
+const loginButton =
+document.getElementById("login-button");
+
+const loginMessage =
+document.getElementById("login-message");
+
+const forgotForm =
+document.getElementById("forgot-form");
+
+const forgotButton =
+document.getElementById("forgot-button");
+
+const forgotMessage =
+document.getElementById("forgot-message");
+
+const resetForm =
+document.getElementById("reset-form");
+
+const resetButton =
+document.getElementById("reset-button");
+
+const resetMessage =
+document.getElementById("reset-message");
+
+
+let currentFilter = "all";
+
+
+/* =========================================
+   حماية النص
+========================================= */
+
+function safe(value){
+
+return String(value ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================
+   رسائل
+========================================= */
+
+function showLoginMessage(text,type="error"){
+
+loginMessage.textContent=text;
+loginMessage.className=type;
+
+}
+
+function showForgotMessage(text,type="error"){
+
+forgotMessage.textContent=text;
+forgotMessage.className=type;
+
+}
+
+function showResetMessage(text,type="error"){
+
+resetMessage.textContent=text;
+resetMessage.className=type;
+
+}
+
+function clearMessages(){
+
+loginMessage.textContent="";
+loginMessage.className="";
+
+forgotMessage.textContent="";
+forgotMessage.className="";
+
+resetMessage.textContent="";
+resetMessage.className="";
+
+}
+
+
+/* =========================================
+   عرض تسجيل الدخول
+========================================= */
+
+function showLoginPanel(){
+
+loginScreen.style.display="flex";
+
+forgotScreen.style.display="none";
+
+resetScreen.style.display="none";
+
+adminApp.style.display="none";
+
+clearMessages();
+
+document.title =
+"تسجيل الدخول | لوحة التحكم — لَحْقها";
+
+}
+
+
+/* =========================================
+   نسيت كلمة المرور
+========================================= */
+
+function showForgotPassword(){
+
+loginScreen.style.display="none";
+
+forgotScreen.style.display="flex";
+
+resetScreen.style.display="none";
+
+adminApp.style.display="none";
+
+clearMessages();
+
+const email =
+document.getElementById("login-email").value.trim();
+
+if(email){
+
+document.getElementById(
+"forgot-email"
+).value=email;
+
+}
+
+document.title =
+"استعادة كلمة المرور | لَحْقها";
+
+}
+
+
+/* =========================================
+   تسجيل الدخول
+========================================= */
+
+loginForm.addEventListener(
+"submit",
+async function(event){
+
+event.preventDefault();
+
+clearMessages();
+
+loginButton.disabled=true;
+
+loginButton.textContent =
+"⏳ جاري تسجيل الدخول...";
+
+const email =
+document.getElementById(
+"login-email"
+).value.trim();
+
+const password =
+document.getElementById(
+"login-password"
+).value;
+
+try{
+
+const {data,error} =
+await supabaseClient.auth.signInWithPassword({
+
+email:email,
+
+password:password
+
+});
+
+if(error)
+throw error;
+
+if(!data?.user)
+throw new Error(
+"تعذر تسجيل الدخول."
+);
+
+showLoginMessage(
+"✅ تم تسجيل الدخول بنجاح.",
+"success"
+);
+
+setTimeout(
+showAdminPanel,
+300
+);
+
+}catch(error){
+
+console.error(error);
+
+showLoginMessage(
+"❌ البريد الإلكتروني أو كلمة المرور غير صحيحة."
+);
+
+}finally{
+
+loginButton.disabled=false;
+
+loginButton.textContent =
+"🔐 تسجيل الدخول";
+
+}
+
+}
+);
+
+
+/* =========================================
+   استعادة كلمة المرور
+========================================= */
+
+forgotForm.addEventListener(
+"submit",
+async function(event){
+
+event.preventDefault();
+
+showForgotMessage("");
+
+forgotMessage.className="";
+
+forgotButton.disabled=true;
+
+forgotButton.textContent =
+"⏳ جاري الإرسال...";
+
+const email =
+document.getElementById(
+"forgot-email"
+).value.trim();
+
+if(!email){
+
+showForgotMessage(
+"❌ أدخل البريد الإلكتروني."
+);
+
+forgotButton.disabled=false;
+
+forgotButton.textContent =
+"📩 إرسال رابط الاستعادة";
+
+return;
+
+}
+
+try{
+
+const redirectUrl =
+window.location.origin +
+window.location.pathname;
+
+const {error} =
+await supabaseClient.auth
+.resetPasswordForEmail(
+email,
+{
+redirectTo:redirectUrl
+}
+);
+
+if(error)
+throw error;
+
+showForgotMessage(
+"✅ تم إرسال رابط تغيير كلمة المرور إلى بريدك الإلكتروني.",
+"success"
+);
+
+}catch(error){
+
+console.error(error);
+
+showForgotMessage(
+"❌ تعذر إرسال رابط الاستعادة."
+);
+
+}finally{
+
+forgotButton.disabled=false;
+
+forgotButton.textContent =
+"📩 إرسال رابط الاستعادة";
+
+}
+
+}
+);
+
+
+/* =========================================
+   تغيير كلمة المرور
+========================================= */
+
+resetForm.addEventListener(
+"submit",
+async function(event){
+
+event.preventDefault();
+
+showResetMessage("");
+
+resetMessage.className="";
+
+const password =
+document.getElementById(
+"new-password"
+).value;
+
+const confirmPassword =
+document.getElementById(
+"confirm-password"
+).value;
+
+if(password.length < 6){
+
+showResetMessage(
+"❌ كلمة المرور يجب أن تكون 6 أحرف على الأقل."
+);
+
+return;
+
+}
+
+if(password !== confirmPassword){
+
+showResetMessage(
+"❌ كلمتا المرور غير متطابقتين."
+);
+
+return;
+
+}
+
+resetButton.disabled=true;
+
+resetButton.textContent =
+"⏳ جاري حفظ كلمة المرور...";
+
+try{
+
+const {error} =
+await supabaseClient.auth.updateUser({
+
+password:password
+
+});
+
+if(error)
+throw error;
+
+showResetMessage(
+"✅ تم تغيير كلمة المرور بنجاح.",
+"success"
+);
+
+document.getElementById(
+"new-password"
+).value="";
+
+document.getElementById(
+"confirm-password"
+).value="";
+
+setTimeout(
+async function(){
+
+await supabaseClient.auth.signOut();
+
+showLoginPanel();
+
+},
+2000
+);
+
+}catch(error){
+
+console.error(error);
+
+showResetMessage(
+"❌ تعذر تغيير كلمة المرور."
+);
+
+}finally{
+
+resetButton.disabled=false;
+
+resetButton.textContent =
+"🔐 حفظ كلمة المرور الجديدة";
+
+}
+
+}
+);
+
+
+/* =========================================
+   عرض لوحة التحكم
+========================================= */
+
+function showAdminPanel(){
+
+loginScreen.style.display="none";
+
+forgotScreen.style.display="none";
+
+resetScreen.style.display="none";
+
+adminApp.style.display="block";
+
+document.title =
+"لوحة التحكم | لَحْقها";
+
+loadAll();
+
+}
+
+
+/* =========================================
+   تسجيل الخروج
+========================================= */
+
+async function logoutAdmin(){
+
+await supabaseClient.auth.signOut();
+
+showLoginPanel();
+
+document.getElementById(
+"login-password"
+).value="";
+
+}
+
+
+/* =========================================
+   مراقبة الجلسة
+========================================= */
+
+supabaseClient.auth.onAuthStateChange(
+(event,session)=>{
+
+if(event==="PASSWORD_RECOVERY"){
+
+loginScreen.style.display="none";
+
+forgotScreen.style.display="none";
+
+resetScreen.style.display="flex";
+
+adminApp.style.display="none";
+
+document.title =
+"تغيير كلمة المرور | لَحْقها";
+
+return;
+
+}
+
+if(session?.user){
+
+showAdminPanel();
+
+}else{
+
+showLoginPanel();
+
+}
+
+}
+);
+
+
+/* =========================================
+   فحص الجلسة
+========================================= */
+
+(async function(){
+
+const {data,error} =
+await supabaseClient.auth.getSession();
+
+if(error){
+
+console.error(error);
+
+showLoginPanel();
+
+return;
+
+}
+
+const hash =
+window.location.hash || "";
+
+if(hash.includes("type=recovery")){
+
+resetScreen.style.display="flex";
+
+loginScreen.style.display="none";
+
+forgotScreen.style.display="none";
+
+adminApp.style.display="none";
+
+document.title =
+"تغيير كلمة المرور | لَحْقها";
+
+return;
+
+}
+
+if(data?.session?.user){
+
+showAdminPanel();
+
+}else{
+
+showLoginPanel();
+
+}
+
+})();
+
+
+/* =========================================
+   طلبات أصحاب السلع
+========================================= */
+
+async function getRequests(){
+
+const {data,error} =
+await supabaseClient
+.from("seller_requests")
+.select("*")
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+if(error)
+throw error;
+
+return data || [];
+
+}
+
+
+/* =========================================
+   الإحصائيات
+========================================= */
+
+async function updateStats(){
+
+try{
+
+const requests =
+await getRequests();
+
+document.getElementById(
+"total-requests"
+).textContent =
+requests.length;
+
+document.getElementById(
+"pending-requests"
+).textContent =
+requests.filter(
+r=>r.status==="قيد المراجعة"
+).length;
+
+document.getElementById(
+"approved-requests"
+).textContent =
+requests.filter(
+r=>r.status==="تمت الموافقة"
+).length;
+
+document.getElementById(
+"rejected-requests"
+).textContent =
+requests.filter(
+r=>r.status==="مرفوض"
+).length;
+
+}catch(error){
+
+console.error(error);
+
+}
+
+}
+
+
+/* =========================================
+   فلتر أصحاب السلع
+========================================= */
+
+function setFilter(
+filter,
+button
+){
+
+currentFilter=filter;
+
+document
+.querySelectorAll(".tab")
+.forEach(tab=>{
+tab.classList.remove("active");
+});
+
+button.classList.add("active");
+
+loadRequests();
+
+}
+
+
+function matchesFilter(request){
+
+if(currentFilter==="all")
+return true;
+
+if(
+currentFilter==="pending" &&
+request.status==="قيد المراجعة"
+)
+return true;
+
+if(
+currentFilter==="approved" &&
+request.status==="تمت الموافقة"
+)
+return true;
+
+if(
+currentFilter==="rejected" &&
+request.status==="مرفوض"
+)
+return true;
+
+return false;
+
+}
+
+
+/* =========================================
+   حالة صاحب السلعة
+========================================= */
+
+function statusClass(status){
+
+if(status==="تمت الموافقة")
+return "approved";
+
+if(status==="مرفوض")
+return "rejected";
+
+return "pending";
+
+}
+
+
+/* =========================================
+   صورة السلعة
+========================================= */
+
+function getRequestImage(request){
+
+return request.image ||
+request.image_url ||
+request.imageUrl ||
+request.productImage ||
+request.photo ||
+"";
+
+}
+
+
+/* =========================================
+   تحميل طلبات أصحاب السلع
+========================================= */
+
+async function loadRequests(){
+
+const container =
+document.getElementById(
+"requests-container"
+);
+
+container.innerHTML=`
+<div class="empty">
+⏳ جاري تحميل الطلبات...
+</div>
+`;
+
+try{
+
+const allRequests =
+await getRequests();
+
+await updateStats();
+
+const requests =
+allRequests.filter(
+matchesFilter
+);
+
+if(!requests.length){
+
+container.innerHTML=`
+
+<div class="empty">
+
+<div style="font-size:45px">
+📭
+</div>
+
+<h3>
+لا توجد طلبات في هذا القسم
+</h3>
+
+<p>
+ستظهر الطلبات هنا عندما تصل إلى المنصة.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+container.innerHTML =
+requests
+.map(createRequestCard)
+.join("");
+
+}catch(error){
+
+console.error(error);
+
+container.innerHTML=`
+
+<div class="empty">
+
+<div style="font-size:45px">
+⚠️
+</div>
+
+<h3>
+تعذر تحميل الطلبات
+</h3>
+
+<p>
+تحقق من اتصال Supabase وصلاحيات الجدول.
+</p>
+
+</div>
+
+`;
+
+}
+
+}
+
+
+/* =========================================
+   بطاقة صاحب السلعة
+========================================= */
+
+function createRequestCard(request){
+
+const image =
+getRequestImage(request);
+
+return `
+
+<article class="request-card">
+
+<div class="request-top">
+
+<div>
+
+<h3>
+📦 ${safe(
+request.product_name ||
+request.productName ||
+"سلعة"
+)}
+</h3>
+
+<div class="request-id">
+رقم الطلب:
+${safe(request.id)}
+</div>
+
+</div>
+
+<span class="status ${statusClass(request.status)}">
+${safe(
+request.status ||
+"قيد المراجعة"
+)}
+</span>
+
+</div>
+
+
+${
+image
+?
+`
+
+<div style="text-align:center;margin-bottom:18px;">
+
+<img
+src="${safe(image)}"
+style="
+width:220px;
+height:220px;
+max-width:100%;
+object-fit:contain;
+border-radius:14px;
+border:1px solid #e2e6ec;
+"
+alt="صورة السلعة"
+>
+
+</div>
+
+`
+:""
+}
+
+
+<div class="request-grid">
+
+<div class="request-field">
+<strong>صاحب السلعة:</strong>
+${safe(request.seller_name)}
+</div>
+
+<div class="request-field">
+<strong>رقم التواصل:</strong>
+${safe(request.phone)}
+</div>
+
+<div class="request-field">
+<strong>المدينة:</strong>
+${safe(request.city)}
+</div>
+
+<div class="request-field">
+<strong>القسم:</strong>
+${safe(request.category)}
+</div>
+
+<div class="request-field">
+<strong>السعر:</strong>
+${safe(request.price)} ريال
+</div>
+
+<div class="request-field">
+<strong>الكمية:</strong>
+${safe(request.quantity)}
+</div>
+
+<div class="request-field">
+<strong>الاتفاقية:</strong>
+${
+request.agreement_accepted
+?
+"✅ تمت الموافقة"
+:
+"⚠️ لم تتم الموافقة"
+}
+</div>
+
+<div class="request-field">
+<strong>العمولة:</strong>
+${safe(request.commission)}
+</div>
+
+</div>
+
+
+<div class="description">
+
+<strong>
+وصف السلعة:
+</strong>
+
+<p>
+${safe(request.description)}
+</p>
+
+${
+request.notes
+?
+`
+
+<strong>
+ملاحظات:
+</strong>
+
+<p>
+${safe(request.notes)}
+</p>
+
+`
+:""
+}
+
+</div>
+
+
+${
+request.status==="قيد المراجعة"
+?
+`
+
+<div class="admin-actions">
+
+<button
+class="approve-btn"
+onclick="showCommission('${safe(request.id)}')"
+>
+✅ قبول ونشر
+</button>
+
+<button
+class="reject-btn"
+onclick="rejectRequest('${safe(request.id)}')"
+>
+❌ رفض
+</button>
+
+<button
+class="delete-btn"
+onclick="deleteRequest('${safe(request.id)}')"
+>
+🗑️ حذف
+</button>
+
+</div>
+
+
+<div
+class="commission-box"
+id="commission-${safe(request.id)}"
+>
+
+<strong>
+العمولة المتفق عليها
+</strong>
+
+<br>
+
+<input
+type="text"
+id="commission-input-${safe(request.id)}"
+placeholder="مثال: 10% أو 50 ريال"
+>
+
+<br>
+
+<button
+class="confirm-approve"
+onclick="approveRequest('${safe(request.id)}')"
+>
+🚀 اعتماد ونشر
+</button>
+
+</div>
+
+`
+:""
+}
+
+
+${
+request.status==="تمت الموافقة"
+?
+`
+
+<div class="published-box">
+
+<strong>
+🟢 تمت الموافقة على السلعة
+</strong>
+
+<br>
+
+تم اعتماد الطلب بنجاح.
+
+</div>
+
+<div class="admin-actions">
+
+<button
+class="delete-btn"
+onclick="deleteRequest('${safe(request.id)}')"
+>
+🗑️ حذف الطلب
+</button>
+
+</div>
+
+`
+:""
+}
+
+
+${
+request.status==="مرفوض"
+?
+`
+
+<div class="admin-actions">
+
+<button
+class="delete-btn"
+onclick="deleteRequest('${safe(request.id)}')"
+>
+🗑️ حذف الطلب
+</button>
+
+</div>
+
+`
+:""
+}
+
+</article>
+
+`;
+
+}
+
+
+/* =========================================
+   إظهار خانة العمولة
+========================================= */
+
+function showCommission(id){
+
+const box =
+document.getElementById(
+"commission-"+id
+);
+
+if(box)
+box.classList.toggle("show");
+
+}
+
+
+/* =========================================
+   الموافقة
+========================================= */
+
+async function approveRequest(id){
+
+const input =
+document.getElementById(
+"commission-input-"+id
+);
+
+const commission =
+input?.value.trim() || "";
+
+if(!commission){
+
+alert(
+"اكتب العمولة المتفق عليها أولًا."
+);
+
+return;
+
+}
+
+if(
+!confirm(
+"هل تريد اعتماد هذا الطلب؟"
+)
+)
+return;
+
+try{
+
+const now =
+new Date().toISOString();
+
+const {error} =
+await supabaseClient
+.from("seller_requests")
+.update({
+
+status:"تمت الموافقة",
+
+commission:commission,
+
+approved_at:now,
+
+published:true,
+
+published_at:now
+
+})
+.eq("id",id);
+
+if(error)
+throw error;
+
+alert(
+"✅ تمت الموافقة على السلعة بنجاح."
+);
+
+await loadRequests();
+
+}catch(error){
+
+console.error(error);
+
+alert(
+"❌ تعذر اعتماد الطلب. تحقق من صلاحيات Supabase."
+);
+
+}
+
+}
+
+
+/* =========================================
+   رفض
+========================================= */
+
+async function rejectRequest(id){
+
+if(
+!confirm(
+"هل تريد رفض هذا الطلب؟"
+)
+)
+return;
+
+try{
+
+const {error} =
+await supabaseClient
+.from("seller_requests")
+.update({
+
+status:"مرفوض",
+
+published:false
+
+})
+.eq("id",id);
+
+if(error)
+throw error;
+
+alert(
+"تم رفض الطلب."
+);
+
+await loadRequests();
+
+}catch(error){
+
+console.error(error);
+
+alert(
+"❌ تعذر رفض الطلب."
+);
+
+}
+
+}
+
+
+/* =========================================
+   حذف طلب صاحب السلعة
+========================================= */
+
+async function deleteRequest(id){
+
+if(
+!confirm(
+"هل تريد حذف هذا الطلب نهائيًا؟"
+)
+)
+return;
+
+try{
+
+const {error} =
+await supabaseClient
+.from("seller_requests")
+.delete()
+.eq("id",id);
+
+if(error)
+throw error;
+
+alert(
+"🗑️ تم حذف الطلب."
+);
+
+await loadRequests();
+
+}catch(error){
+
+console.error(error);
+
+alert(
+"❌ تعذر حذف الطلب. تحقق من صلاحيات Supabase."
+);
+
+}
+
+}
+
+
+/* =========================================
+   استخراج المنتجات من طلب المشتري
+========================================= */
+
+function getOrderItems(order){
+
+if(Array.isArray(order.items))
+return order.items;
+
+if(typeof order.items==="string"){
+
+try{
+
+const parsed =
+JSON.parse(order.items);
+
+return Array.isArray(parsed)
+?
+parsed
+:
+[];
+
+}catch(error){
+
+console.error(
+"تعذر قراءة items:",
+error
+);
+
+return [];
+
+}
+
+}
+
+return [];
+
+}
+
+
+/* =========================================
+   عرض طلب واحد للمشتري
+========================================= */
+
+function createBuyerOrderCard(order){
+
+const items =
+getOrderItems(order);
+
+const itemsHtml =
+items.length
+?
+items.map(
+(item,index)=>{
+
+const name =
+item.title ||
+item.name ||
+item.product_name ||
+"منتج";
+
+const quantity =
+Number(
+item.quantity || 1
+);
+
+const price =
+Number(
+item.price || 0
+);
+
+const itemTotal =
+price * quantity;
+
+return `
+
+<div class="product-row">
+
+<div class="product-name">
+
+${safe(name)}
+
+</div>
+
+<div>
+
+الكمية:
+<strong>
+${safe(quantity)}
+</strong>
+
+&nbsp; × &nbsp;
+
+السعر:
+<strong>
+${price.toFixed(2)} ر.س
+</strong>
+
+&nbsp; = &nbsp;
+
+<strong>
+${itemTotal.toFixed(2)} ر.س
+</strong>
+
+</div>
+
+</div>
+
+`;
+
+}
+).join("")
+:
+`
+<div style="color:#c62828;">
+⚠️ لم يتم العثور على تفاصيل المنتجات داخل الطلب.
+</div>
+`;
+
+
+const status =
+order.status ||
+"جديد";
+
+
+const statusStyle =
+status==="تم التجهيز"
+?
+"approved"
+:
+"pending";
+
+
+return `
+
+<article
+class="buyer-order ${
+status==="جديد"
+?
+"new-order"
+:
+""
+}"
+>
+
+<div class="buyer-order-head">
+
+<div>
+
+<h3 class="buyer-order-title">
+
+🛒 طلب مشتري جديد
+
+</h3>
+
+<div class="buyer-order-id">
+
+رقم الطلب:
+<strong>
+${safe(order.id)}
+</strong>
+
+</div>
+
+</div>
+
+<span class="order-status">
+
+${safe(status)}
+
+</span>
+
+</div>
+
+
+<div class="buyer-info">
+
+<div class="buyer-info-item">
+
+<strong>
+👤 اسم المشتري:
+</strong>
+
+<br>
+
+${safe(
+order.customer_name ||
+order.name ||
+"غير مسجل"
+)}
+
+</div>
+
+
+<div class="buyer-info-item">
+
+<strong>
+📱 رقم الجوال:
+</strong>
+
+<br>
+
+${safe(
+order.customer_phone ||
+order.phone ||
+"غير مسجل"
+)}
+
+</div>
+
+
+<div
+class="buyer-info-item"
+style="grid-column:1/-1;"
+>
+
+<strong>
+📍 عنوان التوصيل:
+</strong>
+
+<br>
+
+${safe(
+order.customer_address ||
+order.address ||
+"غير مسجل"
+)}
+
+</div>
+
+
+<div class="buyer-info-item">
+
+<strong>
+💳 طريقة الدفع:
+</strong>
+
+<br>
+
+${safe(
+order.payment_method ||
+order.payment ||
+"غير محددة"
+)}
+
+</div>
+
+
+<div class="buyer-info-item">
+
+<strong>
+📅 تاريخ الطلب:
+</strong>
+
+<br>
+
+${
+order.created_at
+?
+safe(
+new Date(
+order.created_at
+).toLocaleString(
+"ar-SA"
+)
+)
+:
+"غير مسجل"
+}
+
+</div>
+
+</div>
+
+
+<div class="order-products">
+
+<h4>
+📦 السلع المطلوبة
+</h4>
+
+${itemsHtml}
+
+</div>
+
+
+<div class="order-total">
+
+💰 إجمالي الطلب:
+${Number(
+order.total || 0
+).toFixed(2)}
+ر.س
+
+</div>
+
+
+<div class="prepare-box">
+
+<strong>
+📦 تجهيز السلعة
+</strong>
+
+<p>
+راجع السلع والكميات أعلاه ثم جهّز الطلب.
+</p>
+
+${
+status==="جديد"
+?
+`
+
+<button
+class="prepare-btn"
+onclick="markOrderPrepared('${safe(order.id)}')"
+>
+✅ تم تجهيز السلعة
+</button>
+
+`
+:
+status==="تم التجهيز"
+?
+`
+
+<div style="
+color:#2e7d32;
+font-weight:bold;
+margin-top:10px;
+">
+✅ تم تسجيل أن السلعة أصبحت جاهزة.
+</div>
+
+`
+:
+""
+}
+
+</div>
+
+</article>
+
+`;
+
+}
+
+
+/* =========================================
+   تحميل طلبات المشترين
+========================================= */
+
+async function loadBuyerOrders(){
+
+const container =
+document.getElementById(
+"buyer-orders-container"
+);
+
+container.innerHTML=`
+
+<div class="empty">
+
+⏳ جاري تحميل طلبات المشترين...
+
+</div>
+
+`;
+
+try{
+
+/*
+   نقرأ الطلبات من جدول orders
+*/
+
+const {
+data,
+error
+} =
+await supabaseClient
+.from("orders")
+.select("*")
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+
+if(error)
+throw error;
+
+
+const orders =
+Array.isArray(data)
+?
+data
+:
+[];
+
+
+document.getElementById(
+"buyer-orders-count"
+).textContent =
+String(orders.length);
+
+
+if(!orders.length){
+
+container.innerHTML=`
+
+<div class="empty">
+
+<div style="font-size:50px">
+🛒
+</div>
+
+<h3>
+لا توجد طلبات مشترين حاليًا
+</h3>
+
+<p>
+عندما يضغط المشتري «تأكيد الطلب» سيظهر الطلب هنا.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+/*
+   عرض الطلبات
+*/
+
+container.innerHTML =
+orders
+.map(
+createBuyerOrderCard
+)
+.join("");
+
+
+}catch(error){
+
+console.error(
+"Buyer orders error:",
+error
+);
+
+container.innerHTML=`
+
+<div class="empty">
+
+<div style="font-size:50px">
+⚠️
+</div>
+
+<h3>
+تعذر تحميل طلبات المشترين
+</h3>
+
+<p>
+حدث خطأ أثناء قراءة جدول orders.
+</p>
+
+<p style="
+font-size:13px;
+color:#c62828;
+">
+${safe(
+error?.message ||
+"خطأ غير معروف"
+)}
+</p>
+
+</div>
+
+`;
+
+}
+
+}
+
+
+/* =========================================
+   تحديد الطلب بأنه تم تجهيزه
+========================================= */
+
+async function markOrderPrepared(id){
+
+if(
+!confirm(
+"هل تم تجهيز السلعة لهذا الطلب؟"
+)
+)
+return;
+
+
+try{
+
+const {error} =
+await supabaseClient
+.from("orders")
+.update({
+
+status:"تم التجهيز"
+
+})
+.eq("id",id);
+
+
+if(error)
+throw error;
+
+
+alert(
+"✅ تم تسجيل أن السلعة أصبحت جاهزة."
+);
+
+
+await loadBuyerOrders();
+
+
+}catch(error){
+
+console.error(
+"Prepare order error:",
+error
+);
+
+alert(
+"❌ تعذر تحديث حالة الطلب."
+);
+
+}
+
+}
+
+
+/* =========================================
+   تحديث كل شيء
+========================================= */
+
+async function loadAll(){
+
+await loadRequests();
+
+await loadBuyerOrders();
+
+}
+
+
+function refreshAdmin(){
+
+loadAll();
+
+}
+
+</script>
+
+</body>
+
+</html>
