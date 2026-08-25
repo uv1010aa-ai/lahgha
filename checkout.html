@@ -1,52 +1,216 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="إتمام طلبك من لَحْقها">
-<title>إتمام الشراء - لَحْقها</title>
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="images/icon.png"><link rel="apple-touch-icon" href="images/icon.png"></head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="إتمام طلبك من لَحْقها"
+    >
+
+    <title>إتمام الشراء - لَحْقها</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <link
+        rel="manifest"
+        href="manifest.json"
+    >
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="images/icon.png"
+    >
+
+    <link
+        rel="apple-touch-icon"
+        href="images/icon.png"
+    >
+
+</head>
+
 <body>
-<header>
-  <div class="logo">
-    <h1>🛍️ لَحْقها</h1>
-    <p>شفتها؟ لَحْقها قبل تروح!</p>
-  </div>
-</header>
 
-<main class="checkout">
-  <h2>🛒 إتمام الشراء</h2>
-  <a href="index.html" class="back-home">🏠 العودة للصفحة الرئيسية</a>
+<header class="site-header">
 
-  <form id="checkout-form">
-    <label for="name">الاسم الكامل</label>
-    <input type="text" id="name" name="name" placeholder="اكتب اسمك" autocomplete="name" required>
+    <div class="logo">
 
-    <label for="phone">رقم الجوال</label>
-    <input type="tel" id="phone" name="phone" placeholder="05xxxxxxxx" autocomplete="tel" inputmode="tel" required>
+        <h1>
+            🛍️ لَحْقها
+        </h1>
 
-    <label for="address">العنوان</label>
-    <textarea id="address" name="address" placeholder="اكتب عنوان التوصيل" autocomplete="street-address" required></textarea>
+        <p>
+            شفتها؟ لَحْقها قبل تروح!
+        </p>
 
-    <label for="payment">طريقة الدفع</label>
-    <select id="payment" name="payment">
-      <option>الدفع عند الاستلام</option>
-      <option>تحويل بنكي</option>
-    </select>
-
-    <div class="order-box">
-      <h3>ملخص الطلب</h3>
-      <p>عدد المنتجات: <span id="order-count">0</span></p>
-      <p>الإجمالي: <span id="order-total">0.00 ر.س</span></p>
     </div>
 
-    <button type="submit" class="checkout-btn">✅ تأكيد الطلب</button>
-    <p id="checkout-message" role="alert" aria-live="polite"></p>
-  </form>
+    <nav>
+
+        <a href="index.html">
+            الرئيسية
+        </a>
+
+        <a href="categories.html">
+            الأقسام
+        </a>
+
+        <a href="cart.html">
+            🛒 السلة
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="checkout">
+
+    <h2>
+        🛒 إتمام الشراء
+    </h2>
+
+    <a
+        href="cart.html"
+        class="back-home"
+    >
+        🛒 العودة للسلة
+    </a>
+
+
+    <form id="checkout-form">
+
+        <label for="name">
+            الاسم الكامل
+        </label>
+
+        <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="اكتب اسمك"
+            autocomplete="name"
+            required
+        >
+
+
+        <label for="phone">
+            رقم الجوال
+        </label>
+
+        <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="05xxxxxxxx"
+            autocomplete="tel"
+            inputmode="tel"
+            required
+        >
+
+
+        <label for="address">
+            العنوان
+        </label>
+
+        <textarea
+            id="address"
+            name="address"
+            placeholder="اكتب عنوان التوصيل"
+            autocomplete="street-address"
+            required
+        ></textarea>
+
+
+        <label for="payment">
+            طريقة الدفع
+        </label>
+
+        <select
+            id="payment"
+            name="payment"
+        >
+
+            <option value="الدفع عند الاستلام">
+                الدفع عند الاستلام
+            </option>
+
+            <option value="تحويل بنكي">
+                تحويل بنكي
+            </option>
+
+        </select>
+
+
+        <div class="order-box">
+
+            <h3>
+                ملخص الطلب
+            </h3>
+
+            <p>
+                عدد المنتجات:
+                <span id="order-count">
+                    0
+                </span>
+            </p>
+
+            <p>
+                الإجمالي:
+                <span id="order-total">
+                    0.00 ر.س
+                </span>
+            </p>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="checkout-btn"
+            id="submit-order"
+        >
+            ✅ تأكيد الطلب
+        </button>
+
+
+        <p
+            id="checkout-message"
+            role="alert"
+            aria-live="polite"
+        ></p>
+
+    </form>
+
 </main>
 
-<footer><p>© 2026 متجر الكتب المستعملة</p></footer>
+
+<footer>
+
+    <p>
+        © 2026 لَحْقها 🛍️
+    </p>
+
+</footer>
+
+
+<!-- مكتبة Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- كود إتمام الطلب -->
 <script src="checkout.js"></script>
+
+
 </body>
 </html>
