@@ -3,6 +3,11 @@
    Supabase + LocalStorage Cart
 ===================================================== */
 
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
 const SUPABASE_URL =
     "https://gyyyzavjzvcxzgrtukqu.supabase.co";
 
@@ -23,6 +28,7 @@ const supabaseClient =
 let cart = [];
 
 try {
+
     cart = JSON.parse(
         localStorage.getItem("cart") || "[]"
     );
@@ -33,9 +39,13 @@ try {
 
 } catch (error) {
 
-    console.error("Cart read error:", error);
+    console.error(
+        "Cart read error:",
+        error
+    );
 
     cart = [];
+
 }
 
 
@@ -44,16 +54,34 @@ try {
 ===================================================== */
 
 const form =
-    document.getElementById("checkout-form");
+    document.getElementById(
+        "checkout-form"
+    );
 
 const message =
-    document.getElementById("checkout-message");
+    document.getElementById(
+        "checkout-message"
+    );
 
 const orderCount =
-    document.getElementById("order-count");
+    document.getElementById(
+        "order-count"
+    );
 
 const orderTotal =
-    document.getElementById("order-total");
+    document.getElementById(
+        "order-total"
+    );
+
+const payment =
+    document.getElementById(
+        "payment"
+    );
+
+const bankDetails =
+    document.getElementById(
+        "bankDetails"
+    );
 
 const submitButton =
     form
@@ -64,17 +92,58 @@ const submitButton =
 
 
 /* =====================================================
-   رسالة المستخدم
+   الرسائل
 ===================================================== */
 
-function showMessage(text, type = "error") {
+function showMessage(
+    text,
+    type = "error"
+) {
 
     if (!message) {
         return;
     }
 
-    message.textContent = text;
-    message.className = type;
+    message.textContent =
+        text;
+
+    message.className =
+        type;
+
+}
+
+
+/* =====================================================
+   إظهار بيانات التحويل البنكي
+===================================================== */
+
+if (
+    payment &&
+    bankDetails
+) {
+
+    payment.addEventListener(
+        "change",
+        function () {
+
+            if (
+                payment.value ===
+                "تحويل بنكي"
+            ) {
+
+                bankDetails.style.display =
+                    "block";
+
+            } else {
+
+                bankDetails.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
 }
 
 
@@ -85,29 +154,50 @@ function showMessage(text, type = "error") {
 function calculateOrder() {
 
     let count = 0;
+
     let total = 0;
 
-    cart.forEach(item => {
 
-        const quantity =
-            Math.max(
-                1,
-                Number(item.quantity) || 1
-            );
+    cart.forEach(
+        function (item) {
 
-        const price =
-            Number(item.price) || 0;
+            const quantity =
+                Math.max(
+                    1,
+                    Number(
+                        item.quantity
+                    ) || 1
+                );
 
-        count += quantity;
 
-        total +=
-            price * quantity;
-    });
+            const price =
+                Number(
+                    item.price
+                ) || 0;
+
+
+            count +=
+                quantity;
+
+
+            total +=
+                price *
+                quantity;
+
+        }
+    );
+
 
     return {
-        count,
-        total
+
+        count:
+            count,
+
+        total:
+            total
+
     };
+
 }
 
 
@@ -120,16 +210,23 @@ function renderSummary() {
     const summary =
         calculateOrder();
 
+
     if (orderCount) {
+
         orderCount.textContent =
             summary.count;
+
     }
 
+
     if (orderTotal) {
+
         orderTotal.textContent =
             summary.total.toFixed(2) +
             " ر.س";
+
     }
+
 }
 
 
@@ -139,51 +236,71 @@ function renderSummary() {
 
 function prepareItems() {
 
-    return cart.map(item => {
+    return cart.map(
+        function (item) {
 
-        const price =
-            Number(item.price) || 0;
-
-        const quantity =
-            Math.max(
-                1,
-                Number(item.quantity) || 1
-            );
-
-        return {
-            id: item.id || null,
-
-            name:
-                item.name ||
-                item.title ||
-                "منتج",
-
-            title:
-                item.title ||
-                item.name ||
-                "منتج",
-
-            category:
-                item.category || "",
-
-            price: price,
-
-            quantity: quantity,
-
-            image:
-                item.image || "",
-
-            subtotal:
+            const price =
                 Number(
-                    (price * quantity).toFixed(2)
-                )
-        };
-    });
+                    item.price
+                ) || 0;
+
+
+            const quantity =
+                Math.max(
+                    1,
+                    Number(
+                        item.quantity
+                    ) || 1
+                );
+
+
+            return {
+
+                id:
+                    item.id || null,
+
+                name:
+                    item.name ||
+                    item.title ||
+                    "منتج",
+
+                title:
+                    item.title ||
+                    item.name ||
+                    "منتج",
+
+                category:
+                    item.category ||
+                    "",
+
+                price:
+                    price,
+
+                quantity:
+                    quantity,
+
+                image:
+                    item.image ||
+                    "",
+
+                subtotal:
+                    Number(
+                        (
+                            price *
+                            quantity
+                        ).toFixed(2)
+                    )
+
+            };
+
+        }
+    );
+
 }
 
 
 /* =====================================================
-   التحقق من السلة
+   إذا كانت السلة فارغة
 ===================================================== */
 
 if (!cart.length) {
@@ -192,9 +309,14 @@ if (!cart.length) {
         "⚠️ السلة فارغة. أضف منتجات قبل إتمام الطلب."
     );
 
+
     if (submitButton) {
-        submitButton.disabled = true;
+
+        submitButton.disabled =
+            true;
+
     }
+
 }
 
 
@@ -206,16 +328,20 @@ if (form) {
 
     form.addEventListener(
         "submit",
-        async function(event) {
+        async function (event) {
 
             event.preventDefault();
 
-            showMessage("", "");
+
+            showMessage(
+                "",
+                ""
+            );
 
 
-            /* ---------------------------------------------
+            /* -----------------------------------------
                التأكد من وجود منتجات
-            --------------------------------------------- */
+            ----------------------------------------- */
 
             if (!cart.length) {
 
@@ -224,41 +350,48 @@ if (form) {
                 );
 
                 return;
+
             }
 
 
-            /* ---------------------------------------------
+            /* -----------------------------------------
                قراءة بيانات المشتري
-            --------------------------------------------- */
+            ----------------------------------------- */
 
             const buyerName =
                 document
-                    .getElementById("name")
+                    .getElementById(
+                        "name"
+                    )
                     .value
                     .trim();
+
 
             const buyerPhone =
                 document
-                    .getElementById("phone")
+                    .getElementById(
+                        "phone"
+                    )
                     .value
                     .trim();
+
 
             const buyerAddress =
                 document
-                    .getElementById("address")
+                    .getElementById(
+                        "address"
+                    )
                     .value
                     .trim();
+
 
             const paymentMethod =
-                document
-                    .getElementById("payment")
-                    .value
-                    .trim();
+                payment.value.trim();
 
 
-            /* ---------------------------------------------
+            /* -----------------------------------------
                التحقق من البيانات
-            --------------------------------------------- */
+            ----------------------------------------- */
 
             if (!buyerName) {
 
@@ -267,6 +400,7 @@ if (form) {
                 );
 
                 return;
+
             }
 
 
@@ -277,6 +411,7 @@ if (form) {
                 );
 
                 return;
+
             }
 
 
@@ -287,44 +422,66 @@ if (form) {
                 );
 
                 return;
+
             }
 
 
-            /* ---------------------------------------------
+            /* -----------------------------------------
                حساب الإجمالي
-            --------------------------------------------- */
+            ----------------------------------------- */
 
             const summary =
                 calculateOrder();
 
 
-            /* ---------------------------------------------
+            /* -----------------------------------------
                المنتجات
-            --------------------------------------------- */
+            ----------------------------------------- */
 
             const items =
                 prepareItems();
 
 
-            /* ---------------------------------------------
+            /* -----------------------------------------
                إنشاء رقم الطلب
-            --------------------------------------------- */
+            ----------------------------------------- */
 
             const orderNumber =
                 "ORD-" +
                 Date.now();
 
 
-            /* ---------------------------------------------
+            /* -----------------------------------------
+               تحديد حالة الطلب
+            ----------------------------------------- */
+
+            let orderStatus =
+                "pending";
+
+
+            if (
+                paymentMethod ===
+                "تحويل بنكي"
+            ) {
+
+                orderStatus =
+                    "waiting_transfer";
+
+            }
+
+
+            /* -----------------------------------------
                تعطيل الزر
-            --------------------------------------------- */
+            ----------------------------------------- */
 
             if (submitButton) {
 
-                submitButton.disabled = true;
+                submitButton.disabled =
+                    true;
 
                 submitButton.textContent =
                     "⏳ جاري إرسال الطلب...";
+
             }
 
 
@@ -333,20 +490,36 @@ if (form) {
                 console.log(
                     "Sending order:",
                     {
-                        orderNumber,
-                        buyerName,
-                        buyerPhone,
-                        buyerAddress,
-                        paymentMethod,
-                        items,
-                        total: summary.total
+                        orderNumber:
+                            orderNumber,
+
+                        buyerName:
+                            buyerName,
+
+                        buyerPhone:
+                            buyerPhone,
+
+                        buyerAddress:
+                            buyerAddress,
+
+                        paymentMethod:
+                            paymentMethod,
+
+                        items:
+                            items,
+
+                        total:
+                            summary.total,
+
+                        status:
+                            orderStatus
                     }
                 );
 
 
-                /* =========================================
+                /* =====================================
                    إرسال الطلب إلى Supabase
-                ========================================= */
+                ===================================== */
 
                 const {
                     data,
@@ -356,6 +529,7 @@ if (form) {
                         .from("orders")
                         .insert([
                             {
+
                                 order_number:
                                     orderNumber,
 
@@ -378,16 +552,17 @@ if (form) {
                                     summary.total,
 
                                 status:
-                                    "pending"
+                                    orderStatus
+
                             }
                         ])
                         .select()
                         .single();
 
 
-                /* -----------------------------------------
+                /* -------------------------------------
                    فحص الخطأ
-                ----------------------------------------- */
+                ------------------------------------- */
 
                 if (error) {
 
@@ -397,18 +572,20 @@ if (form) {
                     );
 
                     throw error;
+
                 }
 
 
-                /* -----------------------------------------
+                /* -------------------------------------
                    التأكد من إنشاء الطلب
-                ----------------------------------------- */
+                ------------------------------------- */
 
                 if (!data) {
 
                     throw new Error(
                         "لم يتم إنشاء الطلب."
                     );
+
                 }
 
 
@@ -418,55 +595,92 @@ if (form) {
                 );
 
 
-                /* =========================================
-                   نجاح الطلب
-                ========================================= */
+                /* =====================================
+                   حذف السلة بعد نجاح الطلب
+                ===================================== */
 
-                localStorage.removeItem("cart");
+                localStorage.removeItem(
+                    "cart"
+                );
 
                 cart = [];
 
 
-                showMessage(
-                    "✅ تم تأكيد طلبك بنجاح. رقم الطلب: " +
-                    orderNumber,
-                    "success"
-                );
+                /* =====================================
+                   رسالة نجاح تحويل بنكي
+                ===================================== */
 
+                if (
+                    paymentMethod ===
+                    "تحويل بنكي"
+                ) {
+
+                    showMessage(
+                        "✅ تم إرسال طلبك بنجاح. بانتظار التحقق من التحويل. رقم الطلب: " +
+                        orderNumber,
+                        "success"
+                    );
+
+                }
+
+
+                /* =====================================
+                   رسالة نجاح الدفع عند الاستلام
+                ===================================== */
+
+                else {
+
+                    showMessage(
+                        "✅ تم تأكيد طلبك بنجاح. رقم الطلب: " +
+                        orderNumber,
+                        "success"
+                    );
+
+                }
+
+
+                /* -------------------------------------
+                   تغيير نص الزر
+                ------------------------------------- */
 
                 if (submitButton) {
 
                     submitButton.textContent =
-                        "✅ تم تأكيد الطلب";
+                        "✅ تم إرسال الطلب";
+
                 }
 
 
-                /* -----------------------------------------
+                /* -------------------------------------
                    تعطيل الحقول
-                ----------------------------------------- */
+                ------------------------------------- */
 
                 form
                     .querySelectorAll(
                         "input, textarea, select"
                     )
-                    .forEach(element => {
+                    .forEach(
+                        function (element) {
 
-                        element.disabled = true;
-                    });
+                            element.disabled =
+                                true;
+
+                        }
+                    );
 
 
-                /* -----------------------------------------
-                   الانتقال للرئيسية
-                ----------------------------------------- */
+                /* -------------------------------------
+                   العودة للرئيسية
+                ------------------------------------- */
 
                 setTimeout(
-                    function() {
+                    function () {
 
                         window.location.href =
                             "index.html";
 
                     },
-                    3000
+                    4000
                 );
 
 
@@ -482,25 +696,41 @@ if (form) {
                     "❌ تعذر إرسال الطلب.";
 
 
+                /* -------------------------------------
+                   RLS
+                ------------------------------------- */
+
                 if (
                     error &&
-                    error.code === "42501"
+                    error.code ===
+                    "42501"
                 ) {
 
                     errorMessage =
                         "❌ لا توجد صلاحية لإضافة الطلب. تحقق من سياسة INSERT في Supabase.";
+
                 }
 
 
+                /* -------------------------------------
+                   رقم مكرر
+                ------------------------------------- */
+
                 else if (
                     error &&
-                    error.code === "23505"
+                    error.code ===
+                    "23505"
                 ) {
 
                     errorMessage =
                         "❌ رقم الطلب مكرر. حاول مرة أخرى.";
+
                 }
 
+
+                /* -------------------------------------
+                   خطأ آخر
+                ------------------------------------- */
 
                 else if (
                     error &&
@@ -510,6 +740,7 @@ if (form) {
                     errorMessage +=
                         " " +
                         error.message;
+
                 }
 
 
@@ -518,6 +749,10 @@ if (form) {
                 );
 
 
+                /* -------------------------------------
+                   إعادة الزر
+                ------------------------------------- */
+
                 if (submitButton) {
 
                     submitButton.disabled =
@@ -525,10 +760,14 @@ if (form) {
 
                     submitButton.textContent =
                         "✅ تأكيد الطلب";
+
                 }
+
             }
+
         }
     );
+
 }
 
 
