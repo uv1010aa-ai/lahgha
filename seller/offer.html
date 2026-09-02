@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>اعرض سلعتك | لَحْقها</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Tahoma, Arial, sans-serif;
+        background: #f5f7fb;
+        color: #263238;
+        line-height: 1.8;
+    }
+
+    header {
+        background: #1e3a5f;
+        color: white;
+        padding: 18px 20px;
+    }
+
+    .header-inner {
+        width: min(1000px, calc(100% - 20px));
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .logo {
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .back {
+        color: white;
+        text-decoration: none;
+        border: 1px solid rgba(255,255,255,.4);
+        padding: 8px 14px;
+        border-radius: 8px;
+    }
+
+    .hero {
+        background: linear-gradient(135deg, #1e3a5f, #315b87);
+        color: white;
+        text-align: center;
+        padding: 50px 20px;
+    }
+
+    .hero h1 {
+        margin: 0 0 10px;
+        font-size: 34px;
+    }
+
+    .hero p {
+        margin: 0;
+        font-size: 17px;
+    }
+
+    .container {
+        width: min(900px, calc(100% - 20px));
+        margin: 30px auto 60px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 8px 25px rgba(0,0,0,.08);
+    }
+
+    .card h2 {
+        color: #1e3a5f;
+        margin-top: 0;
+    }
+
+    .notice {
+        background: #eef6ff;
+        border-right: 4px solid #1e3a5f;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+    }
+
+    .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .field {
+        margin-bottom: 17px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 7px;
+        font-weight: bold;
+        color: #1e3a5f;
+    }
+
+    .required {
+        color: #c62828;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 13px;
+        border: 1px solid #d7dee7;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 15px;
+        background: white;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        border-color: #1e3a5f;
+        box-shadow: 0 0 0 3px rgba(30,58,95,.08);
+    }
+
+    textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .image-box {
+        border: 2px dashed #b9c7d8;
+        border-radius: 14px;
+        padding: 22px;
+        text-align: center;
+        background: #f8fafc;
+    }
+
+    .image-box input {
+        border: 0;
+        padding: 10px 0;
+        background: transparent;
+    }
+
+    .image-preview {
+        display: none;
+        margin: 15px auto 0;
+        max-width: 100%;
+        width: 260px;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 1px solid #d7dee7;
+    }
+
+    .image-help {
+        color: #64748b;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    .agreement {
+        background: #f7f9fc;
+        border-right: 4px solid #1e3a5f;
+        padding: 17px;
+        border-radius: 10px;
+        margin: 25px 0;
+    }
+
+    .agreement strong {
+        color: #1e3a5f;
+    }
+
+    .agreement label {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        color: #263238;
+        font-weight: normal;
+        margin-top: 12px;
+    }
+
+    .agreement input {
+        width: auto;
+        margin-top: 5px;
+    }
+
+    button {
+        width: 100%;
+        border: 0;
+        border-radius: 10px;
+        padding: 15px;
+        background: #1e3a5f;
+        color: white;
+        font-family: inherit;
+        font-size: 17px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #16314f;
+    }
+
+    button:disabled {
+        opacity: .65;
+        cursor: not-allowed;
+    }
+
+    #message {
+        display: none;
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        white-space: pre-line;
+    }
+
+    #message.success {
+        display: block;
+        background: #eaf7ec;
+        color: #245b2a;
+        border: 1px solid #a8d7ae;
+    }
+
+    #message.error {
+        display: block;
+        background: #fdeaea;
+        color: #b71c1c;
+        border: 1px solid #efb1b1;
+    }
+
+    footer {
+        text-align: center;
+        color: #777;
+        padding: 25px;
+    }
+
+    @media (max-width: 650px) {
+        .row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .header-inner {
+            flex-direction: column;
+        }
+
+        .card {
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 28px;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<header>
+    <div class="header-inner">
+
+```
+    <div class="logo">
+        📦 لَحْقها — أصحاب السلع
+    </div>
+
+    <a class="back" href="../index.html">
+        ← العودة للمتجر
+    </a>
+
+</div>
+```
+
+</header>
+
+<section class="hero">
+
+```
+<h1>📦 اعرض سلعتك معنا</h1>
+
+<p>
+    أرسل بيانات سلعتك وستصل إلى لوحة التحكم للمراجعة.
+</p>
+```
+
+</section>
+
+<main class="container">
+
+```
+<div class="card">
+
+    <h2>🛍️ بيانات السلعة</h2>
+
+    <div class="notice">
+
+        ✅ بعد الإرسال ستبقى السلعة قيد المراجعة حتى تتم الموافقة عليها.
+
+        <br>
+
+        🔒 بيانات صاحب السلعة الخاصة لا تظهر للمشتري.
+
+    </div>
+
+    <form id="seller-form" autocomplete="off">
+
+        <div class="row">
+
+            <div class="field">
+
+                <label for="seller_name">
+                    اسم صاحب السلعة
+                    <span class="required">*</span>
+                </label>
+
+                <input
+                    id="seller_name"
+                    name="seller_name_new"
+                    type="text"
+                    required
+                    autocomplete="new-password"
+                    autocapitalize="words"
+                    placeholder="مثال: محمد أحمد"
+                >
+
+            </div>
+
+            <div class="field">
+
+                <label for="phone">
+                    رقم التواصل
+                    <span class="required">*</span>
+                </label>
+
+                <input
+                    id="phone"
+                    name="phone_new"
+                    type="tel"
+                    required
+                    autocomplete="new-password"
+                    inputmode="tel"
+                    placeholder="05xxxxxxxx"
+                >
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="field">
+
+                <label for="city">
+                    المدينة
+                    <span class="required">*</span>
+                </label>
+
+                <input
+                    id="city"
+                    name="city_new"
+                    type="text"
+                    required
+                    autocomplete="off"
+                    placeholder="مثال: جدة"
+                >
+
+            </div>
+
+            <div class="field">
+
+                <label for="category">
+                    القسم
+                    <span class="required">*</span>
+                </label>
+
+                <select id="category" name="category_new" required autocomplete="off">
+
+                    <option value="">
+                        اختر القسم
+                    </option>
+
+                    <option value="كتب">📚 كتب</option>
+                    <option value="جوالات">📱 جوالات</option>
+                    <option value="كمبيوتر">💻 كمبيوتر</option>
+                    <option value="ألعاب">🎮 ألعاب</option>
+                    <option value="أثاث">🪑 أثاث</option>
+                    <option value="أجهزة">📺 أجهزة</option>
+                    <option value="رياضة">🚲 رياضة</option>
+                    <option value="أدوات">🛠️ أدوات</option>
+                    <option value="ملابس">👕 ملابس</option>
+                    <option value="أخرى">📦 أخرى</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <div class="field">
+
+            <label for="product_name">
+                اسم السلعة
+                <span class="required">*</span>
+            </label>
+
+            <input
+                id="product_name"
+                name="product_name_new"
+                type="text"
+                required
+                autocomplete="off"
+                placeholder="مثال: جوال آيفون"
+            >
+
+        </div>
+
+        <div class="row">
+
+            <div class="field">
+
+                <label for="price">
+                    السعر بالريال
+                    <span class="required">*</span>
+                </label>
+
+                <input
+                    id="price"
+                    name="price_new"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    required
+                    autocomplete="off"
+                    placeholder="100"
+                >
+
+            </div>
+
+            <div class="field">
+
+                <label for="quantity">
+                    الكمية
+                    <span class="required">*</span>
+                </label>
+
+                <input
+                    id="quantity"
+                    name="quantity_new"
+                    type="number"
+                    min="1"
+                    step="1"
+                    required
+                    autocomplete="off"
+                    placeholder="1"
+                >
+
+            </div>
+
+        </div>
+
+        <div class="field">
+
+            <label for="image">
+
+                📷 صورة السلعة
+
+                <span class="required">*</span>
+
+            </label>
+
+            <div class="image-box">
+
+                <div>
+                    اختر صورة السلعة من جهازك
+                </div>
+
+                <input
+                    id="image"
+                    name="image_new"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    required
+                >
+
+                <div class="image-help">
+                    JPG أو PNG أو WEBP — الحد الأقصى 5 ميجابايت
+                </div>
+
+                <img
+                    id="image-preview"
+                    class="image-preview"
+                    alt="معاينة صورة السلعة"
+                >
+
+            </div>
+
+        </div>
+
+        <div class="field">
+
+            <label for="description">
+                وصف السلعة
+                <span class="required">*</span>
+            </label>
+
+            <textarea
+                id="description"
+                name="description_new"
+                required
+                autocomplete="off"
+                placeholder="اكتب وصف السلعة وحالتها..."
+            ></textarea>
+
+        </div>
+
+        <div class="field">
+
+            <label for="notes">
+                ملاحظات إضافية
+            </label>
+
+            <textarea
+                id="notes"
+                name="notes_new"
+                autocomplete="off"
+                placeholder="أي معلومات إضافية..."
+            ></textarea>
+
+        </div>
+
+        <div class="agreement">
+
+            <strong>
+                🤝 اتفاقية البائع
+            </strong>
+
+            <p>
+                أقر بأن البيانات التي أدخلتها صحيحة وأوافق على إرسال السلعة للمراجعة.
+            </p>
+
+            <label>
+
+                <input
+                    id="agreement_accepted"
+                    name="agreement_new"
+                    type="checkbox"
+                    required
+                >
+
+                <span>
+                    أوافق على الاتفاقية وعمولة خدمات لَحْقها.
+                </span>
+
+            </label>
+
+        </div>
+
+        <button
+            id="submit-button"
+            type="submit"
+        >
+            🚀 إرسال السلعة للمراجعة
+        </button>
+
+    </form>
+
+    <div id="message"></div>
+
+</div>
+```
+
+</main>
+
+<footer>
+    © 2026 لَحْقها 🛍️
+</footer>
+
+<script>
+
+    /* =====================================================
+       إعداد Supabase
+    ===================================================== */
+
+    const SUPABASE_URL =
+        "https://gyyyzavjzvcxzgrtukqu.supabase.co";
+
+    const SUPABASE_KEY =
+        "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-";
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+    /* =====================================================
+       إعداد Storage
+    ===================================================== */
+
+    const STORAGE_BUCKET =
+        "product-images";
+
+    /* =====================================================
+       عناصر الصفحة
+    ===================================================== */
+
+    const form =
+        document.getElementById("seller-form");
+
+    const button =
+        document.getElementById("submit-button");
+
+    const message =
+        document.getElementById("message");
+
+    const imageInput =
+        document.getElementById("image");
+
+    const imagePreview =
+        document.getElementById("image-preview");
+
+    /* =====================================================
+       تفريغ الاستمارة عند فتح الصفحة
+       لمنع بقاء بيانات سابقة أو استرجاعها من المتصفح
+    ===================================================== */
+
+    function clearFormCompletely() {
+
+        form.reset();
+
+        document.getElementById("seller_name").value = "";
+        document.getElementById("phone").value = "";
+        document.getElementById("city").value = "";
+        document.getElementById("category").value = "";
+        document.getElementById("product_name").value = "";
+        document.getElementById("price").value = "";
+        document.getElementById("quantity").value = "";
+        document.getElementById("description").value = "";
+        document.getElementById("notes").value = "";
+        document.getElementById("agreement_accepted").checked = false;
+
+        imageInput.value = "";
+
+        imagePreview.src = "";
+        imagePreview.style.display = "none";
+
+    }
+
+    /* =====================================================
+       تنظيف الاستمارة عند فتح الصفحة
+    ===================================================== */
+
+    window.addEventListener("load", function () {
+
+        setTimeout(function () {
+            clearFormCompletely();
+        }, 100);
+
+    });
+
+    /* =====================================================
+       تنظيف الاستمارة عند الرجوع للصفحة من المتصفح
+    ===================================================== */
+
+    window.addEventListener("pageshow", function () {
+
+        setTimeout(function () {
+            clearFormCompletely();
+        }, 100);
+
+    });
+
+    /* =====================================================
+       معاينة الصورة قبل الإرسال
+    ===================================================== */
+
+    imageInput.addEventListener(
+        "change",
+        function () {
+
+            const file =
+                imageInput.files[0];
+
+            if (!file) {
+
+                imagePreview.style.display =
+                    "none";
+
+                imagePreview.src =
+                    "";
+
+                return;
+
+            }
+
+            if (!file.type.startsWith("image/")) {
+
+                showMessage(
+                    "❌ الملف المختار ليس صورة.",
+                    "error"
+                );
+
+                imageInput.value =
+                    "";
+
+                return;
+
+            }
+
+            const maxSize =
+                5 * 1024 * 1024;
+
+            if (file.size > maxSize) {
+
+                showMessage(
+                    "❌ حجم الصورة أكبر من 5 ميجابايت.",
+                    "error"
+                );
+
+                imageInput.value =
+                    "";
+
+                imagePreview.style.display =
+                    "none";
+
+                return;
+
+            }
+
+            const previewUrl =
+                URL.createObjectURL(file);
+
+            imagePreview.src =
+                previewUrl;
+
+            imagePreview.style.display =
+                "block";
+
+            message.className =
+                "";
+
+            message.textContent =
+                "";
+
+        }
+    );
+
+    /* =====================================================
+       الرسائل
+    ===================================================== */
+
+    function showMessage(
+        text,
+        type
+    ) {
+
+        message.textContent =
+            text;
+
+        message.className =
+            type;
+
+        message.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+    }
+
+    /* =====================================================
+       إنشاء اسم آمن للصورة
+    ===================================================== */
+
+    function createImagePath(file) {
+
+        const extension =
+            file.name
+                .split(".")
+                .pop()
+                .toLowerCase()
+                .replace(/[^a-z0-9]/g, "");
+
+        const safeExtension =
+            extension || "jpg";
+
+        return (
+            "seller-" +
+            Date.now() +
+            "-" +
+            crypto.randomUUID() +
+            "." +
+            safeExtension
+        );
+
+    }
+
+    /* =====================================================
+       إرسال استمارة البائع
+    ===================================================== */
+
+    form.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+            message.className =
+                "";
+
+            message.textContent =
+                "";
+
+            const imageFile =
+                imageInput.files[0];
+
+            if (!imageFile) {
+
+                showMessage(
+                    "❌ يجب اختيار صورة السلعة.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+            if (!imageFile.type.startsWith("image/")) {
+
+                showMessage(
+                    "❌ الملف المختار ليس صورة.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+            const maxSize =
+                5 * 1024 * 1024;
+
+            if (imageFile.size > maxSize) {
+
+                showMessage(
+                    "❌ حجم الصورة أكبر من 5 ميجابايت.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                "⏳ جاري رفع الصورة...";
+
+            try {
+
+                /* ==========================================
+                   قراءة البيانات
+                ========================================== */
+
+                const sellerName =
+                    document
+                        .getElementById("seller_name")
+                        .value
+                        .trim();
+
+                const phone =
+                    document
+                        .getElementById("phone")
+                        .value
+                        .trim();
+
+                const city =
+                    document
+                        .getElementById("city")
+                        .value
+                        .trim();
+
+                const category =
+                    document
+                        .getElementById("category")
+                        .value
+                        .trim();
+
+                const productName =
+                    document
+                        .getElementById("product_name")
+                        .value
+                        .trim();
+
+                const price =
+                    Number(
+                        document
+                            .getElementById("price")
+                            .value
+                    );
+
+                const quantity =
+                    Number(
+                        document
+                            .getElementById("quantity")
+                            .value
+                    );
+
+                const description =
+                    document
+                        .getElementById("description")
+                        .value
+                        .trim();
+
+                const notes =
+                    document
+                        .getElementById("notes")
+                        .value
+                        .trim();
+
+                const agreementAccepted =
+                    document
+                        .getElementById("agreement_accepted")
+                        .checked;
+
+                if (!sellerName) {
+
+                    throw new Error(
+                        "اكتب اسم صاحب السلعة."
+                    );
+
+                }
+
+                if (!phone) {
+
+                    throw new Error(
+                        "اكتب رقم التواصل."
+                    );
+
+                }
+
+                if (!city) {
+
+                    throw new Error(
+                        "اكتب المدينة."
+                    );
+
+                }
+
+                if (!category) {
+
+                    throw new Error(
+                        "اختر القسم."
+                    );
+
+                }
+
+                if (!productName) {
+
+                    throw new Error(
+                        "اكتب اسم السلعة."
+                    );
+
+                }
+
+                if (!Number.isFinite(price) || price < 0) {
+
+                    throw new Error(
+                        "أدخل سعرًا صحيحًا."
+                    );
+
+                }
+
+                if (
+                    !Number.isInteger(quantity) ||
+                    quantity < 1
+                ) {
+
+                    throw new Error(
+                        "أدخل كمية صحيحة."
+                    );
+
+                }
+
+                if (!description) {
+
+                    throw new Error(
+                        "اكتب وصف السلعة."
+                    );
+
+                }
+
+                if (!agreementAccepted) {
+
+                    throw new Error(
+                        "يجب الموافقة على الاتفاقية."
+                    );
+
+                }
+
+                /* ==========================================
+                   إنشاء معرف الطلب
+                ========================================== */
+
+                const requestId =
+                    crypto.randomUUID();
+
+                /* ==========================================
+                   إنشاء مسار الصورة
+                ========================================== */
+
+                const imagePath =
+                    createImagePath(
+                        imageFile
+                    );
+
+                /* ==========================================
+                   رفع الصورة إلى Supabase Storage
+                ========================================== */
+
+                const uploadResult =
+                    await supabaseClient
+                        .storage
+                        .from(STORAGE_BUCKET)
+                        .upload(
+                            imagePath,
+                            imageFile,
+                            {
+                                cacheControl: "3600",
+                                upsert: false,
+                                contentType:
+                                    imageFile.type
+                            }
+                        );
+
+                if (uploadResult.error) {
+
+                    console.error(
+                        "Image upload error:",
+                        uploadResult.error
+                    );
+
+                    throw new Error(
+                        "تعذر رفع الصورة: " +
+                        uploadResult.error.message
+                    );
+
+                }
+
+                /* ==========================================
+                   الحصول على رابط الصورة
+                ========================================== */
+
+                const publicUrlResult =
+                    supabaseClient
+                        .storage
+                        .from(STORAGE_BUCKET)
+                        .getPublicUrl(
+                            imagePath
+                        );
+
+                const imageUrl =
+                    publicUrlResult
+                        .data
+                        .publicUrl;
+
+                if (!imageUrl) {
+
+                    throw new Error(
+                        "تم رفع الصورة ولكن تعذر الحصول على رابطها."
+                    );
+
+                }
+
+                /* ==========================================
+                   تجهيز بيانات الطلب
+                ========================================== */
+
+                const now =
+                    new Date().toISOString();
+
+                const dataToSend = {
+
+                    id:
+                        requestId,
+
+                    product_name:
+                        productName,
+
+                    seller_name:
+                        sellerName,
+
+                    phone:
+                        phone,
+
+                    city:
+                        city,
+
+                    category:
+                        category,
+
+                    price:
+                        price,
+
+                    quantity:
+                        quantity,
+
+                    description:
+                        description,
+
+                    notes:
+                        notes,
+
+                    image:
+                        imageUrl,
+
+                    image_url:
+                        imageUrl,
+
+                    images:
+                        [imageUrl],
+
+                    agreement_accepted:
+                        true,
+
+                    agreement_accepted_at:
+                        now,
+
+                    status:
+                        "قيد المراجعة",
+
+                    commission:
+                        null,
+
+                    approved_at:
+                        null,
+
+                    published:
+                        false,
+
+                    published_at:
+                        null,
+
+                    created_at:
+                        now
+
+                };
+
+                /* ==========================================
+                   حفظ الطلب في seller_requests
+                ========================================== */
+
+                button.textContent =
+                    "⏳ جاري إرسال السلعة للمراجعة...";
+
+                const insertResult =
+                    await supabaseClient
+                        .from("seller_requests")
+                        .insert(
+                            [dataToSend]
+                        );
+
+                if (insertResult.error) {
+
+                    console.error(
+                        "Seller request error:",
+                        insertResult.error
+                    );
+
+                    /* محاولة حذف الصورة إذا فشل حفظ الطلب */
+
+                    await supabaseClient
+                        .storage
+                        .from(STORAGE_BUCKET)
+                        .remove(
+                            [imagePath]
+                        );
+
+                    throw new Error(
+                        "تعذر حفظ طلب السلعة: " +
+                        insertResult.error.message
+                    );
+
+                }
+
+                /* ==========================================
+                   نجاح العملية
+                ========================================== */
+
+                clearFormCompletely();
+
+                showMessage(
+                    "✅ تم إرسال السلعة بنجاح.\n\nستصل الآن إلى لوحة التحكم للمراجعة.",
+                    "success"
+                );
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Seller submission error:",
+                    error
+                );
+
+                showMessage(
+                    "❌ تعذر إرسال السلعة.\n\n" +
+                    (
+                        error &&
+                        error.message
+                            ? error.message
+                            : "حدث خطأ غير معروف."
+                    ),
+                    "error"
+                );
+
+            }
+            finally {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    "🚀 إرسال السلعة للمراجعة";
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+
+</html>
