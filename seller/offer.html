@@ -318,7 +318,13 @@
 
     </div>
 
-    <form id="seller-form" autocomplete="off">
+    <!--
+        مهم:
+        تم استخدام أسماء حقول جديدة وغير مرتبطة بأسماء حقول
+        البيانات الشخصية حتى لا يتعرف المتصفح عليها كـ Autofill.
+    -->
+
+    <form id="seller-form" autocomplete="new-password" novalidate>
 
         <div class="row">
 
@@ -331,11 +337,14 @@
 
                 <input
                     id="seller_name"
-                    name="seller_name_new"
+                    name="seller_field_7x91"
                     type="text"
                     required
                     autocomplete="new-password"
                     autocapitalize="words"
+                    spellcheck="false"
+                    data-lpignore="true"
+                    data-form-type="other"
                     placeholder="مثال: محمد أحمد"
                 >
 
@@ -350,11 +359,14 @@
 
                 <input
                     id="phone"
-                    name="phone_new"
-                    type="tel"
+                    name="contact_field_4k82"
+                    type="text"
                     required
                     autocomplete="new-password"
-                    inputmode="tel"
+                    inputmode="numeric"
+                    spellcheck="false"
+                    data-lpignore="true"
+                    data-form-type="other"
                     placeholder="05xxxxxxxx"
                 >
 
@@ -373,10 +385,13 @@
 
                 <input
                     id="city"
-                    name="city_new"
+                    name="location_field_9p43"
                     type="text"
                     required
-                    autocomplete="off"
+                    autocomplete="new-password"
+                    spellcheck="false"
+                    data-lpignore="true"
+                    data-form-type="other"
                     placeholder="مثال: جدة"
                 >
 
@@ -389,7 +404,12 @@
                     <span class="required">*</span>
                 </label>
 
-                <select id="category" name="category_new" required autocomplete="off">
+                <select
+                    id="category"
+                    name="category_field_2m65"
+                    required
+                    autocomplete="off"
+                >
 
                     <option value="">
                         اختر القسم
@@ -421,10 +441,13 @@
 
             <input
                 id="product_name"
-                name="product_name_new"
+                name="product_field_5r27"
                 type="text"
                 required
-                autocomplete="off"
+                autocomplete="new-password"
+                spellcheck="false"
+                data-lpignore="true"
+                data-form-type="other"
                 placeholder="مثال: جوال آيفون"
             >
 
@@ -441,7 +464,7 @@
 
                 <input
                     id="price"
-                    name="price_new"
+                    name="price_field_8t36"
                     type="number"
                     min="0"
                     step="0.01"
@@ -461,7 +484,7 @@
 
                 <input
                     id="quantity"
-                    name="quantity_new"
+                    name="quantity_field_6v14"
                     type="number"
                     min="1"
                     step="1"
@@ -492,7 +515,7 @@
 
                 <input
                     id="image"
-                    name="image_new"
+                    name="image_field_3q72"
                     type="file"
                     accept="image/jpeg,image/png,image/webp,image/gif"
                     required
@@ -521,9 +544,10 @@
 
             <textarea
                 id="description"
-                name="description_new"
+                name="description_field_1z58"
                 required
                 autocomplete="off"
+                spellcheck="false"
                 placeholder="اكتب وصف السلعة وحالتها..."
             ></textarea>
 
@@ -537,8 +561,9 @@
 
             <textarea
                 id="notes"
-                name="notes_new"
+                name="notes_field_0n47"
                 autocomplete="off"
+                spellcheck="false"
                 placeholder="أي معلومات إضافية..."
             ></textarea>
 
@@ -558,7 +583,7 @@
 
                 <input
                     id="agreement_accepted"
-                    name="agreement_new"
+                    name="agreement_field_5b29"
                     type="checkbox"
                     required
                 >
@@ -636,8 +661,7 @@
         document.getElementById("image-preview");
 
     /* =====================================================
-       تفريغ الاستمارة عند فتح الصفحة
-       لمنع بقاء بيانات سابقة أو استرجاعها من المتصفح
+       تنظيف كامل للحقول عند فتح النسخة
     ===================================================== */
 
     function clearFormCompletely() {
@@ -659,32 +683,63 @@
 
         imagePreview.src = "";
         imagePreview.style.display = "none";
-
     }
 
     /* =====================================================
-       تنظيف الاستمارة عند فتح الصفحة
+       منع استرجاع بيانات الصفحة من المتصفح
     ===================================================== */
 
     window.addEventListener("load", function () {
 
+        clearFormCompletely();
+
         setTimeout(function () {
             clearFormCompletely();
-        }, 100);
+        }, 300);
+
+        setTimeout(function () {
+            clearFormCompletely();
+        }, 1000);
+
+    });
+
+    window.addEventListener("pageshow", function () {
+
+        clearFormCompletely();
 
     });
 
     /* =====================================================
-       تنظيف الاستمارة عند الرجوع للصفحة من المتصفح
+       محاولة تعطيل Autofill للحقول النصية
     ===================================================== */
 
-    window.addEventListener("pageshow", function () {
+    document
+        .querySelectorAll(
+            '#seller_name, #phone, #city, #product_name'
+        )
+        .forEach(function (input) {
 
-        setTimeout(function () {
-            clearFormCompletely();
-        }, 100);
+            input.setAttribute(
+                "autocomplete",
+                "new-password"
+            );
 
-    });
+            input.setAttribute(
+                "data-lpignore",
+                "true"
+            );
+
+            input.setAttribute(
+                "data-form-type",
+                "other"
+            );
+
+            input.setAttribute(
+                "spellcheck",
+                "false"
+            );
+
+        });
 
     /* =====================================================
        معاينة الصورة قبل الإرسال
@@ -1030,7 +1085,7 @@
                     );
 
                 /* ==========================================
-                   رفع الصورة إلى Supabase Storage
+                   رفع الصورة
                 ========================================== */
 
                 const uploadResult =
@@ -1063,7 +1118,7 @@
                 }
 
                 /* ==========================================
-                   الحصول على رابط الصورة
+                   رابط الصورة
                 ========================================== */
 
                 const publicUrlResult =
@@ -1088,7 +1143,7 @@
                 }
 
                 /* ==========================================
-                   تجهيز بيانات الطلب
+                   تجهيز البيانات
                 ========================================== */
 
                 const now =
@@ -1158,11 +1213,10 @@
 
                     created_at:
                         now
-
                 };
 
                 /* ==========================================
-                   حفظ الطلب في seller_requests
+                   حفظ الطلب
                 ========================================== */
 
                 button.textContent =
@@ -1181,8 +1235,6 @@
                         "Seller request error:",
                         insertResult.error
                     );
-
-                    /* محاولة حذف الصورة إذا فشل حفظ الطلب */
 
                     await supabaseClient
                         .storage
