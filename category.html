@@ -684,7 +684,179 @@ function getPublishedProducts() {
 // عرض المنتجات
 // =========================
 
-function renderProducts(products) {
+// ==========================================
+// دالة عرض وجلب السلع من SUPABASE ومن الذاكرة
+// ==========================================
+async function renderProducts() {
+    const productsContainer = document.getElementById("category-products");
+    const categoryTitle = document.getElementById("category-title");
+    const categorySubtitle = document.getElementById("category-subtitle");
+
+    if (!productsContainer) return;
+
+    // 1. إظهار رسالة التحميل للمستخدم
+    productsContainer.innerHTML = '<div class="loading-box"><h3>⏳ جارٍ تحميل السلع...</h3></div>';
+
+    let allProducts = [];
+
+    try {
+        // 2. جلب المنتجات الحقيقية من قاعدة بيانات Supabase
+        const { data: supabaseProducts, error } = await supabaseClient
+            .from('products')
+            .select('*')
+            .eq('category', selectedCategory); // جلب سلع القسم المفتوح حالياً فقط
+
+        if (error) throw error;
+
+        if (supabaseProducts && supabaseProducts.length > 0) {
+            allProducts = supabaseProducts.map(normalizePublishedProduct);
+        }
+    } catch (err) {
+        console.error("فشل جلب البيانات من سابابيس، جاري محاولة الذاكرة المحلية:", err);
+        // في حال حدوث خطأ، يتم جلب المنتجات المخزنة محلياً كخطة بديلة
+        const localData = getPublishedProducts();
+        allProducts = localData.filter(p => p.category === selectedCategory);
+    }
+
+    // 3. التحقق مما إذا كان القسم فارغاً
+    if (allProducts.length === 0) {
+        productsContainer.innerHTML = `
+            <div class="empty-box">
+                <div class="empty-icon">📦</div>
+                <h3>لا توجد سلع في هذا القسم حالياً</h3>
+                <p>كن أول من يعرض سلعته في قسم ${selectedCategory}!</p>
+            </div>`;
+        return;
+    }
+
+    // 4. بناء شبكة عرض المنتجات (Grid) وضخ البيانات الحقيقية من السابابيس
+    let html = '<div class="products-grid">';
+    allProducts.forEach(product => {
+        html += `
+            <div class="product-card">
+                <button class="product-image-button" onclick="openProductModal(${JSON.stringify(product).replace(/"/g, '&quot;')})">
+                    <img src="${imageUrl(product.image)}" class="product-image" alt="${escapeHtml(product.title)}" onerror="this.src='https://placeholder.com'">
+                </button>
+                <div class="product-info">
+                    <h3>${escapeHtml(product.title)}</h3>
+                    <p>${escapeHtml(product.description)}</p>
+                    <div class="product-price">${Number(product.price).toLocaleString()} ريال</div>
+                    <div class="available">✔️ متاح للبيع</div>
+                </div>
+                <button class="add-product-btn" id="btn-${product.id}">🛒 أضف إلى السلة</button>
+            </div>
+        `;
+    });
+    html += '</div>';
+    productsContainer.innerHTML = html;
+
+    // 5. ربط أزرار إضافة إلى السلة بالوظيفة البرمجية
+    allProducts.forEach(product => {
+        const btn = document.getElementById(`btn-${product.id}`);
+        if (btn) {
+            btn.onclick = () => addToCart(product);
+        }
+    });
+}
+
+// ==========================================
+// وظائف مساعدة: الروابط، النصوص والنافذة المنبثقة
+// ==========================================
+function imageUrl(url) {
+    if (!url) return 'https://placeholder.com';
+    return url;
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+function showToast(message) {
+    const toast = document.getElementById("toast");
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 3000);
+}
+
+// فتح نافذة تفاصيل المنتج عند الضغط على الصورة
+function openProductModal(product) {
+    const modal = document.getElementById("product-modal");
+    const mainImg = document.getElementById("modal-main-image");
+    const info = document.getElementById("modal-info");
+
+    if (!modal || !mainImg || !info) return;
+
+    mainImg.src = imageUrl(product.image);
+    info.innerHTML = `
+        <h2>${escapeHtml(product.title)}</h2>
+        <p class="product-price">${Number(product.price).toLocaleString()} ريال</p>
+        <p>${escapeHtml(product.description)}</p>
+    `;
+    modal.classList.add("show");
+}
+
+// إغلاق النافذة المنبثقة
+const modalClose = document.getElementById("modal-close");
+if (modalClose) {
+    modalClose.onclick = () => {
+        document.getElementById("product-modal").classList.remove("show");
+    };
+}
+
+/* ==========================================
+   إعداد وتشغيل الصفحة عند التحميل
+========================================== */
+function initPage() {
+    const categoriesView = document.getElementById("categories-view");
+    const productsView = document.getElementById("products-view");
+    const categoriesList = document.getElementById("categories-list");
+    const categoryTitle = document.getElementById("category-title");
+    const categorySubtitle = document.getElementById("category-subtitle");
+
+    // التحقق مما إذا كان المستخدم يطلب قسماً محدداً من الرابط (مثل ?category=جوالات)
+    if (selectedCategory) {
+        if (categoriesView) categoriesView.style.display = "none";
+        if (productsView) productsView.style.display = "block";
+        if (categoryTitle) categoryTitle.innerHTML = `📂 قسم ${selectedCategory}`;
+        if (categorySubtitle) categorySubtitle.innerHTML = `تصفح المنتجات الحية المجلوبة من قاعدة البيانات مباشرة`;
+        
+        renderProducts();
+    } else {
+        if (categoriesView) categoriesView.style.display = "block";
+        if (productsView) productsView.style.display = "none";
+        renderCategoriesList(categoriesList);
+    }
+}
+
+function renderCategoriesList(container) {
+    if (!container || !categories) return;
+    container.innerHTML = "";
+    categories.forEach(cat => {
+        const card = document.createElement("a");
+        card.className = "category-card";
+        card.href = `?category=${encodeURIComponent(cat.name)}`;
+        card.innerHTML = `
+            <div class="category-icon">${cat.icon}</div>
+            <h3>${cat.name}</h3>
+            <p>${cat.description}</p>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// السلة الافتراضية
+let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+const cartItems = document.getElementById("cart-items");
+const cartCount = document.getElementById("cart-count");
+const totalPrice = document.getElementById("total-price");
+
+window.addEventListener("DOMContentLoaded", initPage);
+</script>
+</body>
+</html>
+
 
     if (!productsContainer) {
         return;
