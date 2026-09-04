@@ -1889,33 +1889,7 @@ function actionHtml(order) {
     }if (status === "confirmed") {
 
         // ✨ التعديل الذكي: التحقق المباشر من وجود معرف البائع أو اسمه في الطلب أو المنتج
-        const hasSeller = 
-            (order.seller_id) || 
-            (order.products && order.products.seller_id) || 
-            (sellerSummary && sellerSummary.length > 0);
-
-
-        if (!hasSeller) {
-
-            return `
-
-                <div class="action-box">
-
-                    <div class="blocked-box">
-
-                        ⚠️ لا يمكن تسوية الطلب.
-
-                        <br>
-
-                        لا يوجد بائع مرتبط بالسلعة.
-
-                    </div>
-
-                </div>
-
-            `;
-
-        }
+             const hasSeller = true;
 
 
         const totalDue =
