@@ -552,7 +552,7 @@
 <script>
 
 /* =========================================================
-   اتصال Supabase
+   إعداد Supabase
 ========================================================= */
 
 const SUPABASE_URL =
@@ -560,6 +560,13 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
     "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-";
+
+/*
+   اسم الـ Bucket الموجود فعليًا في مشروعك
+*/
+const STORAGE_BUCKET =
+    "product-images";
+
 
 const db =
     window.supabase.createClient(
@@ -615,7 +622,7 @@ function clearMessage() {
 
 
 /* =========================================================
-   تحويل الخطأ إلى نص واضح
+   قراءة الخطأ
 ========================================================= */
 
 function getErrorMessage(error) {
@@ -710,18 +717,20 @@ imageInput.addEventListener(
         }
 
 
-        const reader = new FileReader();
+        const reader =
+            new FileReader();
 
 
-        reader.onload = function (event) {
+        reader.onload =
+            function (event) {
 
-            previewImg.src =
-                event.target.result;
+                previewImg.src =
+                    event.target.result;
 
-            previewImg.style.display =
-                "block";
+                previewImg.style.display =
+                    "block";
 
-        };
+            };
 
 
         reader.readAsDataURL(file);
@@ -808,7 +817,7 @@ form.addEventListener(
 
 
         /* =====================================================
-           التحقق من البيانات
+           التحقق
         ===================================================== */
 
         if (!sellerName) {
@@ -941,7 +950,7 @@ form.addEventListener(
 
 
         /* =====================================================
-           بدء الإرسال
+           تعطيل الزر
         ===================================================== */
 
         submitBtn.disabled = true;
@@ -956,7 +965,7 @@ form.addEventListener(
         try {
 
             /* =================================================
-               التأكد من Supabase
+               التأكد من الاتصال
             ================================================= */
 
             if (!window.supabase) {
@@ -1017,21 +1026,26 @@ form.addEventListener(
                 safeExtension;
 
 
+            /*
+               مجلد مستقل لصور السلع المرسلة
+            */
+
             uploadedFilePath =
-                "products/" +
+                "seller-products/" +
                 uniqueName;
 
 
             const uploadResult =
                 await db
                     .storage
-                    .from("seller_images")
+                    .from(STORAGE_BUCKET)
                     .upload(
                         uploadedFilePath,
                         file,
                         {
                             cacheControl: "3600",
-                            upsert: false
+                            upsert: false,
+                            contentType: file.type
                         }
                     );
 
@@ -1049,30 +1063,16 @@ form.addEventListener(
 
 
             /* =================================================
-               رابط الصورة
+               الحصول على رابط الصورة
             ================================================= */
 
             const publicUrlResult =
                 db
                     .storage
-                    .from("seller_images")
+                    .from(STORAGE_BUCKET)
                     .getPublicUrl(
                         uploadedFilePath
                     );
-
-
-            if (
-                publicUrlResult.error
-            ) {
-
-                throw new Error(
-                    "تم رفع الصورة لكن تعذر الحصول على رابطها:\n\n" +
-                    getErrorMessage(
-                        publicUrlResult.error
-                    )
-                );
-
-            }
 
 
             const imageUrl =
@@ -1084,7 +1084,7 @@ form.addEventListener(
             if (!imageUrl) {
 
                 throw new Error(
-                    "تم رفع الصورة لكن لم يتم الحصول على رابط الصورة."
+                    "تم رفع الصورة لكن تعذر الحصول على رابط الصورة."
                 );
 
             }
@@ -1092,7 +1092,6 @@ form.addEventListener(
 
             /* =================================================
                حفظ طلب البائع
-               أسماء الأعمدة مطابقة لجدولك الحقيقي
             ================================================= */
 
             showMessage(
@@ -1162,15 +1161,22 @@ form.addEventListener(
                     ]);
 
 
+            /* =================================================
+               فشل حفظ الطلب
+            ================================================= */
+
             if (insertResult.error) {
 
-                /* حذف الصورة إذا فشل حفظ الطلب */
+                /*
+                   محاولة حذف الصورة التي تم رفعها
+                   حتى لا تبقى صورة بدون طلب
+                */
 
                 try {
 
                     await db
                         .storage
-                        .from("seller_images")
+                        .from(STORAGE_BUCKET)
                         .remove([
                             uploadedFilePath
                         ]);
@@ -1179,7 +1185,7 @@ form.addEventListener(
                 catch (cleanupError) {
 
                     console.warn(
-                        "تعذر حذف الصورة بعد فشل الحفظ:",
+                        "تعذر حذف الصورة بعد فشل حفظ الطلب:",
                         cleanupError
                     );
 
@@ -1197,7 +1203,7 @@ form.addEventListener(
 
 
             /* =================================================
-               نجاح
+               نجاح كامل
             ================================================= */
 
             showMessage(
