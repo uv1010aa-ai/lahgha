@@ -1145,6 +1145,29 @@
                 /* ==========================================
                    تجهيز البيانات
                 ========================================== */
+                const imageUrl =
+                    publicUrlResult
+                        .data
+                        .publicUrl;
+
+                if (!imageUrl) {
+
+                    throw new Error(
+                        "تم رفع الصورة ولكن تعذر الحصول على رابطها."
+                    );
+
+                }
+
+                /* ==========================================
+                   تجهيز البيانات
+                ========================================== */
+                
+                // 1️⃣ جلب معرّف البائع المسجل حالياً في المتصفح قبل الإرسال
+                const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+
+                if (authError || !user) {
+                    throw new Error("تنبيه: يجب تسجيل الدخول أولاً لتتمكن من إتمام عرض السلعة.");
+                }
 
                 const now =
                     new Date().toISOString();
@@ -1169,51 +1192,10 @@
                     category:
                         category,
 
-                    price:
-                        price,
+                    // 2️⃣ الحقل السحري الذي أضفناه لربط المنتج بحساب البائع ومنع الـ NULL
+                    seller_id: 
+                        user.id,
 
-                    quantity:
-                        quantity,
-
-                    description:
-                        description,
-
-                    notes:
-                        notes,
-
-                    image:
-                        imageUrl,
-
-                    image_url:
-                        imageUrl,
-
-                    images:
-                        [imageUrl],
-
-                    agreement_accepted:
-                        true,
-
-                    agreement_accepted_at:
-                        now,
-
-                    status:
-                        "قيد المراجعة",
-
-                    commission:
-                        null,
-
-                    approved_at:
-                        null,
-
-                    published:
-                        false,
-
-                    published_at:
-                        null,
-
-                    created_at:
-                        now
-                };
 
                 /* ==========================================
                    حفظ الطلب
