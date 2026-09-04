@@ -124,9 +124,8 @@
     </div>
 </main>
 <footer><p>© ٢٠٢٦ متجر لَحْقها. جميع الحقوق محفوظة.</p></footer>
-
 <script>
-    // تم الحفاظ على تهيئة السكريبت والربط القديم الخاص بك ليعمل الموقع تلقائياً
+    // الحفاظ على تهيئة السكريبت والربط القديم الخاص بك ليعمل الموقع تلقائياً
     const imageInput = document.getElementById('product_image');
     const previewImg = document.getElementById('preview-img');
     const form = document.getElementById('seller-form');
@@ -134,7 +133,7 @@
     const msgDiv = document.getElementById('message');
 
     imageInput.addEventListener('change', function() {
-        const file = this.files[0];
+        const file = this.files[0]; // قراءة صحيحة للملف الأول من المصفوفة لعدم تعليق المعاينة
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -146,16 +145,19 @@
     });
 
     form.addEventListener('submit', async function(e) {
-        e.preventDefault();
+        e.preventDefault(); // منع الصفحة من التحديث التلقائي والانهيار
         msgDiv.style.display = 'none';
+        msgDiv.className = '';
         submitBtn.disabled = true;
         submitBtn.innerText = "جاري الإرسال...";
 
-        const file = imageInput.files[0];
+        const file = imageInput.files[0]; // قراءة صحيحة للملف المرفوع
         if (!file) {
             msgDiv.innerText = "الرجاء اختيار صورة.";
             msgDiv.className = 'error';
+            msgDiv.style.display = 'block';
             submitBtn.disabled = false;
+            submitBtn.innerText = "إرسال السلعة للمراجعة";
             return;
         }
 
@@ -164,7 +166,7 @@
             const fileName = `${Date.now()}.${fileExt}`;
             const filePath = `products/${fileName}`;
 
-            // رفع الصورة
+            // رفع الصورة باستخدام مغير الاتصال الأصلي لمتجرك
             const { data: uploadData, error: uploadError } = await supabase.storage
                 .from('seller_images')
                 .upload(filePath, file);
@@ -175,7 +177,42 @@
                 .from('seller_images')
                 .getPublicUrl(filePath);
 
-            // تم إزالة كلمة const الزائدة من السطر التالي لمنع تعارض السكربت
-            imageUrl = urlData.publicUrl;
+            // استخدام المتغير بشكل مباشر بدون إعادة تعريف لإصلاح خطأ التوقف التام
+            const imageUrl = urlData.publicUrl;
 
-            // حفظ البيانات في قاعدة البيانات
+            // حفظ البيانات في قاعدة البيانات بنفس الحقول المخصصة في متجرك
+            const { error: insertError } = await supabase
+                .from('seller_requests')
+                .insert([{
+                    seller_name: document.getElementById('seller_name').value,
+                    phone: document.getElementById('phone').value,
+                    city: document.getElementById('city').value,
+                    category: document.getElementById('category').value,
+                    title: document.getElementById('product_title').value,
+                    price: parseFloat(document.getElementById('price').value),
+                    description: document.getElementById('description').value,
+                    image_url: imageUrl,
+                    status: 'pending'
+                }]);
+
+            if (insertError) throw insertError;
+
+            // إظهار تنبيه النجاح وإعادة تصفير الاستمارة
+            msgDiv.innerText = "🎉 تم إرسال سلعتك بنجاح وسوف تظهر في لوحة التحكم!";
+            msgDiv.className = 'success';
+            msgDiv.style.display = 'block';
+            form.reset();
+            previewImg.style.display = 'none';
+
+        } catch (error) {
+            // رصد الخطأ الفعلي وإظهاره بدلاً من تصفير الصفحة
+            console.error(error);
+            msgDiv.innerText = "❌ حدث خطأ أثناء الإرسال: " + (error.message || "يرجى المحاولة لاحقاً");
+            msgDiv.className = 'error';
+            msgDiv.style.display = 'block';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerText = "إرسال السلعة للمراجعة";
+        }
+    });
+</script>
