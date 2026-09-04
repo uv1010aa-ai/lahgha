@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -371,7 +370,7 @@
         }
 
         /* =====================================================
-           دورة الطلب - أصبحت أزرارًا حقيقية
+           دورة الطلب
         ===================================================== */
 
         .workflow {
@@ -394,69 +393,82 @@
             gap: 8px;
         }
 
+        /*
+         * كل المراحل أزرار حقيقية وقابلة للضغط
+         */
+
         .workflow-step {
-            border: 0;
-            padding: 10px 8px;
+            border: 2px solid transparent;
+            padding: 11px 8px;
             border-radius: 10px;
             background: #e2e8f0;
             color: #64748b;
             font-size: 12px;
             font-weight: 900;
             text-align: center;
-            min-height: 50px;
-            cursor: not-allowed;
+            min-height: 58px;
+            cursor: pointer;
             transition: .2s;
         }
+
+        .workflow-step:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,.10);
+        }
+
+        /*
+         * مرحلة سابقة
+         */
 
         .workflow-step.completed-step {
             background: #dbeafe;
             color: #1d4ed8;
+            border-color: #bfdbfe;
         }
+
+        /*
+         * المرحلة الحالية
+         */
 
         .workflow-step.current-step {
             background: #1e3a5f;
             color: #fff;
-            box-shadow: 0 3px 10px rgba(30,58,95,.18);
+            border-color: #1e3a5f;
+            box-shadow: 0 4px 12px rgba(30,58,95,.20);
         }
 
-        .workflow-step.next-step {
+        /*
+         * مرحلة مستقبلية قابلة للضغط
+         */
+
+        .workflow-step.clickable-step {
             background: #166534;
             color: #fff;
-            cursor: pointer;
-            box-shadow: 0 3px 10px rgba(22,101,52,.18);
+            border-color: #166534;
         }
 
-        .workflow-step.next-step:hover {
-            opacity: .9;
-            transform: translateY(-1px);
+        .workflow-step.clickable-step:hover {
+            background: #15803d;
         }
 
-        .workflow-step.next-step:disabled {
-            opacity: .65;
-            cursor: wait;
-            transform: none;
-        }
-
-        .workflow-step.waiting-step {
-            background: #fff7ed;
-            color: #9a3412;
-            cursor: not-allowed;
-        }
+        /*
+         * مرحلة التسوية
+         */
 
         .workflow-step.settle-step {
-            background: #166534;
+            background: #b45309;
             color: #fff;
-            cursor: pointer;
+            border-color: #b45309;
         }
 
         .workflow-step.settle-step:hover {
-            opacity: .9;
-            transform: translateY(-1px);
+            background: #92400e;
         }
 
-        .workflow-step.settle-step:disabled {
-            opacity: .65;
+        .workflow-step:disabled {
+            opacity: .6;
             cursor: wait;
+            transform: none;
         }
 
         .workflow-note {
@@ -515,35 +527,6 @@
             border-top: 1px solid #edf1f5;
         }
 
-        .action-label {
-            display: block;
-            margin-bottom: 10px;
-            color: #64748b;
-            font-size: 13px;
-            font-weight: 900;
-        }
-
-        .action-button {
-            width: 100%;
-            border: 0;
-            padding: 14px;
-            border-radius: 11px;
-            background: #1e3a5f;
-            color: #fff;
-            font-size: 16px;
-            font-weight: 900;
-            cursor: pointer;
-        }
-
-        .action-button:hover {
-            opacity: .9;
-        }
-
-        .action-button:disabled {
-            opacity: .6;
-            cursor: not-allowed;
-        }
-
         .secondary-button {
             width: 100%;
             margin-top: 8px;
@@ -594,7 +577,7 @@
 
         .settlement-button:disabled {
             opacity: .6;
-            cursor: not-allowed;
+            cursor: wait;
         }
 
         .settled {
@@ -605,6 +588,31 @@
             color: #166534;
             font-weight: 900;
             text-align: center;
+        }
+
+        /*
+         * زر حذف الطلب
+         */
+
+        .delete-order-button {
+            width: 100%;
+            margin-top: 14px;
+            padding: 12px;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            background: #fff;
+            color: #991b1b;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .delete-order-button:hover {
+            background: #fef2f2;
+        }
+
+        .delete-order-button:disabled {
+            opacity: .6;
+            cursor: wait;
         }
 
         .empty,
@@ -728,11 +736,11 @@
     <div class="top-actions">
 
         <a
-    href="admin/index.html"
-    class="top-button"
->
-    ← لوحة التحكم الرئيسية
-</a>
+            href="admin/index.html"
+            class="top-button"
+        >
+            ← لوحة التحكم الرئيسية
+        </a>
 
         <button
             type="button"
@@ -748,82 +756,28 @@
     <section class="stats">
 
         <div class="stat">
-
-            <div class="stat-title">
-                إجمالي الطلبات
-            </div>
-
-            <div
-                id="totalOrders"
-                class="stat-number"
-            >
-                0
-            </div>
-
+            <div class="stat-title">إجمالي الطلبات</div>
+            <div id="totalOrders" class="stat-number">0</div>
         </div>
-
 
         <div class="stat warning">
-
-            <div class="stat-title">
-                طلبات جديدة
-            </div>
-
-            <div
-                id="pendingOrders"
-                class="stat-number"
-            >
-                0
-            </div>
-
+            <div class="stat-title">طلبات جديدة</div>
+            <div id="pendingOrders" class="stat-number">0</div>
         </div>
-
 
         <div class="stat">
-
-            <div class="stat-title">
-                قيد التنفيذ
-            </div>
-
-            <div
-                id="activeOrders"
-                class="stat-number"
-            >
-                0
-            </div>
-
+            <div class="stat-title">قيد التنفيذ</div>
+            <div id="activeOrders" class="stat-number">0</div>
         </div>
-
 
         <div class="stat warning">
-
-            <div class="stat-title">
-                اعتراضات
-            </div>
-
-            <div
-                id="issueOrders"
-                class="stat-number"
-            >
-                0
-            </div>
-
+            <div class="stat-title">اعتراضات</div>
+            <div id="issueOrders" class="stat-number">0</div>
         </div>
 
-
         <div class="stat success">
-
-            <div class="stat-title">
-                مستحقات معلقة
-            </div>
-
-            <div
-                id="dueOrders"
-                class="stat-number"
-            >
-                0
-            </div>
-
+            <div class="stat-title">مستحقات معلقة</div>
+            <div id="dueOrders" class="stat-number">0</div>
         </div>
 
     </section>
@@ -836,7 +790,6 @@
             <h2>
                 🛍️ طلبات المشترين
             </h2>
-
 
             <select
                 id="filterStatus"
@@ -934,49 +887,31 @@ const supabaseClient =
 ===================================================== */
 
 const ordersContainer =
-    document.getElementById(
-        "ordersContainer"
-    );
+    document.getElementById("ordersContainer");
 
 const totalOrders =
-    document.getElementById(
-        "totalOrders"
-    );
+    document.getElementById("totalOrders");
 
 const pendingOrders =
-    document.getElementById(
-        "pendingOrders"
-    );
+    document.getElementById("pendingOrders");
 
 const activeOrders =
-    document.getElementById(
-        "activeOrders"
-    );
+    document.getElementById("activeOrders");
 
 const issueOrders =
-    document.getElementById(
-        "issueOrders"
-    );
+    document.getElementById("issueOrders");
 
 const dueOrders =
-    document.getElementById(
-        "dueOrders"
-    );
+    document.getElementById("dueOrders");
 
 const filterStatus =
-    document.getElementById(
-        "filterStatus"
-    );
+    document.getElementById("filterStatus");
 
 const refreshButton =
-    document.getElementById(
-        "refreshButton"
-    );
+    document.getElementById("refreshButton");
 
 const message =
-    document.getElementById(
-        "message"
-    );
+    document.getElementById("message");
 
 
 let orders = [];
@@ -1033,19 +968,84 @@ function dateText(value) {
     const date =
         new Date(value);
 
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-
+    if (Number.isNaN(date.getTime())) {
         return "—";
-
     }
 
-    return date.toLocaleString(
-        "ar-SA"
-    );
+    return date.toLocaleString("ar-SA");
+
+}
+
+
+/* =====================================================
+   توحيد الحالة
+===================================================== */
+
+function normalizeStatus(value) {
+
+    const raw =
+        String(value ?? "")
+            .trim()
+            .toLowerCase();
+
+
+    const map = {
+
+        "pending":
+            "pending",
+
+        "جديد":
+            "pending",
+
+        "قيد الانتظار":
+            "pending",
+
+        "processing":
+            "processing",
+
+        "قيد التجهيز":
+            "processing",
+
+        "shipped":
+            "shipped",
+
+        "تم الشحن":
+            "shipped",
+
+        "delivered":
+            "delivered",
+
+        "تم التسليم":
+            "delivered",
+
+        "confirmed":
+            "confirmed",
+
+        "أكد المشتري الاستلام":
+            "confirmed",
+
+        "تأكيد الاستلام":
+            "confirmed",
+
+        "completed":
+            "completed",
+
+        "مكتمل":
+            "completed",
+
+        "مكتمل / تمت التسوية":
+            "completed",
+
+        "cancelled":
+            "cancelled",
+
+        "ملغى":
+            "cancelled"
+
+    };
+
+
+    return map[raw] || "pending";
 
 }
 
@@ -1055,6 +1055,10 @@ function dateText(value) {
 ===================================================== */
 
 function statusText(status) {
+
+    const normalized =
+        normalizeStatus(status);
+
 
     const map = {
 
@@ -1081,14 +1085,14 @@ function statusText(status) {
 
     };
 
-    return map[status] || "جديد";
+
+    return map[normalized] || "جديد";
 
 }
 
 
 /* =====================================================
    دورة الطلب
-   المراحل أصبحت أزرارًا
 ===================================================== */
 
 const workflowStatuses = [
@@ -1103,45 +1107,18 @@ const workflowStatuses = [
 ];
 
 
-function getNextWorkflowStatus(status) {
-
-    const index =
-        workflowStatuses.indexOf(
-            status
-        );
-
-    if (
-        index === -1 ||
-        index >= workflowStatuses.length - 1
-    ) {
-
-        return null;
-
-    }
-
-    return workflowStatuses[
-        index + 1
-    ];
-
-}
-
+/* =====================================================
+   HTML دورة الطلب
+===================================================== */
 
 function workflowHtml(order) {
 
     const status =
-        order.status || "pending";
+        normalizeStatus(order.status);
 
 
     const currentIndex =
-        workflowStatuses.indexOf(
-            status
-        );
-
-
-    const nextStatus =
-        getNextWorkflowStatus(
-            status
-        );
+        workflowStatuses.indexOf(status);
 
 
     return `
@@ -1149,166 +1126,115 @@ function workflowHtml(order) {
         <div class="workflow">
 
             <div class="workflow-title">
+
                 🔄 دورة الطلب
+                <span style="
+                    font-size:12px;
+                    color:#64748b;
+                    font-weight:700;
+                ">
+                    — اضغط على المرحلة لتفعيلها
+                </span>
+
             </div>
 
 
             <div class="workflow-steps">
 
-                ${
-                    workflowStatuses
-                        .map(
-                            (
-                                step,
-                                index
-                            ) => {
+                ${workflowStatuses.map(
+                    (step, index) => {
 
-                                const isCurrent =
-                                    index === currentIndex;
+                        const isCurrent =
+                            index === currentIndex;
 
 
-                                const isPrevious =
-                                    currentIndex >= 0 &&
-                                    index < currentIndex;
+                        const isPrevious =
+                            currentIndex >= 0 &&
+                            index < currentIndex;
 
 
-                                const isNext =
-                                    nextStatus === step;
+                        let className =
+                            "workflow-step";
 
 
-                                /*
-                                 * مرحلة أكد المشتري:
-                                 * لا يمكن للإدارة تفعيلها،
-                                 * لأنها تأتي من صفحة المشتري.
-                                 */
+                        if (isCurrent) {
 
-                                const waitingForBuyer =
-                                    step === "confirmed" &&
-                                    status === "delivered";
+                            className +=
+                                " current-step";
 
+                        }
+                        else if (isPrevious) {
 
-                                /*
-                                 * مرحلة مكتمل:
-                                 * عند confirmed تصبح قابلة للضغط
-                                 * لأنها مرتبطة بتسوية البائع.
-                                 */
+                            className +=
+                                " completed-step";
 
-                                const isSettleStep =
-                                    step === "completed" &&
-                                    status === "confirmed";
+                        }
+                        else {
+
+                            className +=
+                                " clickable-step";
+
+                        }
 
 
-                                let className =
-                                    "workflow-step";
+                        if (step === "completed") {
+
+                            className =
+                                isCurrent
+                                    ? "workflow-step current-step"
+                                    : "workflow-step settle-step";
+
+                        }
 
 
-                                let disabled =
-                                    true;
+                        let icon = "";
+
+                        if (step === "pending") {
+                            icon = "🆕";
+                        }
+
+                        if (step === "processing") {
+                            icon = "🔧";
+                        }
+
+                        if (step === "shipped") {
+                            icon = "📦";
+                        }
+
+                        if (step === "delivered") {
+                            icon = "🚚";
+                        }
+
+                        if (step === "confirmed") {
+                            icon = "✅";
+                        }
+
+                        if (step === "completed") {
+                            icon = "💸";
+                        }
 
 
-                                let attributes =
-                                    "";
+                        return `
 
+                            <button
+                                type="button"
+                                class="${className}"
+                                data-workflow-status="${step}"
+                                data-order-id="${escapeHtml(order.id)}"
+                                title="اضغط لتفعيل مرحلة ${escapeHtml(statusText(step))}"
+                            >
 
-                                if (isCurrent) {
+                                ${icon}
+                                ${escapeHtml(
+                                    statusText(step)
+                                )}
 
-                                    className +=
-                                        " current-step";
+                            </button>
 
-                                }
-                                else if (
-                                    isPrevious
-                                ) {
+                        `;
 
-                                    className +=
-                                        " completed-step";
-
-                                }
-
-
-                                if (
-                                    waitingForBuyer
-                                ) {
-
-                                    className +=
-                                        " waiting-step";
-
-                                }
-
-
-                                if (
-                                    isNext &&
-                                    step !== "confirmed"
-                                ) {
-
-                                    className +=
-                                        " next-step";
-
-                                    disabled =
-                                        false;
-
-                                    attributes +=
-                                        `data-workflow-status="${step}"`;
-
-                                }
-
-
-                                if (
-                                    isSettleStep
-                                ) {
-
-                                    className +=
-                                        " settle-step";
-
-                                    disabled =
-                                        false;
-
-                                    attributes +=
-                                        `data-workflow-settle="true"`;
-
-                                }
-
-
-                                if (
-                                    disabled
-                                ) {
-
-                                    attributes +=
-                                        "disabled";
-
-                                }
-
-
-                                return `
-
-                                    <button
-                                        type="button"
-                                        class="${className}"
-                                        ${attributes}
-                                    >
-
-                                        ${
-                                            step === "confirmed" &&
-                                            status === "delivered"
-
-                                                ? "⏳ أكد المشتري الاستلام"
-
-                                                : step === "completed" &&
-                                                  status === "confirmed"
-
-                                                    ? "💸 مكتمل / تمت التسوية"
-
-                                                    : statusText(step)
-                                        }
-
-                                    </button>
-
-                                `;
-
-                            }
-                        )
-                        .join("")
-                }
+                    }
+                ).join("")}
 
             </div>
 
@@ -1320,15 +1246,17 @@ function workflowHtml(order) {
 
                     `
 
-                        <div class="workflow-note">
+                    <div class="workflow-note">
 
-                            📬 تم تسليم الطلب للمشتري.
+                        📬 تم تسجيل تسليم الطلب.
 
-                            <br>
+                        <br>
 
-                            بانتظار أن يؤكد المشتري الاستلام من صفحة متابعة الطلب.
+                        يمكنك الآن الضغط على
+                        «أكد المشتري الاستلام»
+                        عند تأكيد الاستلام.
 
-                        </div>
+                    </div>
 
                     `
 
@@ -1340,6 +1268,33 @@ function workflowHtml(order) {
 
                         `
 
+                        <div
+                            class="workflow-note"
+                            style="
+                                background:#dcfce7;
+                                color:#166534;
+                            "
+                        >
+
+                            ✅ تم تأكيد الاستلام.
+
+                            <br>
+
+                            اضغط على «مكتمل / تمت التسوية»
+                            لتنفيذ تسوية البائع.
+
+                        </div>
+
+                        `
+
+                        :
+
+                        status === "completed"
+
+                            ?
+
+                            `
+
                             <div
                                 class="workflow-note"
                                 style="
@@ -1348,24 +1303,18 @@ function workflowHtml(order) {
                                 "
                             >
 
-                                ✅ أكد المشتري الاستلام.
-
-                                <br>
-
-                                يمكنك الآن تنفيذ تسوية مستحق البائع.
+                                🎉 اكتملت دورة الطلب وتمت التسوية.
 
                             </div>
 
-                        `
+                            `
 
-                        :
+                            :
 
-                        ""
+                            ""
 
             }
 
-
-            <!-- زر حذف الطلب - لم يتغير -->
 
             <button
                 type="button"
@@ -1422,12 +1371,10 @@ function normalizeItems(value) {
 
 
 /* =====================================================
-   جلب البائعين المرتبطين بالطلب
+   جلب البائعين
 ===================================================== */
 
-async function loadSellersForOrders(
-    orderList
-) {
+async function loadSellersForOrders(orderList) {
 
     const sellerIds =
         [
@@ -1435,9 +1382,7 @@ async function loadSellersForOrders(
                 orderList
                     .flatMap(
                         order =>
-                            normalizeItems(
-                                order.items
-                            )
+                            normalizeItems(order.items)
                     )
                     .map(
                         item =>
@@ -1447,9 +1392,7 @@ async function loadSellersForOrders(
                     )
                     .map(
                         value =>
-                            String(
-                                value
-                            ).trim()
+                            String(value).trim()
                     )
                     .filter(Boolean)
             )
@@ -1504,9 +1447,7 @@ async function loadSellersForOrders(
         seller => {
 
             sellerCache.set(
-                String(
-                    seller.id
-                ),
+                String(seller.id),
                 seller
             );
 
@@ -1520,90 +1461,82 @@ async function loadSellersForOrders(
    حساب مستحقات البائع
 ===================================================== */
 
-function buildSellerSummary(
-    items
-) {
+function buildSellerSummary(items) {
 
     const sellers = [];
 
 
-    items.forEach(
-        item => {
+    items.forEach(item => {
 
-            const sellerRequestId =
-                String(
-                    item.seller_request_id ||
-                    item.sellerRequestId ||
-                    ""
-                ).trim();
-
-
-            if (!sellerRequestId) {
-                return;
-            }
+        const sellerRequestId =
+            String(
+                item.seller_request_id ||
+                item.sellerRequestId ||
+                ""
+            ).trim();
 
 
-            const existing =
-                sellers.find(
-                    seller =>
-                        seller.id ===
-                        sellerRequestId
-                );
+        if (!sellerRequestId) {
+            return;
+        }
 
 
-            const subtotal =
-                Number(
-                    item.subtotal
-                ) ||
-                (
-                    Number(item.price) || 0
-                ) *
-                (
-                    Number(item.quantity) || 1
-                );
+        const existing =
+            sellers.find(
+                seller =>
+                    seller.id === sellerRequestId
+            );
 
 
-            if (existing) {
-
-                existing.amount +=
-                    subtotal;
-
-                return;
-
-            }
-
-
-            const seller =
-                sellerCache.get(
-                    sellerRequestId
-                );
+        const subtotal =
+            Number(item.subtotal) ||
+            (
+                Number(item.price) || 0
+            ) *
+            (
+                Number(item.quantity) || 1
+            );
 
 
-            sellers.push({
+        if (existing) {
 
-                id:
-                    sellerRequestId,
+            existing.amount += subtotal;
 
-                name:
-                    seller?.seller_name ||
-                    item.seller_name ||
-                    "بائع غير معروف",
-
-                phone:
-                    seller?.phone ||
-                    "",
-
-                city:
-                    seller?.city ||
-                    "",
-
-                amount:
-                    subtotal
-
-            });
+            return;
 
         }
-    );
+
+
+        const seller =
+            sellerCache.get(
+                sellerRequestId
+            );
+
+
+        sellers.push({
+
+            id:
+                sellerRequestId,
+
+            name:
+                seller?.seller_name ||
+                item.seller_name ||
+                "بائع غير معروف",
+
+            phone:
+                seller?.phone ||
+                "",
+
+            city:
+                seller?.city ||
+                "",
+
+            amount:
+                subtotal
+
+        });
+
+    });
 
 
     return sellers;
@@ -1615,9 +1548,7 @@ function buildSellerSummary(
    عرض البائعين
 ===================================================== */
 
-function sellersHtml(
-    sellerSummary
-) {
+function sellersHtml(sellerSummary) {
 
     if (!sellerSummary.length) {
 
@@ -1650,9 +1581,7 @@ function sellersHtml(
                 <div class="seller-title">
 
                     🏪 البائع:
-                    ${escapeHtml(
-                        seller.name
-                    )}
+                    ${escapeHtml(seller.name)}
 
                 </div>
 
@@ -1662,9 +1591,7 @@ function sellersHtml(
                         seller.phone
                             ? `
                                 📱 الجوال:
-                                ${escapeHtml(
-                                    seller.phone
-                                )}
+                                ${escapeHtml(seller.phone)}
                                 <br>
                               `
                             : ""
@@ -1674,9 +1601,7 @@ function sellersHtml(
                         seller.city
                             ? `
                                 📍 المدينة:
-                                ${escapeHtml(
-                                    seller.city
-                                )}
+                                ${escapeHtml(seller.city)}
                                 <br>
                               `
                             : ""
@@ -1684,9 +1609,7 @@ function sellersHtml(
 
                     💰 قيمة السلع:
                     <strong>
-                        ${money(
-                            seller.amount
-                        )}
+                        ${money(seller.amount)}
                     </strong>
 
                 </div>
@@ -1703,9 +1626,7 @@ function sellersHtml(
    المنتجات
 ===================================================== */
 
-function itemsHtml(
-    items
-) {
+function itemsHtml(items) {
 
     if (!items.length) {
 
@@ -1720,58 +1641,51 @@ function itemsHtml(
     }
 
 
-    return items.map(
-        item => {
+    return items.map(item => {
 
-            const title =
-                item.title ||
-                item.name ||
-                item.product_name ||
-                "منتج";
-
-
-            const quantity =
-                Math.max(
-                    1,
-                    Number(
-                        item.quantity
-                    ) || 1
-                );
+        const title =
+            item.title ||
+            item.name ||
+            item.product_name ||
+            "منتج";
 
 
-            const price =
-                Number(
-                    item.price
-                ) || 0;
+        const quantity =
+            Math.max(
+                1,
+                Number(item.quantity) || 1
+            );
 
 
-            const subtotal =
-                Number(
-                    item.subtotal
-                ) ||
-                price * quantity;
+        const price =
+            Number(item.price) || 0;
 
 
-            const image =
-                item.image ||
-                item.image_url ||
-                "";
+        const subtotal =
+            Number(item.subtotal) ||
+            price * quantity;
 
 
-            const imageHtml =
-                image
+        const image =
+            item.image ||
+            item.image_url ||
+            "";
+
+
+        const imageHtml =
+            image
 
                 ?
 
                 `
 
-                    <img
-                        class="item-image"
-                        src="${escapeHtml(image)}"
-                        alt="${escapeHtml(title)}"
-                        loading="lazy"
-                        onerror="this.style.display='none'"
-                    >
+                <img
+                    class="item-image"
+                    src="${escapeHtml(image)}"
+                    alt="${escapeHtml(title)}"
+                    loading="lazy"
+                    onerror="this.style.display='none'"
+                >
 
                 `
 
@@ -1779,116 +1693,99 @@ function itemsHtml(
 
                 `
 
-                    <div
-                        class="item-image"
-                        style="
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                            font-size:34px;
-                        "
-                    >
-                        📦
-                    </div>
+                <div
+                    class="item-image"
+                    style="
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-size:34px;
+                    "
+                >
+                    📦
+                </div>
 
                 `;
 
 
-            const sellerRequestId =
-                item.seller_request_id ||
-                item.sellerRequestId ||
-                "";
+        const sellerRequestId =
+            item.seller_request_id ||
+            item.sellerRequestId ||
+            "";
 
 
-            const seller =
-                sellerRequestId
-                    ? sellerCache.get(
-                        String(
-                            sellerRequestId
-                        )
-                    )
-                    : null;
+        const seller =
+            sellerRequestId
+                ? sellerCache.get(
+                    String(sellerRequestId)
+                )
+                : null;
 
 
-            const sellerName =
-                seller?.seller_name ||
-                item.seller_name ||
-                "غير محدد";
+        const sellerName =
+            seller?.seller_name ||
+            item.seller_name ||
+            "غير محدد";
 
 
-            return `
+        return `
 
-                <div class="item">
+            <div class="item">
 
-                    <div class="item-grid">
+                <div class="item-grid">
 
-                        <div>
-                            ${imageHtml}
+                    <div>
+                        ${imageHtml}
+                    </div>
+
+
+                    <div>
+
+                        <div class="item-title">
+
+                            ${escapeHtml(title)}
+
                         </div>
 
 
-                        <div>
+                        <div class="item-extra">
 
-                            <div class="item-title">
+                            🔢 الكمية:
+                            <strong>${quantity}</strong>
 
-                                ${escapeHtml(
-                                    title
-                                )}
+                            <br>
 
+                            💰 سعر الوحدة:
+                            <strong>${money(price)}</strong>
+
+                            <br>
+
+                            🧾 إجمالي السلعة:
+                            <strong>${money(subtotal)}</strong>
+
+                        </div>
+
+
+                        <div class="seller-box">
+
+                            <div class="seller-title">
+                                🏪 البائع
                             </div>
 
+                            <div class="seller-details">
 
-                            <div class="item-extra">
+                                ${escapeHtml(sellerName)}
 
-                                🔢 الكمية:
-                                <strong>
-                                    ${quantity}
-                                </strong>
-
-                                <br>
-
-                                💰 سعر الوحدة:
-                                <strong>
-                                    ${money(price)}
-                                </strong>
-
-                                <br>
-
-                                🧾 إجمالي السلعة:
-                                <strong>
-                                    ${money(subtotal)}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="seller-box">
-
-                                <div class="seller-title">
-
-                                    🏪 البائع
-
-                                </div>
-
-
-                                <div class="seller-details">
-
-                                    ${escapeHtml(
-                                        sellerName
-                                    )}
-
-                                    ${
-                                        seller?.phone
-                                            ? `
-                                                <br>
-                                                📱 ${escapeHtml(
-                                                    seller.phone
-                                                )}
-                                              `
-                                            : ""
-                                    }
-
-                                </div>
+                                ${
+                                    seller?.phone
+                                        ? `
+                                            <br>
+                                            📱 ${escapeHtml(
+                                                seller.phone
+                                            )}
+                                          `
+                                        : ""
+                                }
 
                             </div>
 
@@ -1898,22 +1795,23 @@ function itemsHtml(
 
                 </div>
 
-            `;
+            </div>
 
-        }
-    ).join("");
+        `;
+
+    }).join("");
 
 }
 
 
 /* =====================================================
-   إجراء الطلب
+   الإجراءات أسفل الطلب
 ===================================================== */
 
 function actionHtml(order) {
 
     const status =
-        order.status || "pending";
+        normalizeStatus(order.status);
 
 
     const hasIssue =
@@ -1922,9 +1820,7 @@ function actionHtml(order) {
 
     const sellerSummary =
         buildSellerSummary(
-            normalizeItems(
-                order.items
-            )
+            normalizeItems(order.items)
         );
 
 
@@ -1976,105 +1872,15 @@ function actionHtml(order) {
 
             <div class="action-box">
 
-                <span class="action-label">
-                    الخطوة التالية:
-                </span>
-
-                <button
-                    type="button"
-                    class="action-button"
-                    data-next-status="processing"
-                    data-order-id="${escapeHtml(order.id)}"
-                >
-                    ✅ قبول الطلب وبدء التجهيز
-                </button>
-
-
                 <button
                     type="button"
                     class="secondary-button"
                     data-cancel-id="${escapeHtml(order.id)}"
                 >
+
                     ✕ إلغاء الطلب
+
                 </button>
-
-            </div>
-
-        `;
-
-    }
-
-
-    if (status === "processing") {
-
-        return `
-
-            <div class="action-box">
-
-                <span class="action-label">
-                    الخطوة التالية:
-                </span>
-
-                <button
-                    type="button"
-                    class="action-button"
-                    data-next-status="shipped"
-                    data-order-id="${escapeHtml(order.id)}"
-                >
-                    📦 تم تجهيز الطلب — تسجيل الشحن
-                </button>
-
-            </div>
-
-        `;
-
-    }
-
-
-    if (status === "shipped") {
-
-        return `
-
-            <div class="action-box">
-
-                <span class="action-label">
-                    الخطوة التالية:
-                </span>
-
-                <button
-                    type="button"
-                    class="action-button"
-                    data-next-status="delivered"
-                    data-order-id="${escapeHtml(order.id)}"
-                >
-                    🚚 تسجيل وصول الطلب للمشتري
-                </button>
-
-            </div>
-
-        `;
-
-    }
-
-
-    if (status === "delivered") {
-
-        return `
-
-            <div class="action-box">
-
-                <div class="waiting-box" style="
-                    padding:13px;
-                    border-radius:10px;
-                    background:#fff7ed;
-                    color:#9a3412;
-                    font-weight:900;
-                    text-align:center;
-                ">
-
-                    📬 بانتظار تأكيد المشتري للاستلام والمطابقة
-
-                </div>
 
             </div>
 
@@ -2114,21 +1920,14 @@ function actionHtml(order) {
 
         const totalDue =
             sellerSummary.reduce(
-                (
-                    sum,
-                    seller
-                ) =>
+                (sum, seller) =>
                     sum +
-                    Number(
-                        seller.amount || 0
-                    ),
+                    Number(seller.amount || 0),
                 0
             );
 
 
-        if (
-            order.seller_paid === true
-        ) {
+        if (order.seller_paid === true) {
 
             return `
 
@@ -2185,9 +1984,7 @@ function actionHtml(order) {
                 </div>
 
 
-                ${sellersHtml(
-                    sellerSummary
-                )}
+                ${sellersHtml(sellerSummary)}
 
 
                 <button
@@ -2236,9 +2033,7 @@ async function loadOrders() {
     ordersContainer.innerHTML = `
 
         <div class="loading">
-
             ⏳ جاري تحميل الطلبات...
-
         </div>
 
     `;
@@ -2275,9 +2070,7 @@ async function loadOrders() {
 
                 <br><br>
 
-                ${escapeHtml(
-                    error.message
-                )}
+                ${escapeHtml(error.message)}
 
             </div>
 
@@ -2294,9 +2087,7 @@ async function loadOrders() {
             : [];
 
 
-    await loadSellersForOrders(
-        orders
-    );
+    await loadSellersForOrders(orders);
 
 
     updateStats();
@@ -2319,10 +2110,8 @@ function updateStats() {
     pendingOrders.textContent =
         orders.filter(
             order =>
-                (
-                    order.status ||
-                    "pending"
-                ) === "pending"
+                normalizeStatus(order.status) ===
+                "pending"
         ).length;
 
 
@@ -2335,7 +2124,7 @@ function updateStats() {
                     "delivered",
                     "confirmed"
                 ].includes(
-                    order.status
+                    normalizeStatus(order.status)
                 )
         ).length;
 
@@ -2350,7 +2139,8 @@ function updateStats() {
     dueOrders.textContent =
         orders.filter(
             order =>
-                order.status === "confirmed" &&
+                normalizeStatus(order.status) ===
+                    "confirmed" &&
                 order.seller_paid !== true &&
                 order.issue_reported !== true
         ).length;
@@ -2359,7 +2149,7 @@ function updateStats() {
 
 
 /* =====================================================
-   فلترة الطلبات
+   فلترة
 ===================================================== */
 
 function getFilteredOrders() {
@@ -2368,18 +2158,12 @@ function getFilteredOrders() {
         filterStatus.value;
 
 
-    if (
-        selected === "all"
-    ) {
-
+    if (selected === "all") {
         return orders;
-
     }
 
 
-    if (
-        selected === "issues"
-    ) {
+    if (selected === "issues") {
 
         return orders.filter(
             order =>
@@ -2389,13 +2173,12 @@ function getFilteredOrders() {
     }
 
 
-    if (
-        selected === "due"
-    ) {
+    if (selected === "due") {
 
         return orders.filter(
             order =>
-                order.status === "confirmed" &&
+                normalizeStatus(order.status) ===
+                    "confirmed" &&
                 order.seller_paid !== true &&
                 order.issue_reported !== true
         );
@@ -2405,10 +2188,8 @@ function getFilteredOrders() {
 
     return orders.filter(
         order =>
-            (
-                order.status ||
-                "pending"
-            ) === selected
+            normalizeStatus(order.status) ===
+            selected
     );
 
 }
@@ -2424,8 +2205,7 @@ function renderOrders() {
         getFilteredOrders();
 
 
-    ordersContainer.innerHTML =
-        "";
+    ordersContainer.innerHTML = "";
 
 
     if (!filtered.length) {
@@ -2445,90 +2225,57 @@ function renderOrders() {
     }
 
 
-    filtered.forEach(
-        order => {
+    filtered.forEach(order => {
 
-            const status =
-                order.status ||
-                "pending";
+        const status =
+            normalizeStatus(order.status);
 
 
-            const items =
-                normalizeItems(
-                    order.items
-                );
+        const items =
+            normalizeItems(order.items);
 
 
-            const sellerSummary =
-                buildSellerSummary(
-                    items
-                );
+        const sellerSummary =
+            buildSellerSummary(items);
 
 
-            const sellerTotal =
-                sellerSummary.reduce(
-                    (
-                        sum,
-                        seller
-                    ) =>
-                        sum +
-                        Number(
-                            seller.amount || 0
-                        ),
-                    0
-                );
+        const sellerTotal =
+            sellerSummary.reduce(
+                (sum, seller) =>
+                    sum +
+                    Number(seller.amount || 0),
+                0
+            );
 
 
-            const article =
-                document.createElement(
-                    "article"
-                );
+        const article =
+            document.createElement("article");
 
 
-            article.className =
-                "order";
+        article.className =
+            "order";
 
 
-            article.innerHTML = `
+        article.innerHTML = `
 
-                <div class="order-head">
+            <div class="order-head">
 
-                    <div>
+                <div>
 
-                        <div class="order-number">
+                    <div class="order-number">
 
-                            📋 طلب
-
-                            ${escapeHtml(
-                                order.order_number ||
-                                "بدون رقم"
-                            )}
-
-                        </div>
-
-                        <div class="order-date">
-
-                            📅 ${escapeHtml(
-                                dateText(
-                                    order.created_at
-                                )
-                            )}
-
-                        </div>
+                        📋 طلب
+                        ${escapeHtml(
+                            order.order_number ||
+                            "بدون رقم"
+                        )}
 
                     </div>
 
+                    <div class="order-date">
 
-                    <div
-                        class="status ${escapeHtml(
-                            status
-                        )}"
-                    >
-
-                        ${escapeHtml(
-                            statusText(
-                                status
-                            )
+                        📅 ${escapeHtml(
+                            dateText(order.created_at)
                         )}
 
                     </div>
@@ -2536,228 +2283,101 @@ function renderOrders() {
                 </div>
 
 
-                <div class="buyer-grid">
+                <div
+                    class="status ${escapeHtml(status)}"
+                >
 
-                    <div class="info">
-
-                        <strong>
-                            👤 المشتري
-                        </strong>
-
-                        ${escapeHtml(
-                            order.buyer_name ||
-                            "—"
-                        )}
-
-                    </div>
-
-
-                    <div class="info">
-
-                        <strong>
-                            📱 الجوال
-                        </strong>
-
-                        ${escapeHtml(
-                            order.buyer_phone ||
-                            "—"
-                        )}
-
-                    </div>
-
-
-                    <div class="info">
-
-                        <strong>
-                            💳 طريقة الدفع
-                        </strong>
-
-                        ${escapeHtml(
-                            order.payment_method ||
-                            "—"
-                        )}
-
-                    </div>
+                    ${escapeHtml(
+                        statusText(status)
+                    )}
 
                 </div>
 
+            </div>
 
-                <div class="info address-box">
+
+            <div class="buyer-grid">
+
+                <div class="info">
 
                     <strong>
-                        📍 العنوان
+                        👤 المشتري
                     </strong>
 
                     ${escapeHtml(
-                        order.buyer_address ||
-                        "—"
+                        order.buyer_name || "—"
                     )}
 
                 </div>
 
 
-                <div class="payment-box">
+                <div class="info">
 
-                    <div class="payment-title">
+                    <strong>
+                        📱 الجوال
+                    </strong>
 
-                        💳 حالة الدفع
-
-                    </div>
-
-
-                    <div>
-
-                        ${escapeHtml(
-                            order.payment_method ||
-                            "—"
-                        )}
-
-                    </div>
-
-
-                    ${
-                        order.payment_method ===
-                        "تحويل بنكي"
-
-                            ?
-
-                            `
-
-                                <div class="payment-note">
-
-                                    يجب التحقق من وصول التحويل قبل متابعة الطلب.
-
-                                </div>
-
-                            `
-
-                            :
-
-                            ""
-
-                    }
-
-                </div>
-
-
-                <h3 class="section-title">
-
-                    🛍️ المنتجات المطلوبة
-
-                </h3>
-
-
-                <div class="items">
-
-                    ${itemsHtml(
-                        items
+                    ${escapeHtml(
+                        order.buyer_phone || "—"
                     )}
 
                 </div>
 
 
-                <div class="money-row">
+                <div class="info">
 
-                    <div class="money-box">
+                    <strong>
+                        💳 طريقة الدفع
+                    </strong>
 
-                        <strong>
-                            إجمالي الطلب
-                        </strong>
-
-                        ${money(
-                            order.total
-                        )}
-
-                    </div>
-
-
-                    <div class="money-box">
-
-                        <strong>
-                            عدد المنتجات
-                        </strong>
-
-                        ${items.reduce(
-                            (
-                                sum,
-                                item
-                            ) =>
-                                sum +
-                                (
-                                    Number(
-                                        item.quantity
-                                    ) || 1
-                                ),
-                            0
-                        )}
-
-                    </div>
-
-
-                    <div class="money-box warning">
-
-                        <strong>
-                            مستحق البائع
-                        </strong>
-
-                        ${
-                            sellerSummary.length
-                                ? money(
-                                    sellerTotal
-                                )
-                                : "غير محدد"
-                        }
-
-                    </div>
+                    ${escapeHtml(
+                        order.payment_method || "—"
+                    )}
 
                 </div>
 
-
-                <div class="total">
-
-                    <span>
-                        إجمالي الطلب
-                    </span>
-
-                    <span>
-                        ${money(
-                            order.total
-                        )}
-                    </span>
-
-                </div>
+            </div>
 
 
-                ${workflowHtml(
-                    order
+            <div class="info address-box">
+
+                <strong>
+                    📍 العنوان
+                </strong>
+
+                ${escapeHtml(
+                    order.buyer_address || "—"
                 )}
+
+            </div>
+
+
+            <div class="payment-box">
+
+                <div class="payment-title">
+                    💳 حالة الدفع
+                </div>
+
+                <div>
+                    ${escapeHtml(
+                        order.payment_method || "—"
+                    )}
+                </div>
 
 
                 ${
-                    order.issue_reported === true
+                    order.payment_method === "تحويل بنكي"
 
                         ?
 
                         `
 
-                            <div class="issue-box">
+                        <div class="payment-note">
 
-                                <div class="issue-title">
+                            يجب التحقق من وصول التحويل
+                            قبل متابعة الطلب.
 
-                                    🔴 اعتراض المشتري
-
-                                </div>
-
-                                <div class="issue-details">
-
-                                    ${escapeHtml(
-                                        order.issue_details ||
-                                        "تم تسجيل اعتراض دون تفاصيل."
-                                    )}
-
-                                </div>
-
-                            </div>
+                        </div>
 
                         `
 
@@ -2767,29 +2387,136 @@ function renderOrders() {
 
                 }
 
-
-                ${actionHtml(
-                    order
-                )}
-
-            `;
+            </div>
 
 
-            ordersContainer.appendChild(
-                article
-            );
+            <h3 class="section-title">
 
-        }
-    );
+                🛍️ المنتجات المطلوبة
+
+            </h3>
 
 
-    bindActionButtons();
+            <div class="items">
+
+                ${itemsHtml(items)}
+
+            </div>
+
+
+            <div class="money-row">
+
+                <div class="money-box">
+
+                    <strong>
+                        إجمالي الطلب
+                    </strong>
+
+                    ${money(order.total)}
+
+                </div>
+
+
+                <div class="money-box">
+
+                    <strong>
+                        عدد المنتجات
+                    </strong>
+
+                    ${items.reduce(
+                        (sum, item) =>
+                            sum +
+                            (
+                                Number(item.quantity) || 1
+                            ),
+                        0
+                    )}
+
+                </div>
+
+
+                <div class="money-box warning">
+
+                    <strong>
+                        مستحق البائع
+                    </strong>
+
+                    ${
+                        sellerSummary.length
+                            ? money(sellerTotal)
+                            : "غير محدد"
+                    }
+
+                </div>
+
+            </div>
+
+
+            <div class="total">
+
+                <span>
+                    إجمالي الطلب
+                </span>
+
+                <span>
+                    ${money(order.total)}
+                </span>
+
+            </div>
+
+
+            ${workflowHtml(order)}
+
+
+            ${
+                order.issue_reported === true
+
+                    ?
+
+                    `
+
+                    <div class="issue-box">
+
+                        <div class="issue-title">
+
+                            🔴 اعتراض المشتري
+
+                        </div>
+
+                        <div class="issue-details">
+
+                            ${escapeHtml(
+                                order.issue_details ||
+                                "تم تسجيل اعتراض دون تفاصيل."
+                            )}
+
+                        </div>
+
+                    </div>
+
+                    `
+
+                    :
+
+                    ""
+
+            }
+
+
+            ${actionHtml(order)}
+
+        `;
+
+
+        ordersContainer.appendChild(article);
+
+    });
 
 }
 
 
 /* =====================================================
-   تحديث حالة الطلب
+   تحديث الحالة في Supabase
 ===================================================== */
 
 async function updateOrderStatus(
@@ -2803,19 +2530,56 @@ async function updateOrderStatus(
     }
 
 
-    button.disabled =
-        true;
+    const order =
+        orders.find(
+            item =>
+                String(item.id) ===
+                String(orderId)
+        );
+
+
+    if (!order) {
+
+        showMessage(
+            "❌ لم يتم العثور على الطلب."
+        );
+
+        return;
+
+    }
+
+
+    const currentStatus =
+        normalizeStatus(order.status);
+
+
+    if (currentStatus === newStatus) {
+
+        showMessage(
+            "ℹ️ الطلب موجود بالفعل في هذه المرحلة."
+        );
+
+        return;
+
+    }
 
 
     const originalText =
         button.textContent;
 
 
+    button.disabled = true;
+
     button.textContent =
         "⏳ جاري الحفظ...";
 
 
+    const now =
+        new Date().toISOString();
+
+
     const {
+        data,
         error
     } =
         await supabaseClient
@@ -2826,13 +2590,17 @@ async function updateOrderStatus(
                     newStatus,
 
                 updated_at:
-                    new Date().toISOString()
+                    now
 
             })
             .eq(
                 "id",
                 orderId
-            );
+            )
+            .select(
+                "id,status"
+            )
+            .maybeSingle();
 
 
     if (error) {
@@ -2844,17 +2612,42 @@ async function updateOrderStatus(
 
 
         showMessage(
-            "❌ تعذر تحديث حالة الطلب."
+            "❌ فشل تحديث الحالة: " +
+            error.message
         );
 
 
-        button.disabled =
-            false;
-
+        button.disabled = false;
 
         button.textContent =
             originalText;
 
+        return;
+
+    }
+
+
+    /*
+     * إذا لم يرجع Supabase صفًا،
+     * فهذا يعني غالبًا أن سياسة RLS تمنع UPDATE.
+     */
+
+    if (!data) {
+
+        console.error(
+            "No row updated. Check Supabase UPDATE policy / RLS."
+        );
+
+
+        showMessage(
+            "❌ لم يتم حفظ الحالة. تحقق من صلاحية UPDATE في Supabase."
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            originalText;
 
         return;
 
@@ -2862,14 +2655,102 @@ async function updateOrderStatus(
 
 
     showMessage(
-        "✅ تم انتقال الطلب إلى: " +
-        statusText(
-            newStatus
-        )
+        "✅ تم تغيير حالة الطلب إلى: " +
+        statusText(newStatus)
     );
 
 
     await loadOrders();
+
+}
+
+
+/* =====================================================
+   التعامل مع الضغط على مراحل الدورة
+===================================================== */
+
+async function handleWorkflowClick(
+    button
+) {
+
+    const orderId =
+        button.dataset.orderId;
+
+
+    const newStatus =
+        button.dataset.workflowStatus;
+
+
+    if (!orderId || !newStatus) {
+
+        showMessage(
+            "❌ بيانات زر المرحلة غير مكتملة."
+        );
+
+        return;
+
+    }
+
+
+    const order =
+        orders.find(
+            item =>
+                String(item.id) ===
+                String(orderId)
+        );
+
+
+    if (!order) {
+
+        showMessage(
+            "❌ لم يتم العثور على الطلب."
+        );
+
+        return;
+
+    }
+
+
+    const currentStatus =
+        normalizeStatus(order.status);
+
+
+    /*
+     * الضغط على مكتمل يعني تنفيذ التسوية.
+     */
+
+    if (newStatus === "completed") {
+
+        if (currentStatus !== "confirmed") {
+
+            showMessage(
+                "⚠️ يجب أولًا أن تكون حالة الطلب «أكد المشتري الاستلام» قبل التسوية."
+            );
+
+            return;
+
+        }
+
+
+        await settleSeller(
+            orderId,
+            button
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * بقية المراحل تحدث الحالة مباشرة.
+     */
+
+    await updateOrderStatus(
+        orderId,
+        newStatus,
+        button
+    );
 
 }
 
@@ -2886,12 +2767,8 @@ async function deleteOrder(
     const order =
         orders.find(
             item =>
-                String(
-                    item.id
-                ) ===
-                String(
-                    orderId
-                )
+                String(item.id) ===
+                String(orderId)
         );
 
 
@@ -2906,21 +2783,20 @@ async function deleteOrder(
     }
 
 
-    const orderNumber =
-        order.order_number ||
-        "بدون رقم";
-
-
     const confirmed =
         window.confirm(
 
             "⚠️ هل أنت متأكد من حذف هذا الطلب نهائيًا؟\n\n" +
 
             "رقم الطلب: " +
-            orderNumber +
+            (
+                order.order_number ||
+                "بدون رقم"
+            ) +
+
             "\n\n" +
 
-            "سيتم حذف الطلب من قاعدة البيانات ولا يمكن التراجع عن العملية."
+            "سيتم حذف الطلب من قاعدة البيانات ولا يمكن التراجع."
 
         );
 
@@ -2930,15 +2806,14 @@ async function deleteOrder(
     }
 
 
-    button.disabled =
-        true;
-
+    button.disabled = true;
 
     button.textContent =
         "⏳ جاري حذف الطلب...";
 
 
     const {
+        data,
         error
     } =
         await supabaseClient
@@ -2947,13 +2822,15 @@ async function deleteOrder(
             .eq(
                 "id",
                 orderId
-            );
+            )
+            .select("id")
+            .maybeSingle();
 
 
     if (error) {
 
         console.error(
-            "Delete order error:",
+            "Delete error:",
             error
         );
 
@@ -2964,13 +2841,27 @@ async function deleteOrder(
         );
 
 
-        button.disabled =
-            false;
-
+        button.disabled = false;
 
         button.textContent =
             "🗑️ حذف الطلب";
 
+        return;
+
+    }
+
+
+    if (!data) {
+
+        showMessage(
+            "❌ لم يتم حذف الطلب. تحقق من صلاحية DELETE في Supabase."
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "🗑️ حذف الطلب";
 
         return;
 
@@ -2999,12 +2890,8 @@ async function settleSeller(
     const order =
         orders.find(
             item =>
-                String(
-                    item.id
-                ) ===
-                String(
-                    orderId
-                )
+                String(item.id) ===
+                String(orderId)
         );
 
 
@@ -3019,12 +2906,14 @@ async function settleSeller(
     }
 
 
-    if (
-        order.status !== "confirmed"
-    ) {
+    const currentStatus =
+        normalizeStatus(order.status);
+
+
+    if (currentStatus !== "confirmed") {
 
         showMessage(
-            "❌ لا يمكن التسوية قبل تأكيد المشتري."
+            "❌ لا يمكن التسوية قبل تأكيد الاستلام."
         );
 
         return;
@@ -3032,9 +2921,7 @@ async function settleSeller(
     }
 
 
-    if (
-        order.issue_reported === true
-    ) {
+    if (order.issue_reported === true) {
 
         showMessage(
             "❌ لا يمكن التسوية مع وجود اعتراض."
@@ -3045,24 +2932,14 @@ async function settleSeller(
     }
 
 
-    if (
-        order.seller_paid === true
-    ) {
-
+    if (order.seller_paid === true) {
         return;
-
     }
-
-
-    const items =
-        normalizeItems(
-            order.items
-        );
 
 
     const sellerSummary =
         buildSellerSummary(
-            items
+            normalizeItems(order.items)
         );
 
 
@@ -3079,14 +2956,9 @@ async function settleSeller(
 
     const totalDue =
         sellerSummary.reduce(
-            (
-                sum,
-                seller
-            ) =>
+            (sum, seller) =>
                 sum +
-                Number(
-                    seller.amount || 0
-                ),
+                Number(seller.amount || 0),
             0
         );
 
@@ -3097,29 +2969,43 @@ async function settleSeller(
             "هل نفذت التحويل للبائع؟\n\n" +
 
             "إجمالي المستحق: " +
-            money(
-                totalDue
-            )
+            money(totalDue) +
+
+            "\n\n" +
+
+            "بالضغط على موافق سيتم تسجيل الطلب كمكتمل."
 
         );
 
 
     if (!confirmed) {
-
         return;
-
     }
 
 
-    button.disabled =
-        true;
+    const originalText =
+        button.textContent;
 
+
+    button.disabled = true;
 
     button.textContent =
         "⏳ جاري تسجيل التسوية...";
 
 
+    const now =
+        new Date().toISOString();
+
+
+    /*
+     * لا نستخدم:
+     * .eq("issue_reported", false)
+     *
+     * لأن القيمة قد تكون NULL.
+     */
+
     const {
+        data,
         error
     } =
         await supabaseClient
@@ -3130,13 +3016,13 @@ async function settleSeller(
                     true,
 
                 seller_paid_at:
-                    new Date().toISOString(),
+                    now,
 
                 status:
                     "completed",
 
                 updated_at:
-                    new Date().toISOString()
+                    now
 
             })
             .eq(
@@ -3147,10 +3033,10 @@ async function settleSeller(
                 "status",
                 "confirmed"
             )
-            .eq(
-                "issue_reported",
-                false
-            );
+            .select(
+                "id,status,seller_paid"
+            )
+            .maybeSingle();
 
 
     if (error) {
@@ -3162,17 +3048,32 @@ async function settleSeller(
 
 
         showMessage(
-            "❌ تعذر تسجيل التسوية."
+            "❌ فشل تسجيل التسوية: " +
+            error.message
         );
 
 
-        button.disabled =
-            false;
-
+        button.disabled = false;
 
         button.textContent =
-            "💸 تم تحويل مستحق البائع";
+            originalText;
 
+        return;
+
+    }
+
+
+    if (!data) {
+
+        showMessage(
+            "❌ لم يتم تسجيل التسوية. تحقق من صلاحية UPDATE في Supabase."
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            originalText;
 
         return;
 
@@ -3180,7 +3081,7 @@ async function settleSeller(
 
 
     showMessage(
-        "✅ تم تسجيل تسوية مستحق البائع."
+        "✅ تم تسجيل التسوية واكتملت دورة الطلب."
     );
 
 
@@ -3209,14 +3110,6 @@ async function cancelOrder(
     }
 
 
-    button.disabled =
-        true;
-
-
-    button.textContent =
-        "⏳ جاري الإلغاء...";
-
-
     await updateOrderStatus(
         orderId,
         "cancelled",
@@ -3227,264 +3120,104 @@ async function cancelOrder(
 
 
 /* =====================================================
-   ربط أزرار دورة الطلب والأزرار الأخرى
+   حدث واحد لكل الأزرار
 ===================================================== */
 
-function bindActionButtons() {
-
-    /*
-     * أزرار الانتقال القديمة أسفل البطاقة
-     */
-
-    document
-        .querySelectorAll(
-            ".action-button"
-        )
-        .forEach(
-            button => {
+ordersContainer.addEventListener(
+    "click",
+    async function(event) {
 
-                button.addEventListener(
-                    "click",
-                    () => {
+        /*
+         * مراحل دورة الطلب
+         */
 
-                        updateOrderStatus(
-                            button.dataset.orderId,
-                            button.dataset.nextStatus,
-                            button
-                        );
+        const workflowButton =
+            event.target.closest(
+                ".workflow-step"
+            );
 
-                    }
-                );
-
-            }
-        );
 
-
-    /*
-     * إلغاء الطلب
-     */
+        if (workflowButton) {
 
-    document
-        .querySelectorAll(
-            ".secondary-button"
-        )
-        .forEach(
-            button => {
+            await handleWorkflowClick(
+                workflowButton
+            );
 
-                button.addEventListener(
-                    "click",
-                    () => {
+            return;
 
-                        cancelOrder(
-                            button.dataset.cancelId,
-                            button
-                        );
+        }
 
-                    }
-                );
 
-            }
-        );
+        /*
+         * حذف الطلب
+         */
 
+        const deleteButton =
+            event.target.closest(
+                ".delete-order-button"
+            );
 
-    /*
-     * تسوية مستحق البائع
-     */
 
-    document
-        .querySelectorAll(
-            ".settlement-button"
-        )
-        .forEach(
-            button => {
+        if (deleteButton) {
 
-                button.addEventListener(
-                    "click",
-                    () => {
+            await deleteOrder(
+                deleteButton.dataset.deleteId,
+                deleteButton
+            );
 
-                        settleSeller(
-                            button.dataset.settleId,
-                            button
-                        );
+            return;
 
-                    }
-                );
+        }
 
-            }
-        );
 
+        /*
+         * إلغاء الطلب
+         */
 
-    /*
-     * حذف الطلب
-     */
+        const cancelButton =
+            event.target.closest(
+                ".secondary-button"
+            );
 
-    document
-        .querySelectorAll(
-            ".delete-order-button"
-        )
-        .forEach(
-            button => {
 
-                button.addEventListener(
-                    "click",
-                    () => {
+        if (
+            cancelButton &&
+            cancelButton.dataset.cancelId
+        ) {
 
-                        deleteOrder(
-                            button.dataset.deleteId,
-                            button
-                        );
+            await cancelOrder(
+                cancelButton.dataset.cancelId,
+                cancelButton
+            );
 
-                    }
-                );
+            return;
 
-            }
-        );
+        }
 
 
-    /*
-     * أزرار دورة الطلب نفسها
-     */
+        /*
+         * تسوية البائع
+         */
 
-    document
-        .querySelectorAll(
-            ".workflow-step.next-step"
-        )
-        .forEach(
-            button => {
+        const settlementButton =
+            event.target.closest(
+                ".settlement-button"
+            );
 
-                button.addEventListener(
-                    "click",
-                    () => {
 
-                        const order =
-                            findOrderFromWorkflowButton(
-                                button
-                            );
+        if (settlementButton) {
 
+            await settleSeller(
+                settlementButton.dataset.settleId,
+                settlementButton
+            );
 
-                        if (!order) {
+            return;
 
-                            showMessage(
-                                "❌ تعذر العثور على الطلب."
-                            );
-
-                            return;
-
-                        }
-
-
-                        const nextStatus =
-                            button.dataset.workflowStatus;
-
-
-                        updateOrderStatus(
-                            order.id,
-                            nextStatus,
-                            button
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-
-    /*
-     * زر مكتمل / تمت التسوية داخل الدورة
-     */
-
-    document
-        .querySelectorAll(
-            ".workflow-step.settle-step"
-        )
-        .forEach(
-            button => {
-
-                button.addEventListener(
-                    "click",
-                    () => {
-
-                        const order =
-                            findOrderFromWorkflowButton(
-                                button
-                            );
-
-
-                        if (!order) {
-
-                            showMessage(
-                                "❌ تعذر العثور على الطلب."
-                            );
-
-                            return;
-
-                        }
-
-
-                        settleSeller(
-                            order.id,
-                            button
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-}
-
-
-/* =====================================================
-   العثور على الطلب من زر الدورة
-===================================================== */
-
-function findOrderFromWorkflowButton(
-    button
-) {
-
-    const workflow =
-        button.closest(
-            ".workflow"
-        );
-
-
-    if (!workflow) {
-
-        return null;
+        }
 
     }
-
-
-    const deleteButton =
-        workflow.querySelector(
-            ".delete-order-button"
-        );
-
-
-    if (!deleteButton) {
-
-        return null;
-
-    }
-
-
-    const orderId =
-        deleteButton.dataset.deleteId;
-
-
-    return orders.find(
-        order =>
-            String(
-                order.id
-            ) ===
-            String(
-                orderId
-            )
-    ) || null;
-
-}
+);
 
 
 /* =====================================================
@@ -3516,7 +3249,7 @@ function showMessage(text) {
                 );
 
             },
-            3000
+            4000
         );
 
 }
@@ -3549,4 +3282,3 @@ loadOrders();
 </body>
 
 </html>
-```
