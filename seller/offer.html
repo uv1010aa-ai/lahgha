@@ -153,6 +153,8 @@
     });
 
     form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
         e.preventDefault(); // إيقاف إعادة تحميل الصفحة الافتراضي فوراً لتخفيف المعالجة
         
         msgDiv.style.display = 'none';
