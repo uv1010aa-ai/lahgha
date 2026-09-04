@@ -1,527 +1,558 @@
+```html
 <!DOCTYPE html>
-
 <html lang="ar" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>اعرض سلعتك | لَحْقها</title>
+    <title>اعرض سلعتك | لَحْقها</title>
 
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
-    * {
-        box-sizing: border-box;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-        margin: 0;
-        font-family: Tahoma, Arial, sans-serif;
-        background: #f5f7fb;
-        color: #263238;
-        line-height: 1.8;
-    }
+        body {
+            margin: 0;
+            font-family: Tahoma, Arial, sans-serif;
+            background: #f5f7fb;
+            color: #263238;
+            line-height: 1.8;
+        }
 
-    header {
-        background: #1e3a5f;
-        color: white;
-        padding: 18px 20px;
-    }
-
-    .header-inner {
-        width: min(1000px, calc(100% - 20px));
-        margin: auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .logo {
-        font-size: 22px;
-        font-weight: bold;
-    }
-
-    .back {
-        color: white;
-        text-decoration: none;
-        border: 1px solid rgba(255,255,255,.4);
-        padding: 8px 14px;
-        border-radius: 8px;
-    }
-
-    .hero {
-        background: linear-gradient(135deg, #1e3a5f, #315b87);
-        color: white;
-        text-align: center;
-        padding: 50px 20px;
-    }
-
-    .hero h1 {
-        margin: 0 0 10px;
-        font-size: 34px;
-    }
-
-    .hero p {
-        margin: 0;
-        font-size: 17px;
-    }
-
-    .container {
-        width: min(900px, calc(100% - 20px));
-        margin: 30px auto 60px;
-    }
-
-    .card {
-        background: white;
-        border-radius: 18px;
-        padding: 28px;
-        box-shadow: 0 8px 25px rgba(0,0,0,.08);
-    }
-
-    .card h2 {
-        color: #1e3a5f;
-        margin-top: 0;
-    }
-
-    .notice {
-        background: #eef6ff;
-        border-right: 4px solid #1e3a5f;
-        padding: 15px;
-        border-radius: 10px;
-        margin-bottom: 25px;
-    }
-
-    .row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-    }
-
-    .field {
-        margin-bottom: 17px;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 7px;
-        font-weight: bold;
-        color: #1e3a5f;
-    }
-
-    .required {
-        color: #c62828;
-    }
-
-    input,
-    select,
-    textarea {
-        width: 100%;
-        padding: 13px;
-        border: 1px solid #d7dee7;
-        border-radius: 10px;
-        font-family: inherit;
-        font-size: 15px;
-        background: white;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-        outline: none;
-        border-color: #1e3a5f;
-        box-shadow: 0 0 0 3px rgba(30,58,95,.08);
-    }
-
-    textarea {
-        min-height: 120px;
-        resize: vertical;
-    }
-
-    .image-box {
-        border: 2px dashed #b9c7d8;
-        border-radius: 14px;
-        padding: 22px;
-        text-align: center;
-        background: #f8fafc;
-    }
-
-    .image-box input {
-        border: 0;
-        padding: 10px 0;
-        background: transparent;
-    }
-
-    .image-preview {
-        display: none;
-        margin: 15px auto 0;
-        max-width: 100%;
-        width: 260px;
-        height: 220px;
-        object-fit: cover;
-        border-radius: 12px;
-        border: 1px solid #d7dee7;
-    }
-
-    .image-help {
-        color: #64748b;
-        font-size: 14px;
-        margin-top: 5px;
-    }
-
-    .agreement {
-        background: #f7f9fc;
-        border-right: 4px solid #1e3a5f;
-        padding: 17px;
-        border-radius: 10px;
-        margin: 25px 0;
-    }
-
-    .agreement strong {
-        color: #1e3a5f;
-    }
-
-    .agreement label {
-        display: flex;
-        gap: 10px;
-        align-items: flex-start;
-        color: #263238;
-        font-weight: normal;
-        margin-top: 12px;
-    }
-
-    .agreement input {
-        width: auto;
-        margin-top: 5px;
-    }
-
-    button {
-        width: 100%;
-        border: 0;
-        border-radius: 10px;
-        padding: 15px;
-        background: #1e3a5f;
-        color: white;
-        font-family: inherit;
-        font-size: 17px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background: #16314f;
-    }
-
-    button:disabled {
-        opacity: .65;
-        cursor: not-allowed;
-    }
-
-    #message {
-        display: none;
-        margin-top: 20px;
-        padding: 15px;
-        border-radius: 10px;
-        white-space: pre-line;
-    }
-
-    #message.success {
-        display: block;
-        background: #eaf7ec;
-        color: #245b2a;
-        border: 1px solid #a8d7ae;
-    }
-
-    #message.error {
-        display: block;
-        background: #fdeaea;
-        color: #b71c1c;
-        border: 1px solid #efb1b1;
-    }
-
-    footer {
-        text-align: center;
-        color: #777;
-        padding: 25px;
-    }
-
-    @media (max-width: 650px) {
-        .row {
-            grid-template-columns: 1fr;
-            gap: 0;
+        header {
+            background: #1e3a5f;
+            color: white;
+            padding: 18px 20px;
         }
 
         .header-inner {
-            flex-direction: column;
+            width: min(1000px, calc(100% - 20px));
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
         }
 
-        .card {
-            padding: 20px;
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .back {
+            color: white;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,.4);
+            padding: 8px 14px;
+            border-radius: 8px;
+        }
+
+        .back:hover {
+            background: rgba(255,255,255,.1);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1e3a5f, #315b87);
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
         }
 
         .hero h1 {
-            font-size: 28px;
+            margin: 0 0 10px;
+            font-size: 34px;
         }
-    }
-</style>
-```
 
+        .hero p {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .container {
+            width: min(900px, calc(100% - 20px));
+            margin: 30px auto 60px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 8px 25px rgba(0,0,0,.08);
+        }
+
+        .card h2 {
+            color: #1e3a5f;
+            margin-top: 0;
+        }
+
+        .notice {
+            background: #eef6ff;
+            border-right: 4px solid #1e3a5f;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .field {
+            margin-bottom: 17px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #1e3a5f;
+        }
+
+        .required {
+            color: #c62828;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d7dee7;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 15px;
+            background: white;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #1e3a5f;
+            box-shadow: 0 0 0 3px rgba(30,58,95,.08);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .image-box {
+            border: 2px dashed #b9c7d8;
+            border-radius: 14px;
+            padding: 22px;
+            text-align: center;
+            background: #f8fafc;
+        }
+
+        .image-box input {
+            border: 0;
+            padding: 10px 0;
+            background: transparent;
+        }
+
+        .image-preview {
+            display: none;
+            margin: 15px auto 0;
+            max-width: 100%;
+            width: 260px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid #d7dee7;
+        }
+
+        .image-help {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .agreement {
+            background: #f7f9fc;
+            border-right: 4px solid #1e3a5f;
+            padding: 17px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .agreement strong {
+            color: #1e3a5f;
+        }
+
+        .agreement label {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            color: #263238;
+            font-weight: normal;
+            margin-top: 12px;
+        }
+
+        .agreement input {
+            width: auto;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            border: 0;
+            border-radius: 10px;
+            padding: 15px;
+            background: #1e3a5f;
+            color: white;
+            font-family: inherit;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #16314f;
+        }
+
+        button:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+        }
+
+        #message {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            white-space: pre-line;
+        }
+
+        #message.success {
+            display: block;
+            background: #eaf7ec;
+            color: #245b2a;
+            border: 1px solid #a8d7ae;
+        }
+
+        #message.error {
+            display: block;
+            background: #fdeaea;
+            color: #b71c1c;
+            border: 1px solid #efb1b1;
+        }
+
+        #message.info {
+            display: block;
+            background: #eef6ff;
+            color: #1e3a5f;
+            border: 1px solid #b9d4ef;
+        }
+
+        footer {
+            text-align: center;
+            color: #777;
+            padding: 25px;
+        }
+
+        @media (max-width: 650px) {
+            .row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .header-inner {
+                flex-direction: column;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
     <div class="header-inner">
-        <div class="logo">📦 لَحْقها — أصحاب السلع</div>
 
-```
-    <a class="back" href="../index.html">
-        ← العودة للمتجر
-    </a>
-</div>
-```
+        <div class="logo">
+            📦 لَحْقها — أصحاب السلع
+        </div>
 
+        <a class="back" href="../index.html">
+            ← العودة للمتجر
+        </a>
+
+    </div>
 </header>
 
 <section class="hero">
+
     <h1>📦 اعرض سلعتك معنا</h1>
-    <p>أرسل بيانات سلعتك وستصل إلى لوحة التحكم للمراجعة.</p>
+
+    <p>
+        أرسل بيانات سلعتك وستصل إلى لوحة التحكم للمراجعة.
+    </p>
+
 </section>
 
 <main class="container">
 
-```
-<div class="card">
+    <div class="card">
 
-    <h2>🛍️ بيانات السلعة</h2>
+        <h2>🛍️ بيانات السلعة</h2>
 
-    <div class="notice">
-        ✅ بعد الإرسال ستبقى السلعة قيد المراجعة حتى تتم الموافقة عليها.
-        <br>
-        🔒 بيانات صاحب السلعة الخاصة لا تظهر للمشتري.
-    </div>
-
-    <form
-        id="seller-form"
-        autocomplete="off"
-        novalidate
-    >
-
-        <div class="row">
-
-            <div class="field">
-
-                <label for="seller_name">
-                    اسم صاحب السلعة
-                    <span class="required">*</span>
-                </label>
-
-                <input
-                    id="seller_name"
-                    type="text"
-                    required
-                    placeholder="مثال: محمد أحمد"
-                >
-
-            </div>
-
-            <div class="field">
-
-                <label for="phone">
-                    رقم التواصل
-                    <span class="required">*</span>
-                </label>
-
-                <input
-                    id="phone"
-                    type="tel"
-                    required
-                    inputmode="numeric"
-                    placeholder="05xxxxxxxx"
-                >
-
-            </div>
-
+        <div class="notice">
+            ✅ بعد الإرسال ستبقى السلعة قيد المراجعة حتى تتم الموافقة عليها.
+            <br>
+            🔒 بيانات صاحب السلعة الخاصة لا تظهر للمشتري.
         </div>
 
-        <div class="row">
+        <form
+            id="seller-form"
+            autocomplete="off"
+            novalidate
+            onsubmit="return false;"
+        >
 
-            <div class="field">
+            <div class="row">
 
-                <label for="city">
-                    المدينة
-                    <span class="required">*</span>
-                </label>
+                <div class="field">
 
-                <input
-                    id="city"
-                    type="text"
-                    required
-                    placeholder="مثال: جدة"
-                >
+                    <label for="seller_name">
+                        اسم صاحب السلعة
+                        <span class="required">*</span>
+                    </label>
 
-            </div>
+                    <input
+                        id="seller_name"
+                        type="text"
+                        required
+                        placeholder="مثال: محمد أحمد"
+                    >
 
-            <div class="field">
-
-                <label for="category">
-                    القسم
-                    <span class="required">*</span>
-                </label>
-
-                <select
-                    id="category"
-                    required
-                >
-                    <option value="">اختر القسم</option>
-                    <option value="السيارات">السيارات</option>
-                    <option value="الأجهزة">الأجهزة</option>
-                    <option value="العقارات">العقارات</option>
-                    <option value="الخدمات">الخدمات</option>
-                    <option value="منوعات">منوعات</option>
-                </select>
-
-            </div>
-
-        </div>
-
-        <div class="row">
-
-            <div class="field">
-
-                <label for="product_title">
-                    عنوان السلعة
-                    <span class="required">*</span>
-                </label>
-
-                <input
-                    id="product_title"
-                    type="text"
-                    required
-                    placeholder="مثال: آيفون 14 برو ماكس"
-                >
-
-            </div>
-
-            <div class="field">
-
-                <label for="price">
-                    السعر المتوقع (ريال)
-                    <span class="required">*</span>
-                </label>
-
-                <input
-                    id="price"
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    required
-                    placeholder="مثال: 3500"
-                >
-
-            </div>
-
-        </div>
-
-        <div class="field">
-
-            <label for="description">
-                وصف السلعة وتفاصيلها
-                <span class="required">*</span>
-            </label>
-
-            <textarea
-                id="description"
-                required
-                placeholder="اكتب مواصفات السلعة وحالتها..."
-            ></textarea>
-
-        </div>
-
-        <div class="field">
-
-            <label for="product_image">
-                صورة السلعة
-                <span class="required">*</span>
-            </label>
-
-            <div class="image-box">
-
-                <input
-                    id="product_image"
-                    type="file"
-                    accept="image/*"
-                    required
-                >
-
-                <div class="image-help">
-                    الحد الأقصى 5 ميجابايت
                 </div>
 
-                <img
-                    id="preview-img"
-                    class="image-preview"
-                    src=""
-                    alt="معاينة الصورة"
-                >
+                <div class="field">
+
+                    <label for="phone">
+                        رقم التواصل
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="phone"
+                        type="tel"
+                        required
+                        inputmode="numeric"
+                        placeholder="05xxxxxxxx"
+                    >
+
+                </div>
 
             </div>
 
-        </div>
+            <div class="row">
 
-        <div class="agreement">
+                <div class="field">
 
-            <strong>
-                📜 شروط وأحكام العرض:
-            </strong>
+                    <label for="city">
+                        المدينة
+                        <span class="required">*</span>
+                    </label>
 
-            <label>
+                    <input
+                        id="city"
+                        type="text"
+                        required
+                        placeholder="مثال: جدة"
+                    >
 
-                <input
-                    id="agree_terms"
-                    type="checkbox"
+                </div>
+
+                <div class="field">
+
+                    <label for="category">
+                        القسم
+                        <span class="required">*</span>
+                    </label>
+
+                    <select id="category" required>
+
+                        <option value="">
+                            اختر القسم
+                        </option>
+
+                        <option value="السيارات">
+                            السيارات
+                        </option>
+
+                        <option value="الأجهزة">
+                            الأجهزة
+                        </option>
+
+                        <option value="العقارات">
+                            العقارات
+                        </option>
+
+                        <option value="الخدمات">
+                            الخدمات
+                        </option>
+
+                        <option value="منوعات">
+                            منوعات
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="field">
+
+                    <label for="product_title">
+                        عنوان السلعة
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="product_title"
+                        type="text"
+                        required
+                        placeholder="مثال: آيفون 14 برو ماكس"
+                    >
+
+                </div>
+
+                <div class="field">
+
+                    <label for="price">
+                        السعر المتوقع (ريال)
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="price"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        required
+                        placeholder="مثال: 3500"
+                    >
+
+                </div>
+
+            </div>
+
+            <div class="field">
+
+                <label for="description">
+                    وصف السلعة وتفاصيلها
+                    <span class="required">*</span>
+                </label>
+
+                <textarea
+                    id="description"
                     required
-                >
+                    placeholder="اكتب مواصفات السلعة وحالتها..."
+                ></textarea>
 
-                <span>
-                    أقر بأن جميع البيانات المدخلة صحيحة والسلعة ملكي.
-                </span>
+            </div>
 
-            </label>
+            <div class="field">
 
-        </div>
+                <label for="product_image">
+                    صورة السلعة
+                    <span class="required">*</span>
+                </label>
 
-        <button
-            id="submit-btn"
-            type="submit"
-        >
-            إرسال السلعة للمراجعة
-        </button>
+                <div class="image-box">
 
-        <div id="message"></div>
+                    <input
+                        id="product_image"
+                        type="file"
+                        accept="image/*"
+                        required
+                    >
 
-    </form>
+                    <div class="image-help">
+                        الحد الأقصى 5 ميجابايت
+                    </div>
 
-</div>
-```
+                    <img
+                        id="preview-img"
+                        class="image-preview"
+                        alt="معاينة الصورة"
+                    >
+
+                </div>
+
+            </div>
+
+            <div class="agreement">
+
+                <strong>
+                    📜 شروط وأحكام العرض:
+                </strong>
+
+                <label>
+
+                    <input
+                        id="agree_terms"
+                        type="checkbox"
+                        required
+                    >
+
+                    <span>
+                        أقر بأن جميع البيانات المدخلة صحيحة والسلعة ملكي.
+                    </span>
+
+                </label>
+
+            </div>
+
+            <button
+                id="submit-btn"
+                type="submit"
+            >
+                إرسال السلعة للمراجعة
+            </button>
+
+            <div id="message"></div>
+
+        </form>
+
+    </div>
 
 </main>
 
 <footer>
-    <p>© ٢٠٢٦ متجر لَحْقها. جميع الحقوق محفوظة.</p>
+
+    <p>
+        © ٢٠٢٦ متجر لَحْقها. جميع الحقوق محفوظة.
+    </p>
+
 </footer>
 
 <script>
 
 /* =========================================================
-   الاتصال بـ Supabase
-   نفس الاتصال المستخدم في لوحة التحكم
+   اتصال Supabase
 ========================================================= */
 
 const SUPABASE_URL =
@@ -529,7 +560,6 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
     "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-";
-
 
 const db =
     window.supabase.createClient(
@@ -562,33 +592,64 @@ const msgDiv =
    الرسائل
 ========================================================= */
 
-function showMessage(
-    text,
-    type
-) {
+function showMessage(text, type) {
 
-    msgDiv.textContent =
-        text;
+    msgDiv.textContent = text;
 
-    msgDiv.className =
-        type;
+    msgDiv.className = type;
 
-    msgDiv.style.display =
-        "block";
+    msgDiv.style.display = "block";
 
 }
 
 
 function clearMessage() {
 
-    msgDiv.textContent =
-        "";
+    msgDiv.textContent = "";
 
-    msgDiv.className =
-        "";
+    msgDiv.className = "";
 
-    msgDiv.style.display =
-        "none";
+    msgDiv.style.display = "none";
+
+}
+
+
+/* =========================================================
+   تحويل الخطأ إلى نص واضح
+========================================================= */
+
+function getErrorMessage(error) {
+
+    if (!error) {
+        return "خطأ غير معروف.";
+    }
+
+    if (typeof error === "string") {
+        return error;
+    }
+
+    if (error.message) {
+        return error.message;
+    }
+
+    if (error.error_description) {
+        return error.error_description;
+    }
+
+    if (error.details) {
+        return error.details;
+    }
+
+    if (error.hint) {
+        return error.hint;
+    }
+
+    try {
+        return JSON.stringify(error, null, 2);
+    }
+    catch {
+        return String(error);
+    }
 
 }
 
@@ -599,78 +660,71 @@ function clearMessage() {
 
 imageInput.addEventListener(
     "change",
-    function() {
+    function () {
 
-        const file =
-            this.files[0];
+        const file = this.files[0];
+
+        clearMessage();
 
         if (!file) {
 
-            previewImg.src =
-                "";
+            previewImg.src = "";
 
-            previewImg.style.display =
-                "none";
+            previewImg.style.display = "none";
 
             return;
-
         }
 
 
-        if (
-            !file.type.startsWith("image/")
-        ) {
+        if (!file.type.startsWith("image/")) {
 
             showMessage(
                 "❌ الملف المختار ليس صورة.",
                 "error"
             );
 
-            this.value =
-                "";
+            this.value = "";
+
+            previewImg.src = "";
+
+            previewImg.style.display = "none";
 
             return;
-
         }
 
 
-        if (
-            file.size >
-            5 * 1024 * 1024
-        ) {
+        if (file.size > 5 * 1024 * 1024) {
 
             showMessage(
                 "❌ حجم الصورة أكبر من 5 ميجابايت.",
                 "error"
             );
 
-            this.value =
-                "";
+            this.value = "";
+
+            previewImg.src = "";
+
+            previewImg.style.display = "none";
 
             return;
-
         }
 
 
-        const reader =
-            new FileReader();
+        const reader = new FileReader();
 
 
-        reader.onload =
-            function(event) {
+        reader.onload = function (event) {
 
-                previewImg.src =
-                    event.target.result;
+            previewImg.src =
+                event.target.result;
 
-                previewImg.style.display =
-                    "block";
+            previewImg.style.display =
+                "block";
 
-            };
+        };
 
 
-        reader.readAsDataURL(
-            file
-        );
+        reader.readAsDataURL(file);
 
     }
 );
@@ -682,20 +736,17 @@ imageInput.addEventListener(
 
 form.addEventListener(
     "submit",
-    async function(event) {
-
-        /*
-         * أهم سطر:
-         * يمنع ظهور الرابط ?seller_field...
-         * ويمنع إعادة تحميل الصفحة.
-         */
+    async function (event) {
 
         event.preventDefault();
         event.stopPropagation();
 
-
         clearMessage();
 
+
+        /* =====================================================
+           قراءة البيانات
+        ===================================================== */
 
         const sellerName =
             document
@@ -725,7 +776,7 @@ form.addEventListener(
                 .trim();
 
 
-        const title =
+        const productName =
             document
                 .getElementById("product_title")
                 .value
@@ -757,7 +808,7 @@ form.addEventListener(
 
 
         /* =====================================================
-           التحقق
+           التحقق من البيانات
         ===================================================== */
 
         if (!sellerName) {
@@ -768,7 +819,6 @@ form.addEventListener(
             );
 
             return;
-
         }
 
 
@@ -780,7 +830,6 @@ form.addEventListener(
             );
 
             return;
-
         }
 
 
@@ -792,7 +841,6 @@ form.addEventListener(
             );
 
             return;
-
         }
 
 
@@ -804,11 +852,10 @@ form.addEventListener(
             );
 
             return;
-
         }
 
 
-        if (!title) {
+        if (!productName) {
 
             showMessage(
                 "❌ اكتب عنوان السلعة.",
@@ -816,7 +863,6 @@ form.addEventListener(
             );
 
             return;
-
         }
 
 
@@ -836,7 +882,6 @@ form.addEventListener(
             );
 
             return;
-
         }
 
 
@@ -848,7 +893,6 @@ form.addEventListener(
             );
 
             return;
-
         }
 
 
@@ -860,13 +904,10 @@ form.addEventListener(
             );
 
             return;
-
         }
 
 
-        if (
-            !file.type.startsWith("image/")
-        ) {
+        if (!file.type.startsWith("image/")) {
 
             showMessage(
                 "❌ الملف المختار ليس صورة.",
@@ -874,14 +915,10 @@ form.addEventListener(
             );
 
             return;
-
         }
 
 
-        if (
-            file.size >
-            5 * 1024 * 1024
-        ) {
+        if (file.size > 5 * 1024 * 1024) {
 
             showMessage(
                 "❌ حجم الصورة أكبر من 5 ميجابايت.",
@@ -889,7 +926,6 @@ form.addEventListener(
             );
 
             return;
-
         }
 
 
@@ -901,7 +937,6 @@ form.addEventListener(
             );
 
             return;
-
         }
 
 
@@ -909,25 +944,34 @@ form.addEventListener(
            بدء الإرسال
         ===================================================== */
 
-        submitBtn.disabled =
-            true;
+        submitBtn.disabled = true;
 
         submitBtn.textContent =
             "⏳ جاري إرسال السلعة...";
 
 
+        let uploadedFilePath = null;
+
+
         try {
 
-            /*
-             * التأكد من وجود اتصال Supabase
-             */
+            /* =================================================
+               التأكد من Supabase
+            ================================================= */
 
-            if (
-                !window.supabase
-            ) {
+            if (!window.supabase) {
 
                 throw new Error(
-                    "تعذر تحميل مكتبة Supabase."
+                    "مكتبة Supabase لم يتم تحميلها."
+                );
+
+            }
+
+
+            if (!db) {
+
+                throw new Error(
+                    "تعذر إنشاء اتصال Supabase."
                 );
 
             }
@@ -937,21 +981,28 @@ form.addEventListener(
                رفع الصورة
             ================================================= */
 
+            showMessage(
+                "⏳ جاري رفع صورة السلعة...",
+                "info"
+            );
+
+
             const originalName =
                 file.name || "image.jpg";
 
 
+            const parts =
+                originalName.split(".");
+
+
             const extension =
-                originalName
-                    .split(".")
-                    .pop()
-                    .toLowerCase();
+                parts.length > 1
+                    ? parts.pop().toLowerCase()
+                    : "jpg";
 
 
             const safeExtension =
-                /^[a-z0-9]+$/i.test(
-                    extension
-                )
+                /^[a-z0-9]+$/i.test(extension)
                     ? extension
                     : "jpg";
 
@@ -966,7 +1017,7 @@ form.addEventListener(
                 safeExtension;
 
 
-            const filePath =
+            uploadedFilePath =
                 "products/" +
                 uniqueName;
 
@@ -976,32 +1027,29 @@ form.addEventListener(
                     .storage
                     .from("seller_images")
                     .upload(
-                        filePath,
+                        uploadedFilePath,
                         file,
                         {
-                            cacheControl:
-                                "3600",
-
-                            upsert:
-                                false
+                            cacheControl: "3600",
+                            upsert: false
                         }
                     );
 
 
-            if (
-                uploadResult.error
-            ) {
+            if (uploadResult.error) {
 
                 throw new Error(
-                    "تعذر رفع الصورة:\n" +
-                    uploadResult.error.message
+                    "فشل رفع الصورة:\n\n" +
+                    getErrorMessage(
+                        uploadResult.error
+                    )
                 );
 
             }
 
 
             /* =================================================
-               الحصول على رابط الصورة
+               رابط الصورة
             ================================================= */
 
             const publicUrlResult =
@@ -1009,8 +1057,22 @@ form.addEventListener(
                     .storage
                     .from("seller_images")
                     .getPublicUrl(
-                        filePath
+                        uploadedFilePath
                     );
+
+
+            if (
+                publicUrlResult.error
+            ) {
+
+                throw new Error(
+                    "تم رفع الصورة لكن تعذر الحصول على رابطها:\n\n" +
+                    getErrorMessage(
+                        publicUrlResult.error
+                    )
+                );
+
+            }
 
 
             const imageUrl =
@@ -1022,7 +1084,7 @@ form.addEventListener(
             if (!imageUrl) {
 
                 throw new Error(
-                    "تم رفع الصورة ولكن تعذر الحصول على رابطها."
+                    "تم رفع الصورة لكن لم يتم الحصول على رابط الصورة."
                 );
 
             }
@@ -1030,53 +1092,79 @@ form.addEventListener(
 
             /* =================================================
                حفظ طلب البائع
+               أسماء الأعمدة مطابقة لجدولك الحقيقي
             ================================================= */
+
+            showMessage(
+                "⏳ تم رفع الصورة بنجاح.\n\nجاري حفظ طلب السلعة...",
+                "info"
+            );
+
+
+            const insertData = {
+
+                product_name:
+                    productName,
+
+                seller_name:
+                    sellerName,
+
+                phone:
+                    phone,
+
+                city:
+                    city,
+
+                category:
+                    category,
+
+                price:
+                    price,
+
+                quantity:
+                    1,
+
+                description:
+                    description,
+
+                notes:
+                    "",
+
+                image:
+                    imageUrl,
+
+                images:
+                    [imageUrl],
+
+                agreement_accepted:
+                    true,
+
+                agreement_accepted_at:
+                    new Date().toISOString(),
+
+                status:
+                    "pending",
+
+                published:
+                    false,
+
+                image_url:
+                    imageUrl
+
+            };
+
 
             const insertResult =
                 await db
                     .from("seller_requests")
                     .insert([
-                        {
-
-                            seller_name:
-                                sellerName,
-
-                            phone:
-                                phone,
-
-                            city:
-                                city,
-
-                            category:
-                                category,
-
-                            title:
-                                title,
-
-                            price:
-                                price,
-
-                            description:
-                                description,
-
-                            image_url:
-                                imageUrl,
-
-                            status:
-                                "pending"
-
-                        }
+                        insertData
                     ]);
 
 
-            if (
-                insertResult.error
-            ) {
+            if (insertResult.error) {
 
-                /*
-                 * إذا فشل إدخال الطلب بعد رفع الصورة،
-                 * نحاول حذف الصورة حتى لا تبقى ملفات غير مرتبطة.
-                 */
+                /* حذف الصورة إذا فشل حفظ الطلب */
 
                 try {
 
@@ -1084,16 +1172,14 @@ form.addEventListener(
                         .storage
                         .from("seller_images")
                         .remove([
-                            filePath
+                            uploadedFilePath
                         ]);
 
                 }
-                catch (
-                    cleanupError
-                ) {
+                catch (cleanupError) {
 
                     console.warn(
-                        "Image cleanup failed:",
+                        "تعذر حذف الصورة بعد فشل الحفظ:",
                         cleanupError
                     );
 
@@ -1101,8 +1187,10 @@ form.addEventListener(
 
 
                 throw new Error(
-                    "تعذر حفظ طلب السلعة في قاعدة البيانات:\n" +
-                    insertResult.error.message
+                    "فشل حفظ طلب السلعة في قاعدة البيانات:\n\n" +
+                    getErrorMessage(
+                        insertResult.error
+                    )
                 );
 
             }
@@ -1113,7 +1201,8 @@ form.addEventListener(
             ================================================= */
 
             showMessage(
-                "🎉 تم إرسال سلعتك بنجاح!\n\nتم حفظ الطلب في لوحة التحكم بحالة «قيد الانتظار» للمراجعة.",
+                "🎉 تم إرسال سلعتك بنجاح!\n\n" +
+                "تم حفظ الطلب في لوحة التحكم بحالة «قيد الانتظار» للمراجعة.",
                 "success"
             );
 
@@ -1121,8 +1210,7 @@ form.addEventListener(
             form.reset();
 
 
-            previewImg.src =
-                "";
+            previewImg.src = "";
 
             previewImg.style.display =
                 "none";
@@ -1132,7 +1220,6 @@ form.addEventListener(
                 top: 0,
                 behavior: "smooth"
             });
-
 
         }
         catch (error) {
@@ -1145,18 +1232,14 @@ form.addEventListener(
 
             showMessage(
                 "❌ لم يتم إرسال السلعة.\n\n" +
-                (
-                    error.message ||
-                    "حدث خطأ غير معروف."
-                ),
+                getErrorMessage(error),
                 "error"
             );
 
         }
         finally {
 
-            submitBtn.disabled =
-                false;
+            submitBtn.disabled = false;
 
             submitBtn.textContent =
                 "إرسال السلعة للمراجعة";
@@ -1170,3 +1253,4 @@ form.addEventListener(
 
 </body>
 </html>
+```
