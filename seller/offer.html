@@ -1,184 +1,1100 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>اعرض سلعتك | لَحْقها</title>
-    <script src="https://jsdelivr.net"></script>
-    <style> 
-        * { box-sizing: border-box; } 
-        body { margin: 0; font-family: Tahoma, Arial, sans-serif; background: #f5f7fb; color: #263238; line-height: 1.8; } 
-        header { background: #1e3a5f; color: white; padding: 18px 20px; } 
-        .header-inner { width: min(1000px, calc(100% - 20px)); margin: auto; display: flex; justify-content: space-between; align-items: center; gap: 15px; } 
-        .logo { font-size: 22px; font-weight: bold; } 
-        .back { color: white; text-decoration: none; border: 1px solid rgba(255,255,255,.4); padding: 8px 14px; border-radius: 8px; } 
-        .hero { background: linear-gradient(135deg, #1e3a5f, #315b87); color: white; text-align: center; padding: 50px 20px; } 
-        .hero h1 { margin: 0 0 10px; font-size: 34px; } 
-        .hero p { margin: 0; font-size: 17px; } 
-        .container { width: min(900px, calc(100% - 20px)); margin: 30px auto 60px; } 
-        .card { background: white; border-radius: 18px; padding: 28px; box-shadow: 0 8px 25px rgba(0,0,0,.08); } 
-        .card h2 { color: #1e3a5f; margin-top: 0; } 
-        .notice { background: #eef6ff; border-right: 4px solid #1e3a5f; padding: 15px; border-radius: 10px; margin-bottom: 25px; } 
-        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; } 
-        .field { margin-bottom: 17px; } 
-        label { display: block; margin-bottom: 7px; font-weight: bold; color: #1e3a5f; } 
-        .required { color: #c62828; } 
-        input, select, textarea { width: 100%; padding: 13px; border: 1px solid #d7dee7; border-radius: 10px; font-family: inherit; font-size: 15px; background: white; } 
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #1e3a5f; box-shadow: 0 0 0 3px rgba(30,58,95,.08); } 
-        textarea { min-height: 120px; resize: vertical; } 
-        .image-box { border: 2px dashed #b9c7d8; border-radius: 14px; padding: 22px; text-align: center; background: #f8fafc; } 
-        .image-box input { border: 0; padding: 10px 0; background: transparent; } 
-        .image-preview { display: none; margin: 15px auto 0; max-width: 100%; width: 260px; height: 220px; object-fit: cover; border-radius: 12px; border: 1px solid #d7dee7; } 
-        .image-help { color: #64748b; font-size: 14px; margin-top: 5px; } 
-        .agreement { background: #f7f9fc; border-right: 4px solid #1e3a5f; padding: 17px; border-radius: 10px; margin: 25px 0; } 
-        .agreement strong { color: #1e3a5f; } 
-        .agreement label { display: flex; gap: 10px; align-items: flex-start; color: #263238; font-weight: normal; margin-top: 12px; } 
-        .agreement input { width: auto; margin-top: 5px; } 
-        button { width: 100%; border: 0; border-radius: 10px; padding: 15px; background: #1e3a5f; color: white; font-family: inherit; font-size: 17px; font-weight: bold; cursor: pointer; } 
-        button:hover { background: #16314f; } 
-        button:disabled { opacity: .65; cursor: not-allowed; } 
-        #message { display: none; margin-top: 20px; padding: 15px; border-radius: 10px; white-space: pre-line; } 
-        #message.success { display: block; background: #eaf7ec; color: #245b2a; border: 1px solid #a8d7ae; } 
-        #message.error { display: block; background: #fdeaea; color: #b71c1c; border: 1px solid #efb1b1; } 
-        footer { text-align: center; color: #777; padding: 25px; } 
-        @media (max-width: 650px) { .row { grid-template-columns: 1fr; gap: 0; } .header-inner { flex-direction: column; } .card { padding: 20px; } .hero h1 { font-size: 28px; } }
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Tahoma, Arial, sans-serif;
+            background: #f5f7fb;
+            color: #263238;
+            line-height: 1.8;
+        }
+
+        header {
+            background: #1e3a5f;
+            color: white;
+            padding: 18px 20px;
+        }
+
+        .header-inner {
+            width: min(1000px, calc(100% - 20px));
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .back {
+            color: white;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,.4);
+            padding: 8px 14px;
+            border-radius: 8px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1e3a5f, #315b87);
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .hero h1 {
+            margin: 0 0 10px;
+            font-size: 34px;
+        }
+
+        .hero p {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .container {
+            width: min(900px, calc(100% - 20px));
+            margin: 30px auto 60px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 8px 25px rgba(0,0,0,.08);
+        }
+
+        .card h2 {
+            color: #1e3a5f;
+            margin-top: 0;
+        }
+
+        .notice {
+            background: #eef6ff;
+            border-right: 4px solid #1e3a5f;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .field {
+            margin-bottom: 17px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #1e3a5f;
+        }
+
+        .required {
+            color: #c62828;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d7dee7;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 15px;
+            background: white;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #1e3a5f;
+            box-shadow: 0 0 0 3px rgba(30,58,95,.08);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .image-box {
+            border: 2px dashed #b9c7d8;
+            border-radius: 14px;
+            padding: 22px;
+            text-align: center;
+            background: #f8fafc;
+        }
+
+        .image-box input {
+            border: 0;
+            padding: 10px 0;
+            background: transparent;
+        }
+
+        .image-preview {
+            display: none;
+            margin: 15px auto 0;
+            max-width: 100%;
+            width: 260px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid #d7dee7;
+        }
+
+        .image-help {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .agreement {
+            background: #f7f9fc;
+            border-right: 4px solid #1e3a5f;
+            padding: 17px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .agreement strong {
+            color: #1e3a5f;
+        }
+
+        .agreement label {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            color: #263238;
+            font-weight: normal;
+            margin-top: 12px;
+        }
+
+        .agreement input {
+            width: auto;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            border: 0;
+            border-radius: 10px;
+            padding: 15px;
+            background: #1e3a5f;
+            color: white;
+            font-family: inherit;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #16314f;
+        }
+
+        button:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+        }
+
+        #message {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            white-space: pre-line;
+        }
+
+        #message.success {
+            display: block;
+            background: #eaf7ec;
+            color: #245b2a;
+            border: 1px solid #a8d7ae;
+        }
+
+        #message.error {
+            display: block;
+            background: #fdeaea;
+            color: #b71c1c;
+            border: 1px solid #efb1b1;
+        }
+
+        footer {
+            text-align: center;
+            color: #777;
+            padding: 25px;
+        }
+
+        @media (max-width: 650px) {
+
+            .row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .header-inner {
+                flex-direction: column;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+        }
+
     </style>
+
 </head>
+
 <body>
-<header> 
+
+<header>
+
     <div class="header-inner">
-        <div class="logo"> 📦 لَحْقها — أصحاب السلع </div> 
-        <a class="back" href="../index.html"> ← العودة للمتجر </a>
+
+        <div class="logo">
+            📦 لَحْقها — أصحاب السلع
+        </div>
+
+        <a class="back" href="../index.html">
+            ← العودة للمتجر
+        </a>
+
     </div>
+
 </header>
+
+
 <section class="hero">
+
     <h1>📦 اعرض سلعتك معنا</h1>
-    <p> أرسل بيانات سلعتك وستصل إلى لوحة التحكم للمراجعة.</p>
+
+    <p>
+        أرسل بيانات سلعتك وستصل إلى لوحة التحكم للمراجعة.
+    </p>
+
 </section>
+
+
 <main class="container">
-    <div class="card"> 
-        <h2>🛍️ بيانات السلعة</h2> 
-        <div class="notice"> ✅ بعد الإرسال ستبقى السلعة قيد المراجعة حتى تتم الموافقة عليها. <br> 🔒 بيانات صاحب السلعة الخاصة لا تظهر للمشتري. </div> 
-        
-        <form id=".from('products')
-" autocomplete="new-password" novalidate> 
-            <div class="row"> 
-                <div class="field"> 
-                    <label for="seller_name"> اسم صاحب السلعة <span class="required">*</span> </label> 
-                    <input id="seller_name" name="seller_field_7x91" type="text" required autocomplete="new-password" placeholder="مثال: محمد أحمد" > 
-                </div> 
-                <div class="field"> 
-                    <label for="phone"> رقم التواصل <span class="required">*</span> </label> 
-                    <input id="phone" name="contact_field_4k82" type="text" required autocomplete="new-password" inputmode="numeric" placeholder="05xxxxxxxx" > 
-                </div> 
-            </div> 
-            <div class="row"> 
-                <div class="field"> 
-                    <label for="city"> المدينة <span class="required">*</span> </label> 
-                    <input id="city" name="location_field_9p43" type="text" required autocomplete="new-password" placeholder="مثال: جدة" > 
-                </div> 
-                <div class="field"> 
-                    <label for="category"> القسم <span class="required">*</span> </label> 
-                    <select id="category" name="category_field_2m65" required> 
-                        <option value="">اختر القسم</option>
-                        <option value="السيارات">السيارات</option>
-                        <option value="الأجهزة">الأجهزة</option>
-                        <option value="العقارات">العقارات</option>
-                        <option value="الخدمات">الخدمات</option>
-                        <option value="منوعات">منوعات</option>
-                    </select> 
-                </div> 
-            </div>
-            
+
+    <div class="card">
+
+        <h2>🛍️ بيانات السلعة</h2>
+
+        <div class="notice">
+
+            ✅ بعد الإرسال ستبقى السلعة قيد المراجعة حتى تتم الموافقة عليها.
+
+            <br>
+
+            🔒 بيانات صاحب السلعة الخاصة لا تظهر للمشتري.
+
+        </div>
+
+
+        <form
+            id="seller-form"
+            autocomplete="off"
+        >
+
             <div class="row">
+
                 <div class="field">
-                    <label for="product_title">عنوان السلعة <span class="required">*</span></label>
-                    <input id="product_title" type="text" required placeholder="مثال: آيفون 14 برو ماكس">
+
+                    <label for="seller_name">
+                        اسم صاحب السلعة
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="seller_name"
+                        type="text"
+                        required
+                        placeholder="مثال: محمد أحمد"
+                    >
+
                 </div>
+
+
                 <div class="field">
-                    <label for="price">السعر المتوقع (ريال) <span class="required">*</span></label>
-                    <input id="price" type="number" required placeholder="مثال: 3500">
+
+                    <label for="phone">
+                        رقم التواصل
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="phone"
+                        type="text"
+                        required
+                        inputmode="numeric"
+                        placeholder="05xxxxxxxx"
+                    >
+
                 </div>
+
             </div>
-            <div class="field">
-                <label for="description">وصف السلعة وتفاصيلها <span class="required">*</span></label>
-                <textarea id="description" required placeholder="اكتب مواصفات السلعة وحالتها..."></textarea>
-            </div>
-            <div class="field">
-                <label>صورة السلعة <span class="required">*</span></label>
-                <div class="image-box">
-                    <input id="product_image" type="file" accept="image/*" required>
-                    <div class="image-help">الحد الأقصى 5 ميجابايت</div>
-                    <img id="preview-img" class="image-preview" src="#" alt="معاينة">
+
+
+            <div class="row">
+
+                <div class="field">
+
+                    <label for="city">
+                        المدينة
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="city"
+                        type="text"
+                        required
+                        placeholder="مثال: جدة"
+                    >
+
                 </div>
+
+
+                <div class="field">
+
+                    <label for="category">
+                        القسم
+                        <span class="required">*</span>
+                    </label>
+
+                    <select
+                        id="category"
+                        required
+                    >
+
+                        <option value="">
+                            اختر القسم
+                        </option>
+
+                        <option value="السيارات">
+                            السيارات
+                        </option>
+
+                        <option value="الأجهزة">
+                            الأجهزة
+                        </option>
+
+                        <option value="العقارات">
+                            العقارات
+                        </option>
+
+                        <option value="الخدمات">
+                            الخدمات
+                        </option>
+
+                        <option value="منوعات">
+                            منوعات
+                        </option>
+
+                    </select>
+
+                </div>
+
             </div>
-            <div class="agreement">
-                <strong>📜 شروط وأحكام العرض:</strong>
-                <label>
-                    <input id="agree_terms" type="checkbox" required>أقر بأن جميع البيانات المدخلة صحيحة والسلعة ملكي.
+
+
+            <div class="row">
+
+                <div class="field">
+
+                    <label for="product_title">
+                        عنوان السلعة
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="product_title"
+                        type="text"
+                        required
+                        placeholder="مثال: آيفون 14 برو ماكس"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="price">
+                        السعر المتوقع (ريال)
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="price"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        required
+                        placeholder="مثال: 3500"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="description">
+                    وصف السلعة وتفاصيلها
+                    <span class="required">*</span>
                 </label>
+
+                <textarea
+                    id="description"
+                    required
+                    placeholder="اكتب مواصفات السلعة وحالتها..."
+                ></textarea>
+
             </div>
-            <button id="submit-btn" type="submit">إرسال السلعة للمراجعة</button>
+
+
+            <div class="field">
+
+                <label>
+                    صورة السلعة
+                    <span class="required">*</span>
+                </label>
+
+                <div class="image-box">
+
+                    <input
+                        id="product_image"
+                        type="file"
+                        accept="image/*"
+                        required
+                    >
+
+                    <div class="image-help">
+                        الحد الأقصى 5 ميجابايت
+                    </div>
+
+                    <img
+                        id="preview-img"
+                        class="image-preview"
+                        src="#"
+                        alt="معاينة السلعة"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="agreement">
+
+                <strong>
+                    📜 شروط وأحكام العرض:
+                </strong>
+
+                <label>
+
+                    <input
+                        id="agree_terms"
+                        type="checkbox"
+                        required
+                    >
+
+                    أقر بأن جميع البيانات المدخلة صحيحة والسلعة ملكي.
+
+                </label>
+
+            </div>
+
+
+            <button
+                id="submit-btn"
+                type="submit"
+            >
+                إرسال السلعة للمراجعة
+            </button>
+
+
             <div id="message"></div>
-        </form> 
+
+        </form>
+
     </div>
+
 </main>
-<footer><p>© ٢٠٢٦ متجر لَحْقها. جميع الحقوق محفوظة.</p></footer>
+
+
+<footer>
+
+    <p>
+        © ٢٠٢٦ متجر لَحْقها. جميع الحقوق محفوظة.
+    </p>
+
+</footer>
+
 
 <script>
-    // ربط ثابت وصريح لإنهاء ثقل الصفحة ومشاكل الـ undefined نهائياً
-    const SUPABASE_URL = window.SUPABASE_CONFIG?.URL || ""; 
-    const SUPABASE_ANON_KEY = window.SUPABASE_CONFIG?.KEY || "";
-    
-    // تعريف الكائن مباشرة وبشكل خفيف
-    const mySupabase = (typeof supabase !== 'undefined' && supabase.createClient) 
-        ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) 
-        : (window.supabase || null);
 
-    const imageInput = document.getElementById('product_image');
-    const previewImg = document.getElementById('preview-img');
-    const form = document.getElementById('seller-form');
-    const submitBtn = document.getElementById('submit-btn');
-    const msgDiv = document.getElementById('message');
+    /*
+     * =========================================================
+     * إعداد Supabase
+     * =========================================================
+     *
+     * تستخدم الصفحة إعداد SUPABASE_CONFIG الموجود في موقعك.
+     *
+     * يجب أن يكون بالشكل:
+     *
+     * window.SUPABASE_CONFIG = {
+     *     URL: "رابط مشروع Supabase",
+     *     KEY: "مفتاح anon / publishable"
+     * };
+     *
+     */
 
-    imageInput.addEventListener('change', function() {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previewImg.src = e.target.result;
-                previewImg.style.display = 'block';
+    const SUPABASE_URL =
+        window.SUPABASE_CONFIG?.URL || "";
+
+    const SUPABASE_ANON_KEY =
+        window.SUPABASE_CONFIG?.KEY || "";
+
+
+    /*
+     * إنشاء اتصال Supabase
+     */
+
+    let db = null;
+
+    if (
+        typeof supabase !== "undefined" &&
+        supabase.createClient &&
+        SUPABASE_URL &&
+        SUPABASE_ANON_KEY
+    ) {
+
+        db = supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
+
+    }
+
+
+    /*
+     * عناصر الصفحة
+     */
+
+    const imageInput =
+        document.getElementById("product_image");
+
+    const previewImg =
+        document.getElementById("preview-img");
+
+    const form =
+        document.getElementById("seller-form");
+
+    const submitBtn =
+        document.getElementById("submit-btn");
+
+    const msgDiv =
+        document.getElementById("message");
+
+
+    /*
+     * عرض رسالة
+     */
+
+    function showMessage(text, type) {
+
+        msgDiv.innerText = text;
+
+        msgDiv.className = type;
+
+        msgDiv.style.display = "block";
+
+    }
+
+
+    /*
+     * معاينة الصورة
+     */
+
+    imageInput.addEventListener(
+        "change",
+        function () {
+
+            const file = this.files[0];
+
+            if (!file) {
+
+                previewImg.style.display = "none";
+
+                previewImg.src = "#";
+
+                return;
+
             }
+
+
+            /*
+             * التأكد من أن الملف صورة
+             */
+
+            if (!file.type.startsWith("image/")) {
+
+                showMessage(
+                    "❌ الملف المختار ليس صورة.",
+                    "error"
+                );
+
+                this.value = "";
+
+                previewImg.style.display = "none";
+
+                return;
+
+            }
+
+
+            /*
+             * الحد الأقصى 5 ميجابايت
+             */
+
+            if (file.size > 5 * 1024 * 1024) {
+
+                showMessage(
+                    "❌ حجم الصورة أكبر من 5 ميجابايت.",
+                    "error"
+                );
+
+                this.value = "";
+
+                previewImg.style.display = "none";
+
+                return;
+
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function (event) {
+
+                    previewImg.src =
+                        event.target.result;
+
+                    previewImg.style.display =
+                        "block";
+
+                };
+
+
             reader.readAsDataURL(file);
+
         }
-    });
+    );
 
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
 
-        e.preventDefault(); // إيقاف إعادة تحميل الصفحة الافتراضي فوراً لتخفيف المعالجة
-        
-        msgDiv.style.display = 'none';
-        msgDiv.className = '';
-        submitBtn.disabled = true;
-        submitBtn.innerText = "جاري الإرسال...";
+    /*
+     * إرسال الطلب
+     */
 
-        const file = imageInput.files[0];
-        if (!file) {
-            msgDiv.innerText = "الرجاء اختيار صورة للسلعة.";
-            msgDiv.className = 'error';
-            msgDiv.style.display = 'block';
-            submitBtn.disabled = false;
-            return;
+    form.addEventListener(
+        "submit",
+        async function (e) {
+
+            e.preventDefault();
+
+
+            /*
+             * إخفاء الرسائل السابقة
+             */
+
+            msgDiv.style.display = "none";
+
+            msgDiv.className = "";
+
+
+            /*
+             * التأكد من تعبئة الحقول
+             */
+
+            if (!form.checkValidity()) {
+
+                form.reportValidity();
+
+                return;
+
+            }
+
+
+            /*
+             * منع الضغط المتكرر
+             */
+
+            submitBtn.disabled = true;
+
+            submitBtn.innerText =
+                "جاري الإرسال...";
+
+
+            try {
+
+                /*
+                 * التأكد من اتصال Supabase
+                 */
+
+                if (!db) {
+
+                    throw new Error(
+                        "تعذر الاتصال بـ Supabase. تأكد من وجود SUPABASE_CONFIG في الصفحة."
+                    );
+
+                }
+
+
+                /*
+                 * قراءة الصورة
+                 */
+
+                const file =
+                    imageInput.files[0];
+
+
+                if (!file) {
+
+                    throw new Error(
+                        "الرجاء اختيار صورة للسلعة."
+                    );
+
+                }
+
+
+                /*
+                 * التحقق من حجم الصورة
+                 */
+
+                if (
+                    file.size >
+                    5 * 1024 * 1024
+                ) {
+
+                    throw new Error(
+                        "حجم الصورة يجب ألا يتجاوز 5 ميجابايت."
+                    );
+
+                }
+
+
+                /*
+                 * امتداد الصورة
+                 */
+
+                const fileExt =
+                    file.name
+                        .split(".")
+                        .pop()
+                        .toLowerCase();
+
+
+                /*
+                 * اسم فريد للصورة
+                 */
+
+                const fileName =
+                    `${Date.now()}-${Math.random()
+                        .toString(36)
+                        .substring(2, 8)}.${fileExt}`;
+
+
+                /*
+                 * مسار الصورة داخل Storage
+                 *
+                 * نفس المسار المستخدم في النسخة القديمة
+                 */
+
+                const filePath =
+                    `products/${fileName}`;
+
+
+                /*
+                 * رفع الصورة
+                 *
+                 * Bucket:
+                 * seller_images
+                 */
+
+                const {
+                    data: uploadData,
+                    error: uploadError
+                } = await db.storage
+                    .from("seller_images")
+                    .upload(
+                        filePath,
+                        file,
+                        {
+                            cacheControl: "3600",
+                            upsert: false
+                        }
+                    );
+
+
+                if (uploadError) {
+
+                    throw uploadError;
+
+                }
+
+
+                /*
+                 * الحصول على الرابط العام للصورة
+                 */
+
+                const {
+                    data: urlData
+                } = db.storage
+                    .from("seller_images")
+                    .getPublicUrl(filePath);
+
+
+                const imageUrl =
+                    urlData?.publicUrl;
+
+
+                if (!imageUrl) {
+
+                    throw new Error(
+                        "تم رفع الصورة ولكن تعذر الحصول على رابطها."
+                    );
+
+                }
+
+
+                /*
+                 * تجهيز بيانات الطلب
+                 *
+                 * الجدول:
+                 * seller_requests
+                 */
+
+                const requestData = {
+
+                    seller_name:
+                        document.getElementById(
+                            "seller_name"
+                        ).value.trim(),
+
+                    phone:
+                        document.getElementById(
+                            "phone"
+                        ).value.trim(),
+
+                    city:
+                        document.getElementById(
+                            "city"
+                        ).value.trim(),
+
+                    category:
+                        document.getElementById(
+                            "category"
+                        ).value,
+
+                    title:
+                        document.getElementById(
+                            "product_title"
+                        ).value.trim(),
+
+                    price:
+                        parseFloat(
+                            document.getElementById(
+                                "price"
+                            ).value
+                        ),
+
+                    description:
+                        document.getElementById(
+                            "description"
+                        ).value.trim(),
+
+                    image_url:
+                        imageUrl,
+
+                    status:
+                        "pending"
+
+                };
+
+
+                /*
+                 * إرسال الطلب إلى قاعدة البيانات
+                 */
+
+                const {
+                    data: insertedData,
+                    error: insertError
+                } = await db
+                    .from("seller_requests")
+                    .insert([
+                        requestData
+                    ])
+                    .select();
+
+
+                if (insertError) {
+
+                    /*
+                     * إذا فشل حفظ الطلب،
+                     * نحاول حذف الصورة التي رفعناها
+                     * حتى لا تبقى صور معلقة في Storage.
+                     */
+
+                    try {
+
+                        await db.storage
+                            .from("seller_images")
+                            .remove([
+                                filePath
+                            ]);
+
+                    } catch (cleanupError) {
+
+                        console.warn(
+                            "تعذر حذف الصورة بعد فشل الحفظ:",
+                            cleanupError
+                        );
+
+                    }
+
+
+                    throw insertError;
+
+                }
+
+
+                /*
+                 * نجاح كامل
+                 */
+
+                showMessage(
+                    "🎉 تم إرسال سلعتك بنجاح!\n\n" +
+                    "تم تسجيل الطلب وإرساله إلى لوحة التحكم للمراجعة.",
+                    "success"
+                );
+
+
+                /*
+                 * تصفير النموذج
+                 */
+
+                form.reset();
+
+
+                /*
+                 * إخفاء الصورة
+                 */
+
+                previewImg.src = "#";
+
+                previewImg.style.display =
+                    "none";
+
+
+                /*
+                 * العودة لأعلى النموذج
+                 */
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+
+
+            } catch (error) {
+
+                console.error(
+                    "Seller request error:",
+                    error
+                );
+
+
+                let errorMessage =
+                    error?.message ||
+                    "حدث خطأ غير معروف أثناء الإرسال.";
+
+
+                /*
+                 * رسائل أوضح لبعض أخطاء Supabase
+                 */
+
+                if (
+                    errorMessage.includes(
+                        "row-level security"
+                    )
+                ) {
+
+                    errorMessage =
+                        "❌ تم رفض حفظ الطلب من قاعدة البيانات (RLS).";
+
+                }
+
+
+                showMessage(
+                    "❌ حدث خطأ أثناء إرسال السلعة:\n" +
+                    errorMessage,
+                    "error"
+                );
+
+
+            } finally {
+
+                submitBtn.disabled =
+                    false;
+
+                submitBtn.innerText =
+                    "إرسال السلعة للمراجعة";
+
+            }
+
         }
+    );
 
-        if (!mySupabase) {
-            msgDiv.innerText = "❌ خطأ في الاتصال: كائن ربط قاعدة البيانات (Supabase) غير متاح في الصفحة الحالية.";
-            msgDiv.className = 'error';
-            msgDiv.style.display = 'block';
-            submitBtn.disabled = false;
-            submitBtn.innerText = "إرسال السلعة للمراجعة";
-            return;
-        }
+</script>
 
-        try {
+</body>
+</html>
+```
