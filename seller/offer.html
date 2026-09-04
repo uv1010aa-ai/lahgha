@@ -4,7 +4,7 @@
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اعرض سلعتك | لَحْقها</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://jsdelivr.net"></script>
     <style> 
         * { box-sizing: border-box; } 
         body { margin: 0; font-family: Tahoma, Arial, sans-serif; background: #f5f7fb; color: #263238; line-height: 1.8; } 
@@ -89,7 +89,6 @@
                 </div> 
             </div>
             
-            <!-- تم الإبقاء على بقية الحقول والسكربت الأصلي بدون أدنى تغيير تجنباً لأي تعارض -->
             <div class="row">
                 <div class="field">
                     <label for="product_title">عنوان السلعة <span class="required">*</span></label>
@@ -124,8 +123,19 @@
     </div>
 </main>
 <footer><p>© ٢٠٢٦ متجر لَحْقها. جميع الحقوق محفوظة.</p></footer>
+
 <script>
-    // الحفاظ على تهيئة السكريبت والربط القديم الخاص بك ليعمل الموقع تلقائياً
+    // جلب الإعدادات العامة لـ Supabase المتاحة في موقعك تلقائياً لمنع الأخطاء القاتلة
+    const SUPABASE_URL = window.SUPABASE_CONFIG?.URL || ""; 
+    const SUPABASE_ANON_KEY = window.SUPABASE_CONFIG?.KEY || "";
+    
+    let supabaseClient;
+    if (typeof supabase !== 'undefined' && supabase.createClient) {
+        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } else {
+        supabaseClient = window.supabase;
+    }
+
     const imageInput = document.getElementById('product_image');
     const previewImg = document.getElementById('preview-img');
     const form = document.getElementById('seller-form');
@@ -133,7 +143,7 @@
     const msgDiv = document.getElementById('message');
 
     imageInput.addEventListener('change', function() {
-        const file = this.files[0]; // قراءة صحيحة للملف الأول من المصفوفة لعدم تعليق المعاينة
+        const file = this.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -145,15 +155,23 @@
     });
 
     form.addEventListener('submit', async function(e) {
-        e.preventDefault(); // منع الصفحة من التحديث التلقائي والانهيار
+        e.preventDefault();
         msgDiv.style.display = 'none';
         msgDiv.className = '';
         submitBtn.disabled = true;
         submitBtn.innerText = "جاري الإرسال...";
 
-        const file = imageInput.files[0]; // قراءة صحيحة للملف المرفوع
+        const file = imageInput.files[0];
         if (!file) {
             msgDiv.innerText = "الرجاء اختيار صورة.";
+            msgDiv.className = 'error';
+            msgDiv.style.display = 'block';
+            submitBtn.disabled = false;
+            return;
+        }
+
+        if (!supabaseClient || !supabaseClient.storage) {
+            msgDiv.innerText = "❌ خطأ: لم يتم التعرف على اتصال قاعدة البيانات.";
             msgDiv.className = 'error';
             msgDiv.style.display = 'block';
             submitBtn.disabled = false;
@@ -162,57 +180,3 @@
         }
 
         try {
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${Date.now()}.${fileExt}`;
-            const filePath = `products/${fileName}`;
-
-            // رفع الصورة باستخدام مغير الاتصال الأصلي لمتجرك
-            const { data: uploadData, error: uploadError } = await supabase.storage
-                .from('seller_images')
-                .upload(filePath, file);
-
-            if (uploadError) throw uploadError;
-
-            const { data: urlData } = supabase.storage
-                .from('seller_images')
-                .getPublicUrl(filePath);
-
-            // استخدام المتغير بشكل مباشر بدون إعادة تعريف لإصلاح خطأ التوقف التام
-            const imageUrl = urlData.publicUrl;
-
-            // حفظ البيانات في قاعدة البيانات بنفس الحقول المخصصة في متجرك
-            const { error: insertError } = await supabase
-                .from('seller_requests')
-                .insert([{
-                    seller_name: document.getElementById('seller_name').value,
-                    phone: document.getElementById('phone').value,
-                    city: document.getElementById('city').value,
-                    category: document.getElementById('category').value,
-                    title: document.getElementById('product_title').value,
-                    price: parseFloat(document.getElementById('price').value),
-                    description: document.getElementById('description').value,
-                    image_url: imageUrl,
-                    status: 'pending'
-                }]);
-
-            if (insertError) throw insertError;
-
-            // إظهار تنبيه النجاح وإعادة تصفير الاستمارة
-            msgDiv.innerText = "🎉 تم إرسال سلعتك بنجاح وسوف تظهر في لوحة التحكم!";
-            msgDiv.className = 'success';
-            msgDiv.style.display = 'block';
-            form.reset();
-            previewImg.style.display = 'none';
-
-        } catch (error) {
-            // رصد الخطأ الفعلي وإظهاره بدلاً من تصفير الصفحة
-            console.error(error);
-            msgDiv.innerText = "❌ حدث خطأ أثناء الإرسال: " + (error.message || "يرجى المحاولة لاحقاً");
-            msgDiv.className = 'error';
-            msgDiv.style.display = 'block';
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerText = "إرسال السلعة للمراجعة";
-        }
-    });
-</script>
