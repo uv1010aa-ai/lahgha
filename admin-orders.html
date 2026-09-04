@@ -1886,13 +1886,13 @@ function actionHtml(order) {
 
         `;
 
-    }
+    }if (status === "confirmed") {
 
-
-    if (status === "confirmed") {
-
-        const hasSeller =
-            sellerSummary.length > 0;
+        // ✨ التعديل الذكي: التحقق المباشر من وجود معرف البائع أو اسمه في الطلب أو المنتج
+        const hasSeller = 
+            (order.seller_id) || 
+            (order.products && order.products.seller_id) || 
+            (sellerSummary && sellerSummary.length > 0);
 
 
         if (!hasSeller) {
@@ -1919,12 +1919,13 @@ function actionHtml(order) {
 
 
         const totalDue =
+            sellerSummary.length > 0 ? 
             sellerSummary.reduce(
                 (sum, seller) =>
                     sum +
                     Number(seller.amount || 0),
                 0
-            );
+            ) : Number(order.price || order.total_price || 0); // في حال كانت المصفوفة فارغة يحسب سعر الطلب مباشرة
 
 
         if (order.seller_paid === true) {
@@ -1934,6 +1935,7 @@ function actionHtml(order) {
                 <div class="settlement-box">
 
                     <div class="settlement-title">
+
 
                         ✅ تمت تسوية مستحق البائع
 
