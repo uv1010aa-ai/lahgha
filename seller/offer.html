@@ -125,15 +125,27 @@
 <footer><p>© ٢٠٢٦ متجر لَحْقها. جميع الحقوق محفوظة.</p></footer>
 
 <script>
-    // جلب الإعدادات العامة لـ Supabase المتاحة في موقعك تلقائياً لمنع الأخطاء القاتلة
     const SUPABASE_URL = window.SUPABASE_CONFIG?.URL || ""; 
     const SUPABASE_ANON_KEY = window.SUPABASE_CONFIG?.KEY || "";
     
-    let supabaseClient;
-    if (typeof supabase !== 'undefined' && supabase.createClient) {
-        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    } else {
-        supabaseClient = window.supabase;
+    let supabaseClient = null;
+
+    // محاولة إنشاء كائن الاتصال بجميع المسميات المحتملة في موقعك لمنع خطأ undefined
+    try {
+        if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } else if (typeof supabase !== 'undefined' && supabase.createClient) {
+            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } else if (typeof window.genSupabase !== 'undefined' && window.genSupabase.createClient) {
+            supabaseClient = window.genSupabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } else if (typeof genSupabase !== 'undefined' && genSupabase.createClient) {
+            supabaseClient = genSupabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } else {
+            // محاولة جلب الاتصال الجاهز المحقون عالمياً في الموقع
+            supabaseClient = window.supabaseInstance || window.supabase || window.supabaseClient;
+        }
+    } catch(e) {
+        console.error("فشل تهيئة سوبابيس في المرحلة الأولى:", e);
     }
 
     const imageInput = document.getElementById('product_image');
@@ -157,26 +169,3 @@
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         msgDiv.style.display = 'none';
-        msgDiv.className = '';
-        submitBtn.disabled = true;
-        submitBtn.innerText = "جاري الإرسال...";
-
-        const file = imageInput.files[0];
-        if (!file) {
-            msgDiv.innerText = "الرجاء اختيار صورة.";
-            msgDiv.className = 'error';
-            msgDiv.style.display = 'block';
-            submitBtn.disabled = false;
-            return;
-        }
-
-        if (!supabaseClient || !supabaseClient.storage) {
-            msgDiv.innerText = "❌ خطأ: لم يتم التعرف على اتصال قاعدة البيانات.";
-            msgDiv.className = 'error';
-            msgDiv.style.display = 'block';
-            submitBtn.disabled = false;
-            submitBtn.innerText = "إرسال السلعة للمراجعة";
-            return;
-        }
-
-        try {
