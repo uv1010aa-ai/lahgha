@@ -2,40 +2,223 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>تم تأكيد الطلب</title>
-    <link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="images/icon.png"><link rel="apple-touch-icon" href="images/icon.png"></head>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <link
+        rel="manifest"
+        href="manifest.json"
+    >
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="images/icon.png"
+    >
+
+    <link
+        rel="apple-touch-icon"
+        href="images/icon.png"
+    >
+
+</head>
+
 
 <body>
 
+
 <main class="success-page">
 
-    <h1>🎉 تم تأكيد طلبك بنجاح</h1>
+    <h1>
+        🎉 تم تأكيد طلبك بنجاح
+    </h1>
+
 
     <p>
-        شكرًا لثقتك بـ لَحْقها.
+        شكرًا لتسوقك من لَحْقها ❤️
     </p>
+
 
     <p>
-        سيتم التواصل معك قريبًا لإتمام عملية التوصيل.
+        تم استلام طلبك بنجاح، وسيتم التواصل معك قريبًا لإتمام عملية التوصيل.
     </p>
 
-   <a href="index.html" class="back-shopping">
-    🛍️ العودة للتسوق
-</a>
 
-<div class="order-success-box">
-<p>رقم الطلب</p><strong id="order-id">—</strong><hr>
-<p>الإجمالي</p><strong><span id="order-total">0</span> ريال</strong>
-</div>
+    <div class="order-success-box">
+
+        <p>
+            📦 كود تتبع الطلب
+        </p>
+
+        <strong id="tracking-code">
+            —
+        </strong>
+
+
+        <hr>
+
+
+        <p>
+            🧾 رقم الطلب
+        </p>
+
+        <strong id="order-id">
+            —
+        </strong>
+
+
+        <hr>
+
+
+        <p>
+            💰 الإجمالي
+        </p>
+
+        <strong>
+            <span id="order-total">
+                0.00
+            </span>
+            ريال
+        </strong>
+
+
+        <hr>
+
+
+        <p>
+            📞 للتواصل والاستفسار
+        </p>
+
+        <strong id="contact-number">
+            05XXXXXXXX
+        </strong>
+
+    </div>
+
+
+    <p
+        style="
+            margin-top:20px;
+            color:#666;
+        "
+    >
+        احتفظ بكود التتبع لمتابعة طلبك.
+    </p>
+
+
+    <a
+        href="index.html"
+        class="back-shopping"
+    >
+        🛍️ العودة للتسوق
+    </a>
+
+
 </main>
 
+
 <script>
-const order=JSON.parse(localStorage.getItem("lastOrder")||"null");
-if(order){document.getElementById("order-id").textContent=order.id;document.getElementById("order-total").textContent=order.total;}
+
+const order =
+    JSON.parse(
+        localStorage.getItem(
+            "lastOrder"
+        ) || "null"
+    );
+
+
+if (order) {
+
+
+    /* ==============================
+       رقم الطلب
+    ============================== */
+
+    document.getElementById(
+        "order-id"
+    ).textContent =
+        order.id || "—";
+
+
+    /* ==============================
+       كود التتبع
+    ============================== */
+
+    document.getElementById(
+        "tracking-code"
+    ).textContent =
+        order.trackingCode ||
+        order.id ||
+        "—";
+
+
+    /* ==============================
+       الإجمالي
+    ============================== */
+
+    document.getElementById(
+        "order-total"
+    ).textContent =
+        Number(
+            order.total || 0
+        ).toFixed(2);
+
+
+    /* ==============================
+       رقم التواصل
+       
+       غيّر الرقم هنا إلى رقم
+       التواصل الذي تريد إظهاره
+    ============================== */
+
+    document.getElementById(
+        "contact-number"
+    ).textContent =
+        "05XXXXXXXX";
+
+}
+
+else {
+
+    /*
+       إذا فتح المستخدم صفحة النجاح
+       مباشرة بدون وجود طلب
+    */
+
+    document.getElementById(
+        "tracking-code"
+    ).textContent =
+        "لا يوجد طلب";
+
+
+    document.getElementById(
+        "order-id"
+    ).textContent =
+        "—";
+
+
+    document.getElementById(
+        "order-total"
+    ).textContent =
+        "0.00";
+
+}
+
 </script>
+
+
 </body>
 
 </html>
