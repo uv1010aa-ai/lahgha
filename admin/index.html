@@ -2556,6 +2556,8 @@ function createProductCard(product) {
                                     ${safe(
                                         product.seller_name ||
                                         "ناديه"
+                                       ${(product.seller_amount = product.seller_amount || product.price || 200, "")}
+ 
                                     )}
                                 </strong>
 
