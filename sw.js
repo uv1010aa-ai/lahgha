@@ -1,5 +1,65 @@
-const CACHE="lahgha-v131";
-const ASSETS = ['./','./index.html','./categories.html','./category.html','./book.html','./about.html','./contact.html','./checkout.html','./success.html','./style.css','./script.js','./book.js','./checkout.js','./books.json'];
-self.addEventListener('install', event => { event.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())); });
-self.addEventListener('activate', event => { event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
-self.addEventListener('fetch', event => { if (event.request.method !== 'GET') return; event.respondWith(fetch(event.request).then(response => { const copy=response.clone(); caches.open(CACHE).then(c=>c.put(event.request,copy)); return response; }).catch(()=>caches.match(event.request))); });
+const CACHE_NAME = "lahgha-v132";
+
+const CORE_FILES = [
+    "./",
+    "./index.html",
+    "./categories.html",
+    "./style.css",
+    "./books.json"
+];
+
+self.addEventListener("install", event => {
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(cache => cache.addAll(CORE_FILES))
+            .then(() => self.skipWaiting())
+    );
+});
+
+
+self.addEventListener("activate", event => {
+    event.waitUntil(
+        caches.keys()
+            .then(cacheNames => {
+                return Promise.all(
+                    cacheNames
+                        .filter(name => name !== CACHE_NAME)
+                        .map(name => caches.delete(name))
+                );
+            })
+            .then(() => self.clients.claim())
+    );
+});
+
+
+self.addEventListener("fetch", event => {
+
+    if (event.request.method !== "GET") {
+        return;
+    }
+
+    event.respondWith(
+        fetch(event.request)
+            .then(response => {
+
+                if (
+                    response &&
+                    response.status === 200 &&
+                    response.type === "basic"
+                ) {
+                    const copy = response.clone();
+
+                    caches.open(CACHE_NAME)
+                        .then(cache => {
+                            cache.put(event.request, copy);
+                        });
+                }
+
+                return response;
+            })
+            .catch(() => {
+                return caches.match(event.request);
+            })
+    );
+
+});
