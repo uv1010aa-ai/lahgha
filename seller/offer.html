@@ -3,10 +3,11 @@
 <html lang="ar" dir="rtl">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 ```
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>اعرض سلعتك | لَحْقها</title>
 
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -16,6 +17,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
     * {
         box-sizing: border-box;
     }
@@ -162,21 +164,50 @@
         background: transparent;
     }
 
-    .image-preview {
-        display: none;
-        margin: 15px auto 0;
-        max-width: 100%;
-        width: 260px;
-        height: 220px;
-        object-fit: cover;
-        border-radius: 12px;
-        border: 1px solid #d7dee7;
-    }
-
     .image-help {
         color: #64748b;
         font-size: 14px;
         margin-top: 5px;
+    }
+
+    .image-previews {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+    }
+
+    .image-preview-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        border: 1px solid #d7dee7;
+        background: #eef2f5;
+        aspect-ratio: 1 / 1;
+    }
+
+    .image-preview-item img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+    }
+
+    .image-number {
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        min-width: 28px;
+        height: 28px;
+        padding: 0 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(30,58,95,.9);
+        color: #fff;
+        font-size: 13px;
+        font-weight: bold;
     }
 
     .agreement {
@@ -263,6 +294,7 @@
     }
 
     @media (max-width: 650px) {
+
         .row {
             grid-template-columns: 1fr;
             gap: 0;
@@ -279,7 +311,13 @@
         .hero h1 {
             font-size: 28px;
         }
+
+        .image-previews {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
     }
+
 </style>
 ```
 
@@ -288,9 +326,10 @@
 <body>
 
 <header>
-    <div class="header-inner">
 
 ```
+<div class="header-inner">
+
     <div class="logo">
         📦 لَحْقها — أصحاب السلع
     </div>
@@ -404,45 +443,16 @@
                         اختر القسم
                     </option>
 
-                    <option value="كتب">
-                        كتب
-                    </option>
-
-                    <option value="جوالات">
-                        جوالات
-                    </option>
-
-                    <option value="كمبيوتر">
-                        كمبيوتر
-                    </option>
-
-                    <option value="ألعاب">
-                        ألعاب
-                    </option>
-
-                    <option value="أثاث">
-                        أثاث
-                    </option>
-
-                    <option value="أجهزة">
-                        أجهزة
-                    </option>
-
-                    <option value="رياضة">
-                        رياضة
-                    </option>
-
-                    <option value="أدوات">
-                        أدوات
-                    </option>
-
-                    <option value="ملابس">
-                        ملابس
-                    </option>
-
-                    <option value="أخرى">
-                        أخرى
-                    </option>
+                    <option value="كتب">كتب</option>
+                    <option value="جوالات">جوالات</option>
+                    <option value="كمبيوتر">كمبيوتر</option>
+                    <option value="ألعاب">ألعاب</option>
+                    <option value="أثاث">أثاث</option>
+                    <option value="أجهزة">أجهزة</option>
+                    <option value="رياضة">رياضة</option>
+                    <option value="أدوات">أدوات</option>
+                    <option value="ملابس">ملابس</option>
+                    <option value="أخرى">أخرى</option>
 
                 </select>
 
@@ -506,7 +516,7 @@
         <div class="field">
 
             <label for="product_image">
-                صورة السلعة
+                صور السلعة
                 <span class="required">*</span>
             </label>
 
@@ -516,18 +526,18 @@
                     id="product_image"
                     type="file"
                     accept="image/*"
+                    multiple
                     required
                 >
 
                 <div class="image-help">
-                    الحد الأقصى 5 ميجابايت
+                    يمكنك اختيار حتى 4 صور — الحد الأقصى لكل صورة 5 ميجابايت.
                 </div>
 
-                <img
-                    id="preview-img"
-                    class="image-preview"
-                    alt="معاينة الصورة"
-                >
+                <div
+                    id="image-previews"
+                    class="image-previews"
+                ></div>
 
             </div>
 
@@ -535,9 +545,16 @@
 
         <div class="agreement">
 
-          <strong>
-    📜 <a href="../agreement.html" target="_blank">شروط وأحكام العرض</a>
-</strong>
+            <strong>
+                📜
+                <a
+                    href="../agreement.html"
+                    target="_blank"
+                >
+                    شروط وأحكام العرض
+                </a>
+            </strong>
+
             <label>
 
                 <input
@@ -591,6 +608,11 @@ const SUPABASE_KEY =
 const STORAGE_BUCKET =
     "product-images";
 
+const MAX_IMAGES = 4;
+
+const MAX_IMAGE_SIZE =
+    5 * 1024 * 1024;
+
 const db =
     window.supabase.createClient(
         SUPABASE_URL,
@@ -604,14 +626,17 @@ const form =
 const imageInput =
     document.getElementById("product_image");
 
-const previewImg =
-    document.getElementById("preview-img");
+const imagePreviews =
+    document.getElementById("image-previews");
 
 const submitBtn =
     document.getElementById("submit-btn");
 
 const msgDiv =
     document.getElementById("message");
+
+
+let selectedFiles = [];
 
 
 function showMessage(text, type) {
@@ -672,70 +697,136 @@ function getErrorMessage(error) {
 }
 
 
+function renderImagePreviews() {
+
+    imagePreviews.innerHTML = "";
+
+    selectedFiles.forEach(
+        (file, index) => {
+
+            const wrapper =
+                document.createElement("div");
+
+            wrapper.className =
+                "image-preview-item";
+
+            const img =
+                document.createElement("img");
+
+            img.alt =
+                `معاينة الصورة ${index + 1}`;
+
+            const number =
+                document.createElement("div");
+
+            number.className =
+                "image-number";
+
+            number.textContent =
+                index + 1;
+
+            wrapper.appendChild(img);
+
+            wrapper.appendChild(number);
+
+            imagePreviews.appendChild(wrapper);
+
+            const reader =
+                new FileReader();
+
+            reader.onload =
+                function(event) {
+
+                    img.src =
+                        event.target.result;
+
+                };
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+}
+
+
 imageInput.addEventListener(
     "change",
-    function () {
-
-        const file = this.files[0];
+    function() {
 
         clearMessage();
 
-        if (!file) {
+        const files =
+            Array.from(this.files || []);
 
-            previewImg.src = "";
+        if (!files.length) {
 
-            previewImg.style.display = "none";
+            selectedFiles = [];
+
+            renderImagePreviews();
 
             return;
+
         }
 
-        if (!file.type.startsWith("image/")) {
+        if (files.length > MAX_IMAGES) {
 
             showMessage(
-                "❌ الملف المختار ليس صورة.",
+                "❌ يمكنك اختيار 4 صور كحد أقصى.",
                 "error"
             );
 
             this.value = "";
 
-            previewImg.src = "";
+            selectedFiles = [];
 
-            previewImg.style.display = "none";
-
-            return;
-        }
-
-        if (file.size > 5 * 1024 * 1024) {
-
-            showMessage(
-                "❌ حجم الصورة أكبر من 5 ميجابايت.",
-                "error"
-            );
-
-            this.value = "";
-
-            previewImg.src = "";
-
-            previewImg.style.display = "none";
+            renderImagePreviews();
 
             return;
+
         }
 
-        const reader =
-            new FileReader();
+        for (const file of files) {
 
-        reader.onload =
-            function (event) {
+            if (!file.type.startsWith("image/")) {
 
-                previewImg.src =
-                    event.target.result;
+                showMessage(
+                    "❌ أحد الملفات المختارة ليس صورة.",
+                    "error"
+                );
 
-                previewImg.style.display =
-                    "block";
+                this.value = "";
 
-            };
+                selectedFiles = [];
 
-        reader.readAsDataURL(file);
+                renderImagePreviews();
+
+                return;
+
+            }
+
+            if (file.size > MAX_IMAGE_SIZE) {
+
+                showMessage(
+                    `❌ الصورة «${file.name}» أكبر من 5 ميجابايت.`,
+                    "error"
+                );
+
+                this.value = "";
+
+                selectedFiles = [];
+
+                renderImagePreviews();
+
+                return;
+
+            }
+
+        }
+
+        selectedFiles = files;
+
+        renderImagePreviews();
 
     }
 );
@@ -743,13 +834,12 @@ imageInput.addEventListener(
 
 form.addEventListener(
     "submit",
-    async function (event) {
+    async function(event) {
 
         event.preventDefault();
         event.stopPropagation();
 
         clearMessage();
-
 
         const sellerName =
             document
@@ -757,13 +847,11 @@ form.addEventListener(
                 .value
                 .trim();
 
-
         const phone =
             document
                 .getElementById("phone")
                 .value
                 .trim();
-
 
         const city =
             document
@@ -771,13 +859,11 @@ form.addEventListener(
                 .value
                 .trim();
 
-
         const category =
             document
                 .getElementById("category")
                 .value
                 .trim();
-
 
         const productName =
             document
@@ -785,13 +871,11 @@ form.addEventListener(
                 .value
                 .trim();
 
-
         const priceText =
             document
                 .getElementById("price")
                 .value
                 .trim();
-
 
         const description =
             document
@@ -799,15 +883,10 @@ form.addEventListener(
                 .value
                 .trim();
 
-
         const agreed =
             document
                 .getElementById("agree_terms")
                 .checked;
-
-
-        const file =
-            imageInput.files[0];
 
 
         if (!sellerName) {
@@ -818,6 +897,7 @@ form.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -829,6 +909,7 @@ form.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -840,6 +921,7 @@ form.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -851,6 +933,7 @@ form.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -862,6 +945,7 @@ form.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -881,6 +965,7 @@ form.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -892,39 +977,61 @@ form.addEventListener(
             );
 
             return;
+
         }
 
 
-        if (!file) {
+        if (
+            !selectedFiles.length ||
+            !imageInput.files.length
+        ) {
 
             showMessage(
-                "❌ اختر صورة للسلعة.",
+                "❌ اختر صورة واحدة على الأقل للسلعة.",
                 "error"
             );
 
             return;
+
         }
 
 
-        if (!file.type.startsWith("image/")) {
+        if (selectedFiles.length > MAX_IMAGES) {
 
             showMessage(
-                "❌ الملف المختار ليس صورة.",
+                "❌ يمكنك رفع 4 صور كحد أقصى.",
                 "error"
             );
 
             return;
+
         }
 
 
-        if (file.size > 5 * 1024 * 1024) {
+        for (const file of selectedFiles) {
 
-            showMessage(
-                "❌ حجم الصورة أكبر من 5 ميجابايت.",
-                "error"
-            );
+            if (!file.type.startsWith("image/")) {
 
-            return;
+                showMessage(
+                    "❌ أحد الملفات المختارة ليس صورة.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+            if (file.size > MAX_IMAGE_SIZE) {
+
+                showMessage(
+                    `❌ الصورة «${file.name}» أكبر من 5 ميجابايت.`,
+                    "error"
+                );
+
+                return;
+
+            }
+
         }
 
 
@@ -936,6 +1043,7 @@ form.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -945,7 +1053,9 @@ form.addEventListener(
             "⏳ جاري إرسال السلعة...";
 
 
-        let uploadedFilePath = null;
+        const uploadedFilePaths = [];
+
+        const imageUrls = [];
 
 
         try {
@@ -969,101 +1079,144 @@ form.addEventListener(
 
 
             showMessage(
-                "⏳ جاري رفع صورة السلعة...",
+                `⏳ جاري رفع ${selectedFiles.length} صور...`,
                 "info"
             );
 
 
-            const originalName =
-                file.name || "image.jpg";
+            for (
+                let i = 0;
+                i < selectedFiles.length;
+                i++
+            ) {
+
+                const file =
+                    selectedFiles[i];
 
 
-            const parts =
-                originalName.split(".");
+                const originalName =
+                    file.name || "image.jpg";
 
 
-            const extension =
-                parts.length > 1
-                    ? parts.pop().toLowerCase()
-                    : "jpg";
+                const parts =
+                    originalName.split(".");
 
 
-            const safeExtension =
-                /^[a-z0-9]+$/i.test(extension)
-                    ? extension
-                    : "jpg";
+                const extension =
+                    parts.length > 1
+                        ? parts.pop().toLowerCase()
+                        : "jpg";
 
 
-            const uniqueName =
-                Date.now() +
-                "_" +
-                Math.random()
-                    .toString(36)
-                    .substring(2, 10) +
-                "." +
-                safeExtension;
+                const safeExtension =
+                    /^[a-z0-9]+$/i.test(extension)
+                        ? extension
+                        : "jpg";
 
 
-            uploadedFilePath =
-                "seller-products/" +
-                uniqueName;
+                const uniqueName =
+                    Date.now() +
+                    "_" +
+                    i +
+                    "_" +
+                    Math.random()
+                        .toString(36)
+                        .substring(2, 10) +
+                    "." +
+                    safeExtension;
 
 
-            const uploadResult =
-                await db
-                    .storage
-                    .from(STORAGE_BUCKET)
-                    .upload(
-                        uploadedFilePath,
-                        file,
-                        {
-                            cacheControl: "3600",
-                            upsert: false,
-                            contentType: file.type
-                        }
+                const filePath =
+                    "seller-products/" +
+                    uniqueName;
+
+
+                showMessage(
+                    `⏳ جاري رفع الصورة ${i + 1} من ${selectedFiles.length}...`,
+                    "info"
+                );
+
+
+                const uploadResult =
+                    await db
+                        .storage
+                        .from(STORAGE_BUCKET)
+                        .upload(
+                            filePath,
+                            file,
+                            {
+                                cacheControl: "3600",
+                                upsert: false,
+                                contentType: file.type
+                            }
+                        );
+
+
+                if (uploadResult.error) {
+
+                    throw new Error(
+                        `فشل رفع الصورة ${i + 1}:\n\n` +
+                        getErrorMessage(
+                            uploadResult.error
+                        )
                     );
 
+                }
 
-            if (uploadResult.error) {
 
-                throw new Error(
-                    "فشل رفع الصورة:\n\n" +
-                    getErrorMessage(
-                        uploadResult.error
-                    )
+                uploadedFilePaths.push(
+                    filePath
+                );
+
+
+                const publicUrlResult =
+                    db
+                        .storage
+                        .from(STORAGE_BUCKET)
+                        .getPublicUrl(
+                            filePath
+                        );
+
+
+                const publicUrl =
+                    publicUrlResult
+                        ?.data
+                        ?.publicUrl;
+
+
+                if (!publicUrl) {
+
+                    throw new Error(
+                        `تم رفع الصورة ${i + 1} لكن تعذر الحصول على رابطها.`
+                    );
+
+                }
+
+
+                imageUrls.push(
+                    publicUrl
                 );
 
             }
 
 
-            const publicUrlResult =
-                db
-                    .storage
-                    .from(STORAGE_BUCKET)
-                    .getPublicUrl(
-                        uploadedFilePath
-                    );
-
-
-            const imageUrl =
-                publicUrlResult
-                    ?.data
-                    ?.publicUrl;
-
-
-            if (!imageUrl) {
+            if (!imageUrls.length) {
 
                 throw new Error(
-                    "تم رفع الصورة لكن تعذر الحصول على رابط الصورة."
+                    "لم يتم رفع أي صورة."
                 );
 
             }
 
 
             showMessage(
-                "⏳ تم رفع الصورة بنجاح.\n\nجاري حفظ طلب السلعة...",
+                `⏳ تم رفع ${imageUrls.length} صور بنجاح.\n\nجاري حفظ طلب السلعة...`,
                 "info"
             );
+
+
+            const firstImage =
+                imageUrls[0] || "";
 
 
             const insertData = {
@@ -1096,10 +1249,10 @@ form.addEventListener(
                     "",
 
                 image:
-                    imageUrl,
+                    firstImage,
 
                 images:
-                    [imageUrl],
+                    imageUrls,
 
                 agreement_accepted:
                     true,
@@ -1114,7 +1267,7 @@ form.addEventListener(
                     false,
 
                 image_url:
-                    imageUrl
+                    firstImage
 
             };
 
@@ -1134,15 +1287,15 @@ form.addEventListener(
                     await db
                         .storage
                         .from(STORAGE_BUCKET)
-                        .remove([
-                            uploadedFilePath
-                        ]);
+                        .remove(
+                            uploadedFilePaths
+                        );
 
                 }
                 catch (cleanupError) {
 
                     console.warn(
-                        "تعذر حذف الصورة بعد فشل حفظ الطلب:",
+                        "تعذر حذف الصور بعد فشل حفظ الطلب:",
                         cleanupError
                     );
 
@@ -1160,19 +1313,16 @@ form.addEventListener(
 
 
             showMessage(
-                "🎉 تم إرسال سلعتك بنجاح!\n\n" +
-                "تم حفظ الطلب في لوحة التحكم بحالة «قيد الانتظار» للمراجعة.",
+                `🎉 تم إرسال سلعتك بنجاح!\n\nتم رفع ${imageUrls.length} صور وحفظها مع السلعة.\n\nتم حفظ الطلب في لوحة التحكم بحالة «قيد الانتظار» للمراجعة.`,
                 "success"
             );
 
 
             form.reset();
 
+            selectedFiles = [];
 
-            previewImg.src = "";
-
-            previewImg.style.display =
-                "none";
+            renderImagePreviews();
 
 
             window.scrollTo({
@@ -1211,4 +1361,5 @@ form.addEventListener(
 </script>
 
 </body>
+
 </html>
