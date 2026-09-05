@@ -1007,104 +1007,421 @@ function getStatus(value) {
 
 /* =========================================================
    الصور
+   FIX كامل للتعامل مع:
+   - JSON Array
+   - PostgreSQL Array
+   - Array حقيقية
+   - نص يحتوي روابط متعددة
+   - كائنات الصور
+   - image / image_url القديمة
 ========================================================= */
 
 function getSellerImages(row) {
 
     const result = [];
 
-    let images =
-        row
-            ? row.images
-            : null;
-
     if (
-        typeof images === "string"
+        !row ||
+        typeof row !== "object"
     ) {
 
-        try {
-
-            images =
-                JSON.parse(images);
-
-        }
-        catch (error) {
-
-            images =
-                [images];
-
-        }
+        return [];
 
     }
 
-    if (
-        Array.isArray(images)
-    ) {
 
-        images.forEach(
-            function(item) {
+    function addImage(value) {
 
-                if (
-                    typeof item === "string" &&
-                    item.trim()
-                ) {
+        if (
+            value === null ||
+            value === undefined
+        ) {
 
-                    result.push(
-                        item.trim()
-                    );
+            return;
+
+        }
+
+
+        /* ---------------------------------------------
+           مصفوفة JavaScript
+        --------------------------------------------- */
+
+        if (
+            Array.isArray(value)
+        ) {
+
+            value.forEach(
+                function(item) {
+
+                    addImage(item);
 
                 }
+            );
 
-                else if (
-                    item &&
-                    typeof item === "object"
+            return;
+
+        }
+
+
+        /* ---------------------------------------------
+           كائن صورة
+        --------------------------------------------- */
+
+        if (
+            typeof value === "object"
+        ) {
+
+            const url =
+                value.url ||
+                value.publicUrl ||
+                value.public_url ||
+                value.image ||
+                value.image_url ||
+                value.imageUrl ||
+                value.photo ||
+                value.src;
+
+            if (url) {
+
+                addImage(url);
+
+            }
+
+            return;
+
+        }
+
+
+        /* ---------------------------------------------
+           نص
+        --------------------------------------------- */
+
+        if (
+            typeof value !== "string"
+        ) {
+
+            return;
+
+        }
+
+
+        let text =
+            value.trim();
+
+
+        if (!text) {
+
+            return;
+
+        }
+
+
+        /* ---------------------------------------------
+           JSON Array
+           مثال:
+           ["url1","url2","url3","url4"]
+        --------------------------------------------- */
+
+        if (
+            text.startsWith("[") &&
+            text.endsWith("]")
+        ) {
+
+            try {
+
+                const parsed =
+                    JSON.parse(text);
+
+                if (
+                    Array.isArray(parsed)
                 ) {
 
-                    const url =
-                        item.url ||
-                        item.publicUrl ||
-                        item.image ||
-                        item.image_url;
+                    parsed.forEach(
+                        function(item) {
 
-                    if (url) {
+                            addImage(item);
 
-                        result.push(
-                            String(url)
-                        );
+                        }
+                    );
 
-                    }
+                    return;
 
                 }
 
             }
-        );
+            catch (error) {
+
+                console.warn(
+                    "تعذر تحليل JSON للصور:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* ---------------------------------------------
+           JSON Object
+        --------------------------------------------- */
+
+        if (
+            text.startsWith("{") &&
+            text.endsWith("}")
+        ) {
+
+            try {
+
+                const parsedObject =
+                    JSON.parse(text);
+
+                if (
+                    parsedObject &&
+                    typeof parsedObject === "object" &&
+                    !Array.isArray(parsedObject)
+                ) {
+
+                    addImage(
+                        parsedObject
+                    );
+
+                    return;
+
+                }
+
+            }
+            catch (error) {
+
+                /*
+                 * ليس JSON Object.
+                 * قد يكون PostgreSQL Array.
+                 */
+
+            }
+
+
+            /* -----------------------------------------
+               PostgreSQL Array
+               مثال:
+               {"url1","url2","url3","url4"}
+            ----------------------------------------- */
+
+            const inside =
+                text.slice(
+                    1,
+                    -1
+                );
+
+
+            if (
+                inside.trim()
+            ) {
+
+                const parts =
+                    inside
+                        .split(/","|','/g)
+                        .map(
+                            function(item) {
+
+                                return item
+                                    .replace(
+                                        /^["']|["']$/g,
+                                        ""
+                                    )
+                                    .trim();
+
+                            }
+                        )
+                        .filter(Boolean);
+
+
+                if (
+                    parts.length > 0
+                ) {
+
+                    parts.forEach(
+                        function(item) {
+
+                            addImage(item);
+
+                        }
+                    );
+
+                    return;
+
+                }
+
+            }
+
+        }
+
+
+        /* ---------------------------------------------
+           نص يحتوي عدة روابط
+           مثال:
+           url1,url2,url3
+        --------------------------------------------- */
+
+        if (
+            text.includes(",")
+        ) {
+
+            const parts =
+                text
+                    .split(",")
+                    .map(
+                        function(item) {
+
+                            return item
+                                .trim()
+                                .replace(
+                                    /^["']|["']$/g,
+                                    ""
+                                );
+
+                        }
+                    )
+                    .filter(Boolean);
+
+
+            const looksLikeMultiple =
+                parts.length > 1 &&
+                parts.some(
+                    function(item) {
+
+                        return (
+                            item.startsWith("http://") ||
+                            item.startsWith("https://")
+                        );
+
+                    }
+                );
+
+
+            if (
+                looksLikeMultiple
+            ) {
+
+                parts.forEach(
+                    function(item) {
+
+                        addImage(item);
+
+                    }
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        /* ---------------------------------------------
+           رابط صورة واحد
+        --------------------------------------------- */
+
+        if (
+            text.startsWith("http://") ||
+            text.startsWith("https://") ||
+            text.startsWith("data:image/")
+        ) {
+
+            result.push(
+                text
+            );
+
+        }
 
     }
 
-    const oldImage =
-        row
-            ? (
-                row.image ||
-                row.image_url
-            )
-            : "";
 
-    if (
-        oldImage &&
-        !result.includes(
-            String(oldImage)
-        )
+    /* =================================================
+       1 — العمود الرئيسي images
+    ================================================= */
+
+    addImage(
+        row.images
+    );
+
+
+    /* =================================================
+       2 — أسماء بديلة
+    ================================================= */
+
+    addImage(
+        row.photos
+    );
+
+    addImage(
+        row.productImages
+    );
+
+    addImage(
+        row.imageUrls
+    );
+
+    addImage(
+        row.gallery
+    );
+
+
+    /* =================================================
+       3 — الصور المرقمة
+       image1 ... image5
+    ================================================= */
+
+    for (
+        let i = 1;
+        i <= 5;
+        i++
     ) {
 
-        result.unshift(
-            String(oldImage)
+        addImage(
+            row["image" + i]
         );
 
     }
+
+
+    /* =================================================
+       4 — الحقول القديمة
+    ================================================= */
+
+    addImage(
+        row.image
+    );
+
+    addImage(
+        row.image_url
+    );
+
+    addImage(
+        row.imageUrl
+    );
+
+    addImage(
+        row.productImage
+    );
+
+
+    /* =================================================
+       تنظيف ومنع التكرار
+    ================================================= */
 
     return [
         ...new Set(
-            result.filter(Boolean)
+            result
+                .map(
+                    function(item) {
+
+                        return String(
+                            item
+                        ).trim();
+
+                    }
+                )
+                .filter(Boolean)
         )
     ];
 
@@ -1940,7 +2257,6 @@ async function loadSellerOrders() {
 
 /* =========================================================
    بناء بيانات المنتج
-   FIX: حفظ بيانات البائع والربط بطلب البائع
 ========================================================= */
 
 function buildProductData(seller) {
@@ -2113,7 +2429,6 @@ function buildProductData(seller) {
 
 /* =========================================================
    نشر المنتج
-   FIX: استخدام seller_request_id لمنع تكرار نفس الطلب
 ========================================================= */
 
 async function publishSellerProduct(seller) {
@@ -2135,11 +2450,6 @@ async function publishSellerProduct(seller) {
     }
 
 
-    /*
-     * نبحث أولًا عن المنتج المرتبط
-     * بنفس طلب البائع.
-     */
-
     const existingByRequest =
         await db
             .from(PRODUCTS_TABLE)
@@ -2160,12 +2470,6 @@ async function publishSellerProduct(seller) {
 
     }
 
-
-    /*
-     * إذا كان المنتج موجودًا مسبقًا
-     * بنفس seller_request_id:
-     * نحدّث بياناته بدل إنشاء نسخة أخرى.
-     */
 
     if (
         existingByRequest.data &&
@@ -2215,15 +2519,6 @@ async function publishSellerProduct(seller) {
 
     }
 
-
-    /*
-     * لا نستخدم title + price + category
-     * لتحديد التكرار، لأن بائعين مختلفين
-     * قد يبيعون نفس المنتج.
-     *
-     * لذلك يتم إنشاء المنتج وربطه
-     * بطلب البائع الحالي.
-     */
 
     const result =
         await db
@@ -3279,7 +3574,6 @@ function createCard(order) {
 
 /* =========================================================
    حذف الطلب
-   لم يتم تغييره
 ========================================================= */
 
 async function deleteOrder(
@@ -3570,14 +3864,14 @@ async function changeStatus(
             ) {
 
                 alert(
-                    "✓ السلعة كانت منشورة مسبقًا، وتم تحديث ربطها بالبائع بنجاح."
+                    "✓ السلعة كانت منشورة مسبقًا، وتم تحديث ربطها بالبائع والصور بنجاح."
                 );
 
             }
             else {
 
                 alert(
-                    "✓ تم قبول السلعة ونشرها في المتجر وربطها بالبائع بنجاح."
+                    "✓ تم قبول السلعة ونشرها في المتجر وربطها بالبائع والصور بنجاح."
                 );
 
             }
@@ -3721,7 +4015,7 @@ async function toggleProduct(
 
                 :
 
-                "✓ تم إخفاء المنتج في المتجر."
+                "✓ تم إخفاء المنتج من المتجر."
 
         );
 
@@ -3746,7 +4040,6 @@ async function toggleProduct(
 
 /* =========================================================
    حذف المنتج
-   لم يتم تغييره
 ========================================================= */
 
 async function deleteProduct(
