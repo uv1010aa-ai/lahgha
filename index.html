@@ -1097,6 +1097,25 @@ async function renderLatestProducts() {
         card.className =
             "home-product-card";
 
+        /* فتح صفحة تفاصيل المنتج عند الضغط على البطاقة */
+        card.style.cursor = "pointer";
+
+        card.addEventListener("click", function () {
+
+            const productId =
+                product.id ||
+                product.requestId;
+
+            if (!productId) {
+                return;
+            }
+
+            window.location.href =
+                "product.html?id=" +
+                encodeURIComponent(productId);
+
+        });
+
 
         const image =
             imageUrl(
