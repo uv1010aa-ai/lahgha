@@ -618,35 +618,19 @@
 
     <section class="tabs">
 
-        <button
-            class="tab active"
-            data-view="all"
-            type="button"
-        >
+        <button class="tab active" data-view="all" type="button">
             📋 كل الطلبات
         </button>
 
-        <button
-            class="tab"
-            data-view="buyer"
-            type="button"
-        >
+        <button class="tab" data-view="buyer" type="button">
             🛒 طلبات المشترين
         </button>
 
-        <button
-            class="tab"
-            data-view="seller"
-            type="button"
-        >
+        <button class="tab" data-view="seller" type="button">
             📦 طلبات البائعين
         </button>
 
-        <button
-            class="tab"
-            data-view="products"
-            type="button"
-        >
+        <button class="tab" data-view="products" type="button">
             🏪 المنتجات المنشورة
         </button>
 
@@ -657,26 +641,17 @@
 
         <div class="panel-head">
 
-            <div
-                id="panelTitle"
-                class="panel-title"
-            >
+            <div id="panelTitle" class="panel-title">
                 كل الطلبات
             </div>
 
-            <div
-                id="connectionStatus"
-                class="connection"
-            >
+            <div id="connectionStatus" class="connection">
                 جاري الاتصال...
             </div>
 
         </div>
 
-        <div
-            id="ordersContainer"
-            class="orders"
-        >
+        <div id="ordersContainer" class="orders">
 
             <div class="loading">
                 جاري تحميل البيانات...
@@ -689,24 +664,13 @@
 </main>
 
 
-<div
-    id="imageModal"
-    class="image-modal"
->
+<div id="imageModal" class="image-modal">
 
-    <button
-        id="closeModal"
-        class="close-modal"
-        type="button"
-    >
+    <button id="closeModal" class="close-modal" type="button">
         ×
     </button>
 
-    <img
-        id="modalImage"
-        src=""
-        alt="صورة المنتج"
-    >
+    <img id="modalImage" src="" alt="صورة المنتج">
 
 </div>
 
@@ -734,14 +698,9 @@ const db =
    الجداول
 ========================================================= */
 
-const BUYER_TABLE =
-    "orders";
-
-const SELLER_TABLE =
-    "seller_requests";
-
-const PRODUCTS_TABLE =
-    "products";
+const BUYER_TABLE = "orders";
+const SELLER_TABLE = "seller_requests";
+const PRODUCTS_TABLE = "products";
 
 
 /* =========================================================
@@ -749,9 +708,7 @@ const PRODUCTS_TABLE =
 ========================================================= */
 
 let allOrders = [];
-
 let allProducts = [];
-
 let currentView = "all";
 
 
@@ -819,8 +776,7 @@ function money(value) {
 
     }
 
-    const number =
-        Number(value);
+    const number = Number(value);
 
     if (Number.isNaN(number)) {
 
@@ -841,13 +797,10 @@ function money(value) {
 function dateText(value) {
 
     if (!value) {
-
         return "—";
-
     }
 
-    const date =
-        new Date(value);
+    const date = new Date(value);
 
     if (
         Number.isNaN(
@@ -859,21 +812,18 @@ function dateText(value) {
 
     }
 
-    return date.toLocaleString(
-        "ar-SA"
-    );
+    return date.toLocaleString("ar-SA");
 
 }
 
 
 /* =========================================================
-   توحيد قسم الأسر المنتجة
+   توحيد القسم
 ========================================================= */
 
 function normalizeCategory(value) {
 
-    const category =
-        clean(value);
+    const category = clean(value);
 
     if (
         category === "اسر منتجه" ||
@@ -909,7 +859,6 @@ function getFamilyData(row) {
             )
         );
 
-
     if (
         sellerName === "أسرة سكر وورد" ||
         sellerName === "سكر وورد" ||
@@ -918,30 +867,24 @@ function getFamilyData(row) {
 
         return {
 
-            familyName:
-                "أسرة سكر وورد",
+            familyName: "أسرة سكر وورد",
 
-            familySlug:
-                "sugar-rose",
+            familySlug: "sugar-rose",
 
-            familyPage:
-                "../family-sugar-rose.html"
+            familyPage: "../family-sugar-rose.html"
 
         };
 
     }
-
 
     return {
 
         familyName:
             sellerName || "أسرة منتجة",
 
-        familySlug:
-            "",
+        familySlug: "",
 
-        familyPage:
-            ""
+        familyPage: ""
 
     };
 
@@ -966,11 +909,9 @@ function getStatus(value) {
 
         return {
 
-            text:
-                "مقبول",
+            text: "مقبول",
 
-            className:
-                "approved"
+            className: "approved"
 
         };
 
@@ -994,11 +935,9 @@ function getStatus(value) {
 
     return {
 
-        text:
-            "قيد الانتظار",
+        text: "قيد الانتظار",
 
-        className:
-            ""
+        className: ""
 
     };
 
@@ -1007,13 +946,7 @@ function getStatus(value) {
 
 /* =========================================================
    الصور
-   FIX كامل للتعامل مع:
-   - JSON Array
-   - PostgreSQL Array
-   - Array حقيقية
-   - نص يحتوي روابط متعددة
-   - كائنات الصور
-   - image / image_url القديمة
+   الإصدار المعدل
 ========================================================= */
 
 function getSellerImages(row) {
@@ -1043,7 +976,7 @@ function getSellerImages(row) {
 
 
         /* ---------------------------------------------
-           مصفوفة JavaScript
+           مصفوفة JavaScript حقيقية
         --------------------------------------------- */
 
         if (
@@ -1071,7 +1004,7 @@ function getSellerImages(row) {
             typeof value === "object"
         ) {
 
-            const url =
+            const possibleUrl =
                 value.url ||
                 value.publicUrl ||
                 value.public_url ||
@@ -1081,9 +1014,11 @@ function getSellerImages(row) {
                 value.photo ||
                 value.src;
 
-            if (url) {
+            if (possibleUrl) {
 
-                addImage(url);
+                addImage(
+                    possibleUrl
+                );
 
             }
 
@@ -1093,7 +1028,7 @@ function getSellerImages(row) {
 
 
         /* ---------------------------------------------
-           نص
+           النص
         --------------------------------------------- */
 
         if (
@@ -1108,7 +1043,6 @@ function getSellerImages(row) {
         let text =
             value.trim();
 
-
         if (!text) {
 
             return;
@@ -1118,8 +1052,7 @@ function getSellerImages(row) {
 
         /* ---------------------------------------------
            JSON Array
-           مثال:
-           ["url1","url2","url3","url4"]
+           ["url1","url2","url3"]
         --------------------------------------------- */
 
         if (
@@ -1152,7 +1085,7 @@ function getSellerImages(row) {
             catch (error) {
 
                 console.warn(
-                    "تعذر تحليل JSON للصور:",
+                    "تعذر تحليل JSON للصور",
                     error
                 );
 
@@ -1172,18 +1105,16 @@ function getSellerImages(row) {
 
             try {
 
-                const parsedObject =
+                const parsed =
                     JSON.parse(text);
 
                 if (
-                    parsedObject &&
-                    typeof parsedObject === "object" &&
-                    !Array.isArray(parsedObject)
+                    parsed &&
+                    typeof parsed === "object" &&
+                    !Array.isArray(parsed)
                 ) {
 
-                    addImage(
-                        parsedObject
-                    );
+                    addImage(parsed);
 
                     return;
 
@@ -1193,8 +1124,8 @@ function getSellerImages(row) {
             catch (error) {
 
                 /*
-                 * ليس JSON Object.
-                 * قد يكون PostgreSQL Array.
+                 * إذا لم يكن JSON،
+                 * نحاول اعتباره PostgreSQL Array.
                  */
 
             }
@@ -1202,37 +1133,93 @@ function getSellerImages(row) {
 
             /* -----------------------------------------
                PostgreSQL Array
+
                مثال:
                {"url1","url2","url3","url4"}
+
+               أو:
+               {url1,url2,url3,url4}
             ----------------------------------------- */
 
             const inside =
                 text.slice(
                     1,
                     -1
-                );
+                ).trim();
 
+            if (inside) {
 
-            if (
-                inside.trim()
-            ) {
+                const parts = [];
 
-                const parts =
-                    inside
-                        .split(/","|','/g)
-                        .map(
-                            function(item) {
+                let current = "";
+                let quoted = false;
+                let escaped = false;
 
-                                return item
-                                    .replace(
-                                        /^["']|["']$/g,
-                                        ""
-                                    )
-                                    .trim();
+                for (
+                    let i = 0;
+                    i < inside.length;
+                    i++
+                ) {
 
-                            }
-                        )
-                        .filter(Boolean);
+                    const char =
+                        inside[i];
+
+                    if (escaped) {
+
+                        current += char;
+                        escaped = false;
+                        continue;
+
+                    }
+
+                    if (char === "\\") {
+
+                        escaped = true;
+                        continue;
+
+                    }
+
+                    if (char === '"') {
+
+                        quoted = !quoted;
+                        continue;
+
+                    }
+
+                    if (
+                        char === "," &&
+                        !quoted
+                    ) {
+
+                        if (
+                            current.trim()
+                        ) {
+
+                            parts.push(
+                                current.trim()
+                            );
+
+                        }
+
+                        current = "";
+
+                        continue;
+
+                    }
+
+                    current += char;
+
+                }
+
+                if (
+                    current.trim()
+                ) {
+
+                    parts.push(
+                        current.trim()
+                    );
+
+                }
 
 
                 if (
@@ -1242,7 +1229,21 @@ function getSellerImages(row) {
                     parts.forEach(
                         function(item) {
 
-                            addImage(item);
+                            const cleaned =
+                                item
+                                    .replace(
+                                        /^["']|["']$/g,
+                                        ""
+                                    )
+                                    .trim();
+
+                            if (cleaned) {
+
+                                addImage(
+                                    cleaned
+                                );
+
+                            }
 
                         }
                     );
@@ -1257,9 +1258,7 @@ function getSellerImages(row) {
 
 
         /* ---------------------------------------------
-           نص يحتوي عدة روابط
-           مثال:
-           url1,url2,url3
+           JSON مفصول بفواصل
         --------------------------------------------- */
 
         if (
@@ -1277,21 +1276,22 @@ function getSellerImages(row) {
                                 .replace(
                                     /^["']|["']$/g,
                                     ""
-                                );
+                                )
+                                .trim();
 
                         }
                     )
                     .filter(Boolean);
 
 
-            const looksLikeMultiple =
-                parts.length > 1 &&
-                parts.some(
+            const imageParts =
+                parts.filter(
                     function(item) {
 
                         return (
                             item.startsWith("http://") ||
-                            item.startsWith("https://")
+                            item.startsWith("https://") ||
+                            item.startsWith("data:image/")
                         );
 
                     }
@@ -1299,10 +1299,10 @@ function getSellerImages(row) {
 
 
             if (
-                looksLikeMultiple
+                imageParts.length > 0
             ) {
 
-                parts.forEach(
+                imageParts.forEach(
                     function(item) {
 
                         addImage(item);
@@ -1327,9 +1327,7 @@ function getSellerImages(row) {
             text.startsWith("data:image/")
         ) {
 
-            result.push(
-                text
-            );
+            result.push(text);
 
         }
 
@@ -1337,7 +1335,7 @@ function getSellerImages(row) {
 
 
     /* =================================================
-       1 — العمود الرئيسي images
+       images
     ================================================= */
 
     addImage(
@@ -1346,7 +1344,7 @@ function getSellerImages(row) {
 
 
     /* =================================================
-       2 — أسماء بديلة
+       حقول بديلة
     ================================================= */
 
     addImage(
@@ -1367,7 +1365,6 @@ function getSellerImages(row) {
 
 
     /* =================================================
-       3 — الصور المرقمة
        image1 ... image5
     ================================================= */
 
@@ -1385,7 +1382,7 @@ function getSellerImages(row) {
 
 
     /* =================================================
-       4 — الحقول القديمة
+       الحقول القديمة
     ================================================= */
 
     addImage(
@@ -1428,6 +1425,10 @@ function getSellerImages(row) {
 }
 
 
+/* =========================================================
+   عرض الصور
+========================================================= */
+
 function sellerImagesHtml(images) {
 
     if (
@@ -1452,6 +1453,7 @@ function sellerImagesHtml(images) {
         `;
 
     }
+
 
     return `
 
@@ -1508,10 +1510,7 @@ function parseOrderItems(value) {
         return [];
     }
 
-
-    let items =
-        value;
-
+    let items = value;
 
     if (
         typeof items === "string"
@@ -1531,7 +1530,6 @@ function parseOrderItems(value) {
 
     }
 
-
     if (
         !Array.isArray(items)
     ) {
@@ -1539,7 +1537,6 @@ function parseOrderItems(value) {
         return [];
 
     }
-
 
     return items
         .filter(
@@ -1555,7 +1552,6 @@ function parseOrderItems(value) {
                         item.price
                     ) || 0;
 
-
                 const quantity =
                     Math.max(
                         1,
@@ -1564,13 +1560,11 @@ function parseOrderItems(value) {
                         ) || 1
                     );
 
-
                 const title =
                     item.title ||
                     item.name ||
                     item.product_name ||
                     "منتج";
-
 
                 const image =
                     item.image ||
@@ -1578,13 +1572,11 @@ function parseOrderItems(value) {
                     item.imageUrl ||
                     "";
 
-
                 const familyName =
                     item.family_name ||
                     item.familyName ||
                     item.seller_name ||
                     "";
-
 
                 return {
 
@@ -1694,7 +1686,6 @@ function buyerItemsHtml(items) {
 
             </div>
 
-
             <div class="orders">
 
                 ${
@@ -1705,7 +1696,6 @@ function buyerItemsHtml(items) {
                                 clean(
                                     item.image
                                 );
-
 
                             const imageHtml =
                                 image
@@ -1738,18 +1728,15 @@ function buyerItemsHtml(items) {
 
                                 `;
 
-
                             const code =
                                 clean(
                                     item.id
                                 ) || "—";
 
-
                             const familyName =
                                 clean(
                                     item.familyName
                                 );
-
 
                             return `
 
@@ -1768,17 +1755,11 @@ function buyerItemsHtml(items) {
                                             ${imageHtml}
                                         </div>
 
-
                                         <div>
 
                                             <div class="product-name">
-
-                                                ${safe(
-                                                    item.title
-                                                )}
-
+                                                ${safe(item.title)}
                                             </div>
-
 
                                             <div class="product-extra">
 
@@ -1819,9 +1800,7 @@ function buyerItemsHtml(items) {
 
                                                             🏠 الأسرة:
                                                             <strong style="color:#8b5517;">
-                                                                ${safe(
-                                                                    familyName
-                                                                )}
+                                                                ${safe(familyName)}
                                                             </strong>
 
                                                         `
@@ -1829,7 +1808,6 @@ function buyerItemsHtml(items) {
                                                 }
 
                                             </div>
-
 
                                             <div
                                                 style="
@@ -1840,9 +1818,7 @@ function buyerItemsHtml(items) {
                                             >
 
                                                 إجمالي السلعة:
-                                                ${money(
-                                                    item.subtotal
-                                                )}
+                                                ${money(item.subtotal)}
 
                                             </div>
 
@@ -1893,7 +1869,6 @@ function mapBuyer(row) {
         parseOrderItems(
             row.items
         );
-
 
     return {
 
@@ -2052,9 +2027,7 @@ function sellerExtra(row) {
 
     }
 
-    return parts.join(
-        " — "
-    );
+    return parts.join(" — ");
 
 }
 
@@ -2226,27 +2199,21 @@ async function loadSellerOrders() {
     const rows =
         result.data || [];
 
-
     rows.sort(
         function(a,b) {
 
             return (
-
                 new Date(
                     b.created_at || 0
                 )
-
                 -
-
                 new Date(
                     a.created_at || 0
                 )
-
             );
 
         }
     );
-
 
     return rows.map(
         mapSeller
@@ -2264,18 +2231,15 @@ function buildProductData(seller) {
     const raw =
         seller.raw || {};
 
-
     const sellerRequestId =
         clean(
             raw.id
         ) || null;
 
-
     const sellerIdValue =
         raw.seller_id ??
         raw.sellerId ??
         null;
-
 
     const sellerNameValue =
         clean(
@@ -2283,7 +2247,6 @@ function buildProductData(seller) {
             raw.sellerName ||
             seller.name
         ) || null;
-
 
     const title =
         pick(
@@ -2297,7 +2260,6 @@ function buildProductData(seller) {
             ]
         ) || "منتج";
 
-
     const description =
         pick(
             raw,
@@ -2307,7 +2269,6 @@ function buildProductData(seller) {
                 "product_description"
             ]
         ) || "";
-
 
     const priceValue =
         pick(
@@ -2320,14 +2281,12 @@ function buildProductData(seller) {
             ]
         );
 
-
     const priceNumber =
         priceValue === ""
             ? 0
             : Number(
                 priceValue
             );
-
 
     const rawCategory =
         pick(
@@ -2339,30 +2298,25 @@ function buildProductData(seller) {
             ]
         );
 
-
     const category =
         normalizeCategory(
             rawCategory
         );
-
 
     const images =
         getSellerImages(
             raw
         );
 
-
     const firstImage =
         images.length > 0
             ? images[0]
             : null;
 
-
     const family =
         getFamilyData(
             raw
         );
-
 
     const productData = {
 
@@ -2411,7 +2365,6 @@ function buildProductData(seller) {
 
     };
 
-
     if (
         family.familySlug === "sugar-rose"
     ) {
@@ -2420,7 +2373,6 @@ function buildProductData(seller) {
             "أسر منتجة";
 
     }
-
 
     return productData;
 
@@ -2438,7 +2390,6 @@ async function publishSellerProduct(seller) {
             seller
         );
 
-
     if (
         !productData.seller_request_id
     ) {
@@ -2448,7 +2399,6 @@ async function publishSellerProduct(seller) {
         );
 
     }
-
 
     const existingByRequest =
         await db
@@ -2460,7 +2410,6 @@ async function publishSellerProduct(seller) {
             )
             .limit(1);
 
-
     if (existingByRequest.error) {
 
         throw new Error(
@@ -2469,7 +2418,6 @@ async function publishSellerProduct(seller) {
         );
 
     }
-
 
     if (
         existingByRequest.data &&
@@ -2480,7 +2428,6 @@ async function publishSellerProduct(seller) {
             existingByRequest
                 .data[0]
                 .id;
-
 
         const updateExisting =
             await db
@@ -2493,7 +2440,6 @@ async function publishSellerProduct(seller) {
                     existingId
                 );
 
-
         if (updateExisting.error) {
 
             throw new Error(
@@ -2502,7 +2448,6 @@ async function publishSellerProduct(seller) {
             );
 
         }
-
 
         return {
 
@@ -2519,7 +2464,6 @@ async function publishSellerProduct(seller) {
 
     }
 
-
     const result =
         await db
             .from(PRODUCTS_TABLE)
@@ -2529,7 +2473,6 @@ async function publishSellerProduct(seller) {
             .select()
             .single();
 
-
     if (result.error) {
 
         console.error(
@@ -2537,14 +2480,12 @@ async function publishSellerProduct(seller) {
             result.error
         );
 
-
         throw new Error(
             "تعذر نشر السلعة في products: " +
             result.error.message
         );
 
     }
-
 
     return {
 
@@ -2585,27 +2526,21 @@ async function loadProducts() {
     const rows =
         result.data || [];
 
-
     rows.sort(
         function(a,b) {
 
             return (
-
                 new Date(
                     b.created_at || 0
                 )
-
                 -
-
                 new Date(
                     a.created_at || 0
                 )
-
             );
 
         }
     );
-
 
     return rows;
 
@@ -2658,7 +2593,6 @@ function productStatus(product) {
 
     }
 
-
     return {
 
         text:
@@ -2683,18 +2617,15 @@ function createProductCard(product) {
             product.id
         );
 
-
     const images =
         getSellerImages(
             product
         );
 
-
     const status =
         productStatus(
             product
         );
-
 
     const familyName =
         pick(
@@ -2706,7 +2637,6 @@ function createProductCard(product) {
             ]
         ) || "—";
 
-
     const title =
         pick(
             product,
@@ -2716,7 +2646,6 @@ function createProductCard(product) {
                 "name"
             ]
         ) || "منتج";
-
 
     const category =
         normalizeCategory(
@@ -2729,7 +2658,6 @@ function createProductCard(product) {
             )
         ) || "—";
 
-
     const familyPage =
         pick(
             product,
@@ -2737,7 +2665,6 @@ function createProductCard(product) {
                 "family_page"
             ]
         );
-
 
     const description =
         pick(
@@ -2747,7 +2674,6 @@ function createProductCard(product) {
                 "details"
             ]
         );
-
 
     return `
 
@@ -3005,13 +2931,11 @@ function updateStats() {
                 order.type === "buyer"
         );
 
-
     const sellers =
         allOrders.filter(
             order =>
                 order.type === "seller"
         );
-
 
     const pending =
         allOrders.filter(
@@ -3021,7 +2945,6 @@ function updateStats() {
                     clean(
                         order.status
                     ).toLowerCase();
-
 
                 return ![
                     "approved",
@@ -3035,30 +2958,25 @@ function updateStats() {
             }
         );
 
-
     document.getElementById(
         "totalOrders"
     ).textContent =
         allOrders.length;
-
 
     document.getElementById(
         "buyerOrders"
     ).textContent =
         buyers.length;
 
-
     document.getElementById(
         "sellerOrders"
     ).textContent =
         sellers.length;
 
-
     document.getElementById(
         "pendingOrders"
     ).textContent =
         pending.length;
-
 
     document.getElementById(
         "publishedProducts"
@@ -3084,7 +3002,6 @@ function render() {
             "ordersContainer"
         );
 
-
     if (
         currentView === "products"
     ) {
@@ -3105,7 +3022,6 @@ function render() {
 
         }
 
-
         container.innerHTML =
             allProducts
                 .map(
@@ -3113,15 +3029,12 @@ function render() {
                 )
                 .join("");
 
-
         return;
 
     }
 
-
     let list =
         allOrders;
-
 
     if (
         currentView === "buyer"
@@ -3135,7 +3048,6 @@ function render() {
 
     }
 
-
     if (
         currentView === "seller"
     ) {
@@ -3147,7 +3059,6 @@ function render() {
             );
 
     }
-
 
     if (
         list.length === 0
@@ -3164,7 +3075,6 @@ function render() {
         return;
 
     }
-
 
     container.innerHTML =
         list
@@ -3185,18 +3095,15 @@ function createCard(order) {
     const isBuyer =
         order.type === "buyer";
 
-
     const status =
         getStatus(
             order.status
         );
 
-
     const id =
         safe(
             order.id
         );
-
 
     const isTransfer =
         clean(
@@ -3204,7 +3111,6 @@ function createCard(order) {
         ).toLowerCase()
         ===
         "waiting_transfer";
-
 
     return `
 
@@ -3237,7 +3143,6 @@ function createCard(order) {
 
                     </div>
 
-
                     <div class="order-number">
 
                         رقم الطلب:
@@ -3251,7 +3156,6 @@ function createCard(order) {
                     </div>
 
                 </div>
-
 
                 <div
                     class="
@@ -3270,7 +3174,6 @@ function createCard(order) {
 
 
             <div class="info-grid">
-
 
                 <div class="info">
 
@@ -3388,7 +3291,6 @@ function createCard(order) {
 
                 </div>
 
-
             </div>
 
 
@@ -3496,7 +3398,6 @@ function createCard(order) {
 
             <div class="actions">
 
-
                 ${
                     isBuyer && isTransfer
 
@@ -3562,7 +3463,6 @@ function createCard(order) {
                     ↻ قيد الانتظار
                 </button>
 
-
             </div>
 
         </article>
@@ -3591,16 +3491,13 @@ async function deleteOrder(
 
     }
 
-
     const isBuyer =
         type === "buyer";
-
 
     const table =
         isBuyer
             ? BUYER_TABLE
             : SELLER_TABLE;
-
 
     const confirmed =
         confirm(
@@ -3617,13 +3514,11 @@ async function deleteOrder(
 
         );
 
-
     if (!confirmed) {
 
         return;
 
     }
-
 
     try {
 
@@ -3636,7 +3531,6 @@ async function deleteOrder(
                     id
                 );
 
-
         if (result.error) {
 
             throw new Error(
@@ -3644,7 +3538,6 @@ async function deleteOrder(
             );
 
         }
-
 
         allOrders =
             allOrders.filter(
@@ -3667,11 +3560,8 @@ async function deleteOrder(
                 }
             );
 
-
         updateStats();
-
         render();
-
 
         alert(
 
@@ -3694,7 +3584,6 @@ async function deleteOrder(
             "DELETE ERROR:",
             error
         );
-
 
         alert(
             "❌ لم يتم الحذف.\n\n" +
@@ -3726,7 +3615,6 @@ async function changeStatus(
 
     }
 
-
     if (
         type === "buyer"
     ) {
@@ -3743,7 +3631,6 @@ async function changeStatus(
                     id
                 );
 
-
         if (result.error) {
 
             alert(
@@ -3754,7 +3641,6 @@ async function changeStatus(
             return;
 
         }
-
 
         await loadAll();
 
@@ -3773,7 +3659,6 @@ async function changeStatus(
             )
             .single();
 
-
     if (
         sellerResult.error
     ) {
@@ -3786,7 +3671,6 @@ async function changeStatus(
         return;
 
     }
-
 
     const seller =
         sellerResult.data;
@@ -3805,12 +3689,10 @@ async function changeStatus(
                     )
                 );
 
-
             console.log(
                 "PRODUCT TO PUBLISH:",
                 productData
             );
-
 
             const publishResult =
                 await publishSellerProduct(
@@ -3818,7 +3700,6 @@ async function changeStatus(
                         seller
                     )
                 );
-
 
             const updateResult =
                 await db
@@ -3843,7 +3724,6 @@ async function changeStatus(
                         id
                     );
 
-
             if (
                 updateResult.error
             ) {
@@ -3857,7 +3737,6 @@ async function changeStatus(
                 );
 
             }
-
 
             if (
                 publishResult.alreadyExists
@@ -3876,7 +3755,6 @@ async function changeStatus(
 
             }
 
-
             await loadAll();
 
         }
@@ -3887,14 +3765,12 @@ async function changeStatus(
                 error
             );
 
-
             alert(
                 "❌ لم يتم قبول السلعة:\n\n" +
                 error.message
             );
 
         }
-
 
         return;
 
@@ -3913,7 +3789,6 @@ async function changeStatus(
                 id
             );
 
-
     if (
         result.error
     ) {
@@ -3926,7 +3801,6 @@ async function changeStatus(
         return;
 
     }
-
 
     await loadAll();
 
@@ -3952,7 +3826,6 @@ async function toggleProduct(
 
     }
 
-
     const confirmed =
         confirm(
 
@@ -3968,13 +3841,11 @@ async function toggleProduct(
 
         );
 
-
     if (!confirmed) {
 
         return;
 
     }
-
 
     try {
 
@@ -3990,7 +3861,6 @@ async function toggleProduct(
                     id
                 );
 
-
         if (
             result.error
         ) {
@@ -4001,9 +3871,7 @@ async function toggleProduct(
 
         }
 
-
         await loadAll();
-
 
         alert(
 
@@ -4026,7 +3894,6 @@ async function toggleProduct(
             "TOGGLE PRODUCT ERROR:",
             error
         );
-
 
         alert(
             "❌ تعذر تغيير حالة المنتج:\n\n" +
@@ -4056,7 +3923,6 @@ async function deleteProduct(
 
     }
 
-
     const confirmed =
         confirm(
 
@@ -4064,13 +3930,11 @@ async function deleteProduct(
 
         );
 
-
     if (!confirmed) {
 
         return;
 
     }
-
 
     try {
 
@@ -4083,7 +3947,6 @@ async function deleteProduct(
                     id
                 );
 
-
         if (
             result.error
         ) {
@@ -4093,7 +3956,6 @@ async function deleteProduct(
             );
 
         }
-
 
         allProducts =
             allProducts.filter(
@@ -4105,11 +3967,8 @@ async function deleteProduct(
                     String(id)
             );
 
-
         updateStats();
-
         render();
-
 
         alert(
             "✓ تم حذف المنتج بنجاح."
@@ -4122,7 +3981,6 @@ async function deleteProduct(
             "DELETE PRODUCT ERROR:",
             error
         );
-
 
         alert(
             "❌ لم يتم حذف المنتج.\n\n" +
@@ -4145,26 +4003,21 @@ async function loadAll() {
             "ordersContainer"
         );
 
-
     const connection =
         document.getElementById(
             "connectionStatus"
         );
-
 
     const refresh =
         document.getElementById(
             "refreshButton"
         );
 
-
     refresh.disabled =
         true;
 
-
     refresh.textContent =
         "⏳ جاري التحديث...";
-
 
     container.innerHTML = `
 
@@ -4174,20 +4027,16 @@ async function loadAll() {
 
     `;
 
-
     try {
 
         const buyers =
             await loadBuyerOrders();
 
-
         const sellers =
             await loadSellerOrders();
 
-
         const products =
             await loadProducts();
-
 
         allOrders = [
 
@@ -4197,10 +4046,8 @@ async function loadAll() {
 
         ];
 
-
         allProducts =
             products;
-
 
         allOrders.sort(
             function(a,b) {
@@ -4222,11 +4069,8 @@ async function loadAll() {
             }
         );
 
-
         updateStats();
-
         render();
-
 
         connection.textContent =
             "✓ متصل — تم تحميل الطلبات والمنتجات";
@@ -4238,7 +4082,6 @@ async function loadAll() {
             "ADMIN ERROR:",
             error
         );
-
 
         container.innerHTML = `
 
@@ -4256,7 +4099,6 @@ async function loadAll() {
 
         `;
 
-
         connection.textContent =
             "❌ حدث خطأ في الاتصال";
 
@@ -4265,7 +4107,6 @@ async function loadAll() {
 
         refresh.disabled =
             false;
-
 
         refresh.textContent =
             "🔄 تحديث";
@@ -4288,16 +4129,13 @@ function openImageModal(
             "imageModal"
         );
 
-
     const image =
         document.getElementById(
             "modalImage"
         );
 
-
     image.src =
         url;
-
 
     modal.classList.add(
         "open"
@@ -4313,17 +4151,14 @@ function closeImageModal() {
             "imageModal"
         );
 
-
     const image =
         document.getElementById(
             "modalImage"
         );
 
-
     modal.classList.remove(
         "open"
     );
-
 
     image.src =
         "";
@@ -4408,15 +4243,12 @@ document
                             }
                         );
 
-
                     button.classList.add(
                         "active"
                     );
 
-
                     currentView =
                         button.dataset.view;
-
 
                     const titles = {
 
@@ -4434,14 +4266,12 @@ document
 
                     };
 
-
                     document.getElementById(
                         "panelTitle"
                     ).textContent =
                         titles[
                             currentView
                         ];
-
 
                     render();
 
