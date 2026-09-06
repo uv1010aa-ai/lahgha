@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -32,8 +31,13 @@
 
         button,
         input,
-        select {
+        select,
+        textarea {
             font-family: inherit;
+        }
+
+        button {
+            -webkit-tap-highlight-color: transparent;
         }
 
         .topbar {
@@ -79,6 +83,10 @@
             font-weight: 900;
             text-decoration: none;
             display: inline-block;
+        }
+
+        .top-button:hover {
+            opacity: .9;
         }
 
         .top-button:disabled {
@@ -130,6 +138,10 @@
             background: #e2e8f0;
             cursor: pointer;
             font-weight: 900;
+        }
+
+        .tab:hover {
+            background: #cbd5e1;
         }
 
         .tab.active {
@@ -370,6 +382,10 @@
             font-weight: 900;
         }
 
+        .action:hover {
+            opacity: .88;
+        }
+
         .action:disabled {
             opacity: .6;
             cursor: not-allowed;
@@ -400,9 +416,15 @@
             color: #1d4ed8;
         }
 
-        /* =====================================================
-           واتساب
-        ===================================================== */
+        .edit {
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+
+        .sync {
+            background: #dbeafe;
+            color: #1e40af;
+        }
 
         .whatsapp-actions {
             margin-top: 14px;
@@ -461,8 +483,28 @@
             font-weight: 800;
         }
 
-        .loading,
+        .sync-box {
+            margin-bottom: 18px;
+            padding: 15px;
+            border-radius: 12px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+        }
+
+        .sync-box-title {
+            font-weight: 900;
+            color: #1e3a8a;
+            margin-bottom: 6px;
+        }
+
+        .sync-box-text {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
         .empty,
+        .loading,
         .error {
             text-align: center;
             padding: 50px 15px;
@@ -478,18 +520,20 @@
             margin-bottom: 10px;
         }
 
-        .image-modal {
+        .image-modal,
+        .edit-modal {
             display: none;
             position: fixed;
             z-index: 9999;
             inset: 0;
-            background: rgba(0, 0, 0, .85);
+            background: rgba(0, 0, 0, .75);
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
 
-        .image-modal.open {
+        .image-modal.open,
+        .edit-modal.open {
             display: flex;
         }
 
@@ -516,6 +560,132 @@
             cursor: pointer;
         }
 
+        .edit-box {
+            width: min(700px, 96vw);
+            max-height: 92vh;
+            overflow-y: auto;
+            background: #fff;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, .3);
+        }
+
+        .edit-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .edit-title {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .edit-close {
+            border: 0;
+            background: #f1f5f9;
+            color: #111827;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-size: 13px;
+            color: #475569;
+            font-weight: 900;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 11px 12px;
+            outline: none;
+            background: #fff;
+            color: #172033;
+            font-size: 14px;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: #64748b;
+            box-shadow: 0 0 0 3px rgba(100, 116, 139, .12);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .edit-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .save-button {
+            border: 0;
+            background: #111827;
+            color: #fff;
+            padding: 11px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 900;
+        }
+
+        .cancel-button {
+            border: 0;
+            background: #e2e8f0;
+            color: #334155;
+            padding: 11px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 900;
+        }
+
+        .edit-preview {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 11px;
+        }
+
+        .edit-preview img {
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
         @media (max-width: 1150px) {
 
             .stats {
@@ -529,6 +699,7 @@
             .images-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
+
         }
 
         @media (max-width: 800px) {
@@ -540,6 +711,15 @@
             .images-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
         }
 
         @media (max-width: 600px) {
@@ -578,6 +758,11 @@
                 flex: 1;
                 text-align: center;
             }
+
+            .card {
+                padding: 14px;
+            }
+
         }
 
     </style>
@@ -612,6 +797,14 @@
             >
                 🏠 زيارة الموقع
             </a>
+
+            <button
+                id="syncButton"
+                class="top-button"
+                type="button"
+            >
+                🔄 مزامنة المنتجات
+            </button>
 
             <button
                 id="refreshButton"
@@ -695,6 +888,8 @@
 
         </div>
 
+        <div id="productsSyncBox" style="display:none;"></div>
+
         <div id="ordersContainer" class="orders">
 
             <div class="loading">
@@ -708,13 +903,230 @@
 </main>
 
 
+<!-- نافذة الصور -->
+
 <div id="imageModal" class="image-modal">
 
-    <button id="closeModal" class="close-modal" type="button">
+    <button
+        id="closeModal"
+        class="close-modal"
+        type="button"
+    >
         ×
     </button>
 
-    <img id="modalImage" src="" alt="صورة المنتج">
+    <img
+        id="modalImage"
+        src=""
+        alt="صورة المنتج"
+    >
+
+</div>
+
+
+<!-- نافذة تعديل المنتج -->
+
+<div id="editModal" class="edit-modal">
+
+    <div class="edit-box">
+
+        <div class="edit-head">
+
+            <div class="edit-title">
+                ✏️ تعديل المنتج
+            </div>
+
+            <button
+                id="editCloseButton"
+                class="edit-close"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <form id="editProductForm">
+
+            <input
+                type="hidden"
+                id="editProductId"
+            >
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        اسم المنتج
+                    </label>
+
+                    <input
+                        id="editTitle"
+                        class="form-input"
+                        type="text"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        السعر
+                    </label>
+
+                    <input
+                        id="editPrice"
+                        class="form-input"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        القسم
+                    </label>
+
+                    <select
+                        id="editCategory"
+                        class="form-select"
+                    >
+
+                        <option value="">اختر القسم</option>
+                        <option value="كتب">كتب</option>
+                        <option value="جوالات">جوالات</option>
+                        <option value="كمبيوتر">كمبيوتر</option>
+                        <option value="ألعاب">ألعاب</option>
+                        <option value="أثاث">أثاث</option>
+                        <option value="أجهزة">أجهزة</option>
+                        <option value="رياضة">رياضة</option>
+                        <option value="أدوات">أدوات</option>
+                        <option value="ملابس">ملابس</option>
+                        <option value="أسر منتجة">أسر منتجة</option>
+                        <option value="أخرى">أخرى</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        اسم البائع / الأسرة
+                    </label>
+
+                    <input
+                        id="editSellerName"
+                        class="form-input"
+                        type="text"
+                    >
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label class="form-label">
+                        وصف المنتج
+                    </label>
+
+                    <textarea
+                        id="editDescription"
+                        class="form-textarea"
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label class="form-label">
+                        رابط الصورة الرئيسية
+                    </label>
+
+                    <input
+                        id="editImage"
+                        class="form-input"
+                        type="url"
+                        placeholder="https://..."
+                    >
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label class="form-label">
+                        روابط الصور الإضافية
+                    </label>
+
+                    <textarea
+                        id="editImages"
+                        class="form-textarea"
+                        placeholder="ضع كل رابط صورة في سطر مستقل"
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="editPreview"
+                class="edit-preview"
+                style="display:none;"
+            >
+
+                <div
+                    style="
+                        font-weight:900;
+                        margin-bottom:8px;
+                    "
+                >
+                    معاينة الصورة
+                </div>
+
+                <img
+                    id="editPreviewImage"
+                    src=""
+                    alt="معاينة"
+                >
+
+            </div>
+
+
+            <div class="edit-actions">
+
+                <button
+                    class="save-button"
+                    type="submit"
+                    id="saveProductButton"
+                >
+                    💾 حفظ التعديلات
+                </button>
+
+                <button
+                    class="cancel-button"
+                    type="button"
+                    id="editCancelButton"
+                >
+                    إلغاء
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
 
 </div>
 
@@ -729,7 +1141,9 @@ const SUPABASE_URL =
     "https://gyyyzavjzvcxzgrtukqu.supabase.co";
 
 /*
+ * مهم:
  * ضع هنا مفتاح Supabase الحالي الموجود في نسختك الأصلية.
+ * لا تغيّر SUPABASE_URL.
  */
 const SUPABASE_KEY =
     "ضع_مفتاح_Supabase_الحالي_هنا";
@@ -760,7 +1174,7 @@ let currentView = "all";
 
 
 /* =========================================================
-   أدوات
+   أدوات عامة
 ========================================================= */
 
 function clean(value) {
@@ -773,6 +1187,7 @@ function clean(value) {
     }
 
     return String(value).trim();
+
 }
 
 
@@ -784,6 +1199,7 @@ function safe(value) {
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
+
 }
 
 
@@ -803,6 +1219,7 @@ function pick(row, names) {
     }
 
     return "";
+
 }
 
 
@@ -828,6 +1245,7 @@ function money(value) {
             maximumFractionDigits: 2
         }
     ) + " ر.س";
+
 }
 
 
@@ -848,16 +1266,14 @@ function dateText(value) {
     }
 
     return date.toLocaleString("ar-SA");
+
 }
 
 
-/* =========================================================
-   توحيد القسم
-========================================================= */
-
 function normalizeCategory(value) {
 
-    const category = clean(value);
+    const category =
+        clean(value);
 
     if (
         category === "اسر منتجه" ||
@@ -869,6 +1285,7 @@ function normalizeCategory(value) {
     }
 
     return category;
+
 }
 
 
@@ -923,8 +1340,22 @@ function getFamilyData(row) {
 
 
 /* =========================================================
-   حالة الطلب
+   الحالات
 ========================================================= */
+
+function isApprovedStatus(value) {
+
+    return [
+        "approved",
+        "accepted",
+        "confirmed",
+        "مقبول"
+    ].includes(
+        clean(value).toLowerCase()
+    );
+
+}
+
 
 function getStatus(value) {
 
@@ -932,10 +1363,7 @@ function getStatus(value) {
         clean(value).toLowerCase();
 
     if (
-        status === "approved" ||
-        status === "accepted" ||
-        status === "confirmed" ||
-        status === "مقبول"
+        isApprovedStatus(status)
     ) {
 
         return {
@@ -1082,6 +1510,7 @@ function getSellerImages(row) {
                     error
                 );
             }
+
         }
 
 
@@ -1108,9 +1537,8 @@ function getSellerImages(row) {
 
             }
             catch (error) {
-                /* PostgreSQL Array */
+                /* نتابع المحاولة */
             }
-
 
             const inside =
                 text.slice(
@@ -1170,6 +1598,7 @@ function getSellerImages(row) {
                     }
 
                     current += char;
+
                 }
 
                 if (
@@ -1180,31 +1609,28 @@ function getSellerImages(row) {
                     );
                 }
 
-                if (
-                    parts.length > 0
-                ) {
+                parts.forEach(
+                    function(item) {
 
-                    parts.forEach(
-                        function(item) {
+                        const cleaned =
+                            item
+                                .replace(
+                                    /^["']|["']$/g,
+                                    ""
+                                )
+                                .trim();
 
-                            const cleaned =
-                                item
-                                    .replace(
-                                        /^["']|["']$/g,
-                                        ""
-                                    )
-                                    .trim();
-
-                            if (cleaned) {
-                                addImage(cleaned);
-                            }
-
+                        if (cleaned) {
+                            addImage(cleaned);
                         }
-                    );
 
-                    return;
-                }
+                    }
+                );
+
+                return;
+
             }
+
         }
 
 
@@ -1254,7 +1680,9 @@ function getSellerImages(row) {
                 );
 
                 return;
+
             }
+
         }
 
 
@@ -1265,6 +1693,7 @@ function getSellerImages(row) {
         ) {
 
             result.push(text);
+
         }
 
     }
@@ -1344,7 +1773,7 @@ function sellerImagesHtml(images) {
         <div class="seller-images">
 
             <div class="seller-images-title">
-                📷 صور السلعة (${images.length})
+                📷 الصور (${images.length})
             </div>
 
             <div class="images-grid">
@@ -1359,7 +1788,7 @@ function sellerImagesHtml(images) {
                                     <img
                                         class="product-image"
                                         src="${safe(url)}"
-                                        alt="صورة السلعة ${index + 1}"
+                                        alt="صورة ${index + 1}"
                                         loading="lazy"
                                         onclick="openImageModal(this.src)"
                                         onerror="this.style.display='none'"
@@ -1382,7 +1811,7 @@ function sellerImagesHtml(images) {
 
 
 /* =========================================================
-   قراءة منتجات طلب المشتري
+   قراءة عناصر الطلب
 ========================================================= */
 
 function parseOrderItems(value) {
@@ -1411,6 +1840,7 @@ function parseOrderItems(value) {
             );
 
             return [];
+
         }
 
     }
@@ -1420,6 +1850,7 @@ function parseOrderItems(value) {
     ) {
         return [];
     }
+
 
     return items
         .filter(
@@ -1598,7 +2029,13 @@ function buyerItemsHtml(items) {
 
                                     <div
                                         class="product-image"
-                                        style="display:flex;align-items:center;justify-content:center;font-size:36px;cursor:default;"
+                                        style="
+                                            display:flex;
+                                            align-items:center;
+                                            justify-content:center;
+                                            font-size:36px;
+                                            cursor:default;
+                                        "
                                     >
                                         📦
                                     </div>
@@ -1676,8 +2113,8 @@ function buyerItemsHtml(items) {
 
                                                         <br>
 
-                                                        🏠 الأسرة:
-                                                        <strong style="color:#8b5517;">
+                                                        👤 البائع:
+                                                        <strong style="color:#166534;">
                                                             ${safe(familyName)}
                                                         </strong>
 
@@ -1721,7 +2158,7 @@ function buyerItemsHtml(items) {
 
 
 /* =========================================================
-   تجهيز بيانات البائعين لطلب المشتري
+   العثور على أصحاب السلع
 ========================================================= */
 
 async function getOrderSellers(order) {
@@ -1736,47 +2173,43 @@ async function getOrderSellers(order) {
     }
 
 
-    const requestIds = [
-        ...new Set(
-            items
-                .map(
-                    item =>
-                        clean(
-                            item.sellerRequestId ||
-                            item.seller_request_id
-                        )
-                )
-                .filter(Boolean)
-        )
-    ];
-
-
-    const productIds = [
-        ...new Set(
-            items
-                .filter(
-                    item => {
-
-                        const requestId =
+    /*
+     * أولًا نأخذ seller_request_id الموجود أصلًا
+     */
+    const directRequestIds =
+        [
+            ...new Set(
+                items
+                    .map(
+                        item =>
                             clean(
                                 item.sellerRequestId ||
                                 item.seller_request_id
-                            );
+                            )
+                    )
+                    .filter(Boolean)
+            )
+        ];
 
-                        return !requestId;
-                    }
-                )
-                .map(
-                    item =>
-                        clean(
-                            item.id ||
-                            item.product_id ||
-                            item.productId
-                        )
-                )
-                .filter(Boolean)
-        )
-    ];
+
+    /*
+     * نحاول ربط المنتجات من products
+     */
+    const productIds =
+        [
+            ...new Set(
+                items
+                    .map(
+                        item =>
+                            clean(
+                                item.id ||
+                                item.product_id ||
+                                item.productId
+                            )
+                    )
+                    .filter(Boolean)
+            )
+        ];
 
 
     let productRows = [];
@@ -1790,7 +2223,7 @@ async function getOrderSellers(order) {
             await db
                 .from(PRODUCTS_TABLE)
                 .select(
-                    "id,seller_request_id,seller_id,seller_name,title"
+                    "id,seller_request_id,seller_id,seller_name,title,product_name"
                 )
                 .in(
                     "id",
@@ -1803,7 +2236,7 @@ async function getOrderSellers(order) {
         ) {
 
             console.warn(
-                "تعذر قراءة ربط المنتجات بالبائعين:",
+                "تعذر قراءة ربط المنتجات:",
                 productResult.error.message
             );
 
@@ -1832,6 +2265,30 @@ async function getOrderSellers(order) {
 
         }
     );
+
+
+    /*
+     * إذا لم يوجد seller_request_id،
+     * نحاول الربط بالاسم مع seller_requests.
+     */
+    let sellerRows = [];
+
+    const sellerRequestResult =
+        await db
+            .from(SELLER_TABLE)
+            .select(
+                "id,seller_name,phone,city,product_name,status,published"
+            );
+
+
+    if (
+        !sellerRequestResult.error
+    ) {
+
+        sellerRows =
+            sellerRequestResult.data || [];
+
+    }
 
 
     const resolvedItems =
@@ -1867,6 +2324,85 @@ async function getOrderSellers(order) {
                         clean(
                             product.seller_request_id
                         );
+
+                }
+
+
+                /*
+                 * محاولة أخيرة بالاسم
+                 */
+                if (
+                    !sellerRequestId &&
+                    sellerRows.length > 0
+                ) {
+
+                    const itemTitle =
+                        clean(
+                            item.title ||
+                            item.name
+                        ).toLowerCase();
+
+                    const itemSeller =
+                        clean(
+                            item.sellerName ||
+                            item.seller_name ||
+                            product?.seller_name
+                        ).toLowerCase();
+
+
+                    const matched =
+                        sellerRows.find(
+                            seller => {
+
+                                const sellerTitle =
+                                    clean(
+                                        seller.product_name
+                                    ).toLowerCase();
+
+                                const sellerName =
+                                    clean(
+                                        seller.seller_name
+                                    ).toLowerCase();
+
+
+                                const titleMatch =
+                                    itemTitle &&
+                                    sellerTitle &&
+                                    (
+                                        itemTitle === sellerTitle
+                                    );
+
+
+                                const sellerMatch =
+                                    itemSeller &&
+                                    sellerName &&
+                                    (
+                                        itemSeller === sellerName
+                                    );
+
+
+                                return (
+                                    titleMatch &&
+                                    (
+                                        !itemSeller ||
+                                        sellerMatch
+                                    )
+                                );
+
+                            }
+                        );
+
+
+                    if (
+                        matched
+                    ) {
+
+                        sellerRequestId =
+                            clean(
+                                matched.id
+                            );
+
+                    }
 
                 }
 
@@ -1917,7 +2453,7 @@ async function getOrderSellers(order) {
         await db
             .from(SELLER_TABLE)
             .select(
-                "id,seller_name,phone,city,product_name"
+                "id,seller_name,phone,city,product_name,status,published"
             )
             .in(
                 "id",
@@ -1929,13 +2465,8 @@ async function getOrderSellers(order) {
         sellerResult.error
     ) {
 
-        console.error(
-            "SELLER LOOKUP ERROR:",
-            sellerResult.error
-        );
-
         throw new Error(
-            "تعذر قراءة بيانات أصحاب السلع:\n\n" +
+            "تعذر قراءة بيانات أصحاب السلع: " +
             sellerResult.error.message
         );
 
@@ -2048,7 +2579,7 @@ async function getOrderSellers(order) {
 
 
 /* =========================================================
-   تنظيف رقم واتساب
+   واتساب
 ========================================================= */
 
 function whatsappPhone(value) {
@@ -2068,6 +2599,16 @@ function whatsappPhone(value) {
             /[\s\-()]/g,
             ""
         );
+
+
+    if (
+        phone.startsWith("00")
+    ) {
+
+        phone =
+            phone.substring(2);
+
+    }
 
 
     if (
@@ -2092,14 +2633,35 @@ function whatsappPhone(value) {
     }
 
 
+    if (
+        phone.startsWith("966")
+    ) {
+
+        return phone;
+
+    }
+
+
+    /*
+     * إذا كان رقمًا سعوديًا بدون 0
+     * مثل 5xxxxxxxx
+     */
+    if (
+        phone.length === 9 &&
+        phone.startsWith("5")
+    ) {
+
+        phone =
+            "966" +
+            phone;
+
+    }
+
+
     return phone;
 
 }
 
-
-/* =========================================================
-   تجهيز رسالة واتساب للبائع
-========================================================= */
 
 function buildSellerWhatsAppMessage(
     order,
@@ -2243,10 +2805,6 @@ function buildSellerWhatsAppMessage(
 }
 
 
-/* =========================================================
-   فتح واتساب للبائع
-========================================================= */
-
 async function openSellerWhatsApp(
     orderId,
     sellerRequestId
@@ -2272,6 +2830,7 @@ async function openSellerWhatsApp(
             );
 
             return;
+
         }
 
 
@@ -2302,6 +2861,7 @@ async function openSellerWhatsApp(
             );
 
             return;
+
         }
 
 
@@ -2320,6 +2880,7 @@ async function openSellerWhatsApp(
             );
 
             return;
+
         }
 
 
@@ -2364,7 +2925,7 @@ async function openSellerWhatsApp(
 
 
 /* =========================================================
-   أزرار واتساب لطلبات المشترين
+   واجهة واتساب
 ========================================================= */
 
 async function buyerWhatsAppHtml(order) {
@@ -2377,25 +2938,10 @@ async function buyerWhatsAppHtml(order) {
     }
 
 
-    const status =
-        clean(
-            order.status
-        ).toLowerCase();
-
-
-    const approved =
-        [
-            "approved",
-            "accepted",
-            "confirmed",
-            "مقبول"
-        ].includes(
-            status
-        );
-
-
     if (
-        !approved
+        !isApprovedStatus(
+            order.status
+        )
     ) {
         return "";
     }
@@ -2418,16 +2964,17 @@ async function buyerWhatsAppHtml(order) {
                 <div class="whatsapp-actions">
 
                     <div class="whatsapp-title">
-                        📲 التواصل مع البائع
+                        📲 إرسال الطلب للبائع
                     </div>
 
                     <div class="whatsapp-missing">
 
                         ⚠️ لم يتم العثور على ربط صاحب السلعة بهذا الطلب.
 
-                        <br>
+                        <br><br>
 
-                        نحتاج أولًا إلى ربط السلعة بصاحبها.
+                        إذا كان هذا الطلب قديمًا، فقد لا يحتوي على
+                        seller_request_id.
 
                     </div>
 
@@ -2536,7 +3083,7 @@ async function buyerWhatsAppHtml(order) {
                                                 `
 
                                                     <div class="whatsapp-missing">
-                                                        ⚠️ لا يوجد رقم واتساب محفوظ لهذا البائع.
+                                                        ⚠️ لا يوجد رقم جوال محفوظ لهذا البائع.
                                                     </div>
 
                                                 `
@@ -2570,7 +3117,13 @@ async function buyerWhatsAppHtml(order) {
             <div class="whatsapp-actions">
 
                 <div class="whatsapp-missing">
-                    ⚠️ تعذر تجهيز خيار التواصل مع البائع.
+
+                    ⚠️ تعذر تجهيز خيار واتساب.
+
+                    <br>
+
+                    ${safe(error.message)}
+
                 </div>
 
             </div>
@@ -2897,7 +3450,7 @@ function mapSeller(row) {
 
 
 /* =========================================================
-   تحميل طلبات المشترين
+   تحميل البيانات
 ========================================================= */
 
 async function loadBuyerOrders() {
@@ -2934,10 +3487,6 @@ async function loadBuyerOrders() {
 
 }
 
-
-/* =========================================================
-   تحميل طلبات البائعين
-========================================================= */
 
 async function loadSellerOrders() {
 
@@ -2983,6 +3532,52 @@ async function loadSellerOrders() {
     return rows.map(
         mapSeller
     );
+
+}
+
+
+async function loadProducts() {
+
+    const result =
+        await db
+            .from(PRODUCTS_TABLE)
+            .select("*");
+
+
+    if (
+        result.error
+    ) {
+
+        throw new Error(
+            "خطأ في جدول products: " +
+            result.error.message
+        );
+
+    }
+
+
+    const rows =
+        result.data || [];
+
+
+    rows.sort(
+        function(a, b) {
+
+            return (
+                new Date(
+                    b.created_at || 0
+                )
+                -
+                new Date(
+                    a.created_at || 0
+                )
+            );
+
+        }
+    );
+
+
+    return rows;
 
 }
 
@@ -3061,20 +3656,16 @@ function buildProductData(seller) {
             );
 
 
-    const rawCategory =
-        pick(
-            raw,
-            [
-                "category",
-                "product_category",
-                "category_name"
-            ]
-        );
-
-
     const category =
         normalizeCategory(
-            rawCategory
+            pick(
+                raw,
+                [
+                    "category",
+                    "product_category",
+                    "category_name"
+                ]
+            )
         );
 
 
@@ -3176,7 +3767,7 @@ async function publishSellerProduct(seller) {
     ) {
 
         throw new Error(
-            "تعذر نشر السلعة: معرف طلب البائع غير موجود."
+            "معرف طلب البائع غير موجود."
         );
 
     }
@@ -3198,7 +3789,7 @@ async function publishSellerProduct(seller) {
     ) {
 
         throw new Error(
-            "تعذر التحقق من ربط المنتج بالبائع: " +
+            "تعذر التحقق من المنتج المرتبط: " +
             existingByRequest.error.message
         );
 
@@ -3233,7 +3824,7 @@ async function publishSellerProduct(seller) {
         ) {
 
             throw new Error(
-                "تعذر تحديث المنتج المرتبط بالبائع: " +
+                "تعذر تحديث المنتج: " +
                 updateExisting.error.message
             );
 
@@ -3270,11 +3861,6 @@ async function publishSellerProduct(seller) {
         result.error
     ) {
 
-        console.error(
-            "PRODUCT INSERT ERROR:",
-            result.error
-        );
-
         throw new Error(
             "تعذر نشر السلعة في products: " +
             result.error.message
@@ -3300,57 +3886,7 @@ async function publishSellerProduct(seller) {
 
 
 /* =========================================================
-   تحميل المنتجات
-========================================================= */
-
-async function loadProducts() {
-
-    const result =
-        await db
-            .from(PRODUCTS_TABLE)
-            .select("*");
-
-
-    if (
-        result.error
-    ) {
-
-        throw new Error(
-            "خطأ في جدول products: " +
-            result.error.message
-        );
-
-    }
-
-
-    const rows =
-        result.data || [];
-
-
-    rows.sort(
-        function(a, b) {
-
-            return (
-                new Date(
-                    b.created_at || 0
-                )
-                -
-                new Date(
-                    a.created_at || 0
-                )
-            );
-
-        }
-    );
-
-
-    return rows;
-
-}
-
-
-/* =========================================================
-   توفر المنتج
+   حالة المنتج
 ========================================================= */
 
 function productAvailable(product) {
@@ -3370,10 +3906,6 @@ function productAvailable(product) {
 
 }
 
-
-/* =========================================================
-   حالة المنتج
-========================================================= */
 
 function productStatus(product) {
 
@@ -3467,15 +3999,6 @@ function createProductCard(product) {
         ) || "—";
 
 
-    const familyPage =
-        pick(
-            product,
-            [
-                "family_page"
-            ]
-        );
-
-
     const description =
         pick(
             product,
@@ -3498,7 +4021,7 @@ function createProductCard(product) {
                 <div>
 
                     <div class="badge badge-product">
-                        🏪 منتج منشور
+                        🏪 منتج
                     </div>
 
                     <div class="order-number">
@@ -3571,116 +4094,68 @@ function createProductCard(product) {
             </div>
 
 
-            ${
-                product.seller_request_id
-                    ?
+            <div class="product">
 
-                    `
+                <div class="product-name">
+                    🔗 ربط المنتج
+                </div>
 
-                        <div class="product">
+                <div class="product-extra">
 
-                            <div class="product-name">
-                                🔗 ربط البائع
-                            </div>
+                    seller_request_id:
 
-                            <div class="product-extra">
+                    <strong>
+                        ${safe(
+                            product.seller_request_id ||
+                            "غير موجود"
+                        )}
+                    </strong>
 
-                                اسم البائع:
-                                <strong>
-                                    ${safe(
-                                        product.seller_name ||
-                                        "غير محدد"
-                                    )}
-                                </strong>
+                    ${
+                        product.seller_name
+                        ?
+                        `
 
-                                <br>
+                            <br>
 
-                                seller_request_id:
-                                <strong>
-                                    ${safe(
-                                        product.seller_request_id
-                                    )}
-                                </strong>
+                            اسم البائع:
 
-                            </div>
+                            <strong>
+                                ${safe(
+                                    product.seller_name
+                                )}
+                            </strong>
 
-                        </div>
+                        `
+                        :
+                        ""
+                    }
 
-                    `
+                </div>
 
-                    :
-
-                    `
-
-                        <div class="product">
-
-                            <div class="product-name">
-                                ⚠️ ربط البائع
-                            </div>
-
-                            <div
-                                class="product-extra"
-                                style="color:#991b1b;font-weight:900;"
-                            >
-                                هذا المنتج قديم ولا يحتوي حاليًا على
-                                seller_request_id.
-                            </div>
-
-                        </div>
-
-                    `
-            }
-
-
-            ${
-                familyPage
-                    ?
-
-                    `
-
-                        <div class="product">
-
-                            <div class="product-name">
-                                🔗 صفحة الأسرة
-                            </div>
-
-                            <div class="product-extra">
-                                ${safe(familyPage)}
-                            </div>
-
-                        </div>
-
-                    `
-
-                    :
-
-                    ""
-            }
+            </div>
 
 
             ${
                 description
-                    ?
+                ?
+                `
 
-                    `
+                    <div class="product">
 
-                        <div class="product">
-
-                            <div class="product-name">
-                                📝 وصف المنتج
-                            </div>
-
-                            <div class="product-extra">
-                                ${safe(description)}
-                            </div>
-
+                        <div class="product-name">
+                            📝 وصف المنتج
                         </div>
 
-                    `
+                        <div class="product-extra">
+                            ${safe(description)}
+                        </div>
 
-                    :
+                    </div>
 
-                    ""
+                `
+                :
+                ""
             }
 
 
@@ -3688,6 +4163,15 @@ function createProductCard(product) {
 
 
             <div class="actions">
+
+                <button
+                    class="action edit"
+                    type="button"
+                    onclick="openEditProduct('${id}')"
+                >
+                    ✏️ تعديل المنتج
+                </button>
+
 
                 ${
                     productAvailable(product)
@@ -3741,86 +4225,6 @@ function createProductCard(product) {
         </article>
 
     `;
-
-}
-
-
-/* =========================================================
-   الإحصائيات
-========================================================= */
-
-function updateStats() {
-
-    const buyers =
-        allOrders.filter(
-            order =>
-                order.type === "buyer"
-        );
-
-
-    const sellers =
-        allOrders.filter(
-            order =>
-                order.type === "seller"
-        );
-
-
-    const pending =
-        allOrders.filter(
-            order => {
-
-                const status =
-                    clean(
-                        order.status
-                    ).toLowerCase();
-
-
-                return ![
-                    "approved",
-                    "accepted",
-                    "confirmed",
-                    "مقبول"
-                ].includes(
-                    status
-                );
-
-            }
-        );
-
-
-    document.getElementById(
-        "totalOrders"
-    ).textContent =
-        allOrders.length;
-
-
-    document.getElementById(
-        "buyerOrders"
-    ).textContent =
-        buyers.length;
-
-
-    document.getElementById(
-        "sellerOrders"
-    ).textContent =
-        sellers.length;
-
-
-    document.getElementById(
-        "pendingOrders"
-    ).textContent =
-        pending.length;
-
-
-    document.getElementById(
-        "publishedProducts"
-    ).textContent =
-        allProducts.filter(
-            product =>
-                productAvailable(
-                    product
-                )
-        ).length;
 
 }
 
@@ -3998,29 +4402,26 @@ function createCard(order) {
 
                 ${
                     order.address
-                        ?
+                    ?
+                    `
 
-                        `
+                        <div class="info">
 
-                            <div class="info">
-
-                                <div class="label">
-                                    العنوان
-                                </div>
-
-                                <div class="value">
-                                    ${safe(
-                                        order.address
-                                    )}
-                                </div>
-
+                            <div class="label">
+                                العنوان
                             </div>
 
-                        `
+                            <div class="value">
+                                ${safe(
+                                    order.address
+                                )}
+                            </div>
 
-                        :
+                        </div>
 
-                        ""
+                    `
+                    :
+                    ""
                 }
 
 
@@ -4075,8 +4476,7 @@ function createCard(order) {
 
                                 <div class="transfer-warning">
 
-                                    💳 بانتظار التحقق من التحويل
-                                    من إشعار البنك.
+                                    💳 بانتظار التحقق من التحويل.
 
                                 </div>
 
@@ -4085,6 +4485,7 @@ function createCard(order) {
                             :
 
                             ""
+
                         }
 
                     </div>
@@ -4095,31 +4496,35 @@ function createCard(order) {
                     )}
 
 
-                    <div
-                        id="whatsapp-${safe(order.id)}"
-                        class="whatsapp-placeholder"
-                    >
+                    ${
+                        isApprovedStatus(
+                            order.status
+                        )
+                        ?
 
-                        ${
-                            clean(order.status).toLowerCase() === "approved" ||
-                            clean(order.status).toLowerCase() === "accepted" ||
-                            clean(order.status).toLowerCase() === "confirmed" ||
-                            clean(order.status).toLowerCase() === "مقبول"
+                        `
 
-                            ?
+                            <div
+                                id="whatsapp-${safe(order.id)}"
+                                class="whatsapp-placeholder"
+                            >
 
-                            `
-                                <div class="loading" style="padding:20px;">
-                                    جاري تجهيز بيانات صاحب السلعة...
+                                <div
+                                    class="loading"
+                                    style="padding:20px;"
+                                >
+                                    جاري تجهيز واتساب البائع...
                                 </div>
-                            `
 
-                            :
+                            </div>
 
-                            ""
-                        }
+                        `
 
-                    </div>
+                        :
+
+                        ""
+
+                    }
 
                 `
 
@@ -4157,6 +4562,7 @@ function createCard(order) {
                             :
 
                             ""
+
                         }
 
                     </div>
@@ -4247,7 +4653,7 @@ function createCard(order) {
 
 
 /* =========================================================
-   العرض
+   واتساب بعد رسم الطلبات
 ========================================================= */
 
 async function renderWhatsAppButtons(list) {
@@ -4255,7 +4661,10 @@ async function renderWhatsAppButtons(list) {
     const buyers =
         list.filter(
             order =>
-                order.type === "buyer"
+                order.type === "buyer" &&
+                isApprovedStatus(
+                    order.status
+                )
         );
 
 
@@ -4272,30 +4681,6 @@ async function renderWhatsAppButtons(list) {
 
         if (
             !placeholder
-        ) {
-            continue;
-        }
-
-
-        const status =
-            clean(
-                order.status
-            ).toLowerCase();
-
-
-        const approved =
-            [
-                "approved",
-                "accepted",
-                "confirmed",
-                "مقبول"
-            ].includes(
-                status
-            );
-
-
-        if (
-            !approved
         ) {
             continue;
         }
@@ -4333,6 +4718,107 @@ async function renderWhatsAppButtons(list) {
 }
 
 
+/* =========================================================
+   عرض المنتجات
+========================================================= */
+
+function renderProducts() {
+
+    const container =
+        document.getElementById(
+            "ordersContainer"
+        );
+
+
+    const syncBox =
+        document.getElementById(
+            "productsSyncBox"
+        );
+
+
+    syncBox.style.display =
+        "block";
+
+
+    syncBox.innerHTML = `
+
+        <div class="sync-box">
+
+            <div class="sync-box-title">
+                🏪 إدارة المنتجات
+            </div>
+
+            <div class="sync-box-text">
+
+                المنتجات الموجودة في جدول
+                <strong>products</strong>
+                تظهر هنا.
+
+                إذا كانت لديك طلبات بائعين معتمدة ومنشورة
+                لكنها لا تظهر، استخدم زر
+                <strong>🔄 مزامنة المنتجات</strong>
+                في أعلى الصفحة.
+
+            </div>
+
+            <button
+                class="action sync"
+                type="button"
+                onclick="syncProductsFromSellerRequests()"
+            >
+                🔄 مزامنة المنتجات الآن
+            </button>
+
+        </div>
+
+    `;
+
+
+    if (
+        allProducts.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div
+                    style="
+                        font-size:45px;
+                        margin-bottom:10px;
+                    "
+                >
+                    🏪
+                </div>
+
+                <strong>
+                    لا توجد منتجات منشورة حاليًا.
+                </strong>
+
+                <br>
+
+                إذا كان لديك طلب بائع معتمد،
+                اضغط "مزامنة المنتجات".
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        allProducts
+            .map(
+                createProductCard
+            )
+            .join("");
+
+}
+
+
 function render() {
 
     const container =
@@ -4341,34 +4827,21 @@ function render() {
         );
 
 
+    const syncBox =
+        document.getElementById(
+            "productsSyncBox"
+        );
+
+
+    syncBox.style.display =
+        "none";
+
+
     if (
         currentView === "products"
     ) {
 
-        if (
-            allProducts.length === 0
-        ) {
-
-            container.innerHTML = `
-
-                <div class="empty">
-                    لا توجد منتجات منشورة حاليًا.
-                </div>
-
-            `;
-
-            return;
-
-        }
-
-
-        container.innerHTML =
-            allProducts
-                .map(
-                    createProductCard
-                )
-                .join("");
-
+        renderProducts();
 
         return;
 
@@ -4412,7 +4885,9 @@ function render() {
         container.innerHTML = `
 
             <div class="empty">
+
                 لا توجد طلبات في هذا القسم.
+
             </div>
 
         `;
@@ -4438,143 +4913,73 @@ function render() {
 
 
 /* =========================================================
-   حذف الطلب
+   الإحصائيات
 ========================================================= */
 
-async function deleteOrder(
-    id,
-    type
-) {
+function updateStats() {
 
-    if (
-        !id
-    ) {
-
-        alert(
-            "رقم الطلب غير موجود."
-        );
-
-        return;
-
-    }
-
-
-    const isBuyer =
-        type === "buyer";
-
-
-    const table =
-        isBuyer
-            ? BUYER_TABLE
-            : SELLER_TABLE;
-
-
-    const confirmed =
-        confirm(
-
-            isBuyer
-
-                ?
-
-                "⚠️ هل أنت متأكد من حذف طلب المشتري نهائيًا؟\n\nلا يمكن التراجع عن الحذف."
-
-                :
-
-                "⚠️ هل أنت متأكد من حذف طلب البائع نهائيًا؟\n\nلا يمكن التراجع عن الحذف."
-
+    const buyers =
+        allOrders.filter(
+            order =>
+                order.type === "buyer"
         );
 
 
-    if (
-        !confirmed
-    ) {
-        return;
-    }
-
-
-    try {
-
-        const result =
-            await db
-                .from(table)
-                .delete()
-                .eq(
-                    "id",
-                    id
-                );
-
-
-        if (
-            result.error
-        ) {
-
-            throw new Error(
-                result.error.message
-            );
-
-        }
-
-
-        allOrders =
-            allOrders.filter(
-                function(order) {
-
-                    return !(
-                        String(
-                            order.id
-                        )
-                        ===
-                        String(id)
-
-                        &&
-
-                        order.type
-                        ===
-                        type
-                    );
-
-                }
-            );
-
-
-        updateStats();
-        render();
-
-
-        alert(
-
-            isBuyer
-
-                ?
-
-                "✓ تم حذف طلب المشتري بنجاح."
-
-                :
-
-                "✓ تم حذف طلب البائع بنجاح."
-
+    const sellers =
+        allOrders.filter(
+            order =>
+                order.type === "seller"
         );
 
-    }
-    catch (error) {
 
-        console.error(
-            "DELETE ERROR:",
-            error
+    const pending =
+        allOrders.filter(
+            order =>
+                !isApprovedStatus(
+                    order.status
+                )
         );
 
-        alert(
-            "❌ لم يتم الحذف.\n\n" +
-            error.message
-        );
 
-    }
+    document.getElementById(
+        "totalOrders"
+    ).textContent =
+        allOrders.length;
+
+
+    document.getElementById(
+        "buyerOrders"
+    ).textContent =
+        buyers.length;
+
+
+    document.getElementById(
+        "sellerOrders"
+    ).textContent =
+        sellers.length;
+
+
+    document.getElementById(
+        "pendingOrders"
+    ).textContent =
+        pending.length;
+
+
+    document.getElementById(
+        "publishedProducts"
+    ).textContent =
+        allProducts.filter(
+            product =>
+                productAvailable(
+                    product
+                )
+        ).length;
 
 }
 
 
 /* =========================================================
-   تغيير حالة الطلب
+   اعتماد الطلب / نشر المنتج
 ========================================================= */
 
 async function changeStatus(
@@ -4596,78 +5001,73 @@ async function changeStatus(
     }
 
 
-    if (
-        type === "buyer"
-    ) {
-
-        const result =
-            await db
-                .from(BUYER_TABLE)
-                .update({
-                    status:
-                        status
-                })
-                .eq(
-                    "id",
-                    id
-                );
-
+    try {
 
         if (
-            result.error
+            type === "buyer"
         ) {
 
-            alert(
-                "تعذر تحديث حالة طلب المشتري:\n\n" +
-                result.error.message
-            );
+            const result =
+                await db
+                    .from(BUYER_TABLE)
+                    .update({
+                        status:
+                            status
+                    })
+                    .eq(
+                        "id",
+                        id
+                    );
+
+
+            if (
+                result.error
+            ) {
+
+                throw new Error(
+                    result.error.message
+                );
+
+            }
+
+
+            await loadAll();
 
             return;
 
         }
 
 
-        await loadAll();
-
-        return;
-
-    }
-
-
-    const sellerResult =
-        await db
-            .from(SELLER_TABLE)
-            .select("*")
-            .eq(
-                "id",
-                id
-            )
-            .single();
+        const sellerResult =
+            await db
+                .from(SELLER_TABLE)
+                .select("*")
+                .eq(
+                    "id",
+                    id
+                )
+                .single();
 
 
-    if (
-        sellerResult.error
-    ) {
+        if (
+            sellerResult.error
+        ) {
 
-        alert(
-            "تعذر قراءة بيانات السلعة:\n\n" +
-            sellerResult.error.message
-        );
+            throw new Error(
+                "تعذر قراءة بيانات السلعة: " +
+                sellerResult.error.message
+            );
 
-        return;
-
-    }
+        }
 
 
-    const seller =
-        sellerResult.data;
+        const seller =
+            sellerResult.data;
 
 
-    if (
-        status === "approved"
-    ) {
-
-        try {
+        if (
+            status === "approved"
+        ) {
 
             const publishResult =
                 await publishSellerProduct(
@@ -4710,7 +5110,7 @@ async function changeStatus(
             ) {
 
                 throw new Error(
-                    "تم نشر السلعة ولكن تعذر تحديث حالة البائع: " +
+                    "تم نشر المنتج ولكن تعذر تحديث حالة طلب البائع: " +
                     updateResult.error.message
                 );
 
@@ -4722,14 +5122,14 @@ async function changeStatus(
             ) {
 
                 alert(
-                    "✓ السلعة كانت منشورة مسبقًا، وتم تحديث ربطها بالبائع والصور بنجاح."
+                    "✓ المنتج كان موجودًا، وتم تحديث بياناته وربطه بالبائع."
                 );
 
             }
             else {
 
                 alert(
-                    "✓ تم قبول السلعة ونشرها في المتجر وربطها بالبائع والصور بنجاح."
+                    "✓ تم قبول طلب البائع ونشر المنتج في المتجر."
                 );
 
             }
@@ -4737,47 +5137,70 @@ async function changeStatus(
 
             await loadAll();
 
-        }
-        catch (error) {
-
-            console.error(
-                "PUBLISH ERROR:",
-                error
-            );
-
-            alert(
-                "❌ لم يتم قبول السلعة:\n\n" +
-                error.message
-            );
+            return;
 
         }
 
 
-        return;
+        const result =
+            await db
+                .from(SELLER_TABLE)
+                .update({
+                    status:
+                        status
+                })
+                .eq(
+                    "id",
+                    id
+                );
+
+
+        if (
+            result.error
+        ) {
+
+            throw new Error(
+                result.error.message
+            );
+
+        }
+
+
+        await loadAll();
+
+    }
+    catch (error) {
+
+        console.error(
+            "CHANGE STATUS ERROR:",
+            error
+        );
+
+        alert(
+            "❌ تعذر تنفيذ العملية:\n\n" +
+            error.message
+        );
 
     }
 
+}
 
-    const result =
-        await db
-            .from(SELLER_TABLE)
-            .update({
-                status:
-                    status
-            })
-            .eq(
-                "id",
-                id
-            );
 
+/* =========================================================
+   حذف الطلب
+========================================================= */
+
+async function deleteOrder(
+    id,
+    type
+) {
 
     if (
-        result.error
+        !id
     ) {
 
         alert(
-            "تعذر تحديث حالة طلب البائع:\n\n" +
-            result.error.message
+            "رقم الطلب غير موجود."
         );
 
         return;
@@ -4785,7 +5208,90 @@ async function changeStatus(
     }
 
 
-    await loadAll();
+    const table =
+        type === "buyer"
+            ? BUYER_TABLE
+            : SELLER_TABLE;
+
+
+    const confirmed =
+        confirm(
+
+            type === "buyer"
+
+            ?
+
+            "⚠️ هل أنت متأكد من حذف طلب المشتري نهائيًا؟"
+
+            :
+
+            "⚠️ هل أنت متأكد من حذف طلب البائع نهائيًا؟"
+
+        );
+
+
+    if (
+        !confirmed
+    ) {
+        return;
+    }
+
+
+    try {
+
+        const result =
+            await db
+                .from(table)
+                .delete()
+                .eq(
+                    "id",
+                    id
+                );
+
+
+        if (
+            result.error
+        ) {
+
+            throw new Error(
+                result.error.message
+            );
+
+        }
+
+
+        allOrders =
+            allOrders.filter(
+                order =>
+                    !(
+                        String(order.id) === String(id) &&
+                        order.type === type
+                    )
+            );
+
+
+        updateStats();
+        render();
+
+
+        alert(
+            "✓ تم حذف الطلب بنجاح."
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "DELETE ERROR:",
+            error
+        );
+
+        alert(
+            "❌ لم يتم الحذف:\n\n" +
+            error.message
+        );
+
+    }
 
 }
 
@@ -4816,13 +5322,9 @@ async function toggleProduct(
         confirm(
 
             available
-
                 ?
-
                 "إظهار المنتج في المتجر؟"
-
                 :
-
                 "إخفاء المنتج من المتجر؟"
 
         );
@@ -4865,17 +5367,11 @@ async function toggleProduct(
 
 
         alert(
-
             available
-
                 ?
-
                 "✓ تم إظهار المنتج في المتجر."
-
                 :
-
                 "✓ تم إخفاء المنتج من المتجر."
-
         );
 
     }
@@ -4919,9 +5415,7 @@ async function deleteProduct(
 
     const confirmed =
         confirm(
-
-            "⚠️ هل أنت متأكد من حذف هذا المنتج نهائيًا؟\n\nسيختفي من المتجر ولا يمكن التراجع عن الحذف."
-
+            "⚠️ هل أنت متأكد من حذف هذا المنتج نهائيًا؟"
         );
 
 
@@ -4958,10 +5452,7 @@ async function deleteProduct(
         allProducts =
             allProducts.filter(
                 product =>
-                    String(
-                        product.id
-                    )
-                    !==
+                    String(product.id) !==
                     String(id)
             );
 
@@ -4983,9 +5474,592 @@ async function deleteProduct(
         );
 
         alert(
-            "❌ لم يتم حذف المنتج.\n\n" +
+            "❌ لم يتم حذف المنتج:\n\n" +
             error.message
         );
+
+    }
+
+}
+
+
+/* =========================================================
+   فتح تعديل المنتج
+========================================================= */
+
+function openEditProduct(id) {
+
+    const product =
+        allProducts.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
+
+
+    if (
+        !product
+    ) {
+
+        alert(
+            "تعذر العثور على المنتج."
+        );
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "editProductId"
+    ).value =
+        product.id || "";
+
+
+    document.getElementById(
+        "editTitle"
+    ).value =
+        pick(
+            product,
+            [
+                "title",
+                "product_name",
+                "name"
+            ]
+        );
+
+
+    document.getElementById(
+        "editPrice"
+    ).value =
+        product.price ?? "";
+
+
+    document.getElementById(
+        "editCategory"
+    ).value =
+        normalizeCategory(
+            product.category ||
+            product.product_category ||
+            ""
+        );
+
+
+    document.getElementById(
+        "editSellerName"
+    ).value =
+        product.seller_name ||
+        product.family_name ||
+        "";
+
+
+    document.getElementById(
+        "editDescription"
+    ).value =
+        product.description ||
+        "";
+
+
+    const images =
+        getSellerImages(
+            product
+        );
+
+
+    document.getElementById(
+        "editImage"
+    ).value =
+        product.image ||
+        images[0] ||
+        "";
+
+
+    document.getElementById(
+        "editImages"
+    ).value =
+        images
+            .filter(
+                image =>
+                    image !== (
+                        product.image ||
+                        images[0]
+                    )
+            )
+            .join("\n");
+
+
+    updateEditPreview();
+
+
+    document
+        .getElementById(
+            "editModal"
+        )
+        .classList.add(
+            "open"
+        );
+
+}
+
+
+function closeEditProduct() {
+
+    document
+        .getElementById(
+            "editModal"
+        )
+        .classList.remove(
+            "open"
+        );
+
+}
+
+
+function updateEditPreview() {
+
+    const image =
+        clean(
+            document.getElementById(
+                "editImage"
+            ).value
+        );
+
+
+    const preview =
+        document.getElementById(
+            "editPreview"
+        );
+
+
+    const previewImage =
+        document.getElementById(
+            "editPreviewImage"
+        );
+
+
+    if (
+        !image
+    ) {
+
+        preview.style.display =
+            "none";
+
+        previewImage.src =
+            "";
+
+        return;
+
+    }
+
+
+    preview.style.display =
+        "block";
+
+
+    previewImage.src =
+        image;
+
+}
+
+
+/* =========================================================
+   حفظ تعديل المنتج
+========================================================= */
+
+async function saveProductEdit(event) {
+
+    event.preventDefault();
+
+
+    const id =
+        clean(
+            document.getElementById(
+                "editProductId"
+            ).value
+        );
+
+
+    if (
+        !id
+    ) {
+
+        alert(
+            "معرّف المنتج غير موجود."
+        );
+
+        return;
+
+    }
+
+
+    const title =
+        clean(
+            document.getElementById(
+                "editTitle"
+            ).value
+        );
+
+
+    const price =
+        Number(
+            document.getElementById(
+                "editPrice"
+            ).value
+        );
+
+
+    const category =
+        normalizeCategory(
+            document.getElementById(
+                "editCategory"
+            ).value
+        );
+
+
+    const sellerName =
+        clean(
+            document.getElementById(
+                "editSellerName"
+            ).value
+        );
+
+
+    const description =
+        clean(
+            document.getElementById(
+                "editDescription"
+            ).value
+        );
+
+
+    const mainImage =
+        clean(
+            document.getElementById(
+                "editImage"
+            ).value
+        );
+
+
+    const additionalImages =
+        document.getElementById(
+            "editImages"
+        ).value
+            .split("\n")
+            .map(
+                item =>
+                    item.trim()
+            )
+            .filter(Boolean);
+
+
+    if (
+        !title
+    ) {
+
+        alert(
+            "اكتب اسم المنتج."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        Number.isNaN(price) ||
+        price < 0
+    ) {
+
+        alert(
+            "أدخل سعرًا صحيحًا."
+        );
+
+        return;
+
+    }
+
+
+    const images =
+        [
+            mainImage,
+            ...additionalImages
+        ].filter(Boolean);
+
+
+    const updateData = {
+
+        title:
+            title,
+
+        price:
+            price,
+
+        category:
+            category,
+
+        description:
+            description,
+
+        seller_name:
+            sellerName || null,
+
+        image:
+            mainImage || null,
+
+        images:
+            images
+
+    };
+
+
+    const button =
+        document.getElementById(
+            "saveProductButton"
+        );
+
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "⏳ جاري الحفظ...";
+
+
+    try {
+
+        const result =
+            await db
+                .from(PRODUCTS_TABLE)
+                .update(
+                    updateData
+                )
+                .eq(
+                    "id",
+                    id
+                );
+
+
+        if (
+            result.error
+        ) {
+
+            throw new Error(
+                result.error.message
+            );
+
+        }
+
+
+        closeEditProduct();
+
+
+        alert(
+            "✓ تم تعديل المنتج بنجاح."
+        );
+
+
+        await loadAll();
+
+    }
+    catch (error) {
+
+        console.error(
+            "EDIT PRODUCT ERROR:",
+            error
+        );
+
+        alert(
+            "❌ تعذر حفظ التعديلات:\n\n" +
+            error.message
+        );
+
+    }
+    finally {
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "💾 حفظ التعديلات";
+
+    }
+
+}
+
+
+/* =========================================================
+   مزامنة المنتجات
+========================================================= */
+
+async function syncProductsFromSellerRequests() {
+
+    const button =
+        document.getElementById(
+            "syncButton"
+        );
+
+
+    const confirmed =
+        confirm(
+            "سيتم البحث عن طلبات البائعين المعتمدة أو المنشورة وإنشاء المنتجات الناقصة في جدول products.\n\nهل تريد المتابعة؟"
+        );
+
+
+    if (
+        !confirmed
+    ) {
+        return;
+    }
+
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "⏳ جاري المزامنة...";
+
+
+    try {
+
+        const sellerResult =
+            await db
+                .from(SELLER_TABLE)
+                .select("*");
+
+
+        if (
+            sellerResult.error
+        ) {
+
+            throw new Error(
+                "تعذر قراءة طلبات البائعين: " +
+                sellerResult.error.message
+            );
+
+        }
+
+
+        const sellerRows =
+            sellerResult.data || [];
+
+
+        const approvedRows =
+            sellerRows.filter(
+                row => {
+
+                    const status =
+                        clean(
+                            row.status
+                        ).toLowerCase();
+
+                    return (
+                        isApprovedStatus(status) ||
+                        row.published === true
+                    );
+
+                }
+            );
+
+
+        if (
+            approvedRows.length === 0
+        ) {
+
+            alert(
+                "لا توجد طلبات بائعين معتمدة أو منشورة للمزامنة."
+            );
+
+            return;
+
+        }
+
+
+        let created =
+            0;
+
+        let updated =
+            0;
+
+        let failed =
+            0;
+
+
+        for (
+            const row of approvedRows
+        ) {
+
+            try {
+
+                const result =
+                    await publishSellerProduct(
+                        mapSeller(row)
+                    );
+
+
+                if (
+                    result.alreadyExists
+                ) {
+
+                    updated++;
+
+                }
+                else {
+
+                    created++;
+
+                }
+
+            }
+            catch (error) {
+
+                console.error(
+                    "SYNC ITEM ERROR:",
+                    error
+                );
+
+                failed++;
+
+            }
+
+        }
+
+
+        await loadAll();
+
+
+        alert(
+            "✓ انتهت المزامنة.\n\n" +
+            "منتجات جديدة: " +
+            created +
+            "\n" +
+            "منتجات تم تحديثها: " +
+            updated +
+            "\n" +
+            "فشل: " +
+            failed
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "SYNC ERROR:",
+            error
+        );
+
+        alert(
+            "❌ فشلت مزامنة المنتجات:\n\n" +
+            error.message
+        );
+
+    }
+    finally {
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "🔄 مزامنة المنتجات";
 
     }
 
@@ -5109,6 +6183,11 @@ async function loadAll() {
                     error.message
                 )}
 
+                <br><br>
+
+                تأكد من أن مفتاح Supabase في أعلى الملف
+                هو المفتاح الموجود في نسختك الأصلية.
+
             </div>
 
         `;
@@ -5122,7 +6201,6 @@ async function loadAll() {
 
         refresh.disabled =
             false;
-
 
         refresh.textContent =
             "🔄 تحديث";
@@ -5219,6 +6297,75 @@ document
     );
 
 
+/* =========================================================
+   نافذة التعديل
+========================================================= */
+
+document
+    .getElementById(
+        "editCloseButton"
+    )
+    .addEventListener(
+        "click",
+        closeEditProduct
+    );
+
+
+document
+    .getElementById(
+        "editCancelButton"
+    )
+    .addEventListener(
+        "click",
+        closeEditProduct
+    );
+
+
+document
+    .getElementById(
+        "editProductForm"
+    )
+    .addEventListener(
+        "submit",
+        saveProductEdit
+    );
+
+
+document
+    .getElementById(
+        "editImage"
+    )
+    .addEventListener(
+        "input",
+        updateEditPreview
+    );
+
+
+document
+    .getElementById(
+        "editModal"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                this
+            ) {
+
+                closeEditProduct();
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   لوحة الصور والتعديل - ESC
+========================================================= */
+
 document.addEventListener(
     "keydown",
     function(event) {
@@ -5229,6 +6376,7 @@ document.addEventListener(
         ) {
 
             closeImageModal();
+            closeEditProduct();
 
         }
 
@@ -5310,7 +6458,7 @@ document
 
 
 /* =========================================================
-   التحديث
+   الأزرار
 ========================================================= */
 
 document
@@ -5320,6 +6468,16 @@ document
     .addEventListener(
         "click",
         loadAll
+    );
+
+
+document
+    .getElementById(
+        "syncButton"
+    )
+    .addEventListener(
+        "click",
+        syncProductsFromSellerRequests
     );
 
 
@@ -5333,4 +6491,3 @@ loadAll();
 
 </body>
 </html>
-```
