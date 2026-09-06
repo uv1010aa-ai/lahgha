@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
-<head>
+<head>[
 
     <meta charset="UTF-8">
 
@@ -30,7 +30,73 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
+/* =========================================================
+   واتساب البائع
+========================================================= */
 
+.whatsapp-actions {
+    margin-top: 14px;
+    padding: 15px;
+    border-radius: 12px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+}
+
+.whatsapp-title {
+    font-weight: 900;
+    color: #166534;
+    margin-bottom: 10px;
+}
+
+.whatsapp-list {
+    display: grid;
+    gap: 10px;
+}
+
+.whatsapp-seller {
+    background: #fff;
+    border: 1px solid #dcfce7;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.whatsapp-seller-name {
+    font-weight: 900;
+    margin-bottom: 5px;
+}
+
+.whatsapp-seller-info {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 9px;
+}
+
+.whatsapp-button {
+    border: 0;
+    background: #16a34a;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: 900;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.whatsapp-button:hover {
+    background: #15803d;
+}
+
+.whatsapp-button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.whatsapp-missing {
+    color: #991b1b;
+    font-size: 13px;
+    font-weight: 800;
+}
         * {
             box-sizing: border-box;
         }
@@ -1505,7 +1571,641 @@ function sellerImagesHtml(images) {
 ========================================================= */
 
 function parseOrderItems(value) {
+/* =========================================================
+   تجهيز بيانات البائعين لطلب المشتري
+========================================================= */
 
+async function getOrderSellers(order) {
+
+    const items = order.items || [];
+
+    if (!items.length) {
+        return [];
+    }
+
+    const requestIds = [
+        ...new Set(
+            items
+                .map(item =>
+                    clean(
+                        item.seller_request_id ||
+                        item.sellerRequestId
+                    )
+                )
+                .filter(Boolean)
+        )
+    ];
+
+    /*
+     * إذا كانت السلة القديمة لا تحتوي seller_request_id
+     * نحاول العثور عليه من products باستخدام id المنتج.
+     */
+
+    const productIds = [
+        ...new Set(
+            items
+                .filter(item => {
+                    const requestId =
+                        clean(
+                            item.seller_request_id ||
+                            item.sellerRequestId
+                        );
+
+                    return !requestId;
+                })
+                .map(item =>
+                    clean(
+                        item.id ||
+                        item.product_id ||
+                        item.productId
+                    )
+                )
+                .filter(Boolean)
+        )
+    ];
+
+    let productRows = [];
+
+    if (productIds.length > 0) {
+
+        const productResult =
+            await db
+                .from(PRODUCTS_TABLE)
+                .select(
+                    "id,seller_request_id,seller_id,seller_name,title"
+                )
+                .in(
+                    "id",
+                    productIds
+                );
+
+        if (productResult.error) {
+
+            console.warn(
+                "تعذر قراءة ربط المنتجات بالبائعين:",
+                productResult.error.message
+            );
+
+        }
+        else {
+
+            productRows =
+                productResult.data || [];
+
+        }
+
+    }
+
+
+    /*
+     * ربط كل منتج بـ seller_request_id
+     */
+
+    const productMap =
+        new Map();
+
+    productRows.forEach(
+        product => {
+
+            productMap.set(
+                String(product.id),
+                product
+            );
+
+        }
+    );
+
+
+    const resolvedItems =
+        items.map(
+            item => {
+
+                let sellerRequestId =
+                    clean(
+                        item.seller_request_id ||
+                        item.sellerRequestId
+                    );
+
+                const productId =
+                    clean(
+                        item.id ||
+                        item.product_id ||
+                        item.productId
+                    );
+
+                const product =
+                    productMap.get(
+                        String(productId)
+                    );
+
+                if (
+                    !sellerRequestId &&
+                    product &&
+                    product.seller_request_id
+                ) {
+
+                    sellerRequestId =
+                        clean(
+                            product.seller_request_id
+                        );
+
+                }
+
+                return {
+
+                    ...item,
+
+                    sellerRequestId:
+                        sellerRequestId || null,
+
+                    sellerName:
+                        clean(
+                            item.seller_name ||
+                            item.sellerName ||
+                            product?.seller_name
+                        )
+
+                };
+
+            }
+        );
+
+
+    /*
+     * جلب أصحاب السلع المرتبطين بالطلب
+     */
+
+    const ids =
+        [
+            ...new Set(
+                resolvedItems
+                    .map(
+                        item =>
+                            clean(
+                                item.sellerRequestId
+                            )
+                    )
+                    .filter(Boolean)
+            )
+        ];
+
+
+    if (ids.length === 0) {
+
+        return [];
+
+    }
+
+
+    const sellerResult =
+        await db
+            .from(SELLER_TABLE)
+            .select(
+                "id,seller_name,phone,city,product_name"
+            )
+            .in(
+                "id",
+                ids
+            );
+
+
+    if (sellerResult.error) {
+
+        console.error(
+            "SELLER LOOKUP ERROR:",
+            sellerResult.error
+        );
+
+        throw new Error(
+            "تعذر قراءة بيانات أصحاب السلع:\n\n" +
+            sellerResult.error.message
+        );
+
+    }
+
+
+    const sellers =
+        sellerResult.data || [];
+
+
+    const sellerMap =
+        new Map();
+
+    sellers.forEach(
+        seller => {
+
+            sellerMap.set(
+                String(seller.id),
+                seller
+            );
+
+        }
+    );
+
+
+    /*
+     * تجميع السلع حسب صاحبها
+     */
+
+    const grouped =
+        new Map();
+
+
+    resolvedItems.forEach(
+        item => {
+
+            const requestId =
+                clean(
+                    item.sellerRequestId
+                );
+
+            if (!requestId) {
+                return;
+            }
+
+            const seller =
+                sellerMap.get(
+                    String(requestId)
+                );
+
+            if (!seller) {
+                return;
+            }
+
+
+            if (
+                !grouped.has(requestId)
+            ) {
+
+                grouped.set(
+                    requestId,
+                    {
+
+                        sellerRequestId:
+                            requestId,
+
+                        sellerName:
+                            clean(
+                                seller.seller_name ||
+                                item.sellerName
+                            ) ||
+                            "صاحب السلعة",
+
+                        phone:
+                            clean(
+                                seller.phone
+                            ),
+
+                        city:
+                            clean(
+                                seller.city
+                            ),
+
+                        items: []
+
+                    }
+                );
+
+            }
+
+
+            grouped
+                .get(requestId)
+                .items
+                .push(item);
+
+        }
+    );
+
+
+    return [
+        ...grouped.values()
+    ];
+
+}
+
+
+/* =========================================================
+   تنظيف رقم واتساب
+========================================================= */
+
+function whatsappPhone(value) {
+
+    let phone =
+        clean(value);
+
+    if (!phone) {
+        return "";
+    }
+
+    /*
+     * إزالة المسافات والرموز
+     */
+
+    phone =
+        phone.replace(
+            /[\s\-()]/g,
+            ""
+        );
+
+
+    /*
+     * تحويل الرقم السعودي:
+     * 05xxxxxxxx
+     * إلى:
+     * 9665xxxxxxxx
+     */
+
+    if (
+        phone.startsWith("05") &&
+        phone.length === 10
+    ) {
+
+        phone =
+            "966" +
+            phone.substring(1);
+
+    }
+
+
+    /*
+     * إذا كان مكتوبًا +966
+     */
+
+    if (
+        phone.startsWith("+")
+    ) {
+
+        phone =
+            phone.substring(1);
+
+    }
+
+
+    return phone;
+
+}
+
+
+/* =========================================================
+   تجهيز رسالة واتساب للبائع
+========================================================= */
+
+function buildSellerWhatsAppMessage(
+    order,
+    seller
+) {
+
+    const lines = [];
+
+    lines.push(
+        "🎉 لديك طلب جديد لسلعتك من موقع لَحْقها"
+    );
+
+    lines.push("");
+
+    lines.push(
+        "🧾 رقم الطلب: " +
+        (
+            order.number ||
+            order.id ||
+            "—"
+        )
+    );
+
+    lines.push("");
+
+
+    seller.items.forEach(
+        function(item, index) {
+
+            lines.push(
+                "📦 السلعة: " +
+                (
+                    item.title ||
+                    item.name ||
+                    "منتج"
+                )
+            );
+
+            lines.push(
+                "🔢 الكمية: " +
+                (
+                    item.quantity ||
+                    1
+                )
+            );
+
+            lines.push(
+                "💰 سعر الوحدة: " +
+                money(item.price)
+            );
+
+            lines.push(
+                "💵 إجمالي السلعة: " +
+                money(item.subtotal)
+            );
+
+            if (
+                index <
+                seller.items.length - 1
+            ) {
+
+                lines.push("");
+                lines.push("────────────");
+                lines.push("");
+
+            }
+
+        }
+    );
+
+
+    lines.push("");
+    lines.push("👤 بيانات المشتري");
+
+    lines.push(
+        "الاسم: " +
+        (
+            order.name ||
+            "—"
+        )
+    );
+
+    lines.push(
+        "📱 الجوال: " +
+        (
+            order.phone ||
+            "—"
+        )
+    );
+
+    lines.push(
+        "📍 المدينة: " +
+        (
+            order.city ||
+            "—"
+        )
+    );
+
+    lines.push(
+        "🏠 العنوان: " +
+        (
+            order.address ||
+            "—"
+        )
+    );
+
+    lines.push(
+        "💳 طريقة الدفع: " +
+        (
+            order.paymentMethod ||
+            "—"
+        )
+    );
+
+    lines.push("");
+
+    lines.push(
+        "يرجى تأكيد استلام الطلب بالرد على هذه الرسالة:"
+    );
+
+    lines.push("");
+
+    lines.push(
+        "نعم، استلمت الطلب"
+    );
+
+    lines.push("");
+
+    lines.push(
+        "بعد تأكيد الاستلام، يرجى التواصل مع المشتري لإتمام التسليم حسب الاتفاق."
+    );
+
+    return lines.join("\n");
+
+}
+
+
+/* =========================================================
+   فتح واتساب للبائع
+========================================================= */
+
+function openSellerWhatsApp(
+    orderId,
+    sellerRequestId
+) {
+
+    const order =
+        allOrders.find(
+            item =>
+                item.type === "buyer" &&
+                String(item.id) ===
+                String(orderId)
+        );
+
+    if (!order) {
+
+        alert(
+            "تعذر العثور على الطلب."
+        );
+
+        return;
+
+    }
+
+
+    const sellersPromise =
+        getOrderSellers(
+            order
+        );
+
+
+    sellersPromise
+        .then(
+            function(sellers) {
+
+                const seller =
+                    sellers.find(
+                        item =>
+                            String(
+                                item.sellerRequestId
+                            ) ===
+                            String(
+                                sellerRequestId
+                            )
+                    );
+
+
+                if (!seller) {
+
+                    alert(
+                        "تعذر العثور على صاحب هذه السلعة."
+                    );
+
+                    return;
+
+                }
+
+
+                const phone =
+                    whatsappPhone(
+                        seller.phone
+                    );
+
+
+                if (!phone) {
+
+                    alert(
+                        "لا يوجد رقم جوال محفوظ لصاحب هذه السلعة."
+                    );
+
+                    return;
+
+                }
+
+
+                const message =
+                    buildSellerWhatsAppMessage(
+                        order,
+                        seller
+                    );
+
+
+                const url =
+                    "https://wa.me/" +
+                    phone +
+                    "?text=" +
+                    encodeURIComponent(
+                        message
+                    );
+
+
+                window.open(
+                    url,
+                    "_blank",
+                    "noopener,noreferrer"
+                );
+
+            }
+        )
+        .catch(
+            function(error) {
+
+                console.error(
+                    "WHATSAPP ERROR:",
+                    error
+                );
+
+                alert(
+                    "❌ تعذر تجهيز رسالة واتساب:\n\n" +
+                    error.message
+                );
+
+            }
+        );
+
+}
     if (!value) {
         return [];
     }
@@ -1647,7 +2347,240 @@ function parseOrderItems(value) {
 
 
 function buyerItemsHtml(items) {
+/* =========================================================
+   أزرار واتساب لأصحاب السلع
+========================================================= */
 
+async function buyerWhatsAppHtml(order) {
+
+    if (
+        !order ||
+        order.type !== "buyer"
+    ) {
+
+        return "";
+
+    }
+
+
+    /*
+     * لا نعرض زر التواصل إلا بعد اعتماد الطلب.
+     */
+
+    const status =
+        clean(
+            order.status
+        ).toLowerCase();
+
+
+    const approved =
+        [
+            "approved",
+            "accepted",
+            "confirmed",
+            "مقبول"
+        ].includes(
+            status
+        );
+
+
+    if (!approved) {
+
+        return "";
+
+    }
+
+
+    try {
+
+        const sellers =
+            await getOrderSellers(
+                order
+            );
+
+
+        if (
+            sellers.length === 0
+        ) {
+
+            return `
+
+                <div class="whatsapp-actions">
+
+                    <div class="whatsapp-title">
+                        📲 التواصل مع البائع
+                    </div>
+
+                    <div class="whatsapp-missing">
+
+                        ⚠️ لم يتم العثور على ربط صاحب السلعة بهذا الطلب.
+                        <br>
+                        نحتاج أولًا إلى ربط السلعة بصاحبها.
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        return `
+
+            <div class="whatsapp-actions">
+
+                <div class="whatsapp-title">
+                    📲 إرسال الطلب لصاحب السلعة عبر واتساب
+                </div>
+
+                <div
+                    class="whatsapp-list"
+                >
+
+                    ${
+                        sellers
+                            .map(
+                                function(seller) {
+
+                                    const phone =
+                                        whatsappPhone(
+                                            seller.phone
+                                        );
+
+                                    const sellerItems =
+                                        seller.items
+                                            .map(
+                                                item =>
+                                                    (
+                                                        item.title ||
+                                                        item.name ||
+                                                        "منتج"
+                                                    ) +
+                                                    " × " +
+                                                    (
+                                                        item.quantity ||
+                                                        1
+                                                    )
+                                            )
+                                            .join(
+                                                " — "
+                                            );
+
+
+                                    return `
+
+                                        <div
+                                            class="whatsapp-seller"
+                                        >
+
+                                            <div
+                                                class="whatsapp-seller-name"
+                                            >
+
+                                                👤
+                                                ${safe(
+                                                    seller.sellerName
+                                                )}
+
+                                            </div>
+
+
+                                            <div
+                                                class="whatsapp-seller-info"
+                                            >
+
+                                                📦
+                                                ${safe(
+                                                    sellerItems
+                                                )}
+
+                                                <br>
+
+                                                📱
+                                                ${safe(
+                                                    seller.phone ||
+                                                    "لا يوجد رقم"
+                                                )}
+
+                                            </div>
+
+
+                                            ${
+                                                phone
+
+                                                    ?
+
+                                                    `
+
+                                                        <button
+                                                            class="whatsapp-button"
+                                                            type="button"
+                                                            onclick="openSellerWhatsApp(
+                                                                '${safe(order.id)}',
+                                                                '${safe(seller.sellerRequestId)}'
+                                                            )"
+                                                        >
+
+                                                            📲 إرسال الطلب عبر واتساب
+
+                                                        </button>
+
+                                                    `
+
+                                                    :
+
+                                                    `
+
+                                                        <div
+                                                            class="whatsapp-missing"
+                                                        >
+                                                            ⚠️ لا يوجد رقم واتساب محفوظ لهذا البائع.
+                                                        </div>
+
+                                                    `
+                                            }
+
+                                        </div>
+
+                                    `;
+
+                                }
+                            )
+                            .join("")
+                    }
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+    catch (error) {
+
+        console.error(
+            "BUYER WHATSAPP HTML ERROR:",
+            error
+        );
+
+        return `
+
+            <div class="whatsapp-actions">
+
+                <div class="whatsapp-missing">
+
+                    ⚠️ تعذر تجهيز خيار التواصل مع البائع.
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+}
     if (
         !items ||
         items.length === 0
@@ -3002,6 +3935,7 @@ function render() {
             "ordersContainer"
         );
 
+
     if (
         currentView === "products"
     ) {
@@ -3033,8 +3967,10 @@ function render() {
 
     }
 
+
     let list =
         allOrders;
+
 
     if (
         currentView === "buyer"
@@ -3048,6 +3984,7 @@ function render() {
 
     }
 
+
     if (
         currentView === "seller"
     ) {
@@ -3059,6 +3996,7 @@ function render() {
             );
 
     }
+
 
     if (
         list.length === 0
@@ -3076,12 +4014,49 @@ function render() {
 
     }
 
+
     container.innerHTML =
         list
             .map(
                 createCard
             )
             .join("");
+
+
+    /*
+     * تجهيز أزرار واتساب لطلبات المشترين المعتمدة
+     */
+
+    list
+        .filter(
+            order =>
+                order.type === "buyer"
+        )
+        .forEach(
+            async function(order) {
+
+                const placeholder =
+                    document.getElementById(
+                        "whatsapp-" +
+                        order.id
+                    );
+
+                if (!placeholder) {
+                    return;
+                }
+
+
+                const html =
+                    await buyerWhatsAppHtml(
+                        order
+                    );
+
+
+                placeholder.outerHTML =
+                    html;
+
+            }
+        );
 
 }
 
@@ -3091,7 +4066,9 @@ function render() {
 ========================================================= */
 
 function createCard(order) {
-
+${buyerItemsHtml(
+    order.items
+)}
     const isBuyer =
         order.type === "buyer";
 
