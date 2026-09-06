@@ -1145,9 +1145,16 @@ const SUPABASE_URL =
  * ضع هنا مفتاح Supabase الحالي الموجود في نسختك الأصلية.
  * لا تغيّر SUPABASE_URL.
  */
-const SUPABASE_KEY =
-    "ضع_مفتاح_Supabase_الحالي_هنا";
+const SUPABASE_URL =
+    "https://gyyyzavjzvcxzgrtukqu.supabase.co";
 
+const SUPABASE_KEY =
+    "مفتاح Supabase الحقيقي هنا";
+
+const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 const db =
     window.supabase.createClient(
         SUPABASE_URL,
