@@ -1,102 +1,23 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
-<head>[
+<head>
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>لوحة التحكم | لَحْقها</title>
 
-    <meta
-        http-equiv="Cache-Control"
-        content="no-cache, no-store, must-revalidate"
-    >
-
-    <meta
-        http-equiv="Pragma"
-        content="no-cache"
-    >
-
-    <meta
-        http-equiv="Expires"
-        content="0"
-    >
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-/* =========================================================
-   واتساب البائع
-========================================================= */
 
-.whatsapp-actions {
-    margin-top: 14px;
-    padding: 15px;
-    border-radius: 12px;
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
-}
-
-.whatsapp-title {
-    font-weight: 900;
-    color: #166534;
-    margin-bottom: 10px;
-}
-
-.whatsapp-list {
-    display: grid;
-    gap: 10px;
-}
-
-.whatsapp-seller {
-    background: #fff;
-    border: 1px solid #dcfce7;
-    border-radius: 10px;
-    padding: 12px;
-}
-
-.whatsapp-seller-name {
-    font-weight: 900;
-    margin-bottom: 5px;
-}
-
-.whatsapp-seller-info {
-    color: #64748b;
-    font-size: 13px;
-    margin-bottom: 9px;
-}
-
-.whatsapp-button {
-    border: 0;
-    background: #16a34a;
-    color: #fff;
-    padding: 10px 15px;
-    border-radius: 9px;
-    cursor: pointer;
-    font-weight: 900;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.whatsapp-button:hover {
-    background: #15803d;
-}
-
-.whatsapp-button:disabled {
-    opacity: .6;
-    cursor: not-allowed;
-}
-
-.whatsapp-missing {
-    color: #991b1b;
-    font-size: 13px;
-    font-weight: 800;
-}
         * {
             box-sizing: border-box;
         }
@@ -479,6 +400,67 @@
             color: #1d4ed8;
         }
 
+        /* =====================================================
+           واتساب
+        ===================================================== */
+
+        .whatsapp-actions {
+            margin-top: 14px;
+            padding: 15px;
+            border-radius: 12px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+        }
+
+        .whatsapp-title {
+            font-weight: 900;
+            color: #166534;
+            margin-bottom: 10px;
+        }
+
+        .whatsapp-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .whatsapp-seller {
+            background: #fff;
+            border: 1px solid #dcfce7;
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .whatsapp-seller-name {
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+
+        .whatsapp-seller-info {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 9px;
+        }
+
+        .whatsapp-button {
+            border: 0;
+            background: #16a34a;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 900;
+        }
+
+        .whatsapp-button:hover {
+            background: #15803d;
+        }
+
+        .whatsapp-missing {
+            color: #991b1b;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
         .loading,
         .empty,
         .error {
@@ -547,7 +529,6 @@
             .images-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
-
         }
 
         @media (max-width: 800px) {
@@ -559,7 +540,6 @@
             .images-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
-
         }
 
         @media (max-width: 600px) {
@@ -598,13 +578,11 @@
                 flex: 1;
                 text-align: center;
             }
-
         }
 
     </style>
 
 </head>
-
 
 <body>
 
@@ -750,8 +728,11 @@
 const SUPABASE_URL =
     "https://gyyyzavjzvcxzgrtukqu.supabase.co";
 
+/*
+ * ضع هنا مفتاح Supabase الحالي الموجود في نسختك الأصلية.
+ */
 const SUPABASE_KEY =
-    "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-";
+    "ضع_مفتاح_Supabase_الحالي_هنا";
 
 const db =
     window.supabase.createClient(
@@ -792,7 +773,6 @@ function clean(value) {
     }
 
     return String(value).trim();
-
 }
 
 
@@ -804,7 +784,6 @@ function safe(value) {
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
-
 }
 
 
@@ -818,15 +797,12 @@ function pick(row, names) {
             row[name] !== null &&
             clean(row[name]) !== ""
         ) {
-
             return row[name];
-
         }
 
     }
 
     return "";
-
 }
 
 
@@ -837,17 +813,13 @@ function money(value) {
         value === undefined ||
         clean(value) === ""
     ) {
-
         return "—";
-
     }
 
     const number = Number(value);
 
     if (Number.isNaN(number)) {
-
         return safe(value) + " ر.س";
-
     }
 
     return number.toLocaleString(
@@ -856,7 +828,6 @@ function money(value) {
             maximumFractionDigits: 2
         }
     ) + " ر.س";
-
 }
 
 
@@ -873,13 +844,10 @@ function dateText(value) {
             date.getTime()
         )
     ) {
-
         return safe(value);
-
     }
 
     return date.toLocaleString("ar-SA");
-
 }
 
 
@@ -897,13 +865,10 @@ function normalizeCategory(value) {
         category === "اسر منتجة" ||
         category === "أسر منتجة"
     ) {
-
         return "أسر منتجة";
-
     }
 
     return category;
-
 }
 
 
@@ -1012,7 +977,6 @@ function getStatus(value) {
 
 /* =========================================================
    الصور
-   الإصدار المعدل
 ========================================================= */
 
 function getSellerImages(row) {
@@ -1023,9 +987,7 @@ function getSellerImages(row) {
         !row ||
         typeof row !== "object"
     ) {
-
         return [];
-
     }
 
 
@@ -1035,15 +997,9 @@ function getSellerImages(row) {
             value === null ||
             value === undefined
         ) {
-
             return;
-
         }
 
-
-        /* ---------------------------------------------
-           مصفوفة JavaScript حقيقية
-        --------------------------------------------- */
 
         if (
             Array.isArray(value)
@@ -1051,20 +1007,13 @@ function getSellerImages(row) {
 
             value.forEach(
                 function(item) {
-
                     addImage(item);
-
                 }
             );
 
             return;
-
         }
 
-
-        /* ---------------------------------------------
-           كائن صورة
-        --------------------------------------------- */
 
         if (
             typeof value === "object"
@@ -1081,28 +1030,17 @@ function getSellerImages(row) {
                 value.src;
 
             if (possibleUrl) {
-
-                addImage(
-                    possibleUrl
-                );
-
+                addImage(possibleUrl);
             }
 
             return;
-
         }
 
-
-        /* ---------------------------------------------
-           النص
-        --------------------------------------------- */
 
         if (
             typeof value !== "string"
         ) {
-
             return;
-
         }
 
 
@@ -1110,16 +1048,9 @@ function getSellerImages(row) {
             value.trim();
 
         if (!text) {
-
             return;
-
         }
 
-
-        /* ---------------------------------------------
-           JSON Array
-           ["url1","url2","url3"]
-        --------------------------------------------- */
 
         if (
             text.startsWith("[") &&
@@ -1137,32 +1068,22 @@ function getSellerImages(row) {
 
                     parsed.forEach(
                         function(item) {
-
                             addImage(item);
-
                         }
                     );
 
                     return;
-
                 }
 
             }
             catch (error) {
-
                 console.warn(
                     "تعذر تحليل JSON للصور",
                     error
                 );
-
             }
-
         }
 
-
-        /* ---------------------------------------------
-           JSON Object
-        --------------------------------------------- */
 
         if (
             text.startsWith("{") &&
@@ -1183,29 +1104,13 @@ function getSellerImages(row) {
                     addImage(parsed);
 
                     return;
-
                 }
 
             }
             catch (error) {
-
-                /*
-                 * إذا لم يكن JSON،
-                 * نحاول اعتباره PostgreSQL Array.
-                 */
-
+                /* PostgreSQL Array */
             }
 
-
-            /* -----------------------------------------
-               PostgreSQL Array
-
-               مثال:
-               {"url1","url2","url3","url4"}
-
-               أو:
-               {url1,url2,url3,url4}
-            ----------------------------------------- */
 
             const inside =
                 text.slice(
@@ -1231,25 +1136,19 @@ function getSellerImages(row) {
                         inside[i];
 
                     if (escaped) {
-
                         current += char;
                         escaped = false;
                         continue;
-
                     }
 
                     if (char === "\\") {
-
                         escaped = true;
                         continue;
-
                     }
 
                     if (char === '"') {
-
                         quoted = !quoted;
                         continue;
-
                     }
 
                     if (
@@ -1260,33 +1159,26 @@ function getSellerImages(row) {
                         if (
                             current.trim()
                         ) {
-
                             parts.push(
                                 current.trim()
                             );
-
                         }
 
                         current = "";
 
                         continue;
-
                     }
 
                     current += char;
-
                 }
 
                 if (
                     current.trim()
                 ) {
-
                     parts.push(
                         current.trim()
                     );
-
                 }
-
 
                 if (
                     parts.length > 0
@@ -1304,28 +1196,17 @@ function getSellerImages(row) {
                                     .trim();
 
                             if (cleaned) {
-
-                                addImage(
-                                    cleaned
-                                );
-
+                                addImage(cleaned);
                             }
 
                         }
                     );
 
                     return;
-
                 }
-
             }
-
         }
 
-
-        /* ---------------------------------------------
-           JSON مفصول بفواصل
-        --------------------------------------------- */
 
         if (
             text.includes(",")
@@ -1349,7 +1230,6 @@ function getSellerImages(row) {
                     )
                     .filter(Boolean);
 
-
             const imageParts =
                 parts.filter(
                     function(item) {
@@ -1363,29 +1243,20 @@ function getSellerImages(row) {
                     }
                 );
 
-
             if (
                 imageParts.length > 0
             ) {
 
                 imageParts.forEach(
                     function(item) {
-
                         addImage(item);
-
                     }
                 );
 
                 return;
-
             }
-
         }
 
-
-        /* ---------------------------------------------
-           رابط صورة واحد
-        --------------------------------------------- */
 
         if (
             text.startsWith("http://") ||
@@ -1394,45 +1265,16 @@ function getSellerImages(row) {
         ) {
 
             result.push(text);
-
         }
 
     }
 
 
-    /* =================================================
-       images
-    ================================================= */
-
-    addImage(
-        row.images
-    );
-
-
-    /* =================================================
-       حقول بديلة
-    ================================================= */
-
-    addImage(
-        row.photos
-    );
-
-    addImage(
-        row.productImages
-    );
-
-    addImage(
-        row.imageUrls
-    );
-
-    addImage(
-        row.gallery
-    );
-
-
-    /* =================================================
-       image1 ... image5
-    ================================================= */
+    addImage(row.images);
+    addImage(row.photos);
+    addImage(row.productImages);
+    addImage(row.imageUrls);
+    addImage(row.gallery);
 
     for (
         let i = 1;
@@ -1446,42 +1288,18 @@ function getSellerImages(row) {
 
     }
 
+    addImage(row.image);
+    addImage(row.image_url);
+    addImage(row.imageUrl);
+    addImage(row.productImage);
 
-    /* =================================================
-       الحقول القديمة
-    ================================================= */
-
-    addImage(
-        row.image
-    );
-
-    addImage(
-        row.image_url
-    );
-
-    addImage(
-        row.imageUrl
-    );
-
-    addImage(
-        row.productImage
-    );
-
-
-    /* =================================================
-       تنظيف ومنع التكرار
-    ================================================= */
 
     return [
         ...new Set(
             result
                 .map(
                     function(item) {
-
-                        return String(
-                            item
-                        ).trim();
-
+                        return String(item).trim();
                     }
                 )
                 .filter(Boolean)
@@ -1526,10 +1344,7 @@ function sellerImagesHtml(images) {
         <div class="seller-images">
 
             <div class="seller-images-title">
-
-                📷 صور السلعة
-                (${images.length})
-
+                📷 صور السلعة (${images.length})
             </div>
 
             <div class="images-grid">
@@ -1571,641 +1386,7 @@ function sellerImagesHtml(images) {
 ========================================================= */
 
 function parseOrderItems(value) {
-/* =========================================================
-   تجهيز بيانات البائعين لطلب المشتري
-========================================================= */
 
-async function getOrderSellers(order) {
-
-    const items = order.items || [];
-
-    if (!items.length) {
-        return [];
-    }
-
-    const requestIds = [
-        ...new Set(
-            items
-                .map(item =>
-                    clean(
-                        item.seller_request_id ||
-                        item.sellerRequestId
-                    )
-                )
-                .filter(Boolean)
-        )
-    ];
-
-    /*
-     * إذا كانت السلة القديمة لا تحتوي seller_request_id
-     * نحاول العثور عليه من products باستخدام id المنتج.
-     */
-
-    const productIds = [
-        ...new Set(
-            items
-                .filter(item => {
-                    const requestId =
-                        clean(
-                            item.seller_request_id ||
-                            item.sellerRequestId
-                        );
-
-                    return !requestId;
-                })
-                .map(item =>
-                    clean(
-                        item.id ||
-                        item.product_id ||
-                        item.productId
-                    )
-                )
-                .filter(Boolean)
-        )
-    ];
-
-    let productRows = [];
-
-    if (productIds.length > 0) {
-
-        const productResult =
-            await db
-                .from(PRODUCTS_TABLE)
-                .select(
-                    "id,seller_request_id,seller_id,seller_name,title"
-                )
-                .in(
-                    "id",
-                    productIds
-                );
-
-        if (productResult.error) {
-
-            console.warn(
-                "تعذر قراءة ربط المنتجات بالبائعين:",
-                productResult.error.message
-            );
-
-        }
-        else {
-
-            productRows =
-                productResult.data || [];
-
-        }
-
-    }
-
-
-    /*
-     * ربط كل منتج بـ seller_request_id
-     */
-
-    const productMap =
-        new Map();
-
-    productRows.forEach(
-        product => {
-
-            productMap.set(
-                String(product.id),
-                product
-            );
-
-        }
-    );
-
-
-    const resolvedItems =
-        items.map(
-            item => {
-
-                let sellerRequestId =
-                    clean(
-                        item.seller_request_id ||
-                        item.sellerRequestId
-                    );
-
-                const productId =
-                    clean(
-                        item.id ||
-                        item.product_id ||
-                        item.productId
-                    );
-
-                const product =
-                    productMap.get(
-                        String(productId)
-                    );
-
-                if (
-                    !sellerRequestId &&
-                    product &&
-                    product.seller_request_id
-                ) {
-
-                    sellerRequestId =
-                        clean(
-                            product.seller_request_id
-                        );
-
-                }
-
-                return {
-
-                    ...item,
-
-                    sellerRequestId:
-                        sellerRequestId || null,
-
-                    sellerName:
-                        clean(
-                            item.seller_name ||
-                            item.sellerName ||
-                            product?.seller_name
-                        )
-
-                };
-
-            }
-        );
-
-
-    /*
-     * جلب أصحاب السلع المرتبطين بالطلب
-     */
-
-    const ids =
-        [
-            ...new Set(
-                resolvedItems
-                    .map(
-                        item =>
-                            clean(
-                                item.sellerRequestId
-                            )
-                    )
-                    .filter(Boolean)
-            )
-        ];
-
-
-    if (ids.length === 0) {
-
-        return [];
-
-    }
-
-
-    const sellerResult =
-        await db
-            .from(SELLER_TABLE)
-            .select(
-                "id,seller_name,phone,city,product_name"
-            )
-            .in(
-                "id",
-                ids
-            );
-
-
-    if (sellerResult.error) {
-
-        console.error(
-            "SELLER LOOKUP ERROR:",
-            sellerResult.error
-        );
-
-        throw new Error(
-            "تعذر قراءة بيانات أصحاب السلع:\n\n" +
-            sellerResult.error.message
-        );
-
-    }
-
-
-    const sellers =
-        sellerResult.data || [];
-
-
-    const sellerMap =
-        new Map();
-
-    sellers.forEach(
-        seller => {
-
-            sellerMap.set(
-                String(seller.id),
-                seller
-            );
-
-        }
-    );
-
-
-    /*
-     * تجميع السلع حسب صاحبها
-     */
-
-    const grouped =
-        new Map();
-
-
-    resolvedItems.forEach(
-        item => {
-
-            const requestId =
-                clean(
-                    item.sellerRequestId
-                );
-
-            if (!requestId) {
-                return;
-            }
-
-            const seller =
-                sellerMap.get(
-                    String(requestId)
-                );
-
-            if (!seller) {
-                return;
-            }
-
-
-            if (
-                !grouped.has(requestId)
-            ) {
-
-                grouped.set(
-                    requestId,
-                    {
-
-                        sellerRequestId:
-                            requestId,
-
-                        sellerName:
-                            clean(
-                                seller.seller_name ||
-                                item.sellerName
-                            ) ||
-                            "صاحب السلعة",
-
-                        phone:
-                            clean(
-                                seller.phone
-                            ),
-
-                        city:
-                            clean(
-                                seller.city
-                            ),
-
-                        items: []
-
-                    }
-                );
-
-            }
-
-
-            grouped
-                .get(requestId)
-                .items
-                .push(item);
-
-        }
-    );
-
-
-    return [
-        ...grouped.values()
-    ];
-
-}
-
-
-/* =========================================================
-   تنظيف رقم واتساب
-========================================================= */
-
-function whatsappPhone(value) {
-
-    let phone =
-        clean(value);
-
-    if (!phone) {
-        return "";
-    }
-
-    /*
-     * إزالة المسافات والرموز
-     */
-
-    phone =
-        phone.replace(
-            /[\s\-()]/g,
-            ""
-        );
-
-
-    /*
-     * تحويل الرقم السعودي:
-     * 05xxxxxxxx
-     * إلى:
-     * 9665xxxxxxxx
-     */
-
-    if (
-        phone.startsWith("05") &&
-        phone.length === 10
-    ) {
-
-        phone =
-            "966" +
-            phone.substring(1);
-
-    }
-
-
-    /*
-     * إذا كان مكتوبًا +966
-     */
-
-    if (
-        phone.startsWith("+")
-    ) {
-
-        phone =
-            phone.substring(1);
-
-    }
-
-
-    return phone;
-
-}
-
-
-/* =========================================================
-   تجهيز رسالة واتساب للبائع
-========================================================= */
-
-function buildSellerWhatsAppMessage(
-    order,
-    seller
-) {
-
-    const lines = [];
-
-    lines.push(
-        "🎉 لديك طلب جديد لسلعتك من موقع لَحْقها"
-    );
-
-    lines.push("");
-
-    lines.push(
-        "🧾 رقم الطلب: " +
-        (
-            order.number ||
-            order.id ||
-            "—"
-        )
-    );
-
-    lines.push("");
-
-
-    seller.items.forEach(
-        function(item, index) {
-
-            lines.push(
-                "📦 السلعة: " +
-                (
-                    item.title ||
-                    item.name ||
-                    "منتج"
-                )
-            );
-
-            lines.push(
-                "🔢 الكمية: " +
-                (
-                    item.quantity ||
-                    1
-                )
-            );
-
-            lines.push(
-                "💰 سعر الوحدة: " +
-                money(item.price)
-            );
-
-            lines.push(
-                "💵 إجمالي السلعة: " +
-                money(item.subtotal)
-            );
-
-            if (
-                index <
-                seller.items.length - 1
-            ) {
-
-                lines.push("");
-                lines.push("────────────");
-                lines.push("");
-
-            }
-
-        }
-    );
-
-
-    lines.push("");
-    lines.push("👤 بيانات المشتري");
-
-    lines.push(
-        "الاسم: " +
-        (
-            order.name ||
-            "—"
-        )
-    );
-
-    lines.push(
-        "📱 الجوال: " +
-        (
-            order.phone ||
-            "—"
-        )
-    );
-
-    lines.push(
-        "📍 المدينة: " +
-        (
-            order.city ||
-            "—"
-        )
-    );
-
-    lines.push(
-        "🏠 العنوان: " +
-        (
-            order.address ||
-            "—"
-        )
-    );
-
-    lines.push(
-        "💳 طريقة الدفع: " +
-        (
-            order.paymentMethod ||
-            "—"
-        )
-    );
-
-    lines.push("");
-
-    lines.push(
-        "يرجى تأكيد استلام الطلب بالرد على هذه الرسالة:"
-    );
-
-    lines.push("");
-
-    lines.push(
-        "نعم، استلمت الطلب"
-    );
-
-    lines.push("");
-
-    lines.push(
-        "بعد تأكيد الاستلام، يرجى التواصل مع المشتري لإتمام التسليم حسب الاتفاق."
-    );
-
-    return lines.join("\n");
-
-}
-
-
-/* =========================================================
-   فتح واتساب للبائع
-========================================================= */
-
-function openSellerWhatsApp(
-    orderId,
-    sellerRequestId
-) {
-
-    const order =
-        allOrders.find(
-            item =>
-                item.type === "buyer" &&
-                String(item.id) ===
-                String(orderId)
-        );
-
-    if (!order) {
-
-        alert(
-            "تعذر العثور على الطلب."
-        );
-
-        return;
-
-    }
-
-
-    const sellersPromise =
-        getOrderSellers(
-            order
-        );
-
-
-    sellersPromise
-        .then(
-            function(sellers) {
-
-                const seller =
-                    sellers.find(
-                        item =>
-                            String(
-                                item.sellerRequestId
-                            ) ===
-                            String(
-                                sellerRequestId
-                            )
-                    );
-
-
-                if (!seller) {
-
-                    alert(
-                        "تعذر العثور على صاحب هذه السلعة."
-                    );
-
-                    return;
-
-                }
-
-
-                const phone =
-                    whatsappPhone(
-                        seller.phone
-                    );
-
-
-                if (!phone) {
-
-                    alert(
-                        "لا يوجد رقم جوال محفوظ لصاحب هذه السلعة."
-                    );
-
-                    return;
-
-                }
-
-
-                const message =
-                    buildSellerWhatsAppMessage(
-                        order,
-                        seller
-                    );
-
-
-                const url =
-                    "https://wa.me/" +
-                    phone +
-                    "?text=" +
-                    encodeURIComponent(
-                        message
-                    );
-
-
-                window.open(
-                    url,
-                    "_blank",
-                    "noopener,noreferrer"
-                );
-
-            }
-        )
-        .catch(
-            function(error) {
-
-                console.error(
-                    "WHATSAPP ERROR:",
-                    error
-                );
-
-                alert(
-                    "❌ تعذر تجهيز رسالة واتساب:\n\n" +
-                    error.message
-                );
-
-            }
-        );
-
-}
     if (!value) {
         return [];
     }
@@ -2224,8 +1405,12 @@ function openSellerWhatsApp(
         }
         catch (error) {
 
-            return [];
+            console.error(
+                "تعذر تحليل items:",
+                error
+            );
 
+            return [];
         }
 
     }
@@ -2233,9 +1418,7 @@ function openSellerWhatsApp(
     if (
         !Array.isArray(items)
     ) {
-
         return [];
-
     }
 
     return items
@@ -2346,241 +1529,12 @@ function openSellerWhatsApp(
 }
 
 
-function buyerItemsHtml(items) {
 /* =========================================================
-   أزرار واتساب لأصحاب السلع
+   عرض سلع طلب المشتري
 ========================================================= */
 
-async function buyerWhatsAppHtml(order) {
+function buyerItemsHtml(items) {
 
-    if (
-        !order ||
-        order.type !== "buyer"
-    ) {
-
-        return "";
-
-    }
-
-
-    /*
-     * لا نعرض زر التواصل إلا بعد اعتماد الطلب.
-     */
-
-    const status =
-        clean(
-            order.status
-        ).toLowerCase();
-
-
-    const approved =
-        [
-            "approved",
-            "accepted",
-            "confirmed",
-            "مقبول"
-        ].includes(
-            status
-        );
-
-
-    if (!approved) {
-
-        return "";
-
-    }
-
-
-    try {
-
-        const sellers =
-            await getOrderSellers(
-                order
-            );
-
-
-        if (
-            sellers.length === 0
-        ) {
-
-            return `
-
-                <div class="whatsapp-actions">
-
-                    <div class="whatsapp-title">
-                        📲 التواصل مع البائع
-                    </div>
-
-                    <div class="whatsapp-missing">
-
-                        ⚠️ لم يتم العثور على ربط صاحب السلعة بهذا الطلب.
-                        <br>
-                        نحتاج أولًا إلى ربط السلعة بصاحبها.
-
-                    </div>
-
-                </div>
-
-            `;
-
-        }
-
-
-        return `
-
-            <div class="whatsapp-actions">
-
-                <div class="whatsapp-title">
-                    📲 إرسال الطلب لصاحب السلعة عبر واتساب
-                </div>
-
-                <div
-                    class="whatsapp-list"
-                >
-
-                    ${
-                        sellers
-                            .map(
-                                function(seller) {
-
-                                    const phone =
-                                        whatsappPhone(
-                                            seller.phone
-                                        );
-
-                                    const sellerItems =
-                                        seller.items
-                                            .map(
-                                                item =>
-                                                    (
-                                                        item.title ||
-                                                        item.name ||
-                                                        "منتج"
-                                                    ) +
-                                                    " × " +
-                                                    (
-                                                        item.quantity ||
-                                                        1
-                                                    )
-                                            )
-                                            .join(
-                                                " — "
-                                            );
-
-
-                                    return `
-
-                                        <div
-                                            class="whatsapp-seller"
-                                        >
-
-                                            <div
-                                                class="whatsapp-seller-name"
-                                            >
-
-                                                👤
-                                                ${safe(
-                                                    seller.sellerName
-                                                )}
-
-                                            </div>
-
-
-                                            <div
-                                                class="whatsapp-seller-info"
-                                            >
-
-                                                📦
-                                                ${safe(
-                                                    sellerItems
-                                                )}
-
-                                                <br>
-
-                                                📱
-                                                ${safe(
-                                                    seller.phone ||
-                                                    "لا يوجد رقم"
-                                                )}
-
-                                            </div>
-
-
-                                            ${
-                                                phone
-
-                                                    ?
-
-                                                    `
-
-                                                        <button
-                                                            class="whatsapp-button"
-                                                            type="button"
-                                                            onclick="openSellerWhatsApp(
-                                                                '${safe(order.id)}',
-                                                                '${safe(seller.sellerRequestId)}'
-                                                            )"
-                                                        >
-
-                                                            📲 إرسال الطلب عبر واتساب
-
-                                                        </button>
-
-                                                    `
-
-                                                    :
-
-                                                    `
-
-                                                        <div
-                                                            class="whatsapp-missing"
-                                                        >
-                                                            ⚠️ لا يوجد رقم واتساب محفوظ لهذا البائع.
-                                                        </div>
-
-                                                    `
-                                            }
-
-                                        </div>
-
-                                    `;
-
-                                }
-                            )
-                            .join("")
-                    }
-
-                </div>
-
-            </div>
-
-        `;
-
-    }
-    catch (error) {
-
-        console.error(
-            "BUYER WHATSAPP HTML ERROR:",
-            error
-        );
-
-        return `
-
-            <div class="whatsapp-actions">
-
-                <div class="whatsapp-missing">
-
-                    ⚠️ تعذر تجهيز خيار التواصل مع البائع.
-
-                </div>
-
-            </div>
-
-        `;
-
-    }
-
-}
     if (
         !items ||
         items.length === 0
@@ -2595,10 +1549,7 @@ async function buyerWhatsAppHtml(order) {
                 </div>
 
                 <div class="no-image">
-
-                    لا توجد تفاصيل سلع محفوظة
-                    في هذا الطلب.
-
+                    لا توجد تفاصيل سلع محفوظة في هذا الطلب.
                 </div>
 
             </div>
@@ -2613,10 +1564,7 @@ async function buyerWhatsAppHtml(order) {
         <div class="seller-images">
 
             <div class="seller-images-title">
-
-                🛍️ السلع التي اشتراها المشتري
-                (${items.length})
-
+                🛍️ السلع التي اشتراها المشتري (${items.length})
             </div>
 
             <div class="orders">
@@ -2632,9 +1580,7 @@ async function buyerWhatsAppHtml(order) {
 
                             const imageHtml =
                                 image
-
                                 ?
-
                                 `
 
                                     <img
@@ -2647,9 +1593,7 @@ async function buyerWhatsAppHtml(order) {
                                     >
 
                                 `
-
                                 :
-
                                 `
 
                                     <div
@@ -2727,17 +1671,19 @@ async function buyerWhatsAppHtml(order) {
 
                                                 ${
                                                     familyName
-                                                        ? `
+                                                    ?
+                                                    `
 
-                                                            <br>
+                                                        <br>
 
-                                                            🏠 الأسرة:
-                                                            <strong style="color:#8b5517;">
-                                                                ${safe(familyName)}
-                                                            </strong>
+                                                        🏠 الأسرة:
+                                                        <strong style="color:#8b5517;">
+                                                            ${safe(familyName)}
+                                                        </strong>
 
-                                                        `
-                                                        : ""
+                                                    `
+                                                    :
+                                                    ""
                                                 }
 
                                             </div>
@@ -2749,10 +1695,8 @@ async function buyerWhatsAppHtml(order) {
                                                     color:#166534;
                                                 "
                                             >
-
                                                 إجمالي السلعة:
                                                 ${money(item.subtotal)}
-
                                             </div>
 
                                         </div>
@@ -2772,6 +1716,868 @@ async function buyerWhatsAppHtml(order) {
         </div>
 
     `;
+
+}
+
+
+/* =========================================================
+   تجهيز بيانات البائعين لطلب المشتري
+========================================================= */
+
+async function getOrderSellers(order) {
+
+    const items =
+        order.items || [];
+
+    if (
+        !items.length
+    ) {
+        return [];
+    }
+
+
+    const requestIds = [
+        ...new Set(
+            items
+                .map(
+                    item =>
+                        clean(
+                            item.sellerRequestId ||
+                            item.seller_request_id
+                        )
+                )
+                .filter(Boolean)
+        )
+    ];
+
+
+    const productIds = [
+        ...new Set(
+            items
+                .filter(
+                    item => {
+
+                        const requestId =
+                            clean(
+                                item.sellerRequestId ||
+                                item.seller_request_id
+                            );
+
+                        return !requestId;
+                    }
+                )
+                .map(
+                    item =>
+                        clean(
+                            item.id ||
+                            item.product_id ||
+                            item.productId
+                        )
+                )
+                .filter(Boolean)
+        )
+    ];
+
+
+    let productRows = [];
+
+
+    if (
+        productIds.length > 0
+    ) {
+
+        const productResult =
+            await db
+                .from(PRODUCTS_TABLE)
+                .select(
+                    "id,seller_request_id,seller_id,seller_name,title"
+                )
+                .in(
+                    "id",
+                    productIds
+                );
+
+
+        if (
+            productResult.error
+        ) {
+
+            console.warn(
+                "تعذر قراءة ربط المنتجات بالبائعين:",
+                productResult.error.message
+            );
+
+        }
+        else {
+
+            productRows =
+                productResult.data || [];
+
+        }
+
+    }
+
+
+    const productMap =
+        new Map();
+
+
+    productRows.forEach(
+        product => {
+
+            productMap.set(
+                String(product.id),
+                product
+            );
+
+        }
+    );
+
+
+    const resolvedItems =
+        items.map(
+            item => {
+
+                let sellerRequestId =
+                    clean(
+                        item.sellerRequestId ||
+                        item.seller_request_id
+                    );
+
+                const productId =
+                    clean(
+                        item.id ||
+                        item.product_id ||
+                        item.productId
+                    );
+
+                const product =
+                    productMap.get(
+                        String(productId)
+                    );
+
+
+                if (
+                    !sellerRequestId &&
+                    product &&
+                    product.seller_request_id
+                ) {
+
+                    sellerRequestId =
+                        clean(
+                            product.seller_request_id
+                        );
+
+                }
+
+
+                return {
+
+                    ...item,
+
+                    sellerRequestId:
+                        sellerRequestId || null,
+
+                    sellerName:
+                        clean(
+                            item.sellerName ||
+                            item.seller_name ||
+                            product?.seller_name
+                        )
+
+                };
+
+            }
+        );
+
+
+    const ids =
+        [
+            ...new Set(
+                resolvedItems
+                    .map(
+                        item =>
+                            clean(
+                                item.sellerRequestId
+                            )
+                    )
+                    .filter(Boolean)
+            )
+        ];
+
+
+    if (
+        ids.length === 0
+    ) {
+        return [];
+    }
+
+
+    const sellerResult =
+        await db
+            .from(SELLER_TABLE)
+            .select(
+                "id,seller_name,phone,city,product_name"
+            )
+            .in(
+                "id",
+                ids
+            );
+
+
+    if (
+        sellerResult.error
+    ) {
+
+        console.error(
+            "SELLER LOOKUP ERROR:",
+            sellerResult.error
+        );
+
+        throw new Error(
+            "تعذر قراءة بيانات أصحاب السلع:\n\n" +
+            sellerResult.error.message
+        );
+
+    }
+
+
+    const sellers =
+        sellerResult.data || [];
+
+
+    const sellerMap =
+        new Map();
+
+
+    sellers.forEach(
+        seller => {
+
+            sellerMap.set(
+                String(seller.id),
+                seller
+            );
+
+        }
+    );
+
+
+    const grouped =
+        new Map();
+
+
+    resolvedItems.forEach(
+        item => {
+
+            const requestId =
+                clean(
+                    item.sellerRequestId
+                );
+
+            if (
+                !requestId
+            ) {
+                return;
+            }
+
+
+            const seller =
+                sellerMap.get(
+                    String(requestId)
+                );
+
+
+            if (
+                !seller
+            ) {
+                return;
+            }
+
+
+            if (
+                !grouped.has(requestId)
+            ) {
+
+                grouped.set(
+                    requestId,
+                    {
+
+                        sellerRequestId:
+                            requestId,
+
+                        sellerName:
+                            clean(
+                                seller.seller_name ||
+                                item.sellerName
+                            ) ||
+                            "صاحب السلعة",
+
+                        phone:
+                            clean(
+                                seller.phone
+                            ),
+
+                        city:
+                            clean(
+                                seller.city
+                            ),
+
+                        items:
+                            []
+
+                    }
+                );
+
+            }
+
+
+            grouped
+                .get(requestId)
+                .items
+                .push(item);
+
+        }
+    );
+
+
+    return [
+        ...grouped.values()
+    ];
+
+}
+
+
+/* =========================================================
+   تنظيف رقم واتساب
+========================================================= */
+
+function whatsappPhone(value) {
+
+    let phone =
+        clean(value);
+
+    if (
+        !phone
+    ) {
+        return "";
+    }
+
+
+    phone =
+        phone.replace(
+            /[\s\-()]/g,
+            ""
+        );
+
+
+    if (
+        phone.startsWith("05") &&
+        phone.length === 10
+    ) {
+
+        phone =
+            "966" +
+            phone.substring(1);
+
+    }
+
+
+    if (
+        phone.startsWith("+")
+    ) {
+
+        phone =
+            phone.substring(1);
+
+    }
+
+
+    return phone;
+
+}
+
+
+/* =========================================================
+   تجهيز رسالة واتساب للبائع
+========================================================= */
+
+function buildSellerWhatsAppMessage(
+    order,
+    seller
+) {
+
+    const lines = [];
+
+
+    lines.push(
+        "🎉 لديك طلب جديد لسلعتك من موقع لَحْقها"
+    );
+
+    lines.push("");
+
+    lines.push(
+        "🧾 رقم الطلب: " +
+        (
+            order.number ||
+            order.id ||
+            "—"
+        )
+    );
+
+    lines.push("");
+
+
+    seller.items.forEach(
+        function(item, index) {
+
+            lines.push(
+                "📦 السلعة: " +
+                (
+                    item.title ||
+                    item.name ||
+                    "منتج"
+                )
+            );
+
+            lines.push(
+                "🔢 الكمية: " +
+                (
+                    item.quantity ||
+                    1
+                )
+            );
+
+            lines.push(
+                "💰 سعر الوحدة: " +
+                money(item.price)
+            );
+
+            lines.push(
+                "💵 إجمالي السلعة: " +
+                money(item.subtotal)
+            );
+
+
+            if (
+                index <
+                seller.items.length - 1
+            ) {
+
+                lines.push("");
+                lines.push("────────────");
+                lines.push("");
+
+            }
+
+        }
+    );
+
+
+    lines.push("");
+
+    lines.push(
+        "👤 بيانات المشتري"
+    );
+
+    lines.push(
+        "الاسم: " +
+        (
+            order.name ||
+            "—"
+        )
+    );
+
+    lines.push(
+        "📱 الجوال: " +
+        (
+            order.phone ||
+            "—"
+        )
+    );
+
+    lines.push(
+        "📍 المدينة: " +
+        (
+            order.city ||
+            "—"
+        )
+    );
+
+    lines.push(
+        "🏠 العنوان: " +
+        (
+            order.address ||
+            "—"
+        )
+    );
+
+    lines.push(
+        "💳 طريقة الدفع: " +
+        (
+            order.paymentMethod ||
+            "—"
+        )
+    );
+
+    lines.push("");
+
+    lines.push(
+        "يرجى تأكيد استلام الطلب بالرد على هذه الرسالة:"
+    );
+
+    lines.push("");
+
+    lines.push(
+        "نعم، استلمت الطلب"
+    );
+
+    lines.push("");
+
+    lines.push(
+        "بعد تأكيد الاستلام، يرجى التواصل مع المشتري لإتمام التسليم حسب الاتفاق."
+    );
+
+
+    return lines.join("\n");
+
+}
+
+
+/* =========================================================
+   فتح واتساب للبائع
+========================================================= */
+
+async function openSellerWhatsApp(
+    orderId,
+    sellerRequestId
+) {
+
+    try {
+
+        const order =
+            allOrders.find(
+                item =>
+                    item.type === "buyer" &&
+                    String(item.id) ===
+                    String(orderId)
+            );
+
+
+        if (
+            !order
+        ) {
+
+            alert(
+                "تعذر العثور على الطلب."
+            );
+
+            return;
+        }
+
+
+        const sellers =
+            await getOrderSellers(
+                order
+            );
+
+
+        const seller =
+            sellers.find(
+                item =>
+                    String(
+                        item.sellerRequestId
+                    ) ===
+                    String(
+                        sellerRequestId
+                    )
+            );
+
+
+        if (
+            !seller
+        ) {
+
+            alert(
+                "تعذر العثور على صاحب هذه السلعة."
+            );
+
+            return;
+        }
+
+
+        const phone =
+            whatsappPhone(
+                seller.phone
+            );
+
+
+        if (
+            !phone
+        ) {
+
+            alert(
+                "لا يوجد رقم جوال محفوظ لصاحب هذه السلعة."
+            );
+
+            return;
+        }
+
+
+        const message =
+            buildSellerWhatsAppMessage(
+                order,
+                seller
+            );
+
+
+        const url =
+            "https://wa.me/" +
+            phone +
+            "?text=" +
+            encodeURIComponent(
+                message
+            );
+
+
+        window.open(
+            url,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "WHATSAPP ERROR:",
+            error
+        );
+
+        alert(
+            "❌ تعذر تجهيز رسالة واتساب:\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   أزرار واتساب لطلبات المشترين
+========================================================= */
+
+async function buyerWhatsAppHtml(order) {
+
+    if (
+        !order ||
+        order.type !== "buyer"
+    ) {
+        return "";
+    }
+
+
+    const status =
+        clean(
+            order.status
+        ).toLowerCase();
+
+
+    const approved =
+        [
+            "approved",
+            "accepted",
+            "confirmed",
+            "مقبول"
+        ].includes(
+            status
+        );
+
+
+    if (
+        !approved
+    ) {
+        return "";
+    }
+
+
+    try {
+
+        const sellers =
+            await getOrderSellers(
+                order
+            );
+
+
+        if (
+            sellers.length === 0
+        ) {
+
+            return `
+
+                <div class="whatsapp-actions">
+
+                    <div class="whatsapp-title">
+                        📲 التواصل مع البائع
+                    </div>
+
+                    <div class="whatsapp-missing">
+
+                        ⚠️ لم يتم العثور على ربط صاحب السلعة بهذا الطلب.
+
+                        <br>
+
+                        نحتاج أولًا إلى ربط السلعة بصاحبها.
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        return `
+
+            <div class="whatsapp-actions">
+
+                <div class="whatsapp-title">
+                    📲 إرسال الطلب لصاحب السلعة عبر واتساب
+                </div>
+
+                <div class="whatsapp-list">
+
+                    ${
+                        sellers
+                            .map(
+                                function(seller) {
+
+                                    const phone =
+                                        whatsappPhone(
+                                            seller.phone
+                                        );
+
+
+                                    const sellerItems =
+                                        seller.items
+                                            .map(
+                                                item =>
+                                                    (
+                                                        item.title ||
+                                                        item.name ||
+                                                        "منتج"
+                                                    ) +
+                                                    " × " +
+                                                    (
+                                                        item.quantity ||
+                                                        1
+                                                    )
+                                            )
+                                            .join(
+                                                " — "
+                                            );
+
+
+                                    return `
+
+                                        <div class="whatsapp-seller">
+
+                                            <div class="whatsapp-seller-name">
+
+                                                👤
+                                                ${safe(
+                                                    seller.sellerName
+                                                )}
+
+                                            </div>
+
+
+                                            <div class="whatsapp-seller-info">
+
+                                                📦
+                                                ${safe(
+                                                    sellerItems
+                                                )}
+
+                                                <br>
+
+                                                📱
+                                                ${safe(
+                                                    seller.phone ||
+                                                    "لا يوجد رقم"
+                                                )}
+
+                                            </div>
+
+
+                                            ${
+                                                phone
+
+                                                ?
+
+                                                `
+
+                                                    <button
+                                                        class="whatsapp-button"
+                                                        type="button"
+                                                        onclick="openSellerWhatsApp(
+                                                            '${safe(order.id)}',
+                                                            '${safe(seller.sellerRequestId)}'
+                                                        )"
+                                                    >
+                                                        📲 إرسال الطلب عبر واتساب
+                                                    </button>
+
+                                                `
+
+                                                :
+
+                                                `
+
+                                                    <div class="whatsapp-missing">
+                                                        ⚠️ لا يوجد رقم واتساب محفوظ لهذا البائع.
+                                                    </div>
+
+                                                `
+                                            }
+
+                                        </div>
+
+                                    `;
+
+                                }
+                            )
+                            .join("")
+                    }
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+    catch (error) {
+
+        console.error(
+            "BUYER WHATSAPP HTML ERROR:",
+            error
+        );
+
+        return `
+
+            <div class="whatsapp-actions">
+
+                <div class="whatsapp-missing">
+                    ⚠️ تعذر تجهيز خيار التواصل مع البائع.
+                </div>
+
+            </div>
+
+        `;
+
+    }
 
 }
 
@@ -2802,6 +2608,7 @@ function mapBuyer(row) {
         parseOrderItems(
             row.items
         );
+
 
     return {
 
@@ -2892,13 +2699,15 @@ function mapBuyer(row) {
 
         product:
             items.length > 0
-                ? items
+                ?
+                items
                     .map(
                         item =>
                             item.title
                     )
                     .join(" — ")
-                : productName(row),
+                :
+                productName(row),
 
         productExtra:
             "",
@@ -2922,6 +2731,7 @@ function sellerExtra(row) {
 
     const parts = [];
 
+
     const quantity =
         pick(
             row,
@@ -2930,6 +2740,7 @@ function sellerExtra(row) {
                 "qty"
             ]
         );
+
 
     const category =
         normalizeCategory(
@@ -2942,7 +2753,10 @@ function sellerExtra(row) {
             )
         );
 
-    if (quantity) {
+
+    if (
+        quantity
+    ) {
 
         parts.push(
             "الكمية: " +
@@ -2951,7 +2765,10 @@ function sellerExtra(row) {
 
     }
 
-    if (category) {
+
+    if (
+        category
+    ) {
 
         parts.push(
             "التصنيف: " +
@@ -2959,6 +2776,7 @@ function sellerExtra(row) {
         );
 
     }
+
 
     return parts.join(" — ");
 
@@ -3079,7 +2897,7 @@ function mapSeller(row) {
 
 
 /* =========================================================
-   تحميل الطلبات
+   تحميل طلبات المشترين
 ========================================================= */
 
 async function loadBuyerOrders() {
@@ -3095,7 +2913,10 @@ async function loadBuyerOrders() {
                 }
             );
 
-    if (result.error) {
+
+    if (
+        result.error
+    ) {
 
         throw new Error(
             "خطأ في جدول orders: " +
@@ -3103,6 +2924,7 @@ async function loadBuyerOrders() {
         );
 
     }
+
 
     return (
         result.data || []
@@ -3113,6 +2935,10 @@ async function loadBuyerOrders() {
 }
 
 
+/* =========================================================
+   تحميل طلبات البائعين
+========================================================= */
+
 async function loadSellerOrders() {
 
     const result =
@@ -3120,7 +2946,10 @@ async function loadSellerOrders() {
             .from(SELLER_TABLE)
             .select("*");
 
-    if (result.error) {
+
+    if (
+        result.error
+    ) {
 
         throw new Error(
             "خطأ في جدول seller_requests: " +
@@ -3129,11 +2958,13 @@ async function loadSellerOrders() {
 
     }
 
+
     const rows =
         result.data || [];
 
+
     rows.sort(
-        function(a,b) {
+        function(a, b) {
 
             return (
                 new Date(
@@ -3147,6 +2978,7 @@ async function loadSellerOrders() {
 
         }
     );
+
 
     return rows.map(
         mapSeller
@@ -3164,15 +2996,18 @@ function buildProductData(seller) {
     const raw =
         seller.raw || {};
 
+
     const sellerRequestId =
         clean(
             raw.id
         ) || null;
 
+
     const sellerIdValue =
         raw.seller_id ??
         raw.sellerId ??
         null;
+
 
     const sellerNameValue =
         clean(
@@ -3180,6 +3015,7 @@ function buildProductData(seller) {
             raw.sellerName ||
             seller.name
         ) || null;
+
 
     const title =
         pick(
@@ -3193,6 +3029,7 @@ function buildProductData(seller) {
             ]
         ) || "منتج";
 
+
     const description =
         pick(
             raw,
@@ -3202,6 +3039,7 @@ function buildProductData(seller) {
                 "product_description"
             ]
         ) || "";
+
 
     const priceValue =
         pick(
@@ -3214,12 +3052,14 @@ function buildProductData(seller) {
             ]
         );
 
+
     const priceNumber =
         priceValue === ""
             ? 0
             : Number(
                 priceValue
             );
+
 
     const rawCategory =
         pick(
@@ -3231,25 +3071,30 @@ function buildProductData(seller) {
             ]
         );
 
+
     const category =
         normalizeCategory(
             rawCategory
         );
+
 
     const images =
         getSellerImages(
             raw
         );
 
+
     const firstImage =
         images.length > 0
             ? images[0]
             : null;
 
+
     const family =
         getFamilyData(
             raw
         );
+
 
     const productData = {
 
@@ -3298,6 +3143,7 @@ function buildProductData(seller) {
 
     };
 
+
     if (
         family.familySlug === "sugar-rose"
     ) {
@@ -3306,6 +3152,7 @@ function buildProductData(seller) {
             "أسر منتجة";
 
     }
+
 
     return productData;
 
@@ -3323,6 +3170,7 @@ async function publishSellerProduct(seller) {
             seller
         );
 
+
     if (
         !productData.seller_request_id
     ) {
@@ -3332,6 +3180,7 @@ async function publishSellerProduct(seller) {
         );
 
     }
+
 
     const existingByRequest =
         await db
@@ -3343,7 +3192,10 @@ async function publishSellerProduct(seller) {
             )
             .limit(1);
 
-    if (existingByRequest.error) {
+
+    if (
+        existingByRequest.error
+    ) {
 
         throw new Error(
             "تعذر التحقق من ربط المنتج بالبائع: " +
@@ -3351,6 +3203,7 @@ async function publishSellerProduct(seller) {
         );
 
     }
+
 
     if (
         existingByRequest.data &&
@@ -3361,6 +3214,7 @@ async function publishSellerProduct(seller) {
             existingByRequest
                 .data[0]
                 .id;
+
 
         const updateExisting =
             await db
@@ -3373,7 +3227,10 @@ async function publishSellerProduct(seller) {
                     existingId
                 );
 
-        if (updateExisting.error) {
+
+        if (
+            updateExisting.error
+        ) {
 
             throw new Error(
                 "تعذر تحديث المنتج المرتبط بالبائع: " +
@@ -3381,6 +3238,7 @@ async function publishSellerProduct(seller) {
             );
 
         }
+
 
         return {
 
@@ -3397,6 +3255,7 @@ async function publishSellerProduct(seller) {
 
     }
 
+
     const result =
         await db
             .from(PRODUCTS_TABLE)
@@ -3406,7 +3265,10 @@ async function publishSellerProduct(seller) {
             .select()
             .single();
 
-    if (result.error) {
+
+    if (
+        result.error
+    ) {
 
         console.error(
             "PRODUCT INSERT ERROR:",
@@ -3419,6 +3281,7 @@ async function publishSellerProduct(seller) {
         );
 
     }
+
 
     return {
 
@@ -3447,7 +3310,10 @@ async function loadProducts() {
             .from(PRODUCTS_TABLE)
             .select("*");
 
-    if (result.error) {
+
+    if (
+        result.error
+    ) {
 
         throw new Error(
             "خطأ في جدول products: " +
@@ -3456,11 +3322,13 @@ async function loadProducts() {
 
     }
 
+
     const rows =
         result.data || [];
 
+
     rows.sort(
-        function(a,b) {
+        function(a, b) {
 
             return (
                 new Date(
@@ -3474,6 +3342,7 @@ async function loadProducts() {
 
         }
     );
+
 
     return rows;
 
@@ -3526,6 +3395,7 @@ function productStatus(product) {
 
     }
 
+
     return {
 
         text:
@@ -3550,15 +3420,18 @@ function createProductCard(product) {
             product.id
         );
 
+
     const images =
         getSellerImages(
             product
         );
 
+
     const status =
         productStatus(
             product
         );
+
 
     const familyName =
         pick(
@@ -3570,6 +3443,7 @@ function createProductCard(product) {
             ]
         ) || "—";
 
+
     const title =
         pick(
             product,
@@ -3579,6 +3453,7 @@ function createProductCard(product) {
                 "name"
             ]
         ) || "منتج";
+
 
     const category =
         normalizeCategory(
@@ -3591,6 +3466,7 @@ function createProductCard(product) {
             )
         ) || "—";
 
+
     const familyPage =
         pick(
             product,
@@ -3598,6 +3474,7 @@ function createProductCard(product) {
                 "family_page"
             ]
         );
+
 
     const description =
         pick(
@@ -3607,6 +3484,7 @@ function createProductCard(product) {
                 "details"
             ]
         );
+
 
     return `
 
@@ -3695,7 +3573,9 @@ function createProductCard(product) {
 
             ${
                 product.seller_request_id
-                    ? `
+                    ?
+
+                    `
 
                         <div class="product">
 
@@ -3727,7 +3607,10 @@ function createProductCard(product) {
                         </div>
 
                     `
-                    : `
+
+                    :
+
+                    `
 
                         <div class="product">
 
@@ -3751,7 +3634,9 @@ function createProductCard(product) {
 
             ${
                 familyPage
-                    ? `
+                    ?
+
+                    `
 
                         <div class="product">
 
@@ -3766,13 +3651,18 @@ function createProductCard(product) {
                         </div>
 
                     `
-                    : ""
+
+                    :
+
+                    ""
             }
 
 
             ${
                 description
-                    ? `
+                    ?
+
+                    `
 
                         <div class="product">
 
@@ -3787,7 +3677,10 @@ function createProductCard(product) {
                         </div>
 
                     `
-                    : ""
+
+                    :
+
+                    ""
             }
 
 
@@ -3799,39 +3692,39 @@ function createProductCard(product) {
                 ${
                     productAvailable(product)
 
-                        ?
+                    ?
 
-                        `
+                    `
 
-                            <button
-                                class="action hide"
-                                type="button"
-                                onclick="toggleProduct(
-                                    '${id}',
-                                    false
-                                )"
-                            >
-                                👁️ إخفاء من المتجر
-                            </button>
+                        <button
+                            class="action hide"
+                            type="button"
+                            onclick="toggleProduct(
+                                '${id}',
+                                false
+                            )"
+                        >
+                            👁️ إخفاء من المتجر
+                        </button>
 
-                        `
+                    `
 
-                        :
+                    :
 
-                        `
+                    `
 
-                            <button
-                                class="action show"
-                                type="button"
-                                onclick="toggleProduct(
-                                    '${id}',
-                                    true
-                                )"
-                            >
-                                👁️ إظهار في المتجر
-                            </button>
+                        <button
+                            class="action show"
+                            type="button"
+                            onclick="toggleProduct(
+                                '${id}',
+                                true
+                            )"
+                        >
+                            👁️ إظهار في المتجر
+                        </button>
 
-                        `
+                    `
                 }
 
 
@@ -3864,11 +3757,13 @@ function updateStats() {
                 order.type === "buyer"
         );
 
+
     const sellers =
         allOrders.filter(
             order =>
                 order.type === "seller"
         );
+
 
     const pending =
         allOrders.filter(
@@ -3878,6 +3773,7 @@ function updateStats() {
                     clean(
                         order.status
                     ).toLowerCase();
+
 
                 return ![
                     "approved",
@@ -3891,25 +3787,30 @@ function updateStats() {
             }
         );
 
+
     document.getElementById(
         "totalOrders"
     ).textContent =
         allOrders.length;
+
 
     document.getElementById(
         "buyerOrders"
     ).textContent =
         buyers.length;
 
+
     document.getElementById(
         "sellerOrders"
     ).textContent =
         sellers.length;
 
+
     document.getElementById(
         "pendingOrders"
     ).textContent =
         pending.length;
+
 
     document.getElementById(
         "publishedProducts"
@@ -3925,162 +3826,26 @@ function updateStats() {
 
 
 /* =========================================================
-   العرض
-========================================================= */
-
-function render() {
-
-    const container =
-        document.getElementById(
-            "ordersContainer"
-        );
-
-
-    if (
-        currentView === "products"
-    ) {
-
-        if (
-            allProducts.length === 0
-        ) {
-
-            container.innerHTML = `
-
-                <div class="empty">
-                    لا توجد منتجات منشورة حاليًا.
-                </div>
-
-            `;
-
-            return;
-
-        }
-
-        container.innerHTML =
-            allProducts
-                .map(
-                    createProductCard
-                )
-                .join("");
-
-        return;
-
-    }
-
-
-    let list =
-        allOrders;
-
-
-    if (
-        currentView === "buyer"
-    ) {
-
-        list =
-            allOrders.filter(
-                order =>
-                    order.type === "buyer"
-            );
-
-    }
-
-
-    if (
-        currentView === "seller"
-    ) {
-
-        list =
-            allOrders.filter(
-                order =>
-                    order.type === "seller"
-            );
-
-    }
-
-
-    if (
-        list.length === 0
-    ) {
-
-        container.innerHTML = `
-
-            <div class="empty">
-                لا توجد طلبات في هذا القسم.
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    container.innerHTML =
-        list
-            .map(
-                createCard
-            )
-            .join("");
-
-
-    /*
-     * تجهيز أزرار واتساب لطلبات المشترين المعتمدة
-     */
-
-    list
-        .filter(
-            order =>
-                order.type === "buyer"
-        )
-        .forEach(
-            async function(order) {
-
-                const placeholder =
-                    document.getElementById(
-                        "whatsapp-" +
-                        order.id
-                    );
-
-                if (!placeholder) {
-                    return;
-                }
-
-
-                const html =
-                    await buyerWhatsAppHtml(
-                        order
-                    );
-
-
-                placeholder.outerHTML =
-                    html;
-
-            }
-        );
-
-}
-
-
-/* =========================================================
    بطاقة الطلب
 ========================================================= */
 
 function createCard(order) {
-${buyerItemsHtml(
-    order.items
-)}
+
     const isBuyer =
         order.type === "buyer";
+
 
     const status =
         getStatus(
             order.status
         );
 
+
     const id =
         safe(
             order.id
         );
+
 
     const isTransfer =
         clean(
@@ -4088,6 +3853,7 @@ ${buyerItemsHtml(
         ).toLowerCase()
         ===
         "waiting_transfer";
+
 
     return `
 
@@ -4133,6 +3899,7 @@ ${buyerItemsHtml(
                     </div>
 
                 </div>
+
 
                 <div
                     class="
@@ -4231,7 +3998,9 @@ ${buyerItemsHtml(
 
                 ${
                     order.address
-                        ? `
+                        ?
+
+                        `
 
                             <div class="info">
 
@@ -4248,7 +4017,10 @@ ${buyerItemsHtml(
                             </div>
 
                         `
-                        : ""
+
+                        :
+
+                        ""
                 }
 
 
@@ -4274,102 +4046,127 @@ ${buyerItemsHtml(
             ${
                 isBuyer
 
-                    ?
+                ?
 
-                    `
+                `
 
-                        <div class="payment-box">
+                    <div class="payment-box">
 
-                            <div class="payment-title">
-                                💳 طريقة الدفع
-                            </div>
+                        <div class="payment-title">
+                            💳 طريقة الدفع
+                        </div>
 
-                            <div class="payment-value">
+                        <div class="payment-value">
 
-                                ${safe(
-                                    order.paymentMethod ||
-                                    "—"
-                                )}
-
-                            </div>
-
-
-                            ${
-                                isTransfer
-
-                                    ?
-
-                                    `
-
-                                        <div class="transfer-warning">
-
-                                            💳 بانتظار التحقق من التحويل
-                                            من إشعار البنك.
-
-                                        </div>
-
-                                    `
-
-                                    :
-
-                                    ""
-                            }
+                            ${safe(
+                                order.paymentMethod ||
+                                "—"
+                            )}
 
                         </div>
 
 
-                        ${buyerItemsHtml(
-                            order.items
-                        )}
+                        ${
+                            isTransfer
 
-                    `
+                            ?
 
-                    :
+                            `
 
-                    `
+                                <div class="transfer-warning">
 
-                        <div class="product">
+                                    💳 بانتظار التحقق من التحويل
+                                    من إشعار البنك.
 
-                            <div class="product-name">
+                                </div>
 
-                                📦
+                            `
 
-                                ${safe(
-                                    order.product ||
-                                    "—"
-                                )}
+                            :
 
-                            </div>
+                            ""
+                        }
+
+                    </div>
 
 
-                            ${
-                                order.productExtra
+                    ${buyerItemsHtml(
+                        order.items
+                    )}
 
-                                    ?
 
-                                    `
+                    <div
+                        id="whatsapp-${safe(order.id)}"
+                        class="whatsapp-placeholder"
+                    >
 
-                                        <div class="product-extra">
+                        ${
+                            clean(order.status).toLowerCase() === "approved" ||
+                            clean(order.status).toLowerCase() === "accepted" ||
+                            clean(order.status).toLowerCase() === "confirmed" ||
+                            clean(order.status).toLowerCase() === "مقبول"
 
-                                            ${order.productExtra}
+                            ?
 
-                                        </div>
+                            `
+                                <div class="loading" style="padding:20px;">
+                                    جاري تجهيز بيانات صاحب السلعة...
+                                </div>
+                            `
 
-                                    `
+                            :
 
-                                    :
+                            ""
+                        }
 
-                                    ""
-                            }
+                    </div>
+
+                `
+
+                :
+
+                `
+
+                    <div class="product">
+
+                        <div class="product-name">
+
+                            📦
+
+                            ${safe(
+                                order.product ||
+                                "—"
+                            )}
 
                         </div>
 
 
-                        ${sellerImagesHtml(
-                            order.images
-                        )}
+                        ${
+                            order.productExtra
 
-                    `
+                            ?
+
+                            `
+
+                                <div class="product-extra">
+                                    ${order.productExtra}
+                                </div>
+
+                            `
+
+                            :
+
+                            ""
+                        }
+
+                    </div>
+
+
+                    ${sellerImagesHtml(
+                        order.images
+                    )}
+
+                `
             }
 
 
@@ -4378,41 +4175,41 @@ ${buyerItemsHtml(
                 ${
                     isBuyer && isTransfer
 
-                        ?
+                    ?
 
-                        `
+                    `
 
-                            <button
-                                class="action accept"
-                                type="button"
-                                onclick="changeStatus(
-                                    '${id}',
-                                    'buyer',
-                                    'approved'
-                                )"
-                            >
-                                ✓ تم استلام المبلغ — قبول الطلب
-                            </button>
+                        <button
+                            class="action accept"
+                            type="button"
+                            onclick="changeStatus(
+                                '${id}',
+                                'buyer',
+                                'approved'
+                            )"
+                        >
+                            ✓ تم استلام المبلغ — قبول الطلب
+                        </button>
 
-                        `
+                    `
 
-                        :
+                    :
 
-                        `
+                    `
 
-                            <button
-                                class="action accept"
-                                type="button"
-                                onclick="changeStatus(
-                                    '${id}',
-                                    '${safe(order.type)}',
-                                    'approved'
-                                )"
-                            >
-                                ✓ قبول
-                            </button>
+                        <button
+                            class="action accept"
+                            type="button"
+                            onclick="changeStatus(
+                                '${id}',
+                                '${safe(order.type)}',
+                                'approved'
+                            )"
+                        >
+                            ✓ قبول
+                        </button>
 
-                        `
+                    `
                 }
 
 
@@ -4450,6 +4247,197 @@ ${buyerItemsHtml(
 
 
 /* =========================================================
+   العرض
+========================================================= */
+
+async function renderWhatsAppButtons(list) {
+
+    const buyers =
+        list.filter(
+            order =>
+                order.type === "buyer"
+        );
+
+
+    for (
+        const order of buyers
+    ) {
+
+        const placeholder =
+            document.getElementById(
+                "whatsapp-" +
+                order.id
+            );
+
+
+        if (
+            !placeholder
+        ) {
+            continue;
+        }
+
+
+        const status =
+            clean(
+                order.status
+            ).toLowerCase();
+
+
+        const approved =
+            [
+                "approved",
+                "accepted",
+                "confirmed",
+                "مقبول"
+            ].includes(
+                status
+            );
+
+
+        if (
+            !approved
+        ) {
+            continue;
+        }
+
+
+        try {
+
+            const html =
+                await buyerWhatsAppHtml(
+                    order
+                );
+
+
+            if (
+                placeholder
+            ) {
+
+                placeholder.outerHTML =
+                    html;
+
+            }
+
+        }
+        catch (error) {
+
+            console.error(
+                "WHATSAPP RENDER ERROR:",
+                error
+            );
+
+        }
+
+    }
+
+}
+
+
+function render() {
+
+    const container =
+        document.getElementById(
+            "ordersContainer"
+        );
+
+
+    if (
+        currentView === "products"
+    ) {
+
+        if (
+            allProducts.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+                    لا توجد منتجات منشورة حاليًا.
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            allProducts
+                .map(
+                    createProductCard
+                )
+                .join("");
+
+
+        return;
+
+    }
+
+
+    let list =
+        allOrders;
+
+
+    if (
+        currentView === "buyer"
+    ) {
+
+        list =
+            allOrders.filter(
+                order =>
+                    order.type === "buyer"
+            );
+
+    }
+
+
+    if (
+        currentView === "seller"
+    ) {
+
+        list =
+            allOrders.filter(
+                order =>
+                    order.type === "seller"
+            );
+
+    }
+
+
+    if (
+        list.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+                لا توجد طلبات في هذا القسم.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        list
+            .map(
+                createCard
+            )
+            .join("");
+
+
+    renderWhatsAppButtons(
+        list
+    );
+
+}
+
+
+/* =========================================================
    حذف الطلب
 ========================================================= */
 
@@ -4458,7 +4446,9 @@ async function deleteOrder(
     type
 ) {
 
-    if (!id) {
+    if (
+        !id
+    ) {
 
         alert(
             "رقم الطلب غير موجود."
@@ -4468,13 +4458,16 @@ async function deleteOrder(
 
     }
 
+
     const isBuyer =
         type === "buyer";
+
 
     const table =
         isBuyer
             ? BUYER_TABLE
             : SELLER_TABLE;
+
 
     const confirmed =
         confirm(
@@ -4491,11 +4484,13 @@ async function deleteOrder(
 
         );
 
-    if (!confirmed) {
 
+    if (
+        !confirmed
+    ) {
         return;
-
     }
+
 
     try {
 
@@ -4508,13 +4503,17 @@ async function deleteOrder(
                     id
                 );
 
-        if (result.error) {
+
+        if (
+            result.error
+        ) {
 
             throw new Error(
                 result.error.message
             );
 
         }
+
 
         allOrders =
             allOrders.filter(
@@ -4537,8 +4536,10 @@ async function deleteOrder(
                 }
             );
 
+
         updateStats();
         render();
+
 
         alert(
 
@@ -4582,7 +4583,9 @@ async function changeStatus(
     status
 ) {
 
-    if (!id) {
+    if (
+        !id
+    ) {
 
         alert(
             "رقم الطلب غير موجود."
@@ -4591,6 +4594,7 @@ async function changeStatus(
         return;
 
     }
+
 
     if (
         type === "buyer"
@@ -4608,7 +4612,10 @@ async function changeStatus(
                     id
                 );
 
-        if (result.error) {
+
+        if (
+            result.error
+        ) {
 
             alert(
                 "تعذر تحديث حالة طلب المشتري:\n\n" +
@@ -4618,6 +4625,7 @@ async function changeStatus(
             return;
 
         }
+
 
         await loadAll();
 
@@ -4636,6 +4644,7 @@ async function changeStatus(
             )
             .single();
 
+
     if (
         sellerResult.error
     ) {
@@ -4649,6 +4658,7 @@ async function changeStatus(
 
     }
 
+
     const seller =
         sellerResult.data;
 
@@ -4659,24 +4669,17 @@ async function changeStatus(
 
         try {
 
-            const productData =
-                buildProductData(
-                    mapSeller(
-                        seller
-                    )
-                );
-
-            console.log(
-                "PRODUCT TO PUBLISH:",
-                productData
-            );
-
             const publishResult =
                 await publishSellerProduct(
                     mapSeller(
                         seller
                     )
                 );
+
+
+            const now =
+                new Date().toISOString();
+
 
             const updateResult =
                 await db
@@ -4687,13 +4690,13 @@ async function changeStatus(
                             "approved",
 
                         approved_at:
-                            new Date().toISOString(),
+                            now,
 
                         published:
                             true,
 
                         published_at:
-                            new Date().toISOString()
+                            now
 
                     })
                     .eq(
@@ -4701,19 +4704,18 @@ async function changeStatus(
                         id
                     );
 
+
             if (
                 updateResult.error
             ) {
 
                 throw new Error(
-
                     "تم نشر السلعة ولكن تعذر تحديث حالة البائع: " +
-
                     updateResult.error.message
-
                 );
 
             }
+
 
             if (
                 publishResult.alreadyExists
@@ -4732,6 +4734,7 @@ async function changeStatus(
 
             }
 
+
             await loadAll();
 
         }
@@ -4748,6 +4751,7 @@ async function changeStatus(
             );
 
         }
+
 
         return;
 
@@ -4766,6 +4770,7 @@ async function changeStatus(
                 id
             );
 
+
     if (
         result.error
     ) {
@@ -4778,6 +4783,7 @@ async function changeStatus(
         return;
 
     }
+
 
     await loadAll();
 
@@ -4793,7 +4799,9 @@ async function toggleProduct(
     available
 ) {
 
-    if (!id) {
+    if (
+        !id
+    ) {
 
         alert(
             "معرّف المنتج غير موجود."
@@ -4802,6 +4810,7 @@ async function toggleProduct(
         return;
 
     }
+
 
     const confirmed =
         confirm(
@@ -4818,11 +4827,13 @@ async function toggleProduct(
 
         );
 
-    if (!confirmed) {
 
+    if (
+        !confirmed
+    ) {
         return;
-
     }
+
 
     try {
 
@@ -4838,6 +4849,7 @@ async function toggleProduct(
                     id
                 );
 
+
         if (
             result.error
         ) {
@@ -4848,7 +4860,9 @@ async function toggleProduct(
 
         }
 
+
         await loadAll();
+
 
         alert(
 
@@ -4890,7 +4904,9 @@ async function deleteProduct(
     id
 ) {
 
-    if (!id) {
+    if (
+        !id
+    ) {
 
         alert(
             "معرّف المنتج غير موجود."
@@ -4900,6 +4916,7 @@ async function deleteProduct(
 
     }
 
+
     const confirmed =
         confirm(
 
@@ -4907,11 +4924,13 @@ async function deleteProduct(
 
         );
 
-    if (!confirmed) {
 
+    if (
+        !confirmed
+    ) {
         return;
-
     }
+
 
     try {
 
@@ -4924,6 +4943,7 @@ async function deleteProduct(
                     id
                 );
 
+
         if (
             result.error
         ) {
@@ -4933,6 +4953,7 @@ async function deleteProduct(
             );
 
         }
+
 
         allProducts =
             allProducts.filter(
@@ -4944,8 +4965,10 @@ async function deleteProduct(
                     String(id)
             );
 
+
         updateStats();
         render();
+
 
         alert(
             "✓ تم حذف المنتج بنجاح."
@@ -4980,21 +5003,26 @@ async function loadAll() {
             "ordersContainer"
         );
 
+
     const connection =
         document.getElementById(
             "connectionStatus"
         );
+
 
     const refresh =
         document.getElementById(
             "refreshButton"
         );
 
+
     refresh.disabled =
         true;
 
+
     refresh.textContent =
         "⏳ جاري التحديث...";
+
 
     container.innerHTML = `
 
@@ -5004,16 +5032,20 @@ async function loadAll() {
 
     `;
 
+
     try {
 
         const buyers =
             await loadBuyerOrders();
 
+
         const sellers =
             await loadSellerOrders();
 
+
         const products =
             await loadProducts();
+
 
         allOrders = [
 
@@ -5023,11 +5055,13 @@ async function loadAll() {
 
         ];
 
+
         allProducts =
             products;
 
+
         allOrders.sort(
-            function(a,b) {
+            function(a, b) {
 
                 return (
 
@@ -5046,8 +5080,10 @@ async function loadAll() {
             }
         );
 
+
         updateStats();
         render();
+
 
         connection.textContent =
             "✓ متصل — تم تحميل الطلبات والمنتجات";
@@ -5059,6 +5095,7 @@ async function loadAll() {
             "ADMIN ERROR:",
             error
         );
+
 
         container.innerHTML = `
 
@@ -5076,6 +5113,7 @@ async function loadAll() {
 
         `;
 
+
         connection.textContent =
             "❌ حدث خطأ في الاتصال";
 
@@ -5084,6 +5122,7 @@ async function loadAll() {
 
         refresh.disabled =
             false;
+
 
         refresh.textContent =
             "🔄 تحديث";
@@ -5106,13 +5145,16 @@ function openImageModal(
             "imageModal"
         );
 
+
     const image =
         document.getElementById(
             "modalImage"
         );
 
+
     image.src =
         url;
+
 
     modal.classList.add(
         "open"
@@ -5128,14 +5170,17 @@ function closeImageModal() {
             "imageModal"
         );
 
+
     const image =
         document.getElementById(
             "modalImage"
         );
 
+
     modal.classList.remove(
         "open"
     );
+
 
     image.src =
         "";
@@ -5220,12 +5265,15 @@ document
                             }
                         );
 
+
                     button.classList.add(
                         "active"
                     );
 
+
                     currentView =
                         button.dataset.view;
+
 
                     const titles = {
 
@@ -5243,12 +5291,14 @@ document
 
                     };
 
+
                     document.getElementById(
                         "panelTitle"
                     ).textContent =
                         titles[
                             currentView
                         ];
+
 
                     render();
 
@@ -5282,5 +5332,5 @@ loadAll();
 </script>
 
 </body>
-
 </html>
+```
