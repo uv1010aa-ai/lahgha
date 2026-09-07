@@ -33,8 +33,10 @@
 
 <header style="background:#1e3a5f; color:white; padding:15px; text-align:center;">
     <h1>🛒 سلة المشتريات — لَحْقها</h1>
-    <a href="index.html" style="color:white; text-decoration:none; margin-right:15px;">الرئيسية</a> | 
-    <a href="categories.html" style="color:white; text-decoration:none;">الأقسام</a>
+    <nav style="margin-top: 10px;">
+        <a href="index.html" style="color:white; text-decoration:none; margin: 0 10px;">الرئيسية</a> | 
+        <a href="categories.html" style="color:white; text-decoration:none; margin: 0 10px;">الأقسام</a>
+    </nav>
 </header>
 
 <main class="cart-page">
@@ -94,20 +96,23 @@
             return;
         }
 
-        // تم إلغاء فحص "البائع المعتمد" من هنا نهائياً لتعمل كل السلع بدون استثناء
         let orderDetails = `طلب جديد من موقع لَحْقها 🛍\n\n👤 بيانات المشتري:\n- الاسم: ${name}\n- الجوال: ${phone}\n- العنوان: ${address}\n\n📦 المنتجات المطلوبة:\n`;
+        
         cart.forEach(item => {
-            orderDetails += `- ${item.title} (الكمية: ${item.quantity || 1}) - السعر: ${item.price} ر.س\n`;
+            // حل المشكلة: إذا كان المنتج بدون بائع (مثل الكتب المستعملة)، نكتب أنه يتبع للإدارة
+            const seller = item.seller_name || "إدارة منصة لَحْقها (سلعة مستعملة)";
+            orderDetails += `- ${item.title} (الكمية: ${item.quantity || 1}) - السعر: ${item.price} ر.س [البائع: ${seller}]\n`;
         });
+        
         orderDetails += `\n💰 الإجمالي: ${calculateTotal()} ر.س`;
 
-        // اذكر رقم واتسابك هنا لتصلك الطلبات مباشرة وتنسقها مع البائعين يدوياً
-        const myWhatsApp = "966500000000"; 
-        const whatsappUrl = `https://wa.me{myWhatsApp}?text=${encodeURIComponent(orderDetails)}`; 
+        // 🚨 ضع رقم واتساب إدارة الموقع هنا بدلاً من هذا الرقم لتصلك الطلبات مباشرة وتتصرف بها
+        const adminWhatsApp = "966500000000"; 
+        const whatsappUrl = `https://wa.me{adminWhatsApp}?text=${encodeURIComponent(orderDetails)}`; 
         
-        showToast("جاري تحويلك لإتمام الطلب...");
+        showToast("جاري تحويلك لإتمام الطلب البرقي...");
         setTimeout(() => {
-            localStorage.setItem("cart", "[]");
+            localStorage.setItem("cart", "[]"); // تفريغ السلة بعد نجاح الطلب
             window.location.href = whatsappUrl;
         }, 1200);
     }
@@ -120,7 +125,7 @@
                 <div class="cart-page-empty">
                     <h3>السلة فارغة 🛍️</h3>
                     <p>تصفح الأقسام وأضف المنتجات التي تريد شراءها.</p>
-                    <a href="categories.html" style="color:#1e3a5f; font-weight:bold;">اذهب للأقسام من هنا</a>
+                    <a href="categories.html" style="color:#1e3a5f; font-weight:bold; text-decoration:none;">اذهب للأقسام من هنا ←</a>
                 </div>`;
             return;
         }
@@ -128,10 +133,14 @@
         let itemsHtml = "";
         cart.forEach((item, index) => {
             const qty = item.quantity || 1;
+            // عرض تنبيه صغير للمشتري أن هذا الكتاب مستعمل وتابع للإدارة ومضمون
+            const sellerLabel = item.seller_name ? `بائع: ${item.seller_name}` : "🏷️ كتاب مستعمل - معتمد من المنصة";
+            
             itemsHtml += `
                 <div class="cart-page-item">
                     <div class="cart-page-info">
                         <h3>${item.title || "منتج"}</h3>
+                        <p style="margin:2px 0; color:#2e7d32; font-size:13px;">${sellerLabel}</p>
                         <p class="cart-page-price">${item.price || 0} ر.س</p>
                         <div class="cart-page-controls">
                             <button onclick="updateQuantity(${index}, -1)">-</button>
@@ -150,7 +159,7 @@
             </div>
 
             <form onsubmit="submitOrder(event)" class="buyer-form-section">
-                <h4>📋 استمارة المشتري</h4>
+                <h4>📋 استمارة المشتري لإتمام الطلب</h4>
                 <div class="form-group">
                     <label>الاسم الكامل:</label>
                     <input type="text" id="buyer-name" required placeholder="أدخل اسمك الكريم">
@@ -163,7 +172,7 @@
                     <label>العنوان بالتفصيل:</label>
                     <textarea id="buyer-address" required placeholder="المدينة، الحي، اسم الشارع"></textarea>
                 </div>
-                <button type="submit" class="cart-page-button">🚀 تأكيد وإرسال الطلب</button>
+                <button type="submit" class="cart-page-button">🚀 تأكيد وإرسال الطلب عبر الواتساب</button>
             </form>
         `;
     }
