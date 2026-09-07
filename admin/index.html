@@ -674,7 +674,6 @@
 
 </div>
 
-
 <script>
 
 /* =========================================================
@@ -818,6 +817,92 @@ function dateText(value) {
 
 
 /* =========================================================
+   واتساب البائع
+========================================================= */
+
+function whatsappNumber(phone) {
+
+    let value =
+        clean(phone).replace(
+            /\D/g,
+            ""
+        );
+
+    if (!value) {
+        return "";
+    }
+
+    if (
+        value.startsWith("00")
+    ) {
+
+        value =
+            value.substring(2);
+
+    }
+
+    if (
+        value.startsWith("05")
+    ) {
+
+        value =
+            "966" +
+            value.substring(1);
+
+    }
+    else if (
+        value.startsWith("5") &&
+        value.length === 9
+    ) {
+
+        value =
+            "966" +
+            value;
+
+    }
+
+    return value;
+
+}
+
+
+function whatsappButton(phone) {
+
+    const number =
+        whatsappNumber(phone);
+
+    if (!number) {
+
+        return "";
+
+    }
+
+    return `
+
+        <a
+            href="https://wa.me/${number}"
+            target="_blank"
+            rel="noopener"
+            style="
+                display:inline-block;
+                margin-top:10px;
+                padding:9px 14px;
+                border-radius:9px;
+                background:#dcfce7;
+                color:#166534;
+                text-decoration:none;
+                font-weight:900;
+            "
+        >
+            💬 التواصل مع البائع عبر واتساب
+        </a>
+
+    `;
+
+}
+
+
+/* =========================================================
    توحيد القسم
 ========================================================= */
 
@@ -945,8 +1030,7 @@ function getStatus(value) {
 
 
 /* =========================================================
-   الصور
-   الإصدار المعدل
+   صور البائع
 ========================================================= */
 
 function getSellerImages(row) {
@@ -975,10 +1059,6 @@ function getSellerImages(row) {
         }
 
 
-        /* ---------------------------------------------
-           مصفوفة JavaScript حقيقية
-        --------------------------------------------- */
-
         if (
             Array.isArray(value)
         ) {
@@ -995,10 +1075,6 @@ function getSellerImages(row) {
 
         }
 
-
-        /* ---------------------------------------------
-           كائن صورة
-        --------------------------------------------- */
 
         if (
             typeof value === "object"
@@ -1027,10 +1103,6 @@ function getSellerImages(row) {
         }
 
 
-        /* ---------------------------------------------
-           النص
-        --------------------------------------------- */
-
         if (
             typeof value !== "string"
         ) {
@@ -1049,11 +1121,6 @@ function getSellerImages(row) {
 
         }
 
-
-        /* ---------------------------------------------
-           JSON Array
-           ["url1","url2","url3"]
-        --------------------------------------------- */
 
         if (
             text.startsWith("[") &&
@@ -1094,10 +1161,6 @@ function getSellerImages(row) {
         }
 
 
-        /* ---------------------------------------------
-           JSON Object
-        --------------------------------------------- */
-
         if (
             text.startsWith("{") &&
             text.endsWith("}")
@@ -1123,23 +1186,9 @@ function getSellerImages(row) {
             }
             catch (error) {
 
-                /*
-                 * إذا لم يكن JSON،
-                 * نحاول اعتباره PostgreSQL Array.
-                 */
-
+                /* محاولة قراءة PostgreSQL Array */
             }
 
-
-            /* -----------------------------------------
-               PostgreSQL Array
-
-               مثال:
-               {"url1","url2","url3","url4"}
-
-               أو:
-               {url1,url2,url3,url4}
-            ----------------------------------------- */
 
             const inside =
                 text.slice(
@@ -1257,10 +1306,6 @@ function getSellerImages(row) {
         }
 
 
-        /* ---------------------------------------------
-           JSON مفصول بفواصل
-        --------------------------------------------- */
-
         if (
             text.includes(",")
         ) {
@@ -1317,10 +1362,6 @@ function getSellerImages(row) {
         }
 
 
-        /* ---------------------------------------------
-           رابط صورة واحد
-        --------------------------------------------- */
-
         if (
             text.startsWith("http://") ||
             text.startsWith("https://") ||
@@ -1334,18 +1375,9 @@ function getSellerImages(row) {
     }
 
 
-    /* =================================================
-       images
-    ================================================= */
-
     addImage(
         row.images
     );
-
-
-    /* =================================================
-       حقول بديلة
-    ================================================= */
 
     addImage(
         row.photos
@@ -1364,10 +1396,6 @@ function getSellerImages(row) {
     );
 
 
-    /* =================================================
-       image1 ... image5
-    ================================================= */
-
     for (
         let i = 1;
         i <= 5;
@@ -1380,10 +1408,6 @@ function getSellerImages(row) {
 
     }
 
-
-    /* =================================================
-       الحقول القديمة
-    ================================================= */
 
     addImage(
         row.image
@@ -1401,10 +1425,6 @@ function getSellerImages(row) {
         row.productImage
     );
 
-
-    /* =================================================
-       تنظيف ومنع التكرار
-    ================================================= */
 
     return [
         ...new Set(
@@ -1617,6 +1637,11 @@ function parseOrderItems(value) {
                     image:
                         image,
 
+                    sellerId:
+                        item.seller_id ||
+                        item.sellerId ||
+                        null,
+
                     sellerRequestId:
                         item.seller_request_id ||
                         item.sellerRequestId ||
@@ -1625,6 +1650,11 @@ function parseOrderItems(value) {
                     sellerName:
                         item.seller_name ||
                         item.sellerName ||
+                        "",
+
+                    sellerPhone:
+                        item.seller_phone ||
+                        item.sellerPhone ||
                         "",
 
                     subtotal:
@@ -1645,6 +1675,10 @@ function parseOrderItems(value) {
 
 }
 
+
+/* =========================================================
+   عرض سلع المشتري + بيانات البائع
+========================================================= */
 
 function buyerItemsHtml(items) {
 
@@ -1721,7 +1755,13 @@ function buyerItemsHtml(items) {
 
                                     <div
                                         class="product-image"
-                                        style="display:flex;align-items:center;justify-content:center;font-size:36px;cursor:default;"
+                                        style="
+                                            display:flex;
+                                            align-items:center;
+                                            justify-content:center;
+                                            font-size:36px;
+                                            cursor:default;
+                                        "
                                     >
                                         📦
                                     </div>
@@ -1736,6 +1776,16 @@ function buyerItemsHtml(items) {
                             const familyName =
                                 clean(
                                     item.familyName
+                                );
+
+                            const sellerName =
+                                clean(
+                                    item.sellerName
+                                );
+
+                            const sellerPhone =
+                                clean(
+                                    item.sellerPhone
                                 );
 
                             return `
@@ -1794,7 +1844,9 @@ function buyerItemsHtml(items) {
 
                                                 ${
                                                     familyName
-                                                        ? `
+                                                        ?
+
+                                                        `
 
                                                             <br>
 
@@ -1804,10 +1856,14 @@ function buyerItemsHtml(items) {
                                                             </strong>
 
                                                         `
-                                                        : ""
+
+                                                        :
+
+                                                        ""
                                                 }
 
                                             </div>
+
 
                                             <div
                                                 style="
@@ -1819,6 +1875,77 @@ function buyerItemsHtml(items) {
 
                                                 إجمالي السلعة:
                                                 ${money(item.subtotal)}
+
+                                            </div>
+
+
+                                            <!-- بيانات البائع -->
+
+                                            <div
+                                                style="
+                                                    margin-top:14px;
+                                                    padding:12px;
+                                                    border-radius:10px;
+                                                    background:#fff7ed;
+                                                    border:1px solid #fed7aa;
+                                                "
+                                            >
+
+                                                <div
+                                                    style="
+                                                        font-weight:900;
+                                                        color:#9a3412;
+                                                        margin-bottom:6px;
+                                                    "
+                                                >
+                                                    👤 بيانات البائع
+                                                </div>
+
+
+                                                <div
+                                                    style="
+                                                        font-size:13px;
+                                                        line-height:1.9;
+                                                    "
+                                                >
+
+                                                    اسم البائع:
+                                                    <strong>
+                                                        ${
+                                                            safe(
+                                                                sellerName ||
+                                                                "غير محدد"
+                                                            )
+                                                        }
+                                                    </strong>
+
+                                                    <br>
+
+                                                    رقم الجوال:
+                                                    <strong>
+                                                        ${
+                                                            safe(
+                                                                sellerPhone ||
+                                                                "غير موجود"
+                                                            )
+                                                        }
+                                                    </strong>
+
+                                                </div>
+
+
+                                                ${
+                                                    sellerPhone
+                                                        ?
+
+                                                        whatsappButton(
+                                                            sellerPhone
+                                                        )
+
+                                                        :
+
+                                                        ""
+                                                }
 
                                             </div>
 
@@ -2146,7 +2273,7 @@ function mapSeller(row) {
 
 
 /* =========================================================
-   تحميل الطلبات
+   تحميل طلبات المشترين + بيانات البائع
 ========================================================= */
 
 async function loadBuyerOrders() {
@@ -2171,11 +2298,140 @@ async function loadBuyerOrders() {
 
     }
 
-    return (
-        result.data || []
-    ).map(
-        mapBuyer
+
+    const orders =
+        (
+            result.data || []
+        ).map(
+            mapBuyer
+        );
+
+
+    /* =====================================================
+       استخراج seller_request_id من الطلبات
+    ===================================================== */
+
+    const sellerRequestIds = [
+        ...new Set(
+            orders
+                .flatMap(
+                    order =>
+                        order.items
+                            .map(
+                                item =>
+                                    item.sellerRequestId
+                            )
+                            .filter(Boolean)
+                )
+        )
+    ];
+
+
+    /* =====================================================
+       إذا لا توجد بيانات بائع
+    ===================================================== */
+
+    if (
+        sellerRequestIds.length === 0
+    ) {
+
+        return orders;
+
+    }
+
+
+    /* =====================================================
+       جلب البائعين المرتبطين بالطلبات
+    ===================================================== */
+
+    const sellersResult =
+        await db
+            .from(SELLER_TABLE)
+            .select(
+                "id,seller_name,phone"
+            )
+            .in(
+                "id",
+                sellerRequestIds
+            );
+
+
+    if (
+        sellersResult.error
+    ) {
+
+        throw new Error(
+            "تعذر جلب بيانات البائعين: " +
+            sellersResult.error.message
+        );
+
+    }
+
+
+    const sellersMap =
+        new Map();
+
+
+    (
+        sellersResult.data || []
+    ).forEach(
+        function(seller) {
+
+            sellersMap.set(
+                String(
+                    seller.id
+                ),
+                seller
+            );
+
+        }
     );
+
+
+    /* =====================================================
+       ربط البائع بكل سلعة داخل الطلب
+    ===================================================== */
+
+    orders.forEach(
+        function(order) {
+
+            order.items.forEach(
+                function(item) {
+
+                    const seller =
+                        sellersMap.get(
+                            String(
+                                item.sellerRequestId
+                            )
+                        );
+
+
+                    if (!seller) {
+
+                        return;
+
+                    }
+
+
+                    item.sellerName =
+                        item.sellerName ||
+                        seller.seller_name ||
+                        "";
+
+
+                    item.sellerPhone =
+                        item.sellerPhone ||
+                        seller.phone ||
+                        "";
+
+                }
+            );
+
+        }
+    );
+
+
+    return orders;
 
 }
 
@@ -4302,6 +4558,7 @@ document
 
 loadAll();
 
+</script>
 </script>
 
 </body>
