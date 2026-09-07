@@ -9,6 +9,17 @@
 
     <link rel="stylesheet" href="style.css">
 
+    <!-- كود إجباري لتعطيل وحذف الـ Service Worker المكسور الذي يسبب اختفاء السلة -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+    </script>
+
     <!-- استدعاء مكتبة Supabase -->
     <script src="https://jsdelivr.net"></script>
 
@@ -358,15 +369,3 @@
                     {
                         buyer_name: name,
                         buyer_phone: phone,
-                        buyer_address: address,
-                        products: cart, 
-                        total_price: calculateTotal(),
-                        status: "pending" 
-                    }
-                ]);
-
-            if (error) throw error;
-
-            showToast("🎉 تم إرسال طلبك بنجاح وقيد مراجعة الإدارة!");
-            
-            setTimeout(() => {
