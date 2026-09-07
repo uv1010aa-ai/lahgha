@@ -2,32 +2,38 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="سلة المشتريات | لَحْقها">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="سلة المشتريات | لَحْقها"
+    >
+
     <title>السلة | لَحْقها 🛒</title>
 
     <link rel="stylesheet" href="style.css">
 
-    <!-- كود إجباري لتعطيل وحذف الـ Service Worker المكسور الذي يسبب اختفاء السلة -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                for(let registration of registrations) {
-                    registration.unregister();
-                }
-            });
-        }
-    </script>
-
-    <!-- استدعاء مكتبة Supabase -->
-    <script src="https://jsdelivr.net"></script>
-
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="images/icon.png">
-    <link rel="apple-touch-icon" href="images/icon.png">
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="images/icon.png"
+    >
+
+    <link
+        rel="apple-touch-icon"
+        href="images/icon.png"
+    >
 
     <style>
+
         .cart-page {
             width: min(900px, calc(100% - 30px));
             margin: 35px auto 100px;
@@ -53,7 +59,6 @@
             padding: 22px;
             box-shadow: 0 8px 25px rgba(30,55,80,.08);
             border: 1px solid #e4e9ee;
-            min-height: 150px;
         }
 
         .cart-page-item {
@@ -126,8 +131,6 @@
             width: auto !important;
             height: auto !important;
             font-size: 14px !important;
-            border-radius: 8px;
-            cursor: pointer;
         }
 
         .cart-page-summary {
@@ -147,45 +150,6 @@
             font-size: 22px;
             font-weight: 900;
             color: #1e3a5f;
-        }
-
-        .buyer-form-container {
-            margin-top: 30px;
-            padding-top: 25px;
-            border-top: 2px solid #e8edf2;
-        }
-
-        .buyer-form-container h3 {
-            color: #1e3a5f;
-            margin-bottom: 15px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            text-align: right;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #1e3a5f;
-        }
-
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #d7dee7;
-            border-radius: 10px;
-            font-family: inherit;
-            font-size: 15px;
-            box-sizing: border-box;
-            background: #fff;
-        }
-
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #1e3a5f;
         }
 
         .cart-page-actions {
@@ -210,7 +174,7 @@
         }
 
         .cart-page-button.primary {
-            background: #1e3a5f;
+            background: #2e7d32;
             color: #fff;
         }
 
@@ -221,7 +185,7 @@
 
         .cart-page-empty {
             text-align: center;
-            padding: 40px 20px;
+            padding: 60px 20px;
             color: #687585;
         }
 
@@ -249,83 +213,206 @@
         }
 
         @media (max-width: 600px) {
+
             .cart-page-item {
                 align-items: flex-start;
             }
+
             .cart-page-image {
                 width: 75px;
                 height: 75px;
             }
+
             .cart-page-actions {
                 flex-direction: column;
             }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
-<header class="site-header" style="background:#1e3a5f; color:white; padding:15px; text-align:center;">
-    <h1>🛒 سلة المشتريات</h1>
-    <p style="margin:5px 0 0; color:#b9d4ef;">منتجاتك التي اخترتها من لَحْقها</p>
-    <nav style="margin-top:10px;">
-        <a href="index.html" style="color:white; text-decoration:none; margin:0 10px;">الرئيسية</a> | 
-        <a href="categories.html" style="color:white; text-decoration:none; margin:0 10px;">الأقسام</a>
-    </nav>
-</header>
 
-<main class="cart-page">
-    <div class="cart-page-header">
-        <h2>🛒 سلة المشتريات</h2>
-        <p>راجع منتجاتك قبل إتمام الطلب.</p>
+<header class="site-header">
+
+    <div class="logo">
+
+        <h1>
+            🛒 سلة المشتريات
+        </h1>
+
+        <p>
+            منتجاتك التي اخترتها من لَحْقها
+        </p>
+
     </div>
 
-    <div class="cart-box" id="cart-container"></div>
+
+    <nav>
+
+        <a href="index.html">
+            الرئيسية
+        </a>
+
+        <a href="categories.html">
+            الأقسام
+        </a>
+
+        <a href="cart.html">
+            🛒 السلة
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="cart-page">
+
+
+    <div class="cart-page-header">
+
+        <h2>
+            🛒 سلة المشتريات
+        </h2>
+
+        <p>
+            راجع منتجاتك قبل إتمام الطلب.
+        </p>
+
+    </div>
+
+
+    <div
+        class="cart-box"
+        id="cart-container"
+    ></div>
+
+
 </main>
+
 
 <div id="cart-toast"></div>
 
+
 <script>
-    // تهيئة سوبابيز الخاصة بموقعك
-    const SUPABASE_URL = "https://supabase.co";
-    const SUPABASE_KEY = "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-"; 
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let cart = [];
 
     try {
-        cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+        cart =
+            JSON.parse(
+                localStorage.getItem(
+                    "cart"
+                ) || "[]"
+            );
+        console.log("CART DATA:", cart);
         if (!Array.isArray(cart)) {
             cart = [];
         }
-    } catch (e) {
-        cart = [];
+
     }
 
-    const container = document.getElementById("cart-container");
-    const toast = document.getElementById("cart-toast");
+    catch {
+
+        cart = [];
+
+    }
+
+
+    const container =
+        document.getElementById(
+            "cart-container"
+        );
+
+
+    const toast =
+        document.getElementById(
+            "cart-toast"
+        );
+
 
     function escapeHtml(value) {
-        return String(value ?? "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "'"})[c]);
+
+        return String(value ?? "").replace(
+            /[&<>"']/g,
+            character => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "'"
+            }[character])
+        );
+
     }
+
 
     function imageUrl(path) {
-        const value = String(path || "").trim();
-        if (!value) return "";
-        if (/^https?:\/\//i.test(value) || /^data:image\//i.test(value)) return value;
-        return encodeURI(value.replace(/^\.\//, ""));
+
+        const value =
+            String(path || "").trim();
+
+
+        if (!value) {
+            return "";
+        }
+
+
+        if (
+            /^https?:\/\//i.test(value) ||
+            /^data:image\//i.test(value)
+        ) {
+            return value;
+        }
+
+
+        return encodeURI(
+            value.replace(/^\.\//, "")
+        );
+
     }
+
 
     function showToast(message) {
-        toast.textContent = message;
-        toast.classList.add("show");
-        clearTimeout(showToast.timer);
-        showToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
+
+        toast.textContent =
+            message;
+
+        toast.classList.add(
+            "show"
+        );
+
+        clearTimeout(
+            showToast.timer
+        );
+
+        showToast.timer =
+            setTimeout(
+                () =>
+                    toast.classList.remove(
+                        "show"
+                    ),
+                2200
+            );
+
     }
 
+
     function saveCart() {
-        localStorage.setItem("cart", JSON.stringify(cart));
+
+        localStorage.setItem(
+            "cart",
+            JSON.stringify(cart)
+        );
+
         renderCart();
+
     }
 
     function updateQuantity(index, amount) {
@@ -346,26 +433,49 @@
         return cart.reduce((sum, item) => sum + (parseFloat(item.price) || 0) * (item.quantity || 1), 0);
     }
 
-    async function submitOrder(event) {
-        event.preventDefault();
-        
-        const name = document.getElementById("buyer-name").value.trim();
-        const phone = document.getElementById("buyer-phone").value.trim();
-        const address = document.getElementById("buyer-address").value.trim();
-        const submitBtn = document.getElementById("submit-order-btn");
 
-        if (!name || !phone || !address) {
-            showToast("يرجى تعبئة كافة حقول الاستمارة");
+    function renderCart() {
+
+        container.innerHTML = "";
+
+
+        if (!cart.length) {
+
+            container.innerHTML = `
+                <div class="cart-page-empty">
+                    <div class="cart-page-empty-icon">🛍️</div>
+                    <h3>السلة فارغة</h3>
+                    <p>أضف المنتجات التي تريد شراءها من الأقسام.</p>
+                    <div class="cart-page-actions" style="justify-content: center;">
+                        <a href="categories.html" class="cart-page-button secondary">تصفح الأقسام</a>
+                    </div>
+                </div>`;
             return;
         }
 
-        submitBtn.disabled = true;
-        showToast("⏳ جاري إرسال طلبك للوحة التحكم...");
+        let itemsHtml = "";
+        cart.forEach((item, index) => {
+            const qty = item.quantity || 1;
+            const price = parseFloat(item.price) || 0;
+            
+            itemsHtml += `
+                <div class="cart-page-item">
+                    <img class="cart-page-image" src="${imageUrl(item.image)}" alt="${escapeHtml(item.title)}">
+                    <div class="cart-page-info">
+                        <h3>${escapeHtml(item.title)}</h3>
+                        <p class="cart-page-price">${price} ر.س</p>
+                        <div class="cart-page-controls">
+                            <button onclick="updateQuantity(${index}, -1)">-</button>
+                            <span>${qty}</span>
+                            <button onclick="updateQuantity(${index}, 1)">+</button>
+                            <button class="cart-page-delete" onclick="deleteItem(${index})">حذف</button>
+                        </div>
+                    </div>
+                </div>`;
+        });
 
-        try {
-            const { data, error } = await supabaseClient
-                .from('orders')
-                .insert([
-                    {
-                        buyer_name: name,
-                        buyer_phone: phone,
+        container.innerHTML = `
+            <div class="cart-items-list">${itemsHtml}</div>
+            
+            <div class="cart-page-summary">
+                <div class="cart-page-summary-row cart-page-total">
