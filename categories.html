@@ -841,6 +841,12 @@ function addToCart(product){
 
             images:getProductImages(product),
 
+            seller_id:product.seller_id || null,
+
+            seller_name:product.seller_name || "",
+
+            seller_request_id:product.seller_request_id || null,
+
             quantity:1
 
         });
@@ -854,7 +860,6 @@ function addToCart(product){
     );
 
 }
-
 
 /* ================================
    التنبيه
