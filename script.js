@@ -333,19 +333,46 @@ function addToCart(book) {
     const existing =
         cart.find(
             item =>
-                item.id === book.id
+                String(item.id) ===
+                String(book.id)
         );
 
 
     if (existing) {
 
-        existing.quantity++;
+        existing.quantity =
+            (Number(existing.quantity) || 1) + 1;
 
     } else {
 
         cart.push({
-            ...book,
+
+            id: book.id,
+
+            title: book.title,
+
+            price: Number(book.price) || 0,
+
+            category: book.category,
+
+            image: book.image,
+
+            description: book.description || "",
+
+            seller_id:
+                book.seller_id ||
+                null,
+
+            seller_name:
+                book.seller_name ||
+                "",
+
+            seller_request_id:
+                book.seller_request_id ||
+                null,
+
             quantity: 1
+
         });
     }
 
@@ -470,7 +497,8 @@ function updateCart() {
                     cart =
                         cart.filter(
                             item =>
-                                item.id !== book.id
+                                String(item.id) !==
+                                String(book.id)
                         );
                 }
 
@@ -484,7 +512,8 @@ function updateCart() {
                 cart =
                     cart.filter(
                         item =>
-                            item.id !== book.id
+                            String(item.id) !==
+                            String(book.id)
                     );
 
                 saveCart();
@@ -663,7 +692,19 @@ async function loadProducts() {
                 available:
                     Boolean(
                         book.available
-                    )
+                    ),
+
+                seller_id:
+                    book.seller_id ||
+                    null,
+
+                seller_name:
+                    book.seller_name ||
+                    "",
+
+                seller_request_id:
+                    book.seller_request_id ||
+                    null
 
             }));
 
