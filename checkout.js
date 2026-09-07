@@ -187,116 +187,56 @@ function calculateOrder() {
         }
     );
 
+return {
 
-    return {
+    id:
+        item.id || null,
 
-        count:
-            count,
+    name:
+        item.name ||
+        item.title ||
+        "منتج",
 
-        total:
-            total
+    title:
+        item.title ||
+        item.name ||
+        "منتج",
 
-    };
+    category:
+        item.category ||
+        "",
 
-}
+    price:
+        price,
 
+    quantity:
+        quantity,
 
-/* =====================================================
-   عرض ملخص الطلب
-===================================================== */
+    image:
+        item.image ||
+        "",
 
-function renderSummary() {
+    seller_id:
+        item.seller_id ||
+        null,
 
-    const summary =
-        calculateOrder();
+    seller_name:
+        item.seller_name ||
+        "",
 
+    seller_request_id:
+        item.seller_request_id ||
+        null,
 
-    if (orderCount) {
+    subtotal:
+        Number(
+            (
+                price *
+                quantity
+            ).toFixed(2)
+        )
 
-        orderCount.textContent =
-            summary.count;
-
-    }
-
-
-    if (orderTotal) {
-
-        orderTotal.textContent =
-            summary.total.toFixed(2) +
-            " ر.س";
-
-    }
-
-}
-
-
-/* =====================================================
-   تجهيز المنتجات
-===================================================== */
-
-function prepareItems() {
-
-    return cart.map(
-        function (item) {
-
-            const price =
-                Number(
-                    item.price
-                ) || 0;
-
-
-            const quantity =
-                Math.max(
-                    1,
-                    Number(
-                        item.quantity
-                    ) || 1
-                );
-
-
-            return {
-
-                id:
-                    item.id || null,
-
-                name:
-                    item.name ||
-                    item.title ||
-                    "منتج",
-
-                title:
-                    item.title ||
-                    item.name ||
-                    "منتج",
-
-                category:
-                    item.category ||
-                    "",
-
-                price:
-                    price,
-
-                quantity:
-                    quantity,
-
-                image:
-                    item.image ||
-                    "",
-
-                subtotal:
-                    Number(
-                        (
-                            price *
-                            quantity
-                        ).toFixed(2)
-                    )
-
-            };
-
-        }
-    );
-
-}
+};
 
 
 /* =====================================================
