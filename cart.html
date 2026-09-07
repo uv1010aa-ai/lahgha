@@ -1,55 +1,360 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="سلة المشتريات | لَحْقها"
+    >
+
     <title>السلة | لَحْقها 🛒</title>
+
     <link rel="stylesheet" href="style.css">
+
+    <!-- استدعاء مكتبة Supabase للاتصال بقاعدة البيانات -->
+    <script src="https://jsdelivr.net"></script>
+
+    <link rel="manifest" href="manifest.json">
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="images/icon.png"
+    >
+
+    <link
+        rel="apple-touch-icon"
+        href="images/icon.png"
+    >
+
     <style>
-        .cart-page { width: min(900px, calc(100% - 30px)); margin: 35px auto 100px; }
-        .cart-page-header { text-align: center; margin-bottom: 30px; color: #1e3a5f; }
-        .cart-box { background: #fff; border-radius: 20px; padding: 22px; box-shadow: 0 8px 25px rgba(30,55,80,.08); border: 1px solid #e4e9ee; }
-        .cart-page-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid #e9edf1; }
-        .cart-page-image { width: 90px; height: 90px; object-fit: cover; border-radius: 12px; background: #f1f3f5; }
-        .cart-page-info { flex: 1; }
-        .cart-page-info h3 { margin: 0 0 7px; color: #1e3a5f; }
-        .cart-page-price { font-weight: bold; color: #1e3a5f; }
-        .cart-page-controls { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
-        .cart-page-controls button { width: 32px; height: 32px; border: 0; border-radius: 8px; background: #1e3a5f; color: #fff; cursor: pointer; }
-        .cart-page-delete { border: 0 !important; background: #fbeaea !important; color: #b32626 !important; padding: 7px 12px !important; cursor: pointer; border-radius: 8px; }
-        .cart-page-summary { margin-top: 25px; padding-top: 20px; border-top: 2px solid #e8edf2; font-size: 22px; font-weight: bold; color: #1e3a5f; }
-        .buyer-form-section { margin-top: 25px; padding-top: 20px; border-top: 2px solid #e8edf2; text-align: right; }
-        .buyer-form-section h4 { color: #1e3a5f; margin-bottom: 15px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #1e3a5f; }
-        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-family: inherit; box-sizing: border-box; }
-        .cart-page-button { width: 100%; padding: 13px; border-radius: 10px; border: 0; cursor: pointer; font-family: inherit; font-size: 16px; font-weight: bold; background: #2e7d32; color: #fff; margin-top: 15px; }
-        .cart-page-empty { text-align: center; padding: 60px 20px; color: #687585; }
-        #cart-toast { position: fixed; right: 20px; bottom: 20px; background: #1e3a5f; color: #fff; padding: 12px 18px; border-radius: 10px; opacity: 0; transition: .3s; z-index: 9999; }
-        #cart-toast.show { opacity: 1; }
+
+        .cart-page {
+            width: min(900px, calc(100% - 30px));
+            margin: 35px auto 100px;
+        }
+
+        .cart-page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .cart-page-header h2 {
+            color: #1e3a5f;
+            margin-bottom: 8px;
+        }
+
+        .cart-page-header p {
+            color: #687585;
+        }
+
+        .cart-box {
+            background: #fff;
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: 0 8px 25px rgba(30,55,80,.08);
+            border: 1px solid #e4e9ee;
+        }
+
+        .cart-page-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #e9edf1;
+        }
+
+        .cart-page-item:last-child {
+            border-bottom: 0;
+        }
+
+        .cart-page-image {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 12px;
+            background: #f1f3f5;
+            flex-shrink: 0;
+        }
+
+        .cart-page-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cart-page-info h3 {
+            margin: 0 0 7px;
+            color: #1e3a5f;
+            font-size: 18px;
+        }
+
+        .cart-page-info p {
+            margin: 5px 0;
+            color: #687585;
+            font-size: 14px;
+        }
+
+        .cart-page-price {
+            font-weight: bold;
+            color: #1e3a5f !important;
+        }
+
+        .cart-page-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .cart-page-controls button {
+            width: 32px;
+            height: 32px;
+            border: 0;
+            border-radius: 8px;
+            background: #1e3a5f;
+            color: #fff;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 18px;
+        }
+
+        .cart-page-delete {
+            border: 0 !important;
+            background: #fbeaea !important;
+            color: #b32626 !important;
+            padding: 7px 12px !important;
+            width: auto !important;
+            height: auto !important;
+            font-size: 14px !important;
+        }
+
+        .cart-page-summary {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #e8edf2;
+        }
+
+        .cart-page-summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin: 10px 0;
+        }
+
+        .cart-page-total {
+            font-size: 22px;
+            font-weight: 900;
+            color: #1e3a5f;
+        }
+
+        .buyer-form-container {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 2px solid #e8edf2;
+        }
+
+        .buyer-form-container h3 {
+            color: #1e3a5f;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #1e3a5f;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d7dee7;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #1e3a5f;
+        }
+
+        .cart-page-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .cart-page-button {
+            flex: 1;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 13px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            border: 0;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .cart-page-button.primary {
+            background: #2e7d32;
+            color: #fff;
+        }
+
+        .cart-page-button.secondary {
+            background: #eef2f5;
+            color: #1e3a5f;
+        }
+
+        .cart-page-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #687585;
+        }
+
+        .cart-page-empty-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        #cart-toast {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: #1e3a5f;
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 10px;
+            opacity: 0;
+            pointer-events: none;
+            transition: .3s;
+            z-index: 9999;
+        }
+
+        #cart-toast.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 600px) {
+
+            .cart-page-item {
+                align-items: flex-start;
+            }
+
+            .cart-page-image {
+                width: 75px;
+                height: 75px;
+            }
+
+            .cart-page-actions {
+                flex-direction: column;
+            }
+
+        }
+
     </style>
+
 </head>
+
+
 <body>
 
-<header style="background:#1e3a5f; color:white; padding:15px; text-align:center;">
-    <h1>🛒 سلة المشتريات — لَحْقها</h1>
-    <nav style="margin-top: 10px;">
-        <a href="index.html" style="color:white; text-decoration:none; margin: 0 10px;">الرئيسية</a> | 
-        <a href="categories.html" style="color:white; text-decoration:none; margin: 0 10px;">الأقسام</a>
+
+<header class="site-header">
+
+    <div class="logo">
+
+        <h1>
+            🛒 سلة المشتريات
+        </h1>
+
+        <p>
+            منتجاتك التي اخترتها من لَحْقها
+        </p>
+
+    </div>
+
+
+    <nav>
+
+        <a href="index.html">
+            الرئيسية
+        </a>
+
+        <a href="categories.html">
+            الأقسام
+        </a>
+
+        <a href="cart.html">
+            🛒 السلة
+        </a>
+
     </nav>
+
 </header>
 
+
 <main class="cart-page">
-    <div class="cart-box" id="cart-container"></div>
+
+
+    <div class="cart-page-header">
+
+        <h2>
+            🛒 سلة المشتريات
+        </h2>
+
+        <p>
+            راجع منتجاتك قبل إتمام الطلب.
+        </p>
+
+    </div>
+
+
+    <div
+        class="cart-box"
+        id="cart-container"
+    ></div>
+
+
 </main>
+
 
 <div id="cart-toast"></div>
 
+
 <script>
+    /* ================================
+       SUPABASE CONFIGURATION
+    ================================ */
+    const SUPABASE_URL = "https://supabase.co";
+    const SUPABASE_KEY = "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-"; 
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     let cart = [];
+
     try {
         cart = JSON.parse(localStorage.getItem("cart") || "[]");
-        if (!Array.isArray(cart)) cart = [];
+        if (!Array.isArray(cart)) {
+            cart = [];
+        }
     } catch {
         cart = [];
     }
@@ -57,10 +362,33 @@
     const container = document.getElementById("cart-container");
     const toast = document.getElementById("cart-toast");
 
+    function escapeHtml(value) {
+        return String(value ?? "").replace(
+            /[&<>"']/g,
+            character => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "'"
+            }[character])
+        );
+    }
+
+    function imageUrl(path) {
+        const value = String(path || "").trim();
+        if (!value) return "";
+        if (/^https?:\/\//i.test(value) || /^data:image\//i.test(value)) {
+            return value;
+        }
+        return encodeURI(value.replace(/^\.\//, ""));
+    }
+
     function showToast(message) {
         toast.textContent = message;
         toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 2200);
+        clearTimeout(showToast.timer);
+        showToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
     }
 
     function saveCart() {
@@ -70,7 +398,9 @@
 
     function updateQuantity(index, amount) {
         cart[index].quantity = (cart[index].quantity || 1) + amount;
-        if (cart[index].quantity <= 0) cart.splice(index, 1);
+        if (cart[index].quantity <= 0) {
+            cart.splice(index, 1);
+        }
         saveCart();
     }
 
@@ -84,100 +414,26 @@
         return cart.reduce((sum, item) => sum + (parseFloat(item.price) || 0) * (item.quantity || 1), 0);
     }
 
-    function submitOrder(event) {
+    /* دالة إرسال وحفظ الطلبات في Supabase لتظهر في لوحة تحكمك والموافقة عليها */
+    async function submitOrder(event) {
         event.preventDefault();
         
         const name = document.getElementById("buyer-name").value.trim();
         const phone = document.getElementById("buyer-phone").value.trim();
         const address = document.getElementById("buyer-address").value.trim();
+        const submitBtn = document.querySelector(".buyer-form-container button[type='submit']");
 
         if (!name || !phone || !address) {
             showToast("يرجى تعبئة كافة حقول الاستمارة");
             return;
         }
 
-        let orderDetails = `طلب جديد من موقع لَحْقها 🛍\n\n👤 بيانات المشتري:\n- الاسم: ${name}\n- الجوال: ${phone}\n- العنوان: ${address}\n\n📦 المنتجات المطلوبة:\n`;
-        
-        cart.forEach(item => {
-            // حل المشكلة: إذا كان المنتج بدون بائع (مثل الكتب المستعملة)، نكتب أنه يتبع للإدارة
-            const seller = item.seller_name || "إدارة منصة لَحْقها (سلعة مستعملة)";
-            orderDetails += `- ${item.title} (الكمية: ${item.quantity || 1}) - السعر: ${item.price} ر.س [البائع: ${seller}]\n`;
-        });
-        
-        orderDetails += `\n💰 الإجمالي: ${calculateTotal()} ر.س`;
+        submitBtn.disabled = true;
+        showToast("⏳ جاري إرسال طلبك للوحة التحكم للمراجعة...");
 
-        // 🚨 ضع رقم واتساب إدارة الموقع هنا بدلاً من هذا الرقم لتصلك الطلبات مباشرة وتتصرف بها
-        const adminWhatsApp = "966500000000"; 
-        const whatsappUrl = `https://wa.me{adminWhatsApp}?text=${encodeURIComponent(orderDetails)}`; 
-        
-        showToast("جاري تحويلك لإتمام الطلب البرقي...");
-        setTimeout(() => {
-            localStorage.setItem("cart", "[]"); // تفريغ السلة بعد نجاح الطلب
-            window.location.href = whatsappUrl;
-        }, 1200);
-    }
-
-    function renderCart() {
-        container.innerHTML = "";
-
-        if (!cart.length) {
-            container.innerHTML = `
-                <div class="cart-page-empty">
-                    <h3>السلة فارغة 🛍️</h3>
-                    <p>تصفح الأقسام وأضف المنتجات التي تريد شراءها.</p>
-                    <a href="categories.html" style="color:#1e3a5f; font-weight:bold; text-decoration:none;">اذهب للأقسام من هنا ←</a>
-                </div>`;
-            return;
-        }
-
-        let itemsHtml = "";
-        cart.forEach((item, index) => {
-            const qty = item.quantity || 1;
-            // عرض تنبيه صغير للمشتري أن هذا الكتاب مستعمل وتابع للإدارة ومضمون
-            const sellerLabel = item.seller_name ? `بائع: ${item.seller_name}` : "🏷️ كتاب مستعمل - معتمد من المنصة";
-            
-            itemsHtml += `
-                <div class="cart-page-item">
-                    <div class="cart-page-info">
-                        <h3>${item.title || "منتج"}</h3>
-                        <p style="margin:2px 0; color:#2e7d32; font-size:13px;">${sellerLabel}</p>
-                        <p class="cart-page-price">${item.price || 0} ر.س</p>
-                        <div class="cart-page-controls">
-                            <button onclick="updateQuantity(${index}, -1)">-</button>
-                            <span>${qty}</span>
-                            <button onclick="updateQuantity(${index}, 1)">+</button>
-                            <button class="cart-page-delete" onclick="deleteItem(${index})">حذف</button>
-                        </div>
-                    </div>
-                </div>`;
-        });
-
-        container.innerHTML = `
-            <div class="cart-items-list">${itemsHtml}</div>
-            <div class="cart-page-summary">
-                <span>الإجمالي: ${calculateTotal()} ر.س</span>
-            </div>
-
-            <form onsubmit="submitOrder(event)" class="buyer-form-section">
-                <h4>📋 استمارة المشتري لإتمام الطلب</h4>
-                <div class="form-group">
-                    <label>الاسم الكامل:</label>
-                    <input type="text" id="buyer-name" required placeholder="أدخل اسمك الكريم">
-                </div>
-                <div class="form-group">
-                    <label>رقم الجوال:</label>
-                    <input type="tel" id="buyer-phone" required placeholder="05xxxxxxxx">
-                </div>
-                <div class="form-group">
-                    <label>العنوان بالتفصيل:</label>
-                    <textarea id="buyer-address" required placeholder="المدينة، الحي، اسم الشارع"></textarea>
-                </div>
-                <button type="submit" class="cart-page-button">🚀 تأكيد وإرسال الطلب عبر الواتساب</button>
-            </form>
-        `;
-    }
-
-    renderCart();
-</script>
-</body>
-</html>
+        try {
+            // رفع البيانات لجدول orders في Supabase مع تجاوز الفحص القديم المسبب للخطأ
+            const { data, error } = await supabaseClient
+                .from('orders')
+                .insert([
+                    {
