@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -10,33 +11,262 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <meta
-        name="description"
-        content="إتمام طلبك من لَحْقها"
-    >
+    <title>إتمام الطلب - لَحْقها</title>
 
-    <title>إتمام الشراء - لَحْقها</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    <style>
 
-    <link
-        rel="manifest"
-        href="manifest.json"
-    >
+        * {
+            box-sizing: border-box;
+        }
 
-    <link
-        rel="icon"
-        type="image/png"
-        href="images/icon.png"
-    >
+        body {
+            margin: 0;
+            font-family: Arial, Tahoma, sans-serif;
+            background: #f5f7fa;
+            color: #172033;
+        }
 
-    <link
-        rel="apple-touch-icon"
-        href="images/icon.png"
-    >
+        header {
+            background: #1e3a5f;
+            color: white;
+            text-align: center;
+            padding: 22px;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        main {
+            width: min(950px, 94%);
+            margin: 30px auto;
+        }
+
+        .back-button {
+            display: block;
+            width: fit-content;
+            margin: 0 auto 20px;
+            padding: 12px 22px;
+            background: #1e3a5f;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            opacity: .9;
+        }
+
+        .box {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        }
+
+        .box h2 {
+            margin-top: 0;
+            color: #1e3a5f;
+        }
+
+        .products {
+            display: grid;
+            gap: 15px;
+        }
+
+        .product {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 18px;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 14px;
+        }
+
+        .product-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            background: #eef2f5;
+        }
+
+        .product-info h3 {
+            margin: 0 0 10px;
+            color: #1e3a5f;
+        }
+
+        .product-info p {
+            margin: 7px 0;
+        }
+
+        .code {
+            color: #6d28d9;
+            font-weight: bold;
+        }
+
+        .category {
+            color: #8b5517;
+            font-weight: bold;
+        }
+
+        .price {
+            color: #166534;
+            font-weight: bold;
+        }
+
+        .quantity {
+            font-weight: bold;
+        }
+
+        .subtotal {
+            margin-top: 10px;
+            color: #166534;
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 7px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .summary {
+            margin-top: 20px;
+            padding: 18px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .summary-total {
+            margin-top: 8px;
+            padding-top: 14px;
+            border-top: 1px solid #cbd5e1;
+            font-size: 20px;
+            font-weight: bold;
+            color: #166534;
+        }
+
+        .bank-box {
+            display: none;
+            margin-top: 15px;
+            padding: 16px;
+            background: #f8fafc;
+            border: 1px solid #dbe4ec;
+            border-radius: 12px;
+        }
+
+        .bank-box strong {
+            display: block;
+            color: #1e3a5f;
+            margin-bottom: 8px;
+        }
+
+        .submit-button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 16px;
+            border: 0;
+            border-radius: 12px;
+            background: #1e3a5f;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            opacity: .9;
+        }
+
+        .submit-button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        #message {
+            display: none;
+            margin-top: 15px;
+            padding: 13px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        #message.success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        #message.error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .empty {
+            padding: 25px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+        }
+
+        @media (max-width: 600px) {
+
+            .product {
+                grid-template-columns: 1fr;
+            }
+
+            .product-image {
+                width: 100%;
+                height: 220px;
+            }
+
+            .summary-row {
+                gap: 15px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -44,337 +274,1105 @@
 <body>
 
 
-<header class="site-header">
+<header>
 
-    <div class="logo">
+    <h1>🛍️ لَحْقها</h1>
 
-        <h1>
-            🛍️ لَحْقها
-        </h1>
-
-        <p>
-            شفتها؟ لَحْقها قبل تروح!
-        </p>
-
-    </div>
-
-
-    <nav>
-
-        <a href="index.html">
-            الرئيسية
-        </a>
-
-        <a href="categories.html">
-            الأقسام
-        </a>
-
-        <a href="cart.html">
-            🛒 السلة
-        </a>
-
-    </nav>
+    <p>
+        إتمام الطلب
+    </p>
 
 </header>
 
 
-
-<main class="checkout">
-
-
-    <h2>
-        🛒 إتمام الشراء
-    </h2>
+<main>
 
 
     <a
-        href="cart.html"
-        class="back-home"
+        href="categories.html"
+        class="back-button"
     >
-        🛒 العودة للسلة
+        🛍️ العودة إلى الأقسام
     </a>
 
 
+    <!-- =========================
+         المنتجات
+    ========================== -->
 
-    <form id="checkout-form">
+    <section class="box">
 
-
-        <!-- =========================================
-             بيانات المشتري
-        ========================================== -->
-
-
-        <label for="name">
-            الاسم الكامل
-        </label>
-
-        <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="اكتب اسمك"
-            autocomplete="name"
-            required
-        >
-
-
-
-        <label for="phone">
-            رقم الجوال
-        </label>
-
-        <input
-            type="tel"
-            id="phone"
-            name="phone"
-            placeholder="05xxxxxxxx"
-            autocomplete="tel"
-            inputmode="tel"
-            required
-        >
-
-
-
-        <label for="address">
-            العنوان
-        </label>
-
-        <textarea
-            id="address"
-            name="address"
-            placeholder="اكتب عنوان التوصيل"
-            autocomplete="street-address"
-            required
-        ></textarea>
-
-
-
-        <!-- =========================================
-             طريقة الدفع
-        ========================================== -->
-
-
-        <label for="payment">
-            طريقة الدفع
-        </label>
-
-
-        <select
-            id="payment"
-            name="payment"
-            required
-        >
-
-            <option value="الدفع عند الاستلام">
-                الدفع عند الاستلام
-            </option>
-
-            <option value="تحويل بنكي">
-                تحويل بنكي
-            </option>
-
-        </select>
-
-
-
-        <!-- =========================================
-             بيانات حسابات لَحْقها
-             
-             تظهر فقط عند اختيار تحويل بنكي
-        ========================================== -->
-
+        <h2>
+            🛍️ تفاصيل المنتجات المطلوبة
+        </h2>
 
         <div
-            id="bankDetails"
-            style="display:none;"
+            id="products"
+            class="products"
         >
 
-
-            <h3>
-                🏦 بيانات التحويل البنكي
-            </h3>
-
-
-            <p>
-                حوّل المبلغ الإجمالي إلى أحد حسابات لَحْقها التالية:
-            </p>
-
-
-            <div>
-
-                <strong>
-                    اسم البنك:مصرف الراجحي
-                </strong>
-
-                <span>
-                  
-                </span>
-
+            <div class="empty">
+                جاري تحميل المنتجات...
             </div>
 
+        </div>
 
-            <div>
-
-                <strong>
-         اسم صاحب الحساب: عبدالله صالح الغامدي 
-                            </strong>
-
-                <span>
-                   
-                </span>
-
-            </div>
+    </section>
 
 
-            <div>
+    <!-- =========================
+         بيانات المشتري
+    ========================== -->
 
-                <strong>
-                    رقم الحساب:  425608010198460
-                </strong>
+    <section class="box">
 
-                <span>
-                     
-                </span>
-
-            </div>
+        <h2>
+            👤 بيانات المشتري
+        </h2>
 
 
-            <div>
+        <form id="checkoutForm">
 
-                <strong>
-                IBAN رقم   SA6280000425608010198460        
-                </strong>
 
-                <span>
-                    
-                </span>
+            <label for="buyerName">
+                الاسم الكامل
+            </label>
 
-            </div>
+            <input
+                type="text"
+                id="buyerName"
+                placeholder="اكتب الاسم الكامل"
+                autocomplete="name"
+                required
+            >
+
+
+            <label for="buyerPhone">
+                رقم الجوال
+            </label>
+
+            <input
+                type="tel"
+                id="buyerPhone"
+                placeholder="05xxxxxxxx"
+                inputmode="tel"
+                autocomplete="tel"
+                required
+            >
+
+
+            <label for="buyerAddress">
+                العنوان
+            </label>
+
+            <textarea
+                id="buyerAddress"
+                placeholder="اكتب عنوان التوصيل"
+                autocomplete="street-address"
+                required
+            ></textarea>
+
+
+            <label for="paymentMethod">
+                طريقة الدفع
+            </label>
+
+            <select id="paymentMethod">
+
+                <option value="الدفع عند الاستلام">
+                    الدفع عند الاستلام
+                </option>
+
+                <option value="تحويل بنكي">
+                    تحويل بنكي إلى لَحْقها
+                </option>
+
+            </select>
 
 
             <div
-                style="
-                    margin-top:15px;
-                    padding:12px;
-                    background:#fff7ed;
-                    border-radius:10px;
-                    color:#9a3412;
-                "
+                id="bankBox"
+                class="bank-box"
             >
 
-                ⚠️ بعد التحويل، أرسل الطلب وانتظر التحقق
-                من وصول المبلغ.
+                <strong>
+                    🏦 التحويل البنكي
+                </strong>
 
+                <div>
+                    سيتم وضع بيانات حساب لَحْقها المعتمدة هنا.
+                </div>
 
             </div>
 
 
-        </div>
+            <!-- =========================
+                 الملخص
+            ========================== -->
+
+            <div class="summary">
+
+                <div class="summary-row">
+
+                    <span>
+                        عدد المنتجات
+                    </span>
+
+                    <strong id="totalCount">
+                        0
+                    </strong>
+
+                </div>
 
 
+                <div class="summary-row summary-total">
 
-        <!-- =========================================
-             ملخص الطلب
-        ========================================== -->
+                    <span>
+                        إجمالي الطلب
+                    </span>
 
+                    <strong id="totalPrice">
+                        0.00 ريال
+                    </strong>
 
-        <div class="order-box">
+                </div>
 
-
-            <h3>
-                ملخص الطلب
-            </h3>
-
-
-            <p>
-
-                عدد المنتجات:
-
-                <span id="order-count">
-                    0
-                </span>
-
-            </p>
+            </div>
 
 
-            <p>
-
-                الإجمالي:
-
-                <span id="order-total">
-                    0.00 ر.س
-                </span>
-
-            </p>
+            <button
+                type="submit"
+                id="submitButton"
+                class="submit-button"
+            >
+                ✅ تأكيد وإرسال الطلب
+            </button>
 
 
-        </div>
+            <div
+                id="message"
+                role="alert"
+            ></div>
 
 
+        </form>
 
-        <!-- =========================================
-             زر تأكيد الطلب
-        ========================================== -->
-
-
-        <button
-            type="submit"
-            class="checkout-btn"
-            id="submit-order"
-        >
-
-            ✅ تأكيد الطلب
-
-        </button>
-
-
-
-        <!-- =========================================
-             رسالة الطلب
-        ========================================== -->
-
-
-        <p
-            id="checkout-message"
-            role="alert"
-            aria-live="polite"
-        ></p>
-
-
-    </form>
+    </section>
 
 
 </main>
 
 
-
 <footer>
 
-    <p>
-        © 2026 لَحْقها 🛍️
-    </p>
+    © 2026 لَحْقها 🛍️
 
 </footer>
 
 
+<script>
 
-<!-- =============================================
-     Supabase
-============================================= -->
+/* =====================================================
+   Supabase
+===================================================== */
 
+const SUPABASE_URL =
+    "https://gyyyzavjzvcxzgrtukqu.supabase.co";
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-
-<!-- =============================================
-     checkout.js
-============================================= -->
+const SUPABASE_KEY =
+    "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-";
 
 
-<script src="checkout.js"></script>
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =====================================================
+   السلة
+===================================================== */
+
+let cart = [];
+
+
+try {
+
+    cart =
+        JSON.parse(
+            localStorage.getItem("cart") || "[]"
+        );
+
+    if (!Array.isArray(cart)) {
+        cart = [];
+    }
+
+}
+catch {
+
+    cart = [];
+
+}
+
+
+/* =====================================================
+   العناصر
+===================================================== */
+
+const productsContainer =
+    document.getElementById("products");
+
+const totalCount =
+    document.getElementById("totalCount");
+
+const totalPrice =
+    document.getElementById("totalPrice");
+
+const form =
+    document.getElementById("checkoutForm");
+
+const submitButton =
+    document.getElementById("submitButton");
+
+const message =
+    document.getElementById("message");
+
+const paymentMethod =
+    document.getElementById("paymentMethod");
+
+const bankBox =
+    document.getElementById("bankBox");
+
+
+/* =====================================================
+   حماية النصوص
+===================================================== */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+/* =====================================================
+   الصورة
+===================================================== */
+
+function getImage(item) {
+
+    const candidates = [
+
+        item?.image,
+        item?.image_url,
+        item?.imageUrl,
+        item?.productImage,
+        item?.photo
+
+    ];
+
+
+    for (const value of candidates) {
+
+        if (
+            value &&
+            String(value).trim()
+        ) {
+
+            return String(value).trim();
+
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =====================================================
+   تجهيز المنتجات
+===================================================== */
+
+function prepareProducts() {
+
+    return cart.map(item => {
+
+        const price =
+            Number(
+                item.price
+            ) || 0;
+
+
+        const quantity =
+            Math.max(
+                1,
+                Number(
+                    item.quantity
+                ) || 1
+            );
+
+
+        const name =
+            item.title ||
+            item.name ||
+            item.product_name ||
+            "منتج";
+
+
+        const productId =
+            item.id ||
+            item.product_id ||
+            "";
+
+
+        const category =
+            item.category ||
+            item.product_category ||
+            "—";
+
+
+        const image =
+            getImage(item);
+
+
+        const subtotal =
+            Number(
+                (
+                    price *
+                    quantity
+                ).toFixed(2)
+            );
+
+
+        return {
+
+            product_id:
+                String(productId),
+
+            name:
+                name,
+
+            category:
+                category,
+
+            image:
+                image,
+
+            price:
+                price,
+
+            quantity:
+                quantity,
+
+            subtotal:
+                subtotal,
+
+            seller_request_id:
+                item.seller_request_id ||
+                item.sellerRequestId ||
+                null
+
+        };
+
+    });
+
+}
+
+
+/* =====================================================
+   جلب seller_request_id من products
+===================================================== */
+
+async function attachSellerRequestIds(
+    products
+) {
+
+    const productIds =
+        [
+            ...new Set(
+                products
+                    .map(
+                        product =>
+                            String(
+                                product.product_id || ""
+                            ).trim()
+                    )
+                    .filter(Boolean)
+            )
+        ];
+
+
+    if (!productIds.length) {
+
+        return products;
+
+    }
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("products")
+            .select(
+                "id, seller_request_id"
+            )
+            .in(
+                "id",
+                productIds
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Product relation error:",
+            error
+        );
+
+        throw error;
+
+    }
+
+
+    const relationMap =
+        new Map();
+
+
+    (data || []).forEach(
+        row => {
+
+            relationMap.set(
+                String(row.id),
+                row.seller_request_id
+                    ? String(
+                        row.seller_request_id
+                    )
+                    : null
+            );
+
+        }
+    );
+
+
+    return products.map(
+        product => {
+
+            const sellerRequestId =
+                relationMap.get(
+                    String(
+                        product.product_id
+                    )
+                );
+
+
+            return {
+
+                ...product,
+
+                seller_request_id:
+                    sellerRequestId ||
+                    product.seller_request_id ||
+                    null
+
+            };
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   التحقق من ربط المنتجات
+===================================================== */
+
+function validateSellerLinks(
+    products
+) {
+
+    const missing =
+        products.filter(
+            product =>
+                !product.seller_request_id
+        );
+
+
+    if (missing.length) {
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =====================================================
+   عرض المنتجات
+===================================================== */
+
+function renderProducts() {
+
+    const products =
+        prepareProducts();
+
+
+    productsContainer.innerHTML =
+        "";
+
+
+    if (!products.length) {
+
+        productsContainer.innerHTML = `
+
+            <div class="empty">
+                ⚠️ السلة فارغة.
+            </div>
+
+        `;
+
+
+        submitButton.disabled =
+            true;
+
+
+        return;
+
+    }
+
+
+    products.forEach(
+        product => {
+
+            const image =
+                product.image;
+
+
+            const imageHtml =
+                image
+
+                    ?
+
+                    `
+
+                        <img
+                            class="product-image"
+                            src="${escapeHtml(image)}"
+                            alt="${escapeHtml(product.name)}"
+                            onerror="this.style.display='none';"
+                        >
+
+                    `
+
+                    :
+
+                    `
+
+                        <div
+                            class="product-image"
+                            style="
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                font-size:45px;
+                            "
+                        >
+                            📦
+                        </div>
+
+                    `;
+
+
+            productsContainer.insertAdjacentHTML(
+                "beforeend",
+                `
+
+                    <article class="product">
+
+                        ${imageHtml}
+
+                        <div class="product-info">
+
+                            <h3>
+                                ${escapeHtml(product.name)}
+                            </h3>
+
+
+                            <p class="code">
+
+                                🔢 كود المنتج:
+
+                                ${escapeHtml(
+                                    product.product_id || "—"
+                                )}
+
+                            </p>
+
+
+                            <p class="category">
+
+                                📂 القسم:
+
+                                ${escapeHtml(
+                                    product.category
+                                )}
+
+                            </p>
+
+
+                            <p class="quantity">
+
+                                🔢 الكمية:
+
+                                ${product.quantity}
+
+                            </p>
+
+
+                            <p class="price">
+
+                                💰 سعر الوحدة:
+
+                                ${product.price.toFixed(2)}
+                                ريال
+
+                            </p>
+
+
+                            <div class="subtotal">
+
+                                إجمالي المنتج:
+
+                                ${product.subtotal.toFixed(2)}
+                                ريال
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                `
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   الملخص
+===================================================== */
+
+function updateSummary() {
+
+    const products =
+        prepareProducts();
+
+
+    let count = 0;
+
+    let total = 0;
+
+
+    products.forEach(
+        product => {
+
+            count +=
+                product.quantity;
+
+            total +=
+                product.subtotal;
+
+        }
+    );
+
+
+    totalCount.textContent =
+        count;
+
+
+    totalPrice.textContent =
+        total.toFixed(2) +
+        " ريال";
+
+}
+
+
+/* =====================================================
+   الدفع
+===================================================== */
+
+paymentMethod.addEventListener(
+    "change",
+    () => {
+
+        bankBox.style.display =
+            paymentMethod.value ===
+            "تحويل بنكي"
+                ? "block"
+                : "none";
+
+    }
+);
+
+
+/* =====================================================
+   إرسال الطلب
+===================================================== */
+
+form.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        if (!cart.length) {
+
+            showMessage(
+                "❌ السلة فارغة.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const buyerName =
+            document
+                .getElementById("buyerName")
+                .value
+                .trim();
+
+
+        const buyerPhone =
+            document
+                .getElementById("buyerPhone")
+                .value
+                .trim();
+
+
+        const buyerAddress =
+            document
+                .getElementById("buyerAddress")
+                .value
+                .trim();
+
+
+        const selectedPayment =
+            paymentMethod.value;
+
+
+        if (!buyerName) {
+
+            showMessage(
+                "❌ اكتب الاسم الكامل.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (!buyerPhone) {
+
+            showMessage(
+                "❌ اكتب رقم الجوال.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (!buyerAddress) {
+
+            showMessage(
+                "❌ اكتب العنوان.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        submitButton.disabled =
+            true;
+
+        submitButton.textContent =
+            "⏳ جاري تجهيز الطلب...";
+
+
+        try {
+
+            let products =
+                prepareProducts();
+
+
+            /*
+             * نأخذ الربط من جدول products
+             * بدل قراءة seller_requests من الصفحة العامة.
+             */
+
+            products =
+                await attachSellerRequestIds(
+                    products
+                );
+
+
+            /*
+             * يجب أن يكون كل منتج معتمد
+             * مرتبطًا بطلب بائع.
+             */
+
+            if (
+                !validateSellerLinks(
+                    products
+                )
+            ) {
+
+                throw new Error(
+                    "هناك منتج في السلة غير مرتبط ببائع معتمد."
+                );
+
+            }
+
+
+            let total = 0;
+
+
+            products.forEach(
+                product => {
+
+                    total +=
+                        Number(
+                            product.subtotal || 0
+                        );
+
+                }
+            );
+
+
+            const orderNumber =
+                "ORD-" +
+                Date.now();
+
+
+            /*
+             * حفظ الطلب.
+             *
+             * بيانات البائع لا تظهر للمشتري.
+             * seller_request_id موجود داخل items
+             * لاستخدامه لاحقًا من لوحة التحكم.
+             */
+
+            const orderData = {
+
+                order_number:
+                    orderNumber,
+
+                buyer_name:
+                    buyerName,
+
+                buyer_phone:
+                    buyerPhone,
+
+                buyer_address:
+                    buyerAddress,
+
+                payment_method:
+                    selectedPayment,
+
+                items:
+                    products,
+
+                total:
+                    Number(
+                        total.toFixed(2)
+                    ),
+
+                status:
+                    "pending"
+
+            };
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("orders")
+                    .insert(
+                        [orderData]
+                    )
+                    .select()
+                    .single();
+
+
+            if (error) {
+
+                console.error(
+                    "Supabase order error:",
+                    error
+                );
+
+                throw error;
+
+            }
+
+
+            console.log(
+                "Order created:",
+                data
+            );
+
+
+            localStorage.removeItem(
+                "cart"
+            );
+
+            cart = [];
+
+
+            showMessage(
+                "✅ تم إرسال طلبك بنجاح. رقم الطلب: " +
+                orderNumber,
+                "success"
+            );
+
+
+            submitButton.textContent =
+                "✅ تم إرسال الطلب";
+
+
+            form
+                .querySelectorAll(
+                    "input, textarea, select"
+                )
+                .forEach(
+                    element => {
+
+                        element.disabled =
+                            true;
+
+                    }
+                );
+
+
+            renderProducts();
+
+            updateSummary();
+
+        }
+        catch (error) {
+
+            console.error(
+                "Order submission error:",
+                error
+            );
+
+
+            let errorText =
+                "❌ تعذر إرسال الطلب.";
+
+
+            if (
+                error &&
+                error.code === "42501"
+            ) {
+
+                errorText =
+                    "❌ لا توجد صلاحية لإضافة الطلب في Supabase.";
+
+            }
+            else if (
+                error &&
+                error.code === "23505"
+            ) {
+
+                errorText =
+                    "❌ رقم الطلب مكرر.";
+
+            }
+            else if (
+                error &&
+                error.message
+            ) {
+
+                errorText +=
+                    " " +
+                    error.message;
+
+            }
+
+
+            showMessage(
+                errorText,
+                "error"
+            );
+
+
+            submitButton.disabled =
+                false;
+
+            submitButton.textContent =
+                "✅ تأكيد وإرسال الطلب";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   الرسائل
+===================================================== */
+
+function showMessage(
+    text,
+    type
+) {
+
+    message.textContent =
+        text;
+
+    message.className =
+        type;
+
+}
+
+
+/* =====================================================
+   التشغيل الأولي
+===================================================== */
+
+renderProducts();
+
+updateSummary();
+
+</script>
 
 
 </body>
 
 </html>
+```
