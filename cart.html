@@ -1,481 +1,998 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 
-    <meta
-        name="description"
-        content="سلة المشتريات | لَحْقها"
-    >
+>
 
-    <title>السلة | لَحْقها 🛒</title>
+<meta
+name="description"
+content="سلة المشتريات | لَحْقها"
 
-    <link rel="stylesheet" href="style.css">
+>
 
-    <link rel="manifest" href="manifest.json">
+<title>السلة | لَحْقها 🛒</title>
 
-    <link
-        rel="icon"
-        type="image/png"
-        href="images/icon.png"
-    >
+<link rel="stylesheet" href="style.css">
 
-    <link
-        rel="apple-touch-icon"
-        href="images/icon.png"
-    >
+<link rel="manifest" href="manifest.json">
 
-    <style>
+<link
+    rel="icon"
+    type="image/png"
+    href="images/icon.png"
+>
 
-        .cart-page {
-            width: min(900px, calc(100% - 30px));
-            margin: 35px auto 100px;
-        }
+<link
+    rel="apple-touch-icon"
+    href="images/icon.png"
+>
 
-        .cart-page-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+<style>
 
-        .cart-page-header h2 {
-            color: #1e3a5f;
-            margin-bottom: 8px;
-        }
+.cart-page {
+    width: min(900px, calc(100% - 30px));
+    margin: 35px auto 100px;
+}
 
-        .cart-page-header p {
-            color: #687585;
-        }
+.cart-page-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
 
-        .cart-box {
-            background: #fff;
-            border-radius: 20px;
-            padding: 22px;
-            box-shadow: 0 8px 25px rgba(30,55,80,.08);
-            border: 1px solid #e4e9ee;
-        }
+.cart-page-header h2 {
+    color: #1e3a5f;
+    margin-bottom: 8px;
+}
 
-        .cart-page-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px 0;
-            border-bottom: 1px solid #e9edf1;
-        }
+.cart-page-header p {
+    color: #687585;
+}
 
-        .cart-page-item:last-child {
-            border-bottom: 0;
-        }
+.cart-box {
+    background: #fff;
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: 0 8px 25px rgba(30,55,80,.08);
+    border: 1px solid #e4e9ee;
+}
 
-        .cart-page-image {
-            width: 90px;
-            height: 90px;
-            object-fit: cover;
-            border-radius: 12px;
-            background: #f1f3f5;
-            flex-shrink: 0;
-        }
+.cart-page-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #e9edf1;
+}
 
-        .cart-page-info {
-            flex: 1;
-            min-width: 0;
-        }
+.cart-page-item:last-child {
+    border-bottom: 0;
+}
 
-        .cart-page-info h3 {
-            margin: 0 0 7px;
-            color: #1e3a5f;
-            font-size: 18px;
-        }
+.cart-page-image {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 12px;
+    background: #f1f3f5;
+    flex-shrink: 0;
+}
 
-        .cart-page-info p {
-            margin: 5px 0;
-            color: #687585;
-            font-size: 14px;
-        }
+.cart-page-info {
+    flex: 1;
+    min-width: 0;
+}
 
-        .cart-page-price {
-            font-weight: bold;
-            color: #1e3a5f !important;
-        }
+.cart-page-info h3 {
+    margin: 0 0 7px;
+    color: #1e3a5f;
+    font-size: 18px;
+}
 
-        .cart-page-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-        }
+.cart-page-info p {
+    margin: 5px 0;
+    color: #687585;
+    font-size: 14px;
+}
 
-        .cart-page-controls button {
-            width: 32px;
-            height: 32px;
-            border: 0;
-            border-radius: 8px;
-            background: #1e3a5f;
-            color: #fff;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 18px;
-        }
+.cart-page-price {
+    font-weight: bold;
+    color: #1e3a5f !important;
+}
 
-        .cart-page-delete {
-            border: 0 !important;
-            background: #fbeaea !important;
-            color: #b32626 !important;
-            padding: 7px 12px !important;
-            width: auto !important;
-            height: auto !important;
-            font-size: 14px !important;
-        }
+.cart-page-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
 
-        .cart-page-summary {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 2px solid #e8edf2;
-        }
+.cart-page-controls button {
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 8px;
+    background: #1e3a5f;
+    color: #fff;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 18px;
+}
 
-        .cart-page-summary-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            margin: 10px 0;
-        }
+.cart-page-controls strong {
+    min-width: 25px;
+    text-align: center;
+}
 
-        .cart-page-total {
-            font-size: 22px;
-            font-weight: 900;
-            color: #1e3a5f;
-        }
+.cart-page-delete {
+    width: auto !important;
+    height: auto !important;
+    padding: 7px 12px !important;
+    background: #fbeaea !important;
+    color: #b32626 !important;
+    font-size: 14px !important;
+}
 
-        .cart-page-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
+.cart-page-summary {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 2px solid #e8edf2;
+}
 
-        .cart-page-button {
-            flex: 1;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            padding: 13px 18px;
-            border-radius: 10px;
-            text-decoration: none;
-            border: 0;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 16px;
-            font-weight: bold;
-        }
+.cart-page-summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin: 10px 0;
+}
 
-        .cart-page-button.primary {
-            background: #2e7d32;
-            color: #fff;
-        }
+.cart-page-total {
+    font-size: 22px;
+    font-weight: 900;
+    color: #1e3a5f;
+}
 
-        .cart-page-button.secondary {
-            background: #eef2f5;
-            color: #1e3a5f;
-        }
+.cart-page-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
 
-        .cart-page-empty {
-            text-align: center;
-            padding: 60px 20px;
-            color: #687585;
-        }
+.cart-page-button {
+    flex: 1;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 13px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: bold;
+}
 
-        .cart-page-empty-icon {
-            font-size: 60px;
-            margin-bottom: 15px;
-        }
+.cart-page-button.primary {
+    background: #2e7d32;
+    color: #fff;
+}
 
-        #cart-toast {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            background: #1e3a5f;
-            color: #fff;
-            padding: 12px 18px;
-            border-radius: 10px;
-            opacity: 0;
-            pointer-events: none;
-            transition: .3s;
-            z-index: 9999;
-        }
+.cart-page-button.secondary {
+    background: #eef2f5;
+    color: #1e3a5f;
+}
 
-        #cart-toast.show {
-            opacity: 1;
-        }
+.cart-page-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #687585;
+}
 
-        @media (max-width: 600px) {
+.cart-page-empty-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
 
-            .cart-page-item {
-                align-items: flex-start;
-            }
+#cart-toast {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: #1e3a5f;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transition: .3s;
+    z-index: 9999;
+}
 
-            .cart-page-image {
-                width: 75px;
-                height: 75px;
-            }
+#cart-toast.show {
+    opacity: 1;
+}
 
-            .cart-page-actions {
-                flex-direction: column;
-            }
+@media (max-width: 600px) {
 
-        }
+    .cart-page-item {
+        align-items: flex-start;
+    }
 
-    </style>
+    .cart-page-image {
+        width: 75px;
+        height: 75px;
+    }
+
+    .cart-page-actions {
+        flex-direction: column;
+    }
+
+    .cart-page-controls {
+        flex-wrap: wrap;
+    }
+
+}
+
+</style>
 
 </head>
 
-
 <body>
-
 
 <header class="site-header">
 
-    <div class="logo">
+```
+<div class="logo">
 
-        <h1>
-            🛒 سلة المشتريات
-        </h1>
+    <h1>
+        🛒 سلة المشتريات
+    </h1>
 
-        <p>
-            منتجاتك التي اخترتها من لَحْقها
-        </p>
+    <p>
+        منتجاتك التي اخترتها من لَحْقها
+    </p>
 
-    </div>
+</div>
 
+<nav>
 
-    <nav>
+    <a href="index.html">
+        الرئيسية
+    </a>
 
-        <a href="index.html">
-            الرئيسية
-        </a>
+    <a href="categories.html">
+        الأقسام
+    </a>
 
-        <a href="categories.html">
-            الأقسام
-        </a>
+    <a href="cart.html">
+        🛒 السلة
+    </a>
 
-        <a href="cart.html">
-            🛒 السلة
-        </a>
-
-    </nav>
+</nav>
+```
 
 </header>
 
-
 <main class="cart-page">
 
+```
+<div class="cart-page-header">
 
-    <div class="cart-page-header">
+    <h2>
+        🛒 سلة المشتريات
+    </h2>
 
-        <h2>
-            🛒 سلة المشتريات
-        </h2>
+    <p>
+        راجع منتجاتك قبل إتمام الطلب.
+    </p>
 
-        <p>
-            راجع منتجاتك قبل إتمام الطلب.
-        </p>
-
-    </div>
+</div>
 
 
-    <div
-        class="cart-box"
-        id="cart-container"
-    ></div>
-
+<div
+    class="cart-box"
+    id="cart-container"
+></div>
+```
 
 </main>
 
-
 <div id="cart-toast"></div>
-
 
 <script>
 
-    let cart = [];
+/* =========================================
+   قراءة السلة
+========================================= */
+
+let cart = [];
+
+function loadCart() {
 
     try {
 
-        cart =
-            JSON.parse(
-                localStorage.getItem(
-                    "cart"
-                ) || "[]"
-            );
-        console.log("CART DATA:", cart);
-        if (!Array.isArray(cart)) {
+        const saved =
+            localStorage.getItem("cart");
+
+        if (!saved) {
             cart = [];
+            return;
         }
 
-    }
+        const parsed =
+            JSON.parse(saved);
 
-    catch {
+        cart =
+            Array.isArray(parsed)
+                ? parsed
+                : [];
+
+    }
+    catch (error) {
+
+        console.error(
+            "خطأ في قراءة السلة:",
+            error
+        );
 
         cart = [];
 
     }
 
-
-    const container =
-        document.getElementById(
-            "cart-container"
-        );
+}
 
 
-    const toast =
-        document.getElementById(
-            "cart-toast"
-        );
+/* =========================================
+   العناصر
+========================================= */
+
+const container =
+    document.getElementById(
+        "cart-container"
+    );
+
+const toast =
+    document.getElementById(
+        "cart-toast"
+    );
 
 
-    function escapeHtml(value) {
+/* =========================================
+   حماية النص
+========================================= */
 
-        return String(value ?? "").replace(
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(
             /[&<>"']/g,
             character => ({
                 "&": "&amp;",
                 "<": "&lt;",
                 ">": "&gt;",
                 '"': "&quot;",
-                "'": "'"
+                "'": "&#039;"
             }[character])
         );
 
+}
+
+
+/* =========================================
+   الصور
+========================================= */
+
+function imageUrl(path) {
+
+    const value =
+        String(path || "").trim();
+
+    if (!value) {
+        return "";
     }
 
+    if (
+        /^https?:\/\//i.test(value) ||
+        /^data:image\//i.test(value) ||
+        /^blob:/i.test(value)
+    ) {
 
-    function imageUrl(path) {
-
-        const value =
-            String(path || "").trim();
-
-
-        if (!value) {
-            return "";
-        }
-
-
-        if (
-            /^https?:\/\//i.test(value) ||
-            /^data:image\//i.test(value)
-        ) {
-            return value;
-        }
-
-
-        return encodeURI(
-            value.replace(/^\.\//, "")
-        );
-
-    }
-
-
-    function showToast(message) {
-
-        toast.textContent =
-            message;
-
-        toast.classList.add(
-            "show"
-        );
-
-        clearTimeout(
-            showToast.timer
-        );
-
-        showToast.timer =
-            setTimeout(
-                () =>
-                    toast.classList.remove(
-                        "show"
-                    ),
-                2200
-            );
+        return value;
 
     }
 
+    return encodeURI(
+        value.replace(
+            /^\.\//,
+            ""
+        )
+    );
 
-    function saveCart() {
+}
+
+
+/* =========================================
+   التنبيه
+========================================= */
+
+function showToast(message) {
+
+    toast.textContent =
+        message;
+
+    toast.classList.add(
+        "show"
+    );
+
+    clearTimeout(
+        showToast.timer
+    );
+
+    showToast.timer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2200
+        );
+
+}
+
+
+/* =========================================
+   حفظ السلة
+========================================= */
+
+function saveCart() {
+
+    try {
 
         localStorage.setItem(
             "cart",
             JSON.stringify(cart)
         );
 
-        renderCart();
+    }
+    catch (error) {
+
+        console.error(
+            "تعذر حفظ السلة:",
+            error
+        );
+
+        showToast(
+            "تعذر حفظ السلة"
+        );
+
+        return;
 
     }
 
-    function updateQuantity(index, amount) {
-        cart[index].quantity = (cart[index].quantity || 1) + amount;
-        if (cart[index].quantity <= 0) {
-            cart.splice(index, 1);
-        }
-        saveCart();
+    renderCart();
+
+}
+
+
+/* =========================================
+   تغيير الكمية
+========================================= */
+
+function changeQuantity(index, amount) {
+
+    if (!cart[index]) {
+        return;
     }
 
-    function deleteItem(index) {
-        cart.splice(index, 1);
-        saveCart();
-        showToast("تم إزالة المنتج من السلة");
+    let quantity =
+        Number(cart[index].quantity) || 1;
+
+    quantity += amount;
+
+    if (quantity <= 0) {
+
+        cart.splice(
+            index,
+            1
+        );
+
+        showToast(
+            "تم حذف المنتج من السلة"
+        );
+
+    }
+    else {
+
+        cart[index].quantity =
+            quantity;
+
     }
 
-    function calculateTotal() {
-        return cart.reduce((sum, item) => sum + (parseFloat(item.price) || 0) * (item.quantity || 1), 0);
+    saveCart();
+
+}
+
+
+/* =========================================
+   حذف منتج
+========================================= */
+
+function deleteItem(index) {
+
+    if (!cart[index]) {
+        return;
     }
 
+    const title =
+        cart[index].title ||
+        cart[index].name ||
+        "المنتج";
 
-    function renderCart() {
+    cart.splice(
+        index,
+        1
+    );
 
-        container.innerHTML = "";
+    saveCart();
+
+    showToast(
+        `تم حذف «${title}» من السلة`
+    );
+
+}
 
 
-        if (!cart.length) {
+/* =========================================
+   إفراغ السلة
+========================================= */
 
-            container.innerHTML = `
-                <div class="cart-page-empty">
-                    <div class="cart-page-empty-icon">🛍️</div>
-                    <h3>السلة فارغة</h3>
-                    <p>أضف المنتجات التي تريد شراءها من الأقسام.</p>
-                    <div class="cart-page-actions" style="justify-content: center;">
-                        <a href="categories.html" class="cart-page-button secondary">تصفح الأقسام</a>
-                    </div>
-                </div>`;
-            return;
-        }
+function clearCart() {
 
-        let itemsHtml = "";
-        cart.forEach((item, index) => {
-            const qty = item.quantity || 1;
-            const price = parseFloat(item.price) || 0;
-            
-            itemsHtml += `
-                <div class="cart-page-item">
-                    <img class="cart-page-image" src="${imageUrl(item.image)}" alt="${escapeHtml(item.title)}">
-                    <div class="cart-page-info">
-                        <h3>${escapeHtml(item.title)}</h3>
-                        <p class="cart-page-price">${price} ر.س</p>
-                        <div class="cart-page-controls">
-                            <button onclick="updateQuantity(${index}, -1)">-</button>
-                            <span>${qty}</span>
-                            <button onclick="updateQuantity(${index}, 1)">+</button>
-                            <button class="cart-page-delete" onclick="deleteItem(${index})">حذف</button>
-                        </div>
-                    </div>
-                </div>`;
-        });
+    if (!cart.length) {
+        return;
+    }
+
+    const confirmed =
+        confirm(
+            "هل تريد إفراغ السلة بالكامل؟"
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    cart = [];
+
+    saveCart();
+
+    showToast(
+        "تم إفراغ السلة"
+    );
+
+}
+
+
+/* =========================================
+   عرض السلة
+========================================= */
+
+function renderCart() {
+
+    container.innerHTML = "";
+
+
+    /* السلة فارغة */
+
+    if (!cart.length) {
 
         container.innerHTML = `
-            <div class="cart-items-list">${itemsHtml}</div>
-            
-            <div class="cart-page-summary">
-                <div class="cart-page-summary-row cart-page-total">
+
+            <div class="cart-page-empty">
+
+                <div class="cart-page-empty-icon">
+                    🛍️
+                </div>
+
+                <h3>
+                    السلة فارغة
+                </h3>
+
+                <p>
+                    أضف المنتجات التي تريد شراءها من الأقسام.
+                </p>
+
+                <div
+                    class="cart-page-actions"
+                    style="justify-content:center;"
+                >
+
+                    <a
+                        href="categories.html"
+                        class="cart-page-button primary"
+                    >
+                        🛍️ تصفح الأقسام
+                    </a>
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    let total = 0;
+    let count = 0;
+
+
+    /* =====================================
+       المنتجات
+    ===================================== */
+
+    cart.forEach(
+        (item, index) => {
+
+            const quantity =
+                Math.max(
+                    1,
+                    Number(
+                        item.quantity
+                    ) || 1
+                );
+
+            item.quantity =
+                quantity;
+
+
+            const price =
+                Number(
+                    item.price
+                ) || 0;
+
+
+            const subtotal =
+                price * quantity;
+
+
+            total += subtotal;
+
+            count += quantity;
+
+
+            const title =
+                item.title ||
+                item.name ||
+                "منتج";
+
+
+            const category =
+                item.category ||
+                "سلعة";
+
+
+            const image =
+                imageUrl(
+                    item.image
+                );
+
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+
+            row.className =
+                "cart-page-item";
+
+
+            row.innerHTML = `
+
+                ${
+                    image
+                    ?
+                    `
+                    <img
+                        class="cart-page-image"
+                        src="${escapeHtml(image)}"
+                        alt="${escapeHtml(title)}"
+                    >
+                    `
+                    :
+                    `
+                    <div
+                        class="cart-page-image"
+                        style="
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            font-size:35px;
+                        "
+                    >
+                        📦
+                    </div>
+                    `
+                }
+
+
+                <div class="cart-page-info">
+
+                    <h3>
+                        ${escapeHtml(title)}
+                    </h3>
+
+
+                    <p>
+                        📂
+                        ${escapeHtml(category)}
+                    </p>
+
+
+                    <p class="cart-page-price">
+                        ${price.toLocaleString("ar-SA", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        })}
+                        ريال
+                    </p>
+
+
+                    <div class="cart-page-controls">
+
+                        <button
+                            type="button"
+                            data-action="minus"
+                        >
+                            −
+                        </button>
+
+
+                        <strong>
+                            ${quantity}
+                        </strong>
+
+
+                        <button
+                            type="button"
+                            data-action="plus"
+                        >
+                            +
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="cart-page-delete"
+                            data-action="delete"
+                        >
+                            🗑 حذف
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            /* زيادة */
+
+            row
+                .querySelector(
+                    '[data-action="plus"]'
+                )
+                .addEventListener(
+                    "click",
+                    () => {
+
+                        changeQuantity(
+                            index,
+                            1
+                        );
+
+                    }
+                );
+
+
+            /* نقصان */
+
+            row
+                .querySelector(
+                    '[data-action="minus"]'
+                )
+                .addEventListener(
+                    "click",
+                    () => {
+
+                        changeQuantity(
+                            index,
+                            -1
+                        );
+
+                    }
+                );
+
+
+            /* حذف */
+
+            row
+                .querySelector(
+                    '[data-action="delete"]'
+                )
+                .addEventListener(
+                    "click",
+                    () => {
+
+                        deleteItem(
+                            index
+                        );
+
+                    }
+                );
+
+
+            container.appendChild(
+                row
+            );
+
+        }
+    );
+
+
+    /* =====================================
+       ملخص السلة
+    ===================================== */
+
+    const summary =
+        document.createElement(
+            "div"
+        );
+
+
+    summary.className =
+        "cart-page-summary";
+
+
+    summary.innerHTML = `
+
+        <div class="cart-page-summary-row">
+
+            <span>
+                عدد المنتجات
+            </span>
+
+            <strong>
+                ${count}
+            </strong>
+
+        </div>
+
+
+        <div class="cart-page-summary-row">
+
+            <span>
+                الإجمالي
+            </span>
+
+            <strong class="cart-page-total">
+
+                ${total.toLocaleString("ar-SA", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })}
+
+                ريال
+
+            </strong>
+
+        </div>
+
+
+        <div class="cart-page-actions">
+
+            <button
+                type="button"
+                class="cart-page-button secondary"
+                id="clear-all"
+            >
+                🗑 إفراغ السلة
+            </button>
+
+
+            <a
+                href="checkout.html"
+                class="cart-page-button primary"
+                id="checkout-link"
+            >
+                🛒 إتمام الطلب
+            </a>
+
+        </div>
+
+    `;
+
+
+    container.appendChild(
+        summary
+    );
+
+
+    /* إفراغ السلة */
+
+    document
+        .getElementById("clear-all")
+        .addEventListener(
+            "click",
+            clearCart
+        );
+
+
+    /* منع الانتقال إذا كانت السلة فارغة */
+
+    document
+        .getElementById("checkout-link")
+        .addEventListener(
+            "click",
+            event => {
+
+                if (!cart.length) {
+
+                    event.preventDefault();
+
+                    showToast(
+                        "السلة فارغة"
+                    );
+
+                }
+
+            }
+        );
+
+}
+
+
+/* =========================================
+   تحديث السلة إذا تغيرت من تبويب آخر
+========================================= */
+
+window.addEventListener(
+    "storage",
+    event => {
+
+        if (event.key === "cart") {
+
+            loadCart();
+
+            renderCart();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   التشغيل
+========================================= */
+
+loadCart();
+
+renderCart();
+
+</script>
+
+</body>
+</html>
