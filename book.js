@@ -627,24 +627,40 @@ function renderProduct(
                 </div>
 
 
-                <button
-                    type="button"
-                    class="detail-add"
-                    id="add-detail"
-                    ${
-                        product.available === false
-                            ? "disabled"
-                            : ""
-                    }
-                >
+              <button
+    type="button"
+    class="detail-add"
+    id="add-detail"
+    ${
+        product.available === false
+            ? "disabled"
+            : ""
+    }
+>
 
-                    ${
-                        product.available === false
-                            ? "غير متوفر"
-                            : "🛒 أضف إلى السلة"
-                    }
+    ${
+        product.available === false
+            ? "غير متوفر"
+            : "🛒 أضف إلى السلة"
+    }
 
-                </button>
+</button>
+
+<a
+    href="cart.html"
+    id="go-to-cart"
+    class="detail-add"
+    style="
+        display:none;
+        box-sizing:border-box;
+        text-align:center;
+        text-decoration:none;
+        background:#2e7d32;
+        margin-top:10px;
+    "
+>
+    🧺 الذهاب إلى السلة
+</a>
 
             </div>
 
