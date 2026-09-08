@@ -1257,12 +1257,33 @@ async function renderCategory(){
             </div>
 
 
-            <button
-                type="button"
-                class="add-product-btn"
-            >
-                🛒 أضف إلى السلة
-            </button>
+           <button
+    type="button"
+    class="add-product-btn"
+>
+    🛒 أضف إلى السلة
+</button>
+
+<a
+    href="cart.html"
+    class="go-to-cart-btn"
+    style="
+        display:none;
+        box-sizing:border-box;
+        width:100%;
+        text-align:center;
+        text-decoration:none;
+        background:#2e7d32;
+        color:#fff;
+        padding:13px;
+        font-family:inherit;
+        font-size:16px;
+        font-weight:bold;
+        margin-top:8px;
+    "
+>
+    🧺 الذهاب إلى السلة
+</a>
 
         `;
 
@@ -1281,18 +1302,29 @@ async function renderCategory(){
         );
 
 
-        const addButton =
-        card.querySelector(
-            ".add-product-btn"
-        );
+      const addButton =
+card.querySelector(
+    ".add-product-btn"
+);
+
+const goToCart =
+card.querySelector(
+    ".go-to-cart-btn"
+);
 
 
-        addButton.addEventListener(
-            "click",
-            ()=>{
-                addToCart(product);
-            }
-        );
+addButton.addEventListener(
+    "click",
+    ()=>{
+
+        addToCart(product);
+
+        if(goToCart){
+            goToCart.style.display="block";
+        }
+
+    }
+);
 
 
         grid.appendChild(card);
