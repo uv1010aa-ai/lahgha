@@ -1,3 +1,6 @@
+```javascript
+"use strict";
+
 const productId =
     new URLSearchParams(location.search).get("id") || "";
 
@@ -13,6 +16,9 @@ let cart =
     );
 
 
+/* =========================
+   رابط الصورة
+========================= */
 function imageUrl(path) {
 
     const value =
@@ -30,10 +36,12 @@ function imageUrl(path) {
     return encodeURI(
         value.replace(/^\.\//, "")
     );
-
 }
 
 
+/* =========================
+   حماية النصوص
+========================= */
 function escapeHtml(value) {
 
     return String(value ?? "").replace(
@@ -50,6 +58,10 @@ function escapeHtml(value) {
 }
 
 
+/* =========================
+   توحيد المنتج
+   الصورة الأساسية + الصور الإضافية
+========================= */
 function publicProduct(p) {
 
     if (
@@ -58,6 +70,36 @@ function publicProduct(p) {
     ) {
         return null;
     }
+
+
+    const primaryImage =
+        p.image ||
+        p.productImage ||
+        p.imageUrl ||
+        p.photo ||
+        "";
+
+
+    const extraImages =
+        Array.isArray(p.images)
+            ? p.images
+                .flat(Infinity)
+                .filter(Boolean)
+            : [];
+
+
+    /*
+       نجمع الصورة الأساسية مع الصور الإضافية
+       ونزيل التكرار
+    */
+    const allImages =
+        [
+            primaryImage,
+            ...extraImages
+        ]
+        .map(imageUrl)
+        .filter(Boolean);
+
 
     return {
 
@@ -105,16 +147,12 @@ function publicProduct(p) {
                 : Number(p.quantity),
 
         image:
-            p.image ||
-            p.productImage ||
-            p.imageUrl ||
-            p.photo ||
-            "",
+            allImages[0] || "",
 
         images:
-            Array.isArray(p.images)
-                ? p.images.filter(Boolean)
-                : [],
+            [
+                ...new Set(allImages)
+            ],
 
         description:
             p.description || "",
@@ -142,6 +180,9 @@ function publicProduct(p) {
 }
 
 
+/* =========================
+   المنتجات المنشورة
+========================= */
 function getPublished() {
 
     try {
@@ -152,6 +193,7 @@ function getPublished() {
                     "publishedProducts"
                 ) || "[]"
             );
+
 
         return Array.isArray(arr)
 
@@ -181,6 +223,9 @@ function getPublished() {
 }
 
 
+/* =========================
+   جميع المنتجات
+========================= */
 async function getAllProducts() {
 
     let books = [];
@@ -195,10 +240,12 @@ async function getAllProducts() {
                 }
             );
 
+
         if (response.ok) {
 
             const data =
                 await response.json();
+
 
             if (Array.isArray(data)) {
 
@@ -222,6 +269,7 @@ async function getAllProducts() {
 
     }
 
+
     return [
         ...books,
         ...getPublished()
@@ -230,6 +278,9 @@ async function getAllProducts() {
 }
 
 
+/* =========================
+   رسالة صغيرة
+========================= */
 function showToast(message) {
 
     const toast =
@@ -239,16 +290,20 @@ function showToast(message) {
 
     if (!toast) return;
 
+
     toast.textContent =
         message;
+
 
     toast.classList.add(
         "show"
     );
 
+
     clearTimeout(
         showToast.timer
     );
+
 
     showToast.timer =
         setTimeout(
@@ -262,6 +317,9 @@ function showToast(message) {
 }
 
 
+/* =========================
+   حفظ السلة
+========================= */
 function saveCart() {
 
     localStorage.setItem(
@@ -274,6 +332,9 @@ function saveCart() {
 }
 
 
+/* =========================
+   عداد السلة
+========================= */
 function renderCartBadge() {
 
     document
@@ -299,6 +360,9 @@ function renderCartBadge() {
 }
 
 
+/* =========================
+   إضافة إلى السلة
+========================= */
 function addToCart(product) {
 
     const found =
@@ -343,41 +407,45 @@ function addToCart(product) {
 }
 
 
+/* =========================
+   عرض المنتج
+========================= */
 function renderProduct(
     product,
     allProducts
 ) {
 
-    const rawImages =
-        Array.isArray(
-            product.images
-        )
-
-            ? product.images
-                .map(imageUrl)
-                .filter(Boolean)
-
-            : [];
-
-
-    const images =
-        rawImages.length
-
-            ? rawImages
-
-            : product.image
-
-                ? [imageUrl(product.image)]
-
-                : [];
-
-
+    /*
+       استخدام images التي تم تجهيزها
+       داخل publicProduct
+    */
     const galleryImages =
         [
             ...new Set(
-                images
+                (
+                    Array.isArray(product.images)
+                        ? product.images
+                        : []
+                )
+                .map(imageUrl)
+                .filter(Boolean)
             )
         ];
+
+
+    /*
+       احتياط إضافي
+    */
+    if (
+        !galleryImages.length &&
+        product.image
+    ) {
+
+        galleryImages.push(
+            imageUrl(product.image)
+        );
+
+    }
 
 
     document.title =
@@ -400,6 +468,7 @@ function renderProduct(
                         ‹
                     </button>
 
+
                     <img
                         id="main-product-image"
                         class="book-detail-image"
@@ -407,7 +476,9 @@ function renderProduct(
                         alt="${escapeHtml(
                             product.title
                         )}"
+                        draggable="false"
                     >
+
 
                     <button
                         type="button"
@@ -428,8 +499,7 @@ function renderProduct(
                     ${
                         galleryImages
                             .map(
-                                (src, i) =>
-                                    `
+                                (src, i) => `
 
                                     <button
                                         type="button"
@@ -439,17 +509,19 @@ function renderProduct(
                                                 : ""
                                         }"
                                         data-index="${i}"
+                                        aria-label="عرض الصورة ${i + 1}"
                                     >
 
                                         <img
                                             src="${src}"
                                             alt="صورة ${i + 1}"
                                             loading="lazy"
+                                            draggable="false"
                                         >
 
                                     </button>
 
-                                    `
+                                `
                             )
                             .join("")
                     }
@@ -485,7 +557,6 @@ function renderProduct(
 
                 ${
                     product.author
-
                         ? `
                             <p>
                                 <strong>
@@ -495,10 +566,8 @@ function renderProduct(
                                 ${escapeHtml(
                                     product.author
                                 )}
-
                             </p>
-                          `
-
+                        `
                         : ""
                 }
 
@@ -607,9 +676,15 @@ function renderProduct(
     let current = 0;
 
 
+    /* =========================
+       تغيير الصورة
+    ========================= */
     function showImage(index) {
 
-        if (!galleryImages.length) {
+        if (
+            !galleryImages.length ||
+            !main
+        ) {
             return;
         }
 
@@ -638,27 +713,39 @@ function renderProduct(
         );
 
 
-        counter.textContent =
-            `${current + 1} / ${galleryImages.length} صورة`;
+        if (counter) {
+
+            counter.textContent =
+                `${current + 1} / ${galleryImages.length} صورة`;
+
+        }
 
     }
 
 
+    /* =========================
+       الصور المصغرة
+    ========================= */
     thumbs.forEach(
         button => {
 
-            button.onclick =
+            button.addEventListener(
+                "click",
                 () =>
                     showImage(
                         Number(
                             button.dataset.index
                         )
-                    );
+                    )
+            );
 
         }
     );
 
 
+    /* =========================
+       الأسهم
+    ========================= */
     const previous =
         document.querySelector(
             ".gallery-prev"
@@ -671,33 +758,70 @@ function renderProduct(
         );
 
 
-    previous.onclick =
-        () =>
-            showImage(
-                current - 1
-            );
+    if (previous) {
 
-
-    next.onclick =
-        () =>
-            showImage(
-                current + 1
-            );
-
-
-    if (
-        galleryImages.length <= 1
-    ) {
-
-        previous.style.display =
-            "none";
-
-        next.style.display =
-            "none";
+        previous.addEventListener(
+            "click",
+            () =>
+                showImage(
+                    current - 1
+                )
+        );
 
     }
 
 
+    if (next) {
+
+        next.addEventListener(
+            "click",
+            () =>
+                showImage(
+                    current + 1
+                )
+        );
+
+    }
+
+
+    /*
+       إذا كانت صورة واحدة فقط
+       نخفي الأسهم والصور المصغرة
+    */
+    if (
+        galleryImages.length <= 1
+    ) {
+
+        if (previous) {
+            previous.style.display =
+                "none";
+        }
+
+        if (next) {
+            next.style.display =
+                "none";
+        }
+
+        if (thumbs.length <= 1) {
+
+            const thumbnails =
+                document.getElementById(
+                    "product-thumbnails"
+                );
+
+            if (thumbnails) {
+                thumbnails.style.display =
+                    "none";
+            }
+
+        }
+
+    }
+
+
+    /* =========================
+       السلة
+    ========================= */
     const addButton =
         document.getElementById(
             "add-detail"
@@ -713,56 +837,86 @@ function renderProduct(
     );
 
 
+    /* =========================
+       السحب على الجوال
+    ========================= */
     let startX = 0;
+    let startY = 0;
 
 
-    main.addEventListener(
-        "touchstart",
-        event => {
+    if (main) {
 
-            startX =
-                event.changedTouches[0]
-                    .screenX;
+        main.addEventListener(
+            "touchstart",
+            event => {
 
-        },
-        {
-            passive: true
-        }
-    );
+                const touch =
+                    event.changedTouches[0];
 
+                startX =
+                    touch.screenX;
 
-    main.addEventListener(
-        "touchend",
-        event => {
+                startY =
+                    touch.screenY;
 
-            const distance =
-                event.changedTouches[0]
-                    .screenX -
-                startX;
-
-
-            if (
-                Math.abs(distance) > 40
-            ) {
-
-                showImage(
-                    current +
-                    (
-                        distance < 0
-                            ? 1
-                            : -1
-                    )
-                );
-
+            },
+            {
+                passive: true
             }
-
-        },
-        {
-            passive: true
-        }
-    );
+        );
 
 
+        main.addEventListener(
+            "touchend",
+            event => {
+
+                const touch =
+                    event.changedTouches[0];
+
+
+                const distanceX =
+                    touch.screenX -
+                    startX;
+
+
+                const distanceY =
+                    touch.screenY -
+                    startY;
+
+
+                /*
+                   نتأكد أن الحركة أفقية
+                   وليست تمرير الصفحة للأعلى والأسفل
+                */
+                if (
+                    Math.abs(distanceX) > 40 &&
+                    Math.abs(distanceX) >
+                        Math.abs(distanceY)
+                ) {
+
+                    showImage(
+                        current +
+                        (
+                            distanceX < 0
+                                ? 1
+                                : -1
+                        )
+                    );
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    }
+
+
+    /* =========================
+       المنتجات المشابهة
+    ========================= */
     const sameProducts =
         allProducts
             .filter(
@@ -775,47 +929,59 @@ function renderProduct(
             .slice(0, 4);
 
 
+    if (!related) return;
+
+
     related.innerHTML =
         sameProducts.length
 
             ? sameProducts
                 .map(
-                    item =>
-                        `
+                    item => {
 
-                        <a
-                            class="related-card"
-                            href="book.html?id=${encodeURIComponent(
-                                item.id
-                            )}"
-                        >
+                        const relatedImage =
+                            item.image ||
+                            item.images?.[0] ||
+                            "";
 
-                            <img
-                                src="${imageUrl(
-                                    item.image ||
-                                    item.images?.[0]
-                                )}"
-                                alt="${escapeHtml(
-                                    item.title
+
+                        return `
+
+                            <a
+                                class="related-card"
+                                href="book.html?id=${encodeURIComponent(
+                                    item.id
                                 )}"
                             >
 
-                            <strong>
-                                ${escapeHtml(
-                                    item.title
-                                )}
-                            </strong>
+                                <img
+                                    src="${imageUrl(
+                                        relatedImage
+                                    )}"
+                                    alt="${escapeHtml(
+                                        item.title
+                                    )}"
+                                    loading="lazy"
+                                >
 
-                            <span>
-                                ${Number(
-                                    item.price || 0
-                                ).toFixed(2)}
-                                ريال
-                            </span>
+                                <strong>
+                                    ${escapeHtml(
+                                        item.title
+                                    )}
+                                </strong>
 
-                        </a>
+                                <span>
+                                    ${Number(
+                                        item.price || 0
+                                    ).toFixed(2)}
+                                    ريال
+                                </span>
 
-                        `
+                            </a>
+
+                        `;
+
+                    }
                 )
                 .join("")
 
@@ -824,6 +990,9 @@ function renderProduct(
 }
 
 
+/* =========================
+   تشغيل الصفحة
+========================= */
 (async () => {
 
     try {
@@ -906,3 +1075,4 @@ function renderProduct(
     }
 
 })();
+```
