@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -149,11 +148,50 @@
             border-radius: 10px;
             font-size: 16px;
             font-family: inherit;
+            outline: none;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #1e3a5f;
         }
 
         textarea {
             min-height: 100px;
             resize: vertical;
+        }
+
+        /* =========================
+           التحقق من الحقول
+        ========================== */
+
+        input.invalid,
+        textarea.invalid {
+            border: 2px solid #dc2626;
+            background: #fff7f7;
+        }
+
+        input.valid,
+        textarea.valid {
+            border: 2px solid #16a34a;
+            background: #f7fff9;
+        }
+
+        .field-error {
+            display: none;
+            margin-top: 6px;
+            color: #dc2626;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .field-success {
+            display: none;
+            margin-top: 6px;
+            color: #16a34a;
+            font-size: 14px;
+            font-weight: bold;
         }
 
         .summary {
@@ -331,8 +369,10 @@
         </h2>
 
 
-        <form id="checkoutForm">
+        <form id="checkoutForm" novalidate>
 
+
+            <!-- الاسم -->
 
             <label for="buyerName">
                 الاسم الكامل
@@ -344,8 +384,17 @@
                 placeholder="اكتب الاسم الكامل"
                 autocomplete="name"
                 required
+                minlength="3"
+                maxlength="60"
             >
 
+            <small
+                id="buyerNameError"
+                class="field-error"
+            ></small>
+
+
+            <!-- الجوال -->
 
             <label for="buyerPhone">
                 رقم الجوال
@@ -358,8 +407,16 @@
                 inputmode="tel"
                 autocomplete="tel"
                 required
+                maxlength="16"
             >
 
+            <small
+                id="buyerPhoneError"
+                class="field-error"
+            ></small>
+
+
+            <!-- العنوان -->
 
             <label for="buyerAddress">
                 العنوان
@@ -370,8 +427,17 @@
                 placeholder="اكتب عنوان التوصيل"
                 autocomplete="street-address"
                 required
+                minlength="5"
+                maxlength="300"
             ></textarea>
 
+            <small
+                id="buyerAddressError"
+                class="field-error"
+            ></small>
+
+
+            <!-- الدفع -->
 
             <label for="paymentMethod">
                 طريقة الدفع
@@ -545,6 +611,26 @@ const bankBox =
     document.getElementById("bankBox");
 
 
+const buyerNameInput =
+    document.getElementById("buyerName");
+
+const buyerPhoneInput =
+    document.getElementById("buyerPhone");
+
+const buyerAddressInput =
+    document.getElementById("buyerAddress");
+
+
+const buyerNameError =
+    document.getElementById("buyerNameError");
+
+const buyerPhoneError =
+    document.getElementById("buyerPhoneError");
+
+const buyerAddressError =
+    document.getElementById("buyerAddressError");
+
+
 /* =====================================================
    حماية النصوص
 ===================================================== */
@@ -595,6 +681,313 @@ function getImage(item) {
     return "";
 
 }
+
+
+/* =====================================================
+   تحويل الأرقام العربية
+===================================================== */
+
+function normalizeArabicNumbers(value) {
+
+    return String(value || "")
+        .replace(/[٠-٩]/g, digit =>
+            String(
+                "٠١٢٣٤٥٦٧٨٩"
+                    .indexOf(digit)
+            )
+        )
+        .replace(/[۰-۹]/g, digit =>
+            String(
+                "۰۱۲۳۴۵۶۷۸۹"
+                    .indexOf(digit)
+            )
+        );
+
+}
+
+
+/* =====================================================
+   تنظيف رقم الجوال
+===================================================== */
+
+function normalizePhone(value) {
+
+    let phone =
+        normalizeArabicNumbers(value)
+            .trim()
+            .replace(/[\s\-()]/g, "");
+
+
+    if (phone.startsWith("+9665")) {
+
+        phone =
+            "0" +
+            phone.substring(4);
+
+    }
+
+    else if (phone.startsWith("9665")) {
+
+        phone =
+            "0" +
+            phone.substring(3);
+
+    }
+
+
+    return phone;
+
+}
+
+
+/* =====================================================
+   رسائل التحقق
+===================================================== */
+
+function setFieldError(
+    input,
+    errorElement,
+    text
+) {
+
+    input.classList.remove("valid");
+
+    input.classList.add("invalid");
+
+    errorElement.textContent =
+        text;
+
+    errorElement.style.display =
+        "block";
+
+}
+
+
+function setFieldValid(
+    input,
+    errorElement
+) {
+
+    input.classList.remove("invalid");
+
+    input.classList.add("valid");
+
+    errorElement.textContent =
+        "";
+
+    errorElement.style.display =
+        "none";
+
+}
+
+
+/* =====================================================
+   التحقق من الاسم
+===================================================== */
+
+function validateBuyerName() {
+
+    const value =
+        buyerNameInput.value.trim();
+
+
+    if (!value) {
+
+        setFieldError(
+            buyerNameInput,
+            buyerNameError,
+            "❌ اكتب الاسم الكامل."
+        );
+
+        return false;
+
+    }
+
+
+    if (value.length < 3) {
+
+        setFieldError(
+            buyerNameInput,
+            buyerNameError,
+            "❌ الاسم يجب أن يكون 3 أحرف على الأقل."
+        );
+
+        return false;
+
+    }
+
+
+    const namePattern =
+        /^[\u0600-\u06FFa-zA-Z\s]+$/;
+
+
+    if (!namePattern.test(value)) {
+
+        setFieldError(
+            buyerNameInput,
+            buyerNameError,
+            "❌ الاسم يحتوي على معلومات غير صحيحة."
+        );
+
+        return false;
+
+    }
+
+
+    setFieldValid(
+        buyerNameInput,
+        buyerNameError
+    );
+
+    return true;
+
+}
+
+
+/* =====================================================
+   التحقق من الجوال السعودي
+===================================================== */
+
+function validateBuyerPhone() {
+
+    const value =
+        buyerPhoneInput.value.trim();
+
+
+    if (!value) {
+
+        setFieldError(
+            buyerPhoneInput,
+            buyerPhoneError,
+            "❌ اكتب رقم الجوال."
+        );
+
+        return false;
+
+    }
+
+
+    const phone =
+        normalizePhone(value);
+
+
+    /*
+     * الصيغة المعتمدة:
+     *
+     * 05xxxxxxxx
+     *
+     * 10 أرقام ويبدأ بـ 05
+     */
+
+    const phonePattern =
+        /^05\d{8}$/;
+
+
+    if (!phonePattern.test(phone)) {
+
+        setFieldError(
+            buyerPhoneInput,
+            buyerPhoneError,
+            "❌ رقم الجوال غير صحيح. مثال: 05xxxxxxxx"
+        );
+
+        return false;
+
+    }
+
+
+    buyerPhoneInput.value =
+        phone;
+
+
+    setFieldValid(
+        buyerPhoneInput,
+        buyerPhoneError
+    );
+
+    return true;
+
+}
+
+
+/* =====================================================
+   التحقق من العنوان
+===================================================== */
+
+function validateBuyerAddress() {
+
+    const value =
+        buyerAddressInput.value.trim();
+
+
+    if (!value) {
+
+        setFieldError(
+            buyerAddressInput,
+            buyerAddressError,
+            "❌ اكتب عنوان التوصيل."
+        );
+
+        return false;
+
+    }
+
+
+    if (value.length < 5) {
+
+        setFieldError(
+            buyerAddressInput,
+            buyerAddressError,
+            "❌ العنوان قصير جدًا."
+        );
+
+        return false;
+
+    }
+
+
+    setFieldValid(
+        buyerAddressInput,
+        buyerAddressError
+    );
+
+    return true;
+
+}
+
+
+/* =====================================================
+   التحقق أثناء الكتابة
+===================================================== */
+
+buyerNameInput.addEventListener(
+    "input",
+    () => {
+
+        validateBuyerName();
+
+    }
+);
+
+
+buyerPhoneInput.addEventListener(
+    "input",
+    () => {
+
+        validateBuyerPhone();
+
+    }
+);
+
+
+buyerAddressInput.addEventListener(
+    "input",
+    () => {
+
+        validateBuyerAddress();
+
+    }
+);
 
 
 /* =====================================================
@@ -688,7 +1081,7 @@ function prepareProducts() {
 
 
 /* =====================================================
-   جلب seller_request_id من products
+   جلب seller_request_id
 ===================================================== */
 
 async function attachSellerRequestIds(
@@ -807,14 +1200,7 @@ function validateSellerLinks(
         );
 
 
-    if (missing.length) {
-
-        return false;
-
-    }
-
-
-    return true;
+    return missing.length === 0;
 
 }
 
@@ -1041,6 +1427,54 @@ form.addEventListener(
         event.preventDefault();
 
 
+        /* =========================
+           التحقق من البيانات
+        ========================== */
+
+        const nameIsValid =
+            validateBuyerName();
+
+        const phoneIsValid =
+            validateBuyerPhone();
+
+        const addressIsValid =
+            validateBuyerAddress();
+
+
+        if (
+            !nameIsValid ||
+            !phoneIsValid ||
+            !addressIsValid
+        ) {
+
+            showMessage(
+                "❌ يرجى تصحيح البيانات قبل إرسال الطلب.",
+                "error"
+            );
+
+
+            if (!nameIsValid) {
+
+                buyerNameInput.focus();
+
+            }
+            else if (!phoneIsValid) {
+
+                buyerPhoneInput.focus();
+
+            }
+            else if (!addressIsValid) {
+
+                buyerAddressInput.focus();
+
+            }
+
+
+            return;
+
+        }
+
+
         if (!cart.length) {
 
             showMessage(
@@ -1054,64 +1488,19 @@ form.addEventListener(
 
 
         const buyerName =
-            document
-                .getElementById("buyerName")
-                .value
-                .trim();
+            buyerNameInput.value.trim();
 
 
         const buyerPhone =
-            document
-                .getElementById("buyerPhone")
-                .value
-                .trim();
+            buyerPhoneInput.value.trim();
 
 
         const buyerAddress =
-            document
-                .getElementById("buyerAddress")
-                .value
-                .trim();
+            buyerAddressInput.value.trim();
 
 
         const selectedPayment =
             paymentMethod.value;
-
-
-        if (!buyerName) {
-
-            showMessage(
-                "❌ اكتب الاسم الكامل.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        if (!buyerPhone) {
-
-            showMessage(
-                "❌ اكتب رقم الجوال.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        if (!buyerAddress) {
-
-            showMessage(
-                "❌ اكتب العنوان.",
-                "error"
-            );
-
-            return;
-
-        }
 
 
         submitButton.disabled =
@@ -1128,8 +1517,8 @@ form.addEventListener(
 
 
             /*
-             * نأخذ الربط من جدول products
-             * بدل قراءة seller_requests من الصفحة العامة.
+             * أخذ seller_request_id
+             * من جدول products
              */
 
             products =
@@ -1137,11 +1526,6 @@ form.addEventListener(
                     products
                 );
 
-
-            /*
-             * يجب أن يكون كل منتج معتمد
-             * مرتبطًا بطلب بائع.
-             */
 
             if (
                 !validateSellerLinks(
@@ -1175,14 +1559,6 @@ form.addEventListener(
                 "ORD-" +
                 Date.now();
 
-
-            /*
-             * حفظ الطلب.
-             *
-             * بيانات البائع لا تظهر للمشتري.
-             * seller_request_id موجود داخل items
-             * لاستخدامه لاحقًا من لوحة التحكم.
-             */
 
             const orderData = {
 
@@ -1318,9 +1694,14 @@ form.addEventListener(
                 error.message
             ) {
 
-                errorText +=
-                    " " +
-                    error.message;
+                /*
+                 * لا نعرض تفاصيل تقنية
+                 * للمستخدم.
+                 */
+
+                console.error(
+                    error.message
+                );
 
             }
 
@@ -1358,6 +1739,9 @@ function showMessage(
     message.className =
         type;
 
+    message.style.display =
+        "block";
+
 }
 
 
@@ -1375,4 +1759,3 @@ updateSummary();
 </body>
 
 </html>
-```
