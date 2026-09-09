@@ -241,7 +241,11 @@
         أدخل معلوماتك ومعلومات المنتج بشكل صحيح، وسيتم مراجعة الطلب قبل نشره.
       </p>
 
-      <form id="sellerForm" novalidate>
+      <form
+        id="sellerForm"
+        autocomplete="off"
+        novalidate
+      >
 
         <!-- اسم البائع -->
         <div class="field">
@@ -251,13 +255,18 @@
             id="seller_name"
             name="seller_name"
             type="text"
-            autocomplete="name"
+            autocomplete="off"
+            autocapitalize="words"
+            spellcheck="false"
             maxlength="60"
             required
             placeholder="اكتب اسمك"
           >
 
-          <small id="seller_name_error" class="field-error"></small>
+          <small
+            id="seller_name_error"
+            class="field-error"
+          ></small>
         </div>
 
 
@@ -269,17 +278,22 @@
             id="seller_email"
             name="seller_email"
             type="email"
-            autocomplete="email"
+            autocomplete="new-password"
+            autocapitalize="none"
+            spellcheck="false"
             maxlength="120"
             required
             placeholder="example@email.com"
             inputmode="email"
           >
 
-          <small id="seller_email_error" class="field-error"></small>
+          <small
+            id="seller_email_error"
+            class="field-error"
+          ></small>
 
           <small class="field-hint">
-            يجب إدخال بريد إلكتروني صحيح ويمكن التواصل معك من خلاله.
+            يجب إدخال بريد إلكتروني صحيح.
           </small>
         </div>
 
@@ -292,14 +306,17 @@
             id="phone"
             name="phone"
             type="tel"
-            autocomplete="tel"
+            autocomplete="off"
             inputmode="numeric"
             maxlength="16"
             required
             placeholder="05xxxxxxxx"
           >
 
-          <small id="phone_error" class="field-error"></small>
+          <small
+            id="phone_error"
+            class="field-error"
+          ></small>
 
           <small class="field-hint">
             مثال: 05xxxxxxxx أو +9665xxxxxxxx
@@ -315,12 +332,18 @@
             id="city"
             name="city"
             type="text"
+            autocomplete="off"
+            autocapitalize="words"
+            spellcheck="false"
             maxlength="50"
             required
             placeholder="مثال: جدة"
           >
 
-          <small id="city_error" class="field-error"></small>
+          <small
+            id="city_error"
+            class="field-error"
+          ></small>
         </div>
 
 
@@ -328,7 +351,12 @@
         <div class="field">
           <label for="category">التصنيف *</label>
 
-          <select id="category" name="category" required>
+          <select
+            id="category"
+            name="category"
+            autocomplete="off"
+            required
+          >
             <option value="">اختر التصنيف</option>
             <option value="كمبيوتر">كمبيوتر 💻</option>
             <option value="ألعاب">ألعاب 🎮</option>
@@ -340,7 +368,10 @@
             <option value="أخرى">أخرى 📦</option>
           </select>
 
-          <small id="category_error" class="field-error"></small>
+          <small
+            id="category_error"
+            class="field-error"
+          ></small>
         </div>
 
 
@@ -352,12 +383,17 @@
             id="product_title"
             name="product_title"
             type="text"
+            autocomplete="off"
+            spellcheck="false"
             maxlength="120"
             required
             placeholder="مثال: جوال آيفون 15"
           >
 
-          <small id="product_title_error" class="field-error"></small>
+          <small
+            id="product_title_error"
+            class="field-error"
+          ></small>
         </div>
 
 
@@ -369,13 +405,17 @@
             id="price"
             name="price"
             type="number"
+            autocomplete="off"
             min="0"
             step="0.01"
             required
             placeholder="مثال: 1500"
           >
 
-          <small id="price_error" class="field-error"></small>
+          <small
+            id="price_error"
+            class="field-error"
+          ></small>
         </div>
 
 
@@ -386,13 +426,18 @@
           <textarea
             id="description"
             name="description"
+            autocomplete="off"
+            spellcheck="true"
             minlength="5"
             maxlength="2000"
             required
             placeholder="اكتب وصفًا واضحًا للمنتج وحالته..."
           ></textarea>
 
-          <small id="description_error" class="field-error"></small>
+          <small
+            id="description_error"
+            class="field-error"
+          ></small>
         </div>
 
 
@@ -413,10 +458,14 @@
             >
 
             <small class="field-hint">
-              يمكنك إضافة من صورة واحدة إلى 4 صور، وحجم كل صورة يجب ألا يتجاوز 5MB.
+              يمكنك إضافة من صورة واحدة إلى 4 صور،
+              وحجم كل صورة لا يتجاوز 5MB.
             </small>
 
-            <small id="product_image_error" class="field-error"></small>
+            <small
+              id="product_image_error"
+              class="field-error"
+            ></small>
 
             <div
               id="previewGrid"
@@ -437,17 +486,22 @@
               id="agree_terms"
               name="agree_terms"
               type="checkbox"
+              autocomplete="off"
               required
             >
 
             <label for="agree_terms">
-              أقر بأن المعلومات التي أدخلتها صحيحة، وأن المنتج المعروض للبيع
-              يعود لي أو لدي الحق في بيعه، وأوافق على شروط الموقع.
+              أقر بأن المعلومات التي أدخلتها صحيحة،
+              وأن المنتج المعروض للبيع يعود لي أو لدي الحق في بيعه،
+              وأوافق على شروط الموقع.
             </label>
 
           </div>
 
-          <small id="agree_terms_error" class="field-error"></small>
+          <small
+            id="agree_terms_error"
+            class="field-error"
+          ></small>
 
         </div>
 
@@ -461,7 +515,10 @@
           إرسال المنتج للمراجعة
         </button>
 
-        <div id="formMessage" class="message"></div>
+        <div
+          id="formMessage"
+          class="message"
+        ></div>
 
       </form>
 
@@ -471,9 +528,10 @@
 
 
   <script>
-    // ==============================
+
+    // ==========================================
     // إعداد Supabase
-    // ==============================
+    // ==========================================
 
     const SUPABASE_URL =
       "https://gyyyzavjzvcxzgrtukqu.supabase.co";
@@ -481,16 +539,19 @@
     const SUPABASE_KEY =
       "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-";
 
-    const STORAGE_BUCKET = "product-images";
+    const STORAGE_BUCKET =
+      "product-images";
 
-    const MAX_IMAGES = 4;
+    const MAX_IMAGES =
+      4;
 
-    const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+    const MAX_IMAGE_SIZE =
+      5 * 1024 * 1024;
 
 
-    // ==============================
+    // ==========================================
     // العناصر
-    // ==============================
+    // ==========================================
 
     const sellerForm =
       document.getElementById("sellerForm");
@@ -535,25 +596,92 @@
       document.getElementById("formMessage");
 
 
-    // ==============================
+    // ==========================================
+    // تنظيف الحقول عند فتح الصفحة
+    // ==========================================
+
+    function clearFormFields() {
+
+      sellerName.value = "";
+      sellerEmail.value = "";
+      phone.value = "";
+      city.value = "";
+      category.value = "";
+      productTitle.value = "";
+      price.value = "";
+      description.value = "";
+      productImage.value = "";
+      agreeTerms.checked = false;
+
+      previewGrid.innerHTML = "";
+
+      formMessage.textContent = "";
+      formMessage.className = "message";
+
+      sellerForm
+        .querySelectorAll(
+          "input, select, textarea"
+        )
+        .forEach(function(element) {
+
+          element.classList.remove(
+            "valid",
+            "invalid"
+          );
+        });
+
+      sellerForm
+        .querySelectorAll(
+          ".field-error"
+        )
+        .forEach(function(element) {
+
+          element.textContent = "";
+        });
+    }
+
+
+    // ==========================================
+    // منع المتصفح من استرجاع البيانات السابقة
+    // ==========================================
+
+    window.addEventListener(
+      "pageshow",
+      function() {
+
+        clearFormFields();
+
+      }
+    );
+
+
+    // ==========================================
     // تحويل الأرقام العربية والفارسية
-    // ==============================
+    // ==========================================
 
     function normalizeArabicNumbers(value) {
 
       return String(value || "")
         .replace(/[٠-٩]/g, function(digit) {
-          return String("٠١٢٣٤٥٦٧٨٩".indexOf(digit));
+
+          return String(
+            "٠١٢٣٤٥٦٧٨٩".indexOf(digit)
+          );
+
         })
         .replace(/[۰-۹]/g, function(digit) {
-          return String("۰۱۲۳۴۵۶۷۸۹".indexOf(digit));
+
+          return String(
+            "۰۱۲۳۴۵۶۷۸۹".indexOf(digit)
+          );
+
         });
     }
 
 
-    // ==============================
+    // ==========================================
     // تنظيف رقم الجوال
-    // ==============================
+    // ==========================================
 
     function normalizePhone(value) {
 
@@ -562,23 +690,37 @@
           .trim()
           .replace(/[\s()-]/g, "");
 
-      if (phoneValue.startsWith("+966")) {
-        phoneValue = "0" + phoneValue.substring(4);
+      if (
+        phoneValue.startsWith("+966")
+      ) {
+
+        phoneValue =
+          "0" +
+          phoneValue.substring(4);
       }
 
-      if (phoneValue.startsWith("9665")) {
-        phoneValue = "0" + phoneValue.substring(3);
+      if (
+        phoneValue.startsWith("9665")
+      ) {
+
+        phoneValue =
+          "0" +
+          phoneValue.substring(3);
       }
 
       return phoneValue;
     }
 
 
-    // ==============================
+    // ==========================================
     // إظهار الخطأ
-    // ==============================
+    // ==========================================
 
-    function setError(input, errorId, message) {
+    function setError(
+      input,
+      errorId,
+      message
+    ) {
 
       input.classList.remove("valid");
       input.classList.add("invalid");
@@ -586,15 +728,19 @@
       const error =
         document.getElementById(errorId);
 
-      error.textContent = "❌ " + message;
+      error.textContent =
+        "❌ " + message;
     }
 
 
-    // ==============================
-    // إزالة الخطأ
-    // ==============================
+    // ==========================================
+    // إظهار أن الحقل صحيح
+    // ==========================================
 
-    function setValid(input, errorId) {
+    function setValid(
+      input,
+      errorId
+    ) {
 
       input.classList.remove("invalid");
       input.classList.add("valid");
@@ -606,9 +752,9 @@
     }
 
 
-    // ==============================
-    // التحقق من اسم البائع
-    // ==============================
+    // ==========================================
+    // اسم البائع
+    // ==========================================
 
     function validateSellerName() {
 
@@ -637,7 +783,9 @@
         return false;
       }
 
-      if (!/^[\u0600-\u06FFa-zA-Z\s]+$/.test(value)) {
+      if (
+        !/^[\u0600-\u06FFa-zA-Z\s]+$/.test(value)
+      ) {
 
         setError(
           sellerName,
@@ -657,9 +805,9 @@
     }
 
 
-    // ==============================
-    // التحقق من البريد الإلكتروني
-    // ==============================
+    // ==========================================
+    // البريد الإلكتروني
+    // ==========================================
 
     function validateEmail() {
 
@@ -688,14 +836,6 @@
         return false;
       }
 
-      /*
-       * التحقق من صيغة البريد الإلكتروني.
-       * أمثلة صحيحة:
-       * example@gmail.com
-       * name@hotmail.com
-       * seller123@yahoo.com
-       */
-
       const emailRegex =
         /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -719,16 +859,17 @@
     }
 
 
-    // ==============================
-    // التحقق من الجوال السعودي
-    // ==============================
+    // ==========================================
+    // رقم الجوال
+    // ==========================================
 
     function validatePhone() {
 
       const normalized =
         normalizePhone(phone.value);
 
-      phone.value = normalized;
+      phone.value =
+        normalized;
 
       if (!normalized) {
 
@@ -741,14 +882,9 @@
         return false;
       }
 
-      /*
-       * الرقم السعودي يجب أن يكون:
-       * 05xxxxxxxx
-       *
-       * أي 10 أرقام ويبدأ بـ 05
-       */
-
-      if (!/^05\d{8}$/.test(normalized)) {
+      if (
+        !/^05\d{8}$/.test(normalized)
+      ) {
 
         setError(
           phone,
@@ -768,9 +904,9 @@
     }
 
 
-    // ==============================
-    // التحقق من المدينة
-    // ==============================
+    // ==========================================
+    // المدينة
+    // ==========================================
 
     function validateCity() {
 
@@ -808,9 +944,9 @@
     }
 
 
-    // ==============================
-    // التحقق من التصنيف
-    // ==============================
+    // ==========================================
+    // التصنيف
+    // ==========================================
 
     function validateCategory() {
 
@@ -834,9 +970,9 @@
     }
 
 
-    // ==============================
-    // التحقق من اسم المنتج
-    // ==============================
+    // ==========================================
+    // اسم المنتج
+    // ==========================================
 
     function validateProductTitle() {
 
@@ -874,16 +1010,19 @@
     }
 
 
-    // ==============================
-    // التحقق من السعر
-    // ==============================
+    // ==========================================
+    // السعر
+    // ==========================================
 
     function validatePrice() {
 
       const value =
-        normalizeArabicNumbers(price.value);
+        normalizeArabicNumbers(
+          price.value
+        );
 
-      price.value = value;
+      price.value =
+        value;
 
       if (!value) {
 
@@ -930,9 +1069,9 @@
     }
 
 
-    // ==============================
-    // التحقق من الوصف
-    // ==============================
+    // ==========================================
+    // الوصف
+    // ==========================================
 
     function validateDescription() {
 
@@ -970,14 +1109,16 @@
     }
 
 
-    // ==============================
-    // التحقق من الصور
-    // ==============================
+    // ==========================================
+    // الصور
+    // ==========================================
 
     function validateImages() {
 
       const files =
-        Array.from(productImage.files || []);
+        Array.from(
+          productImage.files || []
+        );
 
       if (files.length === 0) {
 
@@ -1003,7 +1144,9 @@
 
       for (const file of files) {
 
-        if (!file.type.startsWith("image/")) {
+        if (
+          !file.type.startsWith("image/")
+        ) {
 
           setError(
             productImage,
@@ -1014,7 +1157,9 @@
           return false;
         }
 
-        if (file.size > MAX_IMAGE_SIZE) {
+        if (
+          file.size > MAX_IMAGE_SIZE
+        ) {
 
           setError(
             productImage,
@@ -1035,33 +1180,34 @@
     }
 
 
-    // ==============================
-    // التحقق من الموافقة
-    // ==============================
+    // ==========================================
+    // الشروط
+    // ==========================================
 
     function validateTerms() {
 
-      if (!agreeTerms.checked) {
-
+      const error =
         document.getElementById(
           "agree_terms_error"
-        ).textContent =
+        );
+
+      if (!agreeTerms.checked) {
+
+        error.textContent =
           "❌ يجب الموافقة على الشروط قبل إرسال المنتج.";
 
         return false;
       }
 
-      document.getElementById(
-        "agree_terms_error"
-      ).textContent = "";
+      error.textContent = "";
 
       return true;
     }
 
 
-    // ==============================
+    // ==========================================
     // معاينة الصور
-    // ==============================
+    // ==========================================
 
     productImage.addEventListener(
       "change",
@@ -1070,9 +1216,13 @@
         previewGrid.innerHTML = "";
 
         const files =
-          Array.from(productImage.files || []);
+          Array.from(
+            productImage.files || []
+          );
 
-        if (files.length > MAX_IMAGES) {
+        if (
+          files.length > MAX_IMAGES
+        ) {
 
           setError(
             productImage,
@@ -1081,44 +1231,48 @@
           );
 
           productImage.value = "";
+
           return;
         }
 
-        files.forEach(function(file) {
+        files.forEach(
+          function(file) {
 
-          if (!file.type.startsWith("image/")) {
-            return;
+            if (
+              !file.type.startsWith("image/")
+            ) {
+              return;
+            }
+
+            const item =
+              document.createElement("div");
+
+            item.className =
+              "preview-item";
+
+            const img =
+              document.createElement("img");
+
+            img.src =
+              URL.createObjectURL(file);
+
+            img.alt =
+              "معاينة صورة المنتج";
+
+            item.appendChild(img);
+
+            previewGrid.appendChild(item);
           }
-
-          const item =
-            document.createElement("div");
-
-          item.className =
-            "preview-item";
-
-          const img =
-            document.createElement("img");
-
-          img.src =
-            URL.createObjectURL(file);
-
-          img.alt =
-            "معاينة صورة المنتج";
-
-          item.appendChild(img);
-
-          previewGrid.appendChild(item);
-
-        });
+        );
 
         validateImages();
       }
     );
 
 
-    // ==============================
+    // ==========================================
     // التحقق أثناء الكتابة
-    // ==============================
+    // ==========================================
 
     sellerName.addEventListener(
       "input",
@@ -1135,7 +1289,9 @@
       function() {
 
         phone.value =
-          normalizePhone(phone.value);
+          normalizePhone(
+            phone.value
+          );
 
         validatePhone();
       }
@@ -1172,9 +1328,9 @@
     );
 
 
-    // ==============================
-    // رسالة عامة
-    // ==============================
+    // ==========================================
+    // الرسائل
+    // ==========================================
 
     function showMessage(
       message,
@@ -1189,9 +1345,9 @@
     }
 
 
-    // ==============================
-    // رفع صورة إلى Supabase Storage
-    // ==============================
+    // ==========================================
+    // رفع الصورة إلى Supabase
+    // ==========================================
 
     async function uploadImage(
       file,
@@ -1207,7 +1363,10 @@
       const safeTitle =
         productTitle.value
           .trim()
-          .replace(/[^\u0600-\u06FFa-zA-Z0-9]/g, "-")
+          .replace(
+            /[^\u0600-\u06FFa-zA-Z0-9]/g,
+            "-"
+          )
           .substring(0, 40);
 
       const fileName =
@@ -1239,7 +1398,8 @@
 
             headers: {
               "Authorization":
-                "Bearer " + SUPABASE_KEY,
+                "Bearer " +
+                SUPABASE_KEY,
 
               "apikey":
                 SUPABASE_KEY,
@@ -1269,7 +1429,9 @@
 
         } catch (error) {}
 
-        throw new Error(errorText);
+        throw new Error(
+          errorText
+        );
       }
 
       const publicUrl =
@@ -1286,9 +1448,9 @@
     }
 
 
-    // ==============================
-    // حذف الصور إذا حدث خطأ
-    // ==============================
+    // ==========================================
+    // حذف الصور عند حدوث خطأ
+    // ==========================================
 
     async function deleteUploadedImages(
       paths
@@ -1309,7 +1471,8 @@
 
               headers: {
                 "Authorization":
-                  "Bearer " + SUPABASE_KEY,
+                  "Bearer " +
+                  SUPABASE_KEY,
 
                 "apikey":
                   SUPABASE_KEY
@@ -1318,6 +1481,7 @@
           );
 
         } catch (error) {
+
           console.warn(
             "تعذر حذف الصورة:",
             path
@@ -1327,9 +1491,9 @@
     }
 
 
-    // ==============================
-    // إرسال الطلب
-    // ==============================
+    // ==========================================
+    // إرسال النموذج
+    // ==========================================
 
     sellerForm.addEventListener(
       "submit",
@@ -1343,7 +1507,11 @@
         formMessage.textContent =
           "";
 
-        // التحقق الكامل قبل أي رفع
+
+        // --------------------------------------
+        // التحقق الكامل قبل رفع أي صورة
+        // --------------------------------------
+
         const validName =
           validateSellerName();
 
@@ -1406,14 +1574,19 @@
         }
 
 
+        // --------------------------------------
         // منع الضغط المتكرر
-        submitBtn.disabled = true;
+        // --------------------------------------
+
+        submitBtn.disabled =
+          true;
 
         submitBtn.textContent =
           "جاري إرسال المنتج...";
 
 
         let uploadedPaths = [];
+
 
         try {
 
@@ -1423,9 +1596,9 @@
             );
 
 
-          // ==========================
+          // --------------------------------------
           // رفع الصور
-          // ==========================
+          // --------------------------------------
 
           const uploadedImages = [];
 
@@ -1454,9 +1627,9 @@
           }
 
 
-          // ==========================
-          // تجهيز البيانات
-          // ==========================
+          // --------------------------------------
+          // البيانات
+          // --------------------------------------
 
           const sellerNameValue =
             sellerName.value.trim();
@@ -1465,7 +1638,9 @@
             sellerEmail.value.trim();
 
           const phoneValue =
-            normalizePhone(phone.value);
+            normalizePhone(
+              phone.value
+            );
 
           const cityValue =
             city.value.trim();
@@ -1483,9 +1658,9 @@
             description.value.trim();
 
 
-          // ==========================
-          // إرسال الطلب إلى Supabase
-          // ==========================
+          // --------------------------------------
+          // حفظ الطلب في Supabase
+          // --------------------------------------
 
           submitBtn.textContent =
             "جاري حفظ الطلب...";
@@ -1506,13 +1681,15 @@
                     SUPABASE_KEY,
 
                   "Authorization":
-                    "Bearer " + SUPABASE_KEY,
+                    "Bearer " +
+                    SUPABASE_KEY,
 
                   "Prefer":
                     "return=minimal"
                 },
 
                 body: JSON.stringify({
+
                   product_name:
                     productName,
 
@@ -1568,11 +1745,13 @@
             );
 
 
-          // ==========================
-          // فحص نتيجة Supabase
-          // ==========================
+          // --------------------------------------
+          // فحص النتيجة
+          // --------------------------------------
 
-          if (!insertResponse.ok) {
+          if (
+            !insertResponse.ok
+          ) {
 
             let errorMessage =
               "حدث خطأ أثناء حفظ الطلب.";
@@ -1595,9 +1774,9 @@
           }
 
 
-          // ==========================
+          // --------------------------------------
           // نجاح
-          // ==========================
+          // --------------------------------------
 
           showMessage(
             "✅ تم إرسال المنتج بنجاح. سيتم مراجعته قبل نشره في الموقع.",
@@ -1605,20 +1784,8 @@
           );
 
 
-          // تنظيف النموذج
-          sellerForm.reset();
-
-          previewGrid.innerHTML = "";
-
-          sellerForm
-            .querySelectorAll(
-              ".valid"
-            )
-            .forEach(function(element) {
-              element.classList.remove(
-                "valid"
-              );
-            });
+          // تنظيف النموذج بالكامل
+          clearFormFields();
 
 
         } catch (error) {
@@ -1631,6 +1798,7 @@
 
           // حذف الصور التي تم رفعها
           // إذا فشل حفظ الطلب
+
           if (
             uploadedPaths.length > 0
           ) {
@@ -1643,10 +1811,13 @@
 
           showMessage(
             "❌ لم يتم إرسال الطلب. " +
-            (error.message ||
-              "حدث خطأ غير متوقع."),
+            (
+              error.message ||
+              "حدث خطأ غير متوقع."
+            ),
             "error"
           );
+
 
         } finally {
 
@@ -1659,6 +1830,7 @@
 
       }
     );
+
   </script>
 
 </body>
