@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 
 <html lang="ar" dir="rtl">
@@ -235,297 +236,295 @@
 
   <main class="container">
 
-```
-<div class="form-box">
+    <div class="form-box">
 
-  <h2>إضافة منتج للبيع</h2>
+      <h2>إضافة منتج للبيع</h2>
 
-  <p class="intro">
-    أدخل معلوماتك ومعلومات المنتج بشكل صحيح، وسيتم مراجعة الطلب قبل نشره.
-  </p>
+      <p class="intro">
+        أدخل معلوماتك ومعلومات المنتج بشكل صحيح، وسيتم مراجعة الطلب قبل نشره.
+      </p>
 
-  <form
-    id="sellerForm"
-    autocomplete="off"
-    novalidate
-  >
-
-    <!-- اسم البائع -->
-    <div class="field">
-      <label for="seller_name">اسم البائع *</label>
-
-      <input
-        id="seller_name"
-        name="seller_name"
-        type="text"
+      <form
+        id="sellerForm"
         autocomplete="off"
-        autocapitalize="words"
-        spellcheck="false"
-        maxlength="60"
-        required
-        placeholder="اكتب اسمك"
+        novalidate
       >
 
-      <small
-        id="seller_name_error"
-        class="field-error"
-      ></small>
-    </div>
+        <!-- اسم البائع -->
+        <div class="field">
+          <label for="seller_name">اسم البائع *</label>
+
+          <input
+            id="seller_name"
+            name="seller_name"
+            type="text"
+            autocomplete="off"
+            autocapitalize="words"
+            spellcheck="false"
+            maxlength="60"
+            required
+            placeholder="اكتب اسمك"
+          >
+
+          <small
+            id="seller_name_error"
+            class="field-error"
+          ></small>
+        </div>
 
 
-    <!-- البريد الإلكتروني -->
-    <div class="field">
-      <label for="seller_email">البريد الإلكتروني *</label>
+        <!-- البريد الإلكتروني -->
+        <div class="field">
+          <label for="seller_email">البريد الإلكتروني *</label>
 
-      <input
-        id="seller_email"
-        name="seller_email"
-        type="email"
-        autocomplete="new-password"
-        autocapitalize="none"
-        spellcheck="false"
-        maxlength="120"
-        required
-        placeholder="example@email.com"
-        inputmode="email"
-      >
+          <input
+            id="seller_email"
+            name="seller_email"
+            type="email"
+            autocomplete="new-password"
+            autocapitalize="none"
+            spellcheck="false"
+            maxlength="120"
+            required
+            placeholder="example@email.com"
+            inputmode="email"
+          >
 
-      <small
-        id="seller_email_error"
-        class="field-error"
-      ></small>
+          <small
+            id="seller_email_error"
+            class="field-error"
+          ></small>
 
-      <small class="field-hint">
-        يجب إدخال بريد إلكتروني صحيح.
-      </small>
-    </div>
-
-
-    <!-- رقم الجوال -->
-    <div class="field">
-      <label for="phone">رقم الجوال *</label>
-
-      <input
-        id="phone"
-        name="phone"
-        type="tel"
-        autocomplete="off"
-        inputmode="numeric"
-        maxlength="16"
-        required
-        placeholder="05xxxxxxxx"
-      >
-
-      <small
-        id="phone_error"
-        class="field-error"
-      ></small>
-
-      <small class="field-hint">
-        مثال: 05xxxxxxxx أو +9665xxxxxxxx
-      </small>
-    </div>
+          <small class="field-hint">
+            يجب إدخال بريد إلكتروني صحيح.
+          </small>
+        </div>
 
 
-    <!-- المدينة -->
-    <div class="field">
-      <label for="city">المدينة *</label>
+        <!-- رقم الجوال -->
+        <div class="field">
+          <label for="phone">رقم الجوال *</label>
 
-      <input
-        id="city"
-        name="city"
-        type="text"
-        autocomplete="off"
-        autocapitalize="words"
-        spellcheck="false"
-        maxlength="50"
-        required
-        placeholder="مثال: جدة"
-      >
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            autocomplete="off"
+            inputmode="numeric"
+            maxlength="16"
+            required
+            placeholder="05xxxxxxxx"
+          >
 
-      <small
-        id="city_error"
-        class="field-error"
-      ></small>
-    </div>
+          <small
+            id="phone_error"
+            class="field-error"
+          ></small>
 
-
-    <!-- التصنيف -->
-    <div class="field">
-      <label for="category">التصنيف *</label>
-
-      <select
-        id="category"
-        name="category"
-        autocomplete="off"
-        required
-      >
-        <option value="">اختر التصنيف</option>
-        <option value="كمبيوتر">كمبيوتر 💻</option>
-        <option value="ألعاب">ألعاب 🎮</option>
-        <option value="أثاث">أثاث 🪑</option>
-        <option value="أجهزة">أجهزة 📺</option>
-        <option value="رياضة">رياضة 🚲</option>
-        <option value="أدوات">أدوات 🛠️</option>
-        <option value="ملابس">ملابس 👕</option>
-        <option value="أخرى">أخرى 📦</option>
-      </select>
-
-      <small
-        id="category_error"
-        class="field-error"
-      ></small>
-    </div>
+          <small class="field-hint">
+            مثال: 05xxxxxxxx أو +9665xxxxxxxx
+          </small>
+        </div>
 
 
-    <!-- اسم المنتج -->
-    <div class="field">
-      <label for="product_title">اسم المنتج *</label>
+        <!-- المدينة -->
+        <div class="field">
+          <label for="city">المدينة *</label>
 
-      <input
-        id="product_title"
-        name="product_title"
-        type="text"
-        autocomplete="off"
-        spellcheck="false"
-        maxlength="120"
-        required
-        placeholder="مثال: جوال آيفون 15"
-      >
+          <input
+            id="city"
+            name="city"
+            type="text"
+            autocomplete="off"
+            autocapitalize="words"
+            spellcheck="false"
+            maxlength="50"
+            required
+            placeholder="مثال: جدة"
+          >
 
-      <small
-        id="product_title_error"
-        class="field-error"
-      ></small>
-    </div>
-
-
-    <!-- السعر -->
-    <div class="field">
-      <label for="price">السعر بالريال *</label>
-
-      <input
-        id="price"
-        name="price"
-        type="number"
-        autocomplete="off"
-        min="0"
-        step="0.01"
-        required
-        placeholder="مثال: 1500"
-      >
-
-      <small
-        id="price_error"
-        class="field-error"
-      ></small>
-    </div>
+          <small
+            id="city_error"
+            class="field-error"
+          ></small>
+        </div>
 
 
-    <!-- الوصف -->
-    <div class="field">
-      <label for="description">وصف المنتج *</label>
+        <!-- التصنيف -->
+        <div class="field">
+          <label for="category">التصنيف *</label>
 
-      <textarea
-        id="description"
-        name="description"
-        autocomplete="off"
-        spellcheck="true"
-        minlength="5"
-        maxlength="2000"
-        required
-        placeholder="اكتب وصفًا واضحًا للمنتج وحالته..."
-      ></textarea>
+          <select
+            id="category"
+            name="category"
+            autocomplete="off"
+            required
+          >
+            <option value="">اختر التصنيف</option>
+            <option value="كمبيوتر">كمبيوتر 💻</option>
+            <option value="ألعاب">ألعاب 🎮</option>
+            <option value="أثاث">أثاث 🪑</option>
+            <option value="أجهزة">أجهزة 📺</option>
+            <option value="رياضة">رياضة 🚲</option>
+            <option value="أدوات">أدوات 🛠️</option>
+            <option value="ملابس">ملابس 👕</option>
+            <option value="أخرى">أخرى 📦</option>
+          </select>
 
-      <small
-        id="description_error"
-        class="field-error"
-      ></small>
-    </div>
+          <small
+            id="category_error"
+            class="field-error"
+          ></small>
+        </div>
 
 
-    <!-- الصور -->
-    <div class="field">
+        <!-- اسم المنتج -->
+        <div class="field">
+          <label for="product_title">اسم المنتج *</label>
 
-      <label for="product_image">صور المنتج *</label>
+          <input
+            id="product_title"
+            name="product_title"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            maxlength="120"
+            required
+            placeholder="مثال: جوال آيفون 15"
+          >
 
-      <div class="images-box">
+          <small
+            id="product_title_error"
+            class="field-error"
+          ></small>
+        </div>
 
-        <input
-          id="product_image"
-          name="product_image"
-          type="file"
-          accept="image/*"
-          multiple
-          required
+
+        <!-- السعر -->
+        <div class="field">
+          <label for="price">السعر بالريال *</label>
+
+          <input
+            id="price"
+            name="price"
+            type="number"
+            autocomplete="off"
+            min="0"
+            step="0.01"
+            required
+            placeholder="مثال: 1500"
+          >
+
+          <small
+            id="price_error"
+            class="field-error"
+          ></small>
+        </div>
+
+
+        <!-- الوصف -->
+        <div class="field">
+          <label for="description">وصف المنتج *</label>
+
+          <textarea
+            id="description"
+            name="description"
+            autocomplete="off"
+            spellcheck="true"
+            minlength="5"
+            maxlength="2000"
+            required
+            placeholder="اكتب وصفًا واضحًا للمنتج وحالته..."
+          ></textarea>
+
+          <small
+            id="description_error"
+            class="field-error"
+          ></small>
+        </div>
+
+
+        <!-- الصور -->
+        <div class="field">
+
+          <label for="product_image">صور المنتج *</label>
+
+          <div class="images-box">
+
+            <input
+              id="product_image"
+              name="product_image"
+              type="file"
+              accept="image/*"
+              multiple
+              required
+            >
+
+            <small class="field-hint">
+              يمكنك إضافة من صورة واحدة إلى 4 صور، وسيقوم النظام تلقائيًا بضغط الصور وتصغيرها قبل رفعها.
+            </small>
+
+            <small
+              id="product_image_error"
+              class="field-error"
+            ></small>
+
+            <div
+              id="previewGrid"
+              class="preview-grid"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <!-- الشروط -->
+        <div class="field">
+
+          <div class="terms">
+
+            <input
+              id="agree_terms"
+              name="agree_terms"
+              type="checkbox"
+              autocomplete="off"
+              required
+            >
+
+            <label for="agree_terms">
+              أقر بأن المعلومات التي أدخلتها صحيحة،
+              وأن المنتج المعروض للبيع يعود لي أو لدي الحق في بيعه،
+              وأوافق على شروط الموقع.
+            </label>
+
+          </div>
+
+          <small
+            id="agree_terms_error"
+            class="field-error"
+          ></small>
+
+        </div>
+
+
+        <!-- زر الإرسال -->
+        <button
+          id="submitBtn"
+          class="submit-btn"
+          type="submit"
         >
-
-        <small class="field-hint">
-          يمكنك إضافة من صورة واحدة إلى 4 صور، وسيقوم النظام تلقائيًا بضغط الصور وتصغيرها قبل رفعها.
-        </small>
-
-        <small
-          id="product_image_error"
-          class="field-error"
-        ></small>
+          إرسال المنتج للمراجعة
+        </button>
 
         <div
-          id="previewGrid"
-          class="preview-grid"
+          id="formMessage"
+          class="message"
         ></div>
 
-      </div>
+      </form>
 
     </div>
-
-
-    <!-- الشروط -->
-    <div class="field">
-
-      <div class="terms">
-
-        <input
-          id="agree_terms"
-          name="agree_terms"
-          type="checkbox"
-          autocomplete="off"
-          required
-        >
-
-        <label for="agree_terms">
-          أقر بأن المعلومات التي أدخلتها صحيحة،
-          وأن المنتج المعروض للبيع يعود لي أو لدي الحق في بيعه،
-          وأوافق على شروط الموقع.
-        </label>
-
-      </div>
-
-      <small
-        id="agree_terms_error"
-        class="field-error"
-      ></small>
-
-    </div>
-
-
-    <!-- زر الإرسال -->
-    <button
-      id="submitBtn"
-      class="submit-btn"
-      type="submit"
-    >
-      إرسال المنتج للمراجعة
-    </button>
-
-    <div
-      id="formMessage"
-      class="message"
-    ></div>
-
-  </form>
-
-</div>
-```
 
   </main>
 
@@ -1362,11 +1361,6 @@
         );
       }
 
-
-      // ----------------------------------------
-      // قراءة الصورة
-      // ----------------------------------------
-
       const imageUrl =
         URL.createObjectURL(file);
 
@@ -1381,20 +1375,16 @@
 
               img.onload =
                 function() {
-
                   resolve(img);
-
                 };
 
               img.onerror =
                 function() {
-
                   reject(
                     new Error(
                       "تعذر قراءة الصورة."
                     )
                   );
-
                 };
 
               img.src =
@@ -1402,17 +1392,11 @@
             }
           );
 
-
-        // ----------------------------------------
-        // تحديد الأبعاد الجديدة
-        // ----------------------------------------
-
         let width =
           image.naturalWidth;
 
         let height =
           image.naturalHeight;
-
 
         if (
           width > MAX_IMAGE_DIMENSION ||
@@ -1436,11 +1420,6 @@
             );
         }
 
-
-        // ----------------------------------------
-        // Canvas
-        // ----------------------------------------
-
         const canvas =
           document.createElement("canvas");
 
@@ -1460,9 +1439,6 @@
           );
         }
 
-
-        // خلفية بيضاء للصور التي تحتوي
-        // على شفافية عند تحويلها إلى WebP
         context.drawImage(
           image,
           0,
@@ -1470,11 +1446,6 @@
           width,
           height
         );
-
-
-        // ----------------------------------------
-        // تحويل الصورة إلى WebP مضغوط
-        // ----------------------------------------
 
         let quality =
           INITIAL_IMAGE_QUALITY;
@@ -1485,12 +1456,6 @@
             "image/webp",
             quality
           );
-
-
-        // ----------------------------------------
-        // تخفيض الجودة إذا كانت الصورة
-        // لا تزال كبيرة
-        // ----------------------------------------
 
         while (
           blob.size > TARGET_IMAGE_SIZE &&
@@ -1506,11 +1471,6 @@
               quality
             );
         }
-
-
-        // ----------------------------------------
-        // إذا بقيت كبيرة جدًا، نصغّر الأبعاد
-        // ----------------------------------------
 
         while (
           blob.size > TARGET_IMAGE_SIZE &&
@@ -1559,11 +1519,6 @@
               quality
             );
         }
-
-
-        // ----------------------------------------
-        // إنشاء File جديد للرفع
-        // ----------------------------------------
 
         return new File(
           [blob],
@@ -1653,30 +1608,15 @@
       index
     ) {
 
-      // ----------------------------------------
-      // ضغط الصورة قبل الرفع
-      // ----------------------------------------
-
       const compressedFile =
         await compressImage(file);
-
-
-      // ----------------------------------------
-      // اسم ملف آمن
-      // ----------------------------------------
 
       const fileName =
         createSafeFileName();
 
-
       const filePath =
         "seller-products/" +
         fileName;
-
-
-      // ----------------------------------------
-      // الرفع
-      // ----------------------------------------
 
       const response =
         await fetch(
@@ -1704,7 +1644,6 @@
           }
         );
 
-
       if (!response.ok) {
 
         let errorText =
@@ -1727,18 +1666,12 @@
         );
       }
 
-
-      // ----------------------------------------
-      // الرابط العام
-      // ----------------------------------------
-
       const publicUrl =
         SUPABASE_URL +
         "/storage/v1/object/public/" +
         STORAGE_BUCKET +
         "/" +
         filePath;
-
 
       return {
         url: publicUrl,
@@ -1806,11 +1739,6 @@
         formMessage.textContent =
           "";
 
-
-        // --------------------------------------
-        // التحقق الكامل قبل رفع أي صورة
-        // --------------------------------------
-
         const validName =
           validateSellerName();
 
@@ -1840,7 +1768,6 @@
 
         const validTerms =
           validateTerms();
-
 
         if (
           !validName ||
@@ -1872,20 +1799,13 @@
           return;
         }
 
-
-        // --------------------------------------
-        // منع الضغط المتكرر
-        // --------------------------------------
-
         submitBtn.disabled =
           true;
 
         submitBtn.textContent =
           "جاري إرسال المنتج...";
 
-
         let uploadedPaths = [];
-
 
         try {
 
@@ -1893,11 +1813,6 @@
             Array.from(
               productImage.files
             );
-
-
-          // --------------------------------------
-          // رفع الصور
-          // --------------------------------------
 
           const uploadedImages = [];
 
@@ -1925,16 +1840,8 @@
             );
           }
 
-
-          // --------------------------------------
-          // البيانات
-          // --------------------------------------
-
           const sellerNameValue =
             sellerName.value.trim();
-
-          const emailValue =
-            sellerEmail.value.trim();
 
           const phoneValue =
             normalizePhone(
@@ -1956,14 +1863,8 @@
           const descriptionValue =
             description.value.trim();
 
-
-          // --------------------------------------
-          // حفظ الطلب في Supabase
-          // --------------------------------------
-
           submitBtn.textContent =
             "جاري حفظ الطلب...";
-
 
           const insertResponse =
             await fetch(
@@ -1994,9 +1895,6 @@
 
                   seller_name:
                     sellerNameValue,
-
-                  email:
-                    emailValue,
 
                   phone:
                     phoneValue,
@@ -2043,11 +1941,6 @@
               }
             );
 
-
-          // --------------------------------------
-          // فحص النتيجة
-          // --------------------------------------
-
           if (
             !insertResponse.ok
           ) {
@@ -2072,20 +1965,12 @@
             );
           }
 
-
-          // --------------------------------------
-          // نجاح
-          // --------------------------------------
-
           showMessage(
             "✅ تم إرسال المنتج بنجاح. سيتم مراجعته قبل نشره في الموقع.",
             "success"
           );
 
-
-          // تنظيف النموذج بالكامل
           clearFormFields();
-
 
         } catch (error) {
 
@@ -2093,10 +1978,6 @@
             "Seller form error:",
             error
           );
-
-
-          // حذف الصور التي تم رفعها
-          // إذا فشل حفظ الطلب
 
           if (
             uploadedPaths.length > 0
@@ -2107,7 +1988,6 @@
             );
           }
 
-
           showMessage(
             "❌ لم يتم إرسال الطلب. " +
             (
@@ -2116,7 +1996,6 @@
             ),
             "error"
           );
-
 
         } finally {
 
@@ -2134,3 +2013,4 @@
 
 </body>
 </html>
+```
