@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -1622,11 +1623,43 @@ form.addEventListener(
             );
 
 
-            localStorage.removeItem(
-                "cart"
-            );
+            /* =========================================
+               تفريغ السلة بعد نجاح الطلب فقط
+            ========================================= */
 
-            cart = [];
+            try {
+
+                localStorage.removeItem("cart");
+
+                cart = [];
+
+
+                /*
+                 * التأكد من أن السلة حُذفت فعليًا
+                 */
+
+                if (
+                    localStorage.getItem("cart") !== null
+                ) {
+
+                    localStorage.setItem(
+                        "cart",
+                        "[]"
+                    );
+
+                }
+
+            }
+            catch (storageError) {
+
+                console.error(
+                    "تعذر تفريغ السلة:",
+                    storageError
+                );
+
+                cart = [];
+
+            }
 
 
             showMessage(
@@ -1759,3 +1792,4 @@ updateSummary();
 </body>
 
 </html>
+```
