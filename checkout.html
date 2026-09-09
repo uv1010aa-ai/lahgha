@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -163,18 +162,16 @@
             resize: vertical;
         }
 
-        /* =========================
-           التحقق من الحقول
-        ========================== */
-
         input.invalid,
-        textarea.invalid {
+        textarea.invalid,
+        select.invalid {
             border: 2px solid #dc2626;
             background: #fff7f7;
         }
 
         input.valid,
-        textarea.valid {
+        textarea.valid,
+        select.valid {
             border: 2px solid #16a34a;
             background: #f7fff9;
         }
@@ -193,6 +190,79 @@
             color: #16a34a;
             font-size: 14px;
             font-weight: bold;
+        }
+
+        /* =========================
+           طريقة التوصيل
+        ========================== */
+
+        .delivery-button {
+            width: 100%;
+            margin-top: 18px;
+            padding: 14px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            background: #f8fafc;
+            color: #1e3a5f;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: right;
+        }
+
+        .delivery-button:hover {
+            background: #eef4f9;
+        }
+
+        .delivery-info {
+            display: none;
+            margin-top: 12px;
+            padding: 17px;
+            background: #f8fafc;
+            border: 1px solid #dbe4ec;
+            border-radius: 12px;
+            line-height: 1.9;
+        }
+
+        .delivery-info.show {
+            display: block;
+        }
+
+        .delivery-info strong {
+            color: #1e3a5f;
+        }
+
+        .delivery-status {
+            margin-top: 12px;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .delivery-status.jeddah {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .delivery-status.other {
+            background: #fff7ed;
+            color: #9a3412;
+        }
+
+        .bank-box {
+            display: none;
+            margin-top: 15px;
+            padding: 16px;
+            background: #f8fafc;
+            border: 1px solid #dbe4ec;
+            border-radius: 12px;
+        }
+
+        .bank-box strong {
+            display: block;
+            color: #1e3a5f;
+            margin-bottom: 8px;
         }
 
         .summary {
@@ -216,21 +286,6 @@
             font-size: 20px;
             font-weight: bold;
             color: #166534;
-        }
-
-        .bank-box {
-            display: none;
-            margin-top: 15px;
-            padding: 16px;
-            background: #f8fafc;
-            border: 1px solid #dbe4ec;
-            border-radius: 12px;
-        }
-
-        .bank-box strong {
-            display: block;
-            color: #1e3a5f;
-            margin-bottom: 8px;
         }
 
         .submit-button {
@@ -417,6 +472,34 @@
             ></small>
 
 
+            <!-- المدينة -->
+
+            <label for="buyerCity">
+                مدينة التوصيل
+            </label>
+
+            <select id="buyerCity" required>
+
+                <option value="">
+                    اختر مدينة التوصيل
+                </option>
+
+                <option value="جدة">
+                    جدة
+                </option>
+
+                <option value="مدينة أخرى">
+                    مدينة أخرى
+                </option>
+
+            </select>
+
+            <small
+                id="buyerCityError"
+                class="field-error"
+            ></small>
+
+
             <!-- العنوان -->
 
             <label for="buyerAddress">
@@ -425,7 +508,7 @@
 
             <textarea
                 id="buyerAddress"
-                placeholder="اكتب عنوان التوصيل"
+                placeholder="اكتب عنوان التوصيل بالتفصيل"
                 autocomplete="street-address"
                 required
                 minlength="5"
@@ -436,6 +519,35 @@
                 id="buyerAddressError"
                 class="field-error"
             ></small>
+
+
+            <!-- =========================
+                 طريقة التوصيل
+            ========================== -->
+
+            <button
+                type="button"
+                id="deliveryButton"
+                class="delivery-button"
+            >
+                🚚 طريقة التوصيل
+            </button>
+
+
+            <div
+                id="deliveryInfo"
+                class="delivery-info"
+            >
+
+                <strong>
+                    🚚 تفاصيل التوصيل
+                </strong>
+
+                <div id="deliveryText">
+                    اختر مدينة التوصيل لمعرفة التفاصيل.
+                </div>
+
+            </div>
 
 
             <!-- الدفع -->
@@ -558,7 +670,18 @@ const supabaseClient =
 
 
 /* =====================================================
+   المدن التي يشملها الدفع عند الاستلام
+   لاحقًا يمكن إضافة مدن هنا
+===================================================== */
+
+const cashOnDeliveryCities = [
+    "جدة"
+];
+
+
+/* =====================================================
    السلة
+   تستخدم sessionStorage
 ===================================================== */
 
 let cart = [];
@@ -568,7 +691,7 @@ try {
 
     cart =
         JSON.parse(
-            localStorage.getItem("cart") || "[]"
+            sessionStorage.getItem("cart") || "[]"
         );
 
     if (!Array.isArray(cart)) {
@@ -611,16 +734,17 @@ const paymentMethod =
 const bankBox =
     document.getElementById("bankBox");
 
-
 const buyerNameInput =
     document.getElementById("buyerName");
 
 const buyerPhoneInput =
     document.getElementById("buyerPhone");
 
+const buyerCityInput =
+    document.getElementById("buyerCity");
+
 const buyerAddressInput =
     document.getElementById("buyerAddress");
-
 
 const buyerNameError =
     document.getElementById("buyerNameError");
@@ -628,8 +752,20 @@ const buyerNameError =
 const buyerPhoneError =
     document.getElementById("buyerPhoneError");
 
+const buyerCityError =
+    document.getElementById("buyerCityError");
+
 const buyerAddressError =
     document.getElementById("buyerAddressError");
+
+const deliveryButton =
+    document.getElementById("deliveryButton");
+
+const deliveryInfo =
+    document.getElementById("deliveryInfo");
+
+const deliveryText =
+    document.getElementById("deliveryText");
 
 
 /* =====================================================
@@ -872,14 +1008,6 @@ function validateBuyerPhone() {
         normalizePhone(value);
 
 
-    /*
-     * الصيغة المعتمدة:
-     *
-     * 05xxxxxxxx
-     *
-     * 10 أرقام ويبدأ بـ 05
-     */
-
     const phonePattern =
         /^05\d{8}$/;
 
@@ -904,6 +1032,39 @@ function validateBuyerPhone() {
     setFieldValid(
         buyerPhoneInput,
         buyerPhoneError
+    );
+
+    return true;
+
+}
+
+
+/* =====================================================
+   التحقق من المدينة
+===================================================== */
+
+function validateBuyerCity() {
+
+    const city =
+        buyerCityInput.value.trim();
+
+
+    if (!city) {
+
+        setFieldError(
+            buyerCityInput,
+            buyerCityError,
+            "❌ اختر مدينة التوصيل."
+        );
+
+        return false;
+
+    }
+
+
+    setFieldValid(
+        buyerCityInput,
+        buyerCityError
     );
 
     return true;
@@ -958,6 +1119,155 @@ function validateBuyerAddress() {
 
 
 /* =====================================================
+   حالة التوصيل
+===================================================== */
+
+function isCashOnDeliveryAvailable(city) {
+
+    return cashOnDeliveryCities.includes(
+        String(city || "").trim()
+    );
+
+}
+
+
+/* =====================================================
+   تحديث معلومات التوصيل
+===================================================== */
+
+function updateDeliveryInfo() {
+
+    const city =
+        buyerCityInput.value.trim();
+
+
+    if (!city) {
+
+        deliveryText.innerHTML =
+            "اختر مدينة التوصيل لمعرفة تفاصيل التوصيل.";
+
+        return;
+
+    }
+
+
+    if (
+        isCashOnDeliveryAvailable(city)
+    ) {
+
+        deliveryText.innerHTML = `
+
+            <div class="delivery-status jeddah">
+
+                📍 <strong>${escapeHtml(city)}</strong>
+
+                <br>
+
+                🚚 التوصيل متاح داخل المدينة.
+
+                <br>
+
+                💵 <strong>الدفع عند الاستلام متاح.</strong>
+
+                <br>
+
+                ✅ لا توجد رسوم شحن إضافية على المشتري حسب سياسة التوصيل الحالية.
+
+            </div>
+
+        `;
+
+        /*
+         * إذا كانت المدينة تسمح بالدفع عند الاستلام
+         * نعيد تفعيل الخيار.
+         */
+
+        const cashOption =
+            [...paymentMethod.options]
+                .find(
+                    option =>
+                        option.value ===
+                        "الدفع عند الاستلام"
+                );
+
+
+        if (cashOption) {
+
+            cashOption.disabled =
+                false;
+
+        }
+
+    }
+    else {
+
+        deliveryText.innerHTML = `
+
+            <div class="delivery-status other">
+
+                📍 <strong>${escapeHtml(city)}</strong>
+
+                <br>
+
+                🚚 التوصيل إلى هذه المدينة متاح.
+
+                <br>
+
+                💰 <strong>تكلفة التوصيل يتحملها المشتري.</strong>
+
+                <br>
+
+                📞 سيتم التواصل معك لتحديد تكلفة الشحن حسب المدينة.
+
+                <br>
+
+                ⚠️ الدفع عند الاستلام غير متاح خارج المدن المشمولة حاليًا.
+
+            </div>
+
+        `;
+
+
+        /*
+         * المدن الأخرى لا تسمح بالدفع عند الاستلام.
+         */
+
+        const cashOption =
+            [...paymentMethod.options]
+                .find(
+                    option =>
+                        option.value ===
+                        "الدفع عند الاستلام"
+                );
+
+
+        if (cashOption) {
+
+            cashOption.disabled =
+                true;
+
+        }
+
+
+        if (
+            paymentMethod.value ===
+            "الدفع عند الاستلام"
+        ) {
+
+            paymentMethod.value =
+                "تحويل بنكي";
+
+            bankBox.style.display =
+                "block";
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
    التحقق أثناء الكتابة
 ===================================================== */
 
@@ -986,6 +1296,34 @@ buyerAddressInput.addEventListener(
     () => {
 
         validateBuyerAddress();
+
+    }
+);
+
+
+buyerCityInput.addEventListener(
+    "change",
+    () => {
+
+        validateBuyerCity();
+
+        updateDeliveryInfo();
+
+    }
+);
+
+
+/* =====================================================
+   زر طريقة التوصيل
+===================================================== */
+
+deliveryButton.addEventListener(
+    "click",
+    () => {
+
+        deliveryInfo.classList.toggle(
+            "show"
+        );
 
     }
 );
@@ -1438,6 +1776,9 @@ form.addEventListener(
         const phoneIsValid =
             validateBuyerPhone();
 
+        const cityIsValid =
+            validateBuyerCity();
+
         const addressIsValid =
             validateBuyerAddress();
 
@@ -1445,6 +1786,7 @@ form.addEventListener(
         if (
             !nameIsValid ||
             !phoneIsValid ||
+            !cityIsValid ||
             !addressIsValid
         ) {
 
@@ -1462,6 +1804,11 @@ form.addEventListener(
             else if (!phoneIsValid) {
 
                 buyerPhoneInput.focus();
+
+            }
+            else if (!cityIsValid) {
+
+                buyerCityInput.focus();
 
             }
             else if (!addressIsValid) {
@@ -1496,12 +1843,33 @@ form.addEventListener(
             buyerPhoneInput.value.trim();
 
 
+        const buyerCity =
+            buyerCityInput.value.trim();
+
+
         const buyerAddress =
             buyerAddressInput.value.trim();
 
 
-        const selectedPayment =
+        let selectedPayment =
             paymentMethod.value;
+
+
+        /*
+         * حماية إضافية:
+         * خارج المدن المشمولة لا يسمح بالدفع عند الاستلام.
+         */
+
+        if (
+            !isCashOnDeliveryAvailable(
+                buyerCity
+            )
+        ) {
+
+            selectedPayment =
+                "تحويل بنكي";
+
+        }
 
 
         submitButton.disabled =
@@ -1561,6 +1929,39 @@ form.addEventListener(
                 Date.now();
 
 
+            /*
+             * نحافظ على جدول orders الحالي
+             * بدون الحاجة لإضافة أعمدة جديدة.
+             *
+             * يتم تضمين المدينة ومعلومة التوصيل
+             * داخل عنوان المشتري.
+             */
+
+            const deliveryNote =
+                isCashOnDeliveryAvailable(
+                    buyerCity
+                )
+
+                    ?
+
+                    "التوصيل داخل جدة - الدفع عند الاستلام"
+
+                    :
+
+                    "التوصيل خارج جدة - تكلفة التوصيل يتحملها المشتري";
+
+
+            const fullBuyerAddress =
+                "المدينة: " +
+                buyerCity +
+                "\n" +
+                "العنوان: " +
+                buyerAddress +
+                "\n" +
+                "التوصيل: " +
+                deliveryNote;
+
+
             const orderData = {
 
                 order_number:
@@ -1573,7 +1974,7 @@ form.addEventListener(
                     buyerPhone,
 
                 buyer_address:
-                    buyerAddress,
+                    fullBuyerAddress,
 
                 payment_method:
                     selectedPayment,
@@ -1629,7 +2030,9 @@ form.addEventListener(
 
             try {
 
-                localStorage.removeItem("cart");
+                sessionStorage.removeItem(
+                    "cart"
+                );
 
                 cart = [];
 
@@ -1639,10 +2042,12 @@ form.addEventListener(
                  */
 
                 if (
-                    localStorage.getItem("cart") !== null
+                    sessionStorage.getItem(
+                        "cart"
+                    ) !== null
                 ) {
 
-                    localStorage.setItem(
+                    sessionStorage.setItem(
                         "cart",
                         "[]"
                     );
@@ -1687,6 +2092,10 @@ form.addEventListener(
                 );
 
 
+            deliveryButton.disabled =
+                true;
+
+
             renderProducts();
 
             updateSummary();
@@ -1726,11 +2135,6 @@ form.addEventListener(
                 error &&
                 error.message
             ) {
-
-                /*
-                 * لا نعرض تفاصيل تقنية
-                 * للمستخدم.
-                 */
 
                 console.error(
                     error.message
@@ -1786,10 +2190,11 @@ renderProducts();
 
 updateSummary();
 
+updateDeliveryInfo();
+
 </script>
 
 
 </body>
 
 </html>
-```
