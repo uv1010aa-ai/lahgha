@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 
 <html lang="ar" dir="rtl">
@@ -9,13 +10,11 @@
 <meta
 name="viewport"
 content="width=device-width, initial-scale=1.0"
-
 >
 
 <meta
 name="description"
 content="سلة المشتريات | لَحْقها"
-
 >
 
 <title>السلة | لَحْقها 🛒</title>
@@ -248,7 +247,6 @@ content="سلة المشتريات | لَحْقها"
 
 <header class="site-header">
 
-```
 <div class="logo">
 
     <h1>
@@ -276,13 +274,12 @@ content="سلة المشتريات | لَحْقها"
     </a>
 
 </nav>
-```
 
 </header>
 
+
 <main class="cart-page">
 
-```
 <div class="cart-page-header">
 
     <h2>
@@ -300,34 +297,46 @@ content="سلة المشتريات | لَحْقها"
     class="cart-box"
     id="cart-container"
 ></div>
-```
 
 </main>
 
+
 <div id="cart-toast"></div>
+
 
 <script>
 
 /* =========================================
-   قراءة السلة
+   السلة تعتمد على sessionStorage فقط
+   لا يتم إرسال أي شيء إلى قاعدة البيانات هنا
 ========================================= */
 
 let cart = [];
+
+
+/* =========================================
+   قراءة السلة من sessionStorage
+========================================= */
 
 function loadCart() {
 
     try {
 
         const saved =
-            localStorage.getItem("cart");
+            sessionStorage.getItem("cart");
 
         if (!saved) {
+
             cart = [];
+
             return;
+
         }
+
 
         const parsed =
             JSON.parse(saved);
+
 
         cart =
             Array.isArray(parsed)
@@ -357,6 +366,7 @@ const container =
     document.getElementById(
         "cart-container"
     );
+
 
 const toast =
     document.getElementById(
@@ -394,9 +404,13 @@ function imageUrl(path) {
     const value =
         String(path || "").trim();
 
+
     if (!value) {
+
         return "";
+
     }
+
 
     if (
         /^https?:\/\//i.test(value) ||
@@ -407,6 +421,7 @@ function imageUrl(path) {
         return value;
 
     }
+
 
     return encodeURI(
         value.replace(
@@ -427,13 +442,16 @@ function showToast(message) {
     toast.textContent =
         message;
 
+
     toast.classList.add(
         "show"
     );
 
+
     clearTimeout(
         showToast.timer
     );
+
 
     showToast.timer =
         setTimeout(
@@ -451,17 +469,28 @@ function showToast(message) {
 
 
 /* =========================================
-   حفظ السلة
+   حفظ السلة في sessionStorage
 ========================================= */
 
 function saveCart() {
 
     try {
 
-        localStorage.setItem(
-            "cart",
-            JSON.stringify(cart)
-        );
+        if (!cart.length) {
+
+            sessionStorage.removeItem(
+                "cart"
+            );
+
+        }
+        else {
+
+            sessionStorage.setItem(
+                "cart",
+                JSON.stringify(cart)
+            );
+
+        }
 
     }
     catch (error) {
@@ -479,6 +508,7 @@ function saveCart() {
 
     }
 
+
     renderCart();
 
 }
@@ -491,13 +521,20 @@ function saveCart() {
 function changeQuantity(index, amount) {
 
     if (!cart[index]) {
+
         return;
+
     }
 
+
     let quantity =
-        Number(cart[index].quantity) || 1;
+        Number(
+            cart[index].quantity
+        ) || 1;
+
 
     quantity += amount;
+
 
     if (quantity <= 0) {
 
@@ -505,6 +542,7 @@ function changeQuantity(index, amount) {
             index,
             1
         );
+
 
         showToast(
             "تم حذف المنتج من السلة"
@@ -518,6 +556,7 @@ function changeQuantity(index, amount) {
 
     }
 
+
     saveCart();
 
 }
@@ -530,20 +569,26 @@ function changeQuantity(index, amount) {
 function deleteItem(index) {
 
     if (!cart[index]) {
+
         return;
+
     }
+
 
     const title =
         cart[index].title ||
         cart[index].name ||
         "المنتج";
 
+
     cart.splice(
         index,
         1
     );
 
+
     saveCart();
+
 
     showToast(
         `تم حذف «${title}» من السلة`
@@ -559,21 +604,35 @@ function deleteItem(index) {
 function clearCart() {
 
     if (!cart.length) {
+
         return;
+
     }
+
 
     const confirmed =
         confirm(
             "هل تريد إفراغ السلة بالكامل؟"
         );
 
+
     if (!confirmed) {
+
         return;
+
     }
+
 
     cart = [];
 
-    saveCart();
+
+    sessionStorage.removeItem(
+        "cart"
+    );
+
+
+    renderCart();
+
 
     showToast(
         "تم إفراغ السلة"
@@ -591,7 +650,9 @@ function renderCart() {
     container.innerHTML = "";
 
 
-    /* السلة فارغة */
+    /* =====================================
+       السلة فارغة
+    ===================================== */
 
     if (!cart.length) {
 
@@ -635,6 +696,7 @@ function renderCart() {
 
 
     let total = 0;
+
     let count = 0;
 
 
@@ -652,6 +714,7 @@ function renderCart() {
                         item.quantity
                     ) || 1
                 );
+
 
             item.quantity =
                 quantity;
@@ -742,11 +805,17 @@ function renderCart() {
 
 
                     <p class="cart-page-price">
-                        ${price.toLocaleString("ar-SA", {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        })}
+
+                        ${price.toLocaleString(
+                            "ar-SA",
+                            {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }
+                        )}
+
                         ريال
+
                     </p>
 
 
@@ -889,10 +958,13 @@ function renderCart() {
 
             <strong class="cart-page-total">
 
-                ${total.toLocaleString("ar-SA", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                })}
+                ${total.toLocaleString(
+                    "ar-SA",
+                    {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }
+                )}
 
                 ريال
 
@@ -930,7 +1002,9 @@ function renderCart() {
     );
 
 
-    /* إفراغ السلة */
+    /* =====================================
+       إفراغ السلة
+    ===================================== */
 
     document
         .getElementById("clear-all")
@@ -940,7 +1014,9 @@ function renderCart() {
         );
 
 
-    /* منع الانتقال إذا كانت السلة فارغة */
+    /* =====================================
+       الانتقال إلى إتمام الطلب
+    ===================================== */
 
     document
         .getElementById("checkout-link")
@@ -965,26 +1041,6 @@ function renderCart() {
 
 
 /* =========================================
-   تحديث السلة إذا تغيرت من تبويب آخر
-========================================= */
-
-window.addEventListener(
-    "storage",
-    event => {
-
-        if (event.key === "cart") {
-
-            loadCart();
-
-            renderCart();
-
-        }
-
-    }
-);
-
-
-/* =========================================
    التشغيل
 ========================================= */
 
@@ -995,4 +1051,6 @@ renderCart();
 </script>
 
 </body>
+
 </html>
+```
