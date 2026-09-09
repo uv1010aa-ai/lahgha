@@ -1237,12 +1237,11 @@ async function getProducts(){
 
 let cart = [];
 
-
 try{
 
     const saved =
     JSON.parse(
-        localStorage.getItem("cart") || "[]"
+        sessionStorage.getItem("cart") || "[]"
     );
 
 
@@ -1262,10 +1261,34 @@ catch{
 
 function saveCart(){
 
-    localStorage.setItem(
-        "cart",
-        JSON.stringify(cart)
-    );
+    try{
+
+        if(!cart.length){
+
+            sessionStorage.removeItem("cart");
+
+            return;
+
+        }
+
+        sessionStorage.setItem(
+            "cart",
+            JSON.stringify(cart)
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "تعذر حفظ السلة:",
+            error
+        );
+
+        showToast(
+            "تعذر حفظ السلة"
+        );
+
+    }
 
 }
 
