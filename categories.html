@@ -38,6 +38,10 @@
 
 <style>
 
+/* =========================================
+   الصفحة
+========================================= */
+
 .categories-page{
     width:min(1100px,calc(100% - 30px));
     margin:30px auto 100px;
@@ -45,7 +49,7 @@
 
 .page-intro{
     text-align:center;
-    margin-bottom:30px;
+    margin-bottom:25px;
 }
 
 .page-intro h2{
@@ -56,6 +60,11 @@
 .page-intro p{
     color:#666;
 }
+
+
+/* =========================================
+   الأقسام والمنتجات
+========================================= */
 
 .categories-home,
 .products-grid{
@@ -108,6 +117,11 @@
     font-weight:bold;
 }
 
+
+/* =========================================
+   زر العودة
+========================================= */
+
 .back-link{
     display:inline-block;
     margin-bottom:20px;
@@ -118,6 +132,57 @@
     color:#1e3a5f;
     text-decoration:none;
 }
+
+
+/* =========================================
+   شريط البحث داخل الصفحة
+========================================= */
+
+.page-search{
+    display:flex;
+    gap:10px;
+    width:min(750px,100%);
+    margin:0 auto 25px;
+}
+
+.page-search input{
+    flex:1;
+    min-width:0;
+    padding:14px 16px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    outline:none;
+    font-family:inherit;
+    font-size:16px;
+    background:#fff;
+    box-sizing:border-box;
+}
+
+.page-search input:focus{
+    border-color:#1e3a5f;
+}
+
+.page-search button{
+    border:0;
+    padding:0 22px;
+    border-radius:12px;
+    background:#1e3a5f;
+    color:#fff;
+    font-family:inherit;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.page-search button:hover{
+    opacity:.9;
+}
+
+
+/* =========================================
+   بطاقة المنتج
+========================================= */
 
 .product-card{
     background:#fff;
@@ -182,6 +247,11 @@
     cursor:pointer;
 }
 
+
+/* =========================================
+   الصناديق
+========================================= */
+
 .empty-box,
 .loading-box{
     grid-column:1/-1;
@@ -196,6 +266,27 @@
     font-size:55px;
     margin-bottom:10px;
 }
+
+
+/* =========================================
+   نتيجة البحث
+========================================= */
+
+.search-result-note{
+    display:inline-block;
+    margin-top:10px;
+    padding:8px 14px;
+    border-radius:20px;
+    background:#eef4fa;
+    color:#1e3a5f;
+    font-size:14px;
+    font-weight:bold;
+}
+
+
+/* =========================================
+   نافذة المنتج
+========================================= */
 
 .product-modal{
     position:fixed;
@@ -282,6 +373,11 @@
     color:#1e3a5f;
 }
 
+
+/* =========================================
+   التنبيه
+========================================= */
+
 #toast{
     position:fixed;
     right:20px;
@@ -302,20 +398,8 @@
 
 
 /* =========================================
-   نتائج البحث
+   الجوال
 ========================================= */
-
-.search-result-note{
-    display:inline-block;
-    margin-top:10px;
-    padding:8px 14px;
-    border-radius:20px;
-    background:#eef4fa;
-    color:#1e3a5f;
-    font-size:14px;
-    font-weight:bold;
-}
-
 
 @media(max-width:900px){
 
@@ -332,6 +416,14 @@
     .categories-home,
     .products-grid{
         grid-template-columns:1fr;
+    }
+
+    .page-search{
+        gap:8px;
+    }
+
+    .page-search button{
+        padding:0 15px;
     }
 
 }
@@ -392,6 +484,10 @@
 <main class="categories-page">
 
 
+<!-- =========================================
+     الأقسام
+========================================= -->
+
 <section id="categories-view">
 
     <div class="page-intro">
@@ -407,6 +503,29 @@
     </div>
 
 
+    <!-- البحث في صفحة الأقسام -->
+
+    <form
+        class="page-search"
+        id="page-search-form-categories"
+        role="search"
+    >
+
+        <input
+            type="search"
+            id="page-search-input-categories"
+            placeholder="ابحث عن أي سلعة..."
+            autocomplete="off"
+            aria-label="ابحث عن أي سلعة"
+        >
+
+        <button type="submit">
+            🔍 بحث
+        </button>
+
+    </form>
+
+
     <div
         class="categories-home"
         id="categories-list"
@@ -414,6 +533,10 @@
 
 </section>
 
+
+<!-- =========================================
+     المنتجات / نتائج البحث
+========================================= -->
 
 <section
     id="products-view"
@@ -440,6 +563,29 @@
     </div>
 
 
+    <!-- البحث داخل نفس صفحة النتائج -->
+
+    <form
+        class="page-search"
+        id="page-search-form"
+        role="search"
+    >
+
+        <input
+            type="search"
+            id="page-search-input"
+            placeholder="ابحث عن أي سلعة..."
+            autocomplete="off"
+            aria-label="ابحث عن أي سلعة"
+        >
+
+        <button type="submit">
+            🔍 بحث
+        </button>
+
+    </form>
+
+
     <div
         id="category-products"
     ></div>
@@ -459,10 +605,16 @@
 </footer>
 
 
-<div
-    id="toast"
-></div>
+<!-- =========================================
+     التنبيه
+========================================= -->
 
+<div id="toast"></div>
+
+
+<!-- =========================================
+     نافذة المنتج
+========================================= -->
 
 <div
     class="product-modal"
@@ -582,7 +734,7 @@ const categories = [
 
 
 /* =========================================
-   الرابط
+   قراءة الرابط
 ========================================= */
 
 const params =
@@ -591,13 +743,11 @@ new URLSearchParams(
 );
 
 
-const selectedCategory =
+let selectedCategory =
 (params.get("category") || "").trim();
 
 
-/* البحث الجديد */
-
-const searchQuery =
+let searchQuery =
 (params.get("search") || "").trim();
 
 
@@ -646,6 +796,32 @@ document.getElementById(
 );
 
 
+/* البحث في صفحة الأقسام */
+
+const categoriesSearchForm =
+document.getElementById(
+    "page-search-form-categories"
+);
+
+const categoriesSearchInput =
+document.getElementById(
+    "page-search-input-categories"
+);
+
+
+/* البحث داخل النتائج */
+
+const pageSearchForm =
+document.getElementById(
+    "page-search-form"
+);
+
+const pageSearchInput =
+document.getElementById(
+    "page-search-input"
+);
+
+
 /* =========================================
    حماية النص
 ========================================= */
@@ -673,7 +849,10 @@ function escapeHtml(value){
 
 function imageUrl(path){
 
-    if(!path) return "";
+    if(!path){
+        return "";
+    }
+
 
     let value =
         String(path).trim();
@@ -702,7 +881,7 @@ function imageUrl(path){
 
 function getProductImages(product){
 
-    let result=[];
+    let result = [];
 
 
     if(product && product.image){
@@ -906,7 +1085,7 @@ async function loadBooks(){
 
 
 /* =========================================
-   تحميل Supabase
+   تحميل منتجات Supabase
 ========================================= */
 
 async function loadSupabaseProducts(){
@@ -948,13 +1127,6 @@ async function loadSupabaseProducts(){
         }
 
 
-        /*
-         مهم:
-         لا نشترط وجود category هنا.
-         حتى تستطيع نتائج البحث إظهار
-         السلع التي لم يتم تصنيفها.
-        */
-
         return (data || [])
 
             .filter(product =>
@@ -973,7 +1145,10 @@ async function loadSupabaseProducts(){
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            "Supabase error:",
+            error
+        );
 
         return [];
 
@@ -1002,6 +1177,8 @@ async function getProducts(){
         new Map();
 
 
+    /* الكتب */
+
     books.forEach(product => {
 
         map.set(
@@ -1011,6 +1188,8 @@ async function getProducts(){
 
     });
 
+
+    /* منتجات Supabase */
 
     supabaseProducts.forEach(product => {
 
@@ -1040,11 +1219,6 @@ async function getProducts(){
     });
 
 
-    /*
-     مهم:
-     لا نشترط وجود category هنا أيضًا.
-     */
-
     return [...map.values()]
         .filter(product =>
 
@@ -1061,7 +1235,7 @@ async function getProducts(){
    السلة
 ========================================= */
 
-let cart=[];
+let cart = [];
 
 
 try{
@@ -1074,14 +1248,14 @@ try{
 
     if(Array.isArray(saved)){
 
-        cart=saved;
+        cart = saved;
 
     }
 
 }
 catch{
 
-    cart=[];
+    cart = [];
 
 }
 
@@ -1110,7 +1284,7 @@ function addToCart(product){
     if(existing){
 
         existing.quantity =
-        (Number(existing.quantity)||1)+1;
+        (Number(existing.quantity) || 1) + 1;
 
     }
     else{
@@ -1122,7 +1296,7 @@ function addToCart(product){
             title:product.title,
 
             price:
-                Number(product.price)||0,
+                Number(product.price) || 0,
 
             category:
                 product.category || "",
@@ -1168,9 +1342,11 @@ function showToast(message){
     toast.textContent =
         message;
 
+
     toast.classList.add(
         "show"
     );
+
 
     clearTimeout(
         showToast.timer
@@ -1179,10 +1355,12 @@ function showToast(message){
 
     showToast.timer =
     setTimeout(
-        ()=>{
+        () => {
+
             toast.classList.remove(
                 "show"
             );
+
         },
         2200
     );
@@ -1191,12 +1369,153 @@ function showToast(message){
 
 
 /* =========================================
+   البحث والانتقال لنفس الصفحة
+========================================= */
+
+async function performNewSearch(query){
+
+    const value =
+        String(query || "").trim();
+
+
+    if(!value){
+
+        if(
+            categoriesView.style.display !== "none"
+        ){
+
+            categoriesSearchInput.focus();
+
+        }
+        else{
+
+            pageSearchInput.focus();
+
+        }
+
+        return;
+
+    }
+
+
+    searchQuery =
+        value;
+
+    selectedCategory =
+        "";
+
+
+    const newUrl =
+        "categories.html?search=" +
+        encodeURIComponent(
+            value
+        );
+
+
+    window.history.pushState(
+        {},
+        "",
+        newUrl
+    );
+
+
+    await renderSearch(
+        value
+    );
+
+}
+
+
+/* =========================================
+   البحث من صفحة الأقسام
+========================================= */
+
+categoriesSearchForm.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        await performNewSearch(
+            categoriesSearchInput.value
+        );
+
+    }
+);
+
+
+/* =========================================
+   البحث من صفحة النتائج
+========================================= */
+
+pageSearchForm.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        await performNewSearch(
+            pageSearchInput.value
+        );
+
+    }
+);
+
+
+/* =========================================
+   دعم زر الرجوع في المتصفح
+========================================= */
+
+window.addEventListener(
+    "popstate",
+    () => {
+
+        const currentParams =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        selectedCategory =
+            (
+                currentParams.get("category") ||
+                ""
+            ).trim();
+
+
+        searchQuery =
+            (
+                currentParams.get("search") ||
+                ""
+            ).trim();
+
+
+        init();
+
+    }
+);
+
+
+/* =========================================
    عرض الأقسام
 ========================================= */
 
 async function renderCategories(){
 
-    categoriesList.innerHTML=`
+    categoriesView.style.display =
+        "block";
+
+    productsView.style.display =
+        "none";
+
+
+    categoriesSearchInput.value =
+        "";
+
+
+    categoriesList.innerHTML = `
 
         <div class="loading-box">
 
@@ -1211,83 +1530,86 @@ async function renderCategories(){
         await getProducts();
 
 
-    categoriesList.innerHTML="";
+    categoriesList.innerHTML =
+        "";
 
 
-    categories.forEach(category=>{
+    categories.forEach(
+        category => {
 
-        const count =
-        products.filter(product =>
+            const count =
+                products.filter(product =>
 
-            sameCategory(
-                product.category,
-                category.name
-            )
+                    sameCategory(
+                        product.category,
+                        category.name
+                    )
 
-        ).length;
-
-
-        const link =
-        document.createElement(
-            "a"
-        );
+                ).length;
 
 
-        link.className =
-            "category-card";
+            const link =
+                document.createElement(
+                    "a"
+                );
 
 
-        link.href =
-            "categories.html?category=" +
-            encodeURIComponent(
-                category.name
+            link.className =
+                "category-card";
+
+
+            link.href =
+                "categories.html?category=" +
+                encodeURIComponent(
+                    category.name
+                );
+
+
+            link.innerHTML = `
+
+                <div class="category-icon">
+
+                    ${category.icon}
+
+                </div>
+
+                <h3>
+
+                    ${escapeHtml(
+                        category.name
+                    )}
+
+                </h3>
+
+                <p>
+
+                    ${escapeHtml(
+                        category.description
+                    )}
+
+                </p>
+
+                <span class="category-count">
+
+                    ${count} سلعة
+
+                </span>
+
+            `;
+
+
+            categoriesList.appendChild(
+                link
             );
 
-
-        link.innerHTML=`
-
-            <div class="category-icon">
-
-                ${category.icon}
-
-            </div>
-
-            <h3>
-
-                ${escapeHtml(
-                    category.name
-                )}
-
-            </h3>
-
-            <p>
-
-                ${escapeHtml(
-                    category.description
-                )}
-
-            </p>
-
-            <span class="category-count">
-
-                ${count} سلعة
-
-            </span>
-
-        `;
-
-
-        categoriesList.appendChild(
-            link
-        );
-
-    });
+        }
+    );
 
 }
 
 
 /* =========================================
-   النافذة
+   نافذة المنتج
 ========================================= */
 
 const productModal =
@@ -1322,7 +1644,8 @@ function openProductModal(product){
         getProductImages(product);
 
 
-    modalThumbs.innerHTML="";
+    modalThumbs.innerHTML =
+        "";
 
 
     if(images.length){
@@ -1335,12 +1658,12 @@ function openProductModal(product){
 
 
         images.forEach(
-            (image,index)=>{
+            (image,index) => {
 
                 const button =
-                document.createElement(
-                    "button"
-                );
+                    document.createElement(
+                        "button"
+                    );
 
 
                 button.type =
@@ -1350,16 +1673,16 @@ function openProductModal(product){
                 button.className =
                     "modal-thumb" +
                     (
-                        index===0
+                        index === 0
                         ? " active"
                         : ""
                     );
 
 
                 const img =
-                document.createElement(
-                    "img"
-                );
+                    document.createElement(
+                        "img"
+                    );
 
 
                 img.src =
@@ -1367,7 +1690,7 @@ function openProductModal(product){
 
 
                 img.alt =
-                    `صورة ${index+1}`;
+                    `صورة ${index + 1}`;
 
 
                 button.appendChild(
@@ -1377,7 +1700,7 @@ function openProductModal(product){
 
                 button.addEventListener(
                     "click",
-                    ()=>{
+                    () => {
 
                         modalMainImage.src =
                             image;
@@ -1422,12 +1745,14 @@ function openProductModal(product){
     }
 
 
-    modalInfo.innerHTML=`
+    modalInfo.innerHTML = `
 
         <h2>
+
             ${escapeHtml(
                 product.title
             )}
+
         </h2>
 
         ${
@@ -1435,10 +1760,13 @@ function openProductModal(product){
             ?
             `
             <p>
+
                 ✍️
+
                 ${escapeHtml(
                     product.author
                 )}
+
             </p>
             `
             :
@@ -1446,17 +1774,20 @@ function openProductModal(product){
         }
 
         <p>
+
             📂
+
             ${escapeHtml(
                 product.category ||
                 "غير مصنفة"
             )}
+
         </p>
 
         <p class="product-price">
 
             ${Number(
-                product.price||0
+                product.price || 0
             ).toLocaleString("ar-SA")}
 
             ريال
@@ -1468,9 +1799,11 @@ function openProductModal(product){
             ?
             `
             <p>
+
                 ${escapeHtml(
                     product.description
                 )}
+
             </p>
             `
             :
@@ -1483,7 +1816,9 @@ function openProductModal(product){
             id="modal-add-to-cart"
             style="margin-top:15px;"
         >
+
             🛒 أضف إلى السلة
+
         </button>
 
         <a
@@ -1504,7 +1839,9 @@ function openProductModal(product){
                 border-radius:9px;
             "
         >
+
             🧺 الذهاب إلى السلة
+
         </a>
 
     `;
@@ -1518,8 +1855,12 @@ function openProductModal(product){
 
     addButton.addEventListener(
         "click",
-        ()=>{
-            addToCart(product);
+        () => {
+
+            addToCart(
+                product
+            );
+
         }
     );
 
@@ -1548,7 +1889,7 @@ modalClose.addEventListener(
 
 productModal.addEventListener(
     "click",
-    event=>{
+    event => {
 
         if(
             event.target ===
@@ -1565,7 +1906,7 @@ productModal.addEventListener(
 
 document.addEventListener(
     "keydown",
-    event=>{
+    event => {
 
         if(
             event.key ===
@@ -1600,7 +1941,7 @@ function createProductCard(product){
         getMainImage(product);
 
 
-    card.innerHTML=`
+    card.innerHTML = `
 
         <button
             type="button"
@@ -1620,7 +1961,15 @@ function createProductCard(product){
                 `
                 :
                 `
-                <div class="product-image">
+                <div
+                    class="product-image"
+                    style="
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-size:55px;
+                    "
+                >
                     📦
                 </div>
                 `
@@ -1632,9 +1981,11 @@ function createProductCard(product){
         <div class="product-info">
 
             <h3>
+
                 ${escapeHtml(
                     product.title
                 )}
+
             </h3>
 
 
@@ -1643,10 +1994,13 @@ function createProductCard(product){
                 ?
                 `
                 <p>
+
                     ✍️
+
                     ${escapeHtml(
                         product.author
                     )}
+
                 </p>
                 `
                 :
@@ -1669,7 +2023,7 @@ function createProductCard(product){
             <p class="product-price">
 
                 ${Number(
-                    product.price||0
+                    product.price || 0
                 ).toLocaleString("ar-SA")}
 
                 ريال
@@ -1682,9 +2036,11 @@ function createProductCard(product){
                 ?
                 `
                 <p>
+
                     ${escapeHtml(
                         product.description
                     )}
+
                 </p>
                 `
                 :
@@ -1705,7 +2061,9 @@ function createProductCard(product){
             type="button"
             class="add-product-btn"
         >
+
             🛒 أضف إلى السلة
+
         </button>
 
 
@@ -1727,7 +2085,9 @@ function createProductCard(product){
                 margin-top:8px;
             "
         >
+
             🧺 الذهاب إلى السلة
+
         </a>
 
     `;
@@ -1741,10 +2101,12 @@ function createProductCard(product){
 
     imageButton.addEventListener(
         "click",
-        ()=>{
+        () => {
+
             openProductModal(
                 product
             );
+
         }
     );
 
@@ -1763,7 +2125,7 @@ function createProductCard(product){
 
     addButton.addEventListener(
         "click",
-        ()=>{
+        () => {
 
             addToCart(
                 product
@@ -1799,13 +2161,26 @@ async function renderCategory(){
         "block";
 
 
-    const currentCategory =
-        categories.find(category =>
+    pageSearchInput.value =
+        "";
 
-            sameCategory(
-                category.name,
-                selectedCategory
-            )
+
+    backLink.href =
+        "categories.html";
+
+
+    backLink.textContent =
+        "← العودة للأقسام";
+
+
+    const currentCategory =
+        categories.find(
+            category =>
+
+                sameCategory(
+                    category.name,
+                    selectedCategory
+                )
 
         );
 
@@ -1822,7 +2197,7 @@ async function renderCategory(){
         `جميع السلع المتاحة في قسم ${selectedCategory}.`;
 
 
-    productsContainer.innerHTML=`
+    productsContainer.innerHTML = `
 
         <div class="loading-box">
 
@@ -1838,19 +2213,20 @@ async function renderCategory(){
 
 
     const products =
-        allProducts.filter(product =>
+        allProducts.filter(
+            product =>
 
-            sameCategory(
-                product.category,
-                selectedCategory
-            )
+                sameCategory(
+                    product.category,
+                    selectedCategory
+                )
 
         );
 
 
     if(!products.length){
 
-        productsContainer.innerHTML=`
+        productsContainer.innerHTML = `
 
             <div class="empty-box">
 
@@ -1859,11 +2235,15 @@ async function renderCategory(){
                 </div>
 
                 <h3>
+
                     لا توجد سلع في هذا القسم حاليًا
+
                 </h3>
 
                 <p>
+
                     ستظهر السلع هنا تلقائيًا.
+
                 </p>
 
             </div>
@@ -1885,15 +2265,17 @@ async function renderCategory(){
         "products-grid";
 
 
-    products.forEach(product=>{
+    products.forEach(
+        product => {
 
-        grid.appendChild(
-            createProductCard(
-                product
-            )
-        );
+            grid.appendChild(
+                createProductCard(
+                    product
+                )
+            );
 
-    });
+        }
+    );
 
 
     productsContainer.appendChild(
@@ -1907,13 +2289,19 @@ async function renderCategory(){
    عرض نتائج البحث
 ========================================= */
 
-async function renderSearch(){
+async function renderSearch(
+    query = searchQuery
+){
 
     categoriesView.style.display =
         "none";
 
     productsView.style.display =
         "block";
+
+
+    pageSearchInput.value =
+        query;
 
 
     backLink.href =
@@ -1934,14 +2322,14 @@ async function renderSearch(){
 
         <span class="search-result-note">
 
-            «${escapeHtml(searchQuery)}»
+            «${escapeHtml(query)}»
 
         </span>
 
     `;
 
 
-    productsContainer.innerHTML=`
+    productsContainer.innerHTML = `
 
         <div class="loading-box">
 
@@ -1957,17 +2345,20 @@ async function renderSearch(){
 
 
     const products =
-        allProducts.filter(product =>
-            matchesSearch(
-                product,
-                searchQuery
-            )
+        allProducts.filter(
+            product =>
+
+                matchesSearch(
+                    product,
+                    query
+                )
+
         );
 
 
     if(!products.length){
 
-        productsContainer.innerHTML=`
+        productsContainer.innerHTML = `
 
             <div class="empty-box">
 
@@ -1976,18 +2367,28 @@ async function renderSearch(){
                 </div>
 
                 <h3>
+
                     لم نجد نتائج مطابقة
+
                 </h3>
 
                 <p>
+
                     لم نجد سلعًا تطابق بحثك عن
-                    «${escapeHtml(searchQuery)}».
-                    جرّب كلمة أخرى.
+
+                    «${escapeHtml(query)}».
+
+                    <br>
+
+                    جرّب كلمة أخرى من مربع البحث أعلاه.
+
                 </p>
 
             </div>
 
         `;
+
+        pageSearchInput.focus();
 
         return;
 
@@ -2004,15 +2405,17 @@ async function renderSearch(){
         "products-grid";
 
 
-    products.forEach(product=>{
+    products.forEach(
+        product => {
 
-        grid.appendChild(
-            createProductCard(
-                product
-            )
-        );
+            grid.appendChild(
+                createProductCard(
+                    product
+                )
+            );
 
-    });
+        }
+    );
 
 
     productsContainer.appendChild(
@@ -2028,21 +2431,44 @@ async function renderSearch(){
 
 async function init(){
 
+    const currentParams =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    selectedCategory =
+        (
+            currentParams.get("category") ||
+            ""
+        ).trim();
+
+
+    searchQuery =
+        (
+            currentParams.get("search") ||
+            ""
+        ).trim();
+
+
     /*
-       البحث له الأولوية.
-       إذا كان الرابط:
-       categories.html?search=...
-       نعرض نتائج البحث.
+       البحث له الأولوية
     */
 
     if(searchQuery){
 
-        await renderSearch();
+        await renderSearch(
+            searchQuery
+        );
 
         return;
 
     }
 
+
+    /*
+       القسم
+    */
 
     if(selectedCategory){
 
@@ -2052,6 +2478,10 @@ async function init(){
 
     }
 
+
+    /*
+       الصفحة الرئيسية للأقسام
+    */
 
     categoriesView.style.display =
         "block";
