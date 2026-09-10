@@ -5,19 +5,14 @@
 
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <meta
     name="description"
     content="أقسام وسلع منصة لَحْقها"
 >
 
-<title>
-    الأقسام | لَحْقها 🛍️
-</title>
+<title>الأقسام | لَحْقها 🛍️</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -63,120 +58,62 @@
 
 
 /* =========================================
-   الأقسام والمنتجات
+   الأقسام
 ========================================= */
 
-.categories-home,
-.products-grid{
+.categories-home{
+    display:block;
+}
+
+.category-section{
+    margin-bottom:40px;
+}
+
+.category-section-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.category-section-title{
+    margin:0;
+    color:#1e3a5f;
+    font-size:23px;
+}
+
+.category-section-description{
+    margin:6px 0 0;
+    color:#777;
+    font-size:14px;
+}
+
+.category-view-all{
+    flex-shrink:0;
+    padding:9px 14px;
+    border-radius:9px;
+    background:#1e3a5f;
+    color:#fff;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.category-view-all:hover{
+    opacity:.9;
+}
+
+
+/* =========================================
+   شبكة المنتجات
+========================================= */
+
+.products-grid,
+.category-products-preview{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:20px;
-}
-
-.category-card{
-    display:block;
-    text-decoration:none;
-    color:inherit;
-    background:#fff;
-    border-radius:18px;
-    padding:25px 20px;
-    text-align:center;
-    border:1px solid #e5e5e5;
-    box-shadow:0 5px 20px rgba(0,0,0,.07);
-    transition:.2s;
-}
-
-.category-card:hover,
-.product-card:hover{
-    transform:translateY(-4px);
-}
-
-.category-icon{
-    font-size:48px;
-    margin-bottom:10px;
-}
-
-.category-card h3{
-    margin:8px 0;
-    color:#1e3a5f;
-}
-
-.category-card p{
-    margin:0;
-    color:#777;
-}
-
-.category-count{
-    display:inline-block;
-    margin-top:12px;
-    padding:5px 12px;
-    border-radius:20px;
-    background:#eef7ef;
-    color:#267a35;
-    font-size:13px;
-    font-weight:bold;
-}
-
-
-/* =========================================
-   زر العودة
-========================================= */
-
-.back-link{
-    display:inline-block;
-    margin-bottom:20px;
-    padding:9px 15px;
-    background:#fff;
-    border:1px solid #ddd;
-    border-radius:9px;
-    color:#1e3a5f;
-    text-decoration:none;
-}
-
-
-/* =========================================
-   شريط البحث داخل الصفحة
-========================================= */
-
-.page-search{
-    display:flex;
-    gap:10px;
-    width:min(750px,100%);
-    margin:0 auto 25px;
-}
-
-.page-search input{
-    flex:1;
-    min-width:0;
-    padding:14px 16px;
-    border:1px solid #ddd;
-    border-radius:12px;
-    outline:none;
-    font-family:inherit;
-    font-size:16px;
-    background:#fff;
-    box-sizing:border-box;
-}
-
-.page-search input:focus{
-    border-color:#1e3a5f;
-}
-
-.page-search button{
-    border:0;
-    padding:0 22px;
-    border-radius:12px;
-    background:#1e3a5f;
-    color:#fff;
-    font-family:inherit;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-    white-space:nowrap;
-}
-
-.page-search button:hover{
-    opacity:.9;
 }
 
 
@@ -191,6 +128,10 @@
     border:1px solid #e5e5e5;
     box-shadow:0 5px 20px rgba(0,0,0,.08);
     transition:.2s;
+}
+
+.product-card:hover{
+    transform:translateY(-4px);
 }
 
 .product-image-button{
@@ -247,6 +188,71 @@
     cursor:pointer;
 }
 
+.add-product-btn:hover{
+    opacity:.9;
+}
+
+
+/* =========================================
+   زر العودة
+========================================= */
+
+.back-link{
+    display:inline-block;
+    margin-bottom:20px;
+    padding:9px 15px;
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:9px;
+    color:#1e3a5f;
+    text-decoration:none;
+}
+
+
+/* =========================================
+   البحث
+========================================= */
+
+.page-search{
+    display:flex;
+    gap:10px;
+    width:min(750px,100%);
+    margin:0 auto 25px;
+}
+
+.page-search input{
+    flex:1;
+    min-width:0;
+    padding:14px 16px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    outline:none;
+    font-family:inherit;
+    font-size:16px;
+    background:#fff;
+    box-sizing:border-box;
+}
+
+.page-search input:focus{
+    border-color:#1e3a5f;
+}
+
+.page-search button{
+    border:0;
+    padding:0 22px;
+    border-radius:12px;
+    background:#1e3a5f;
+    color:#fff;
+    font-family:inherit;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.page-search button:hover{
+    opacity:.9;
+}
+
 
 /* =========================================
    الصناديق
@@ -254,7 +260,6 @@
 
 .empty-box,
 .loading-box{
-    grid-column:1/-1;
     background:#fff;
     border-radius:16px;
     padding:45px 20px;
@@ -403,19 +408,26 @@
 
 @media(max-width:900px){
 
-    .categories-home,
-    .products-grid{
+    .products-grid,
+    .category-products-preview{
         grid-template-columns:repeat(2,1fr);
     }
 
 }
 
-
 @media(max-width:600px){
 
-    .categories-home,
-    .products-grid{
+    .products-grid,
+    .category-products-preview{
         grid-template-columns:1fr;
+    }
+
+    .category-section-header{
+        align-items:flex-start;
+    }
+
+    .category-section-title{
+        font-size:20px;
     }
 
     .page-search{
@@ -439,42 +451,25 @@
 
     <div class="logo">
 
-        <h1>
-            🛍️ لَحْقها
-        </h1>
+        <h1>🛍️ لَحْقها</h1>
 
-        <p>
-            شفتها؟ لَحْقها قبل تروح!
-        </p>
+        <p>شفتها؟ لَحْقها قبل تروح!</p>
 
     </div>
 
-
     <nav>
 
-        <a href="index.html">
-            الرئيسية
-        </a>
+        <a href="index.html">الرئيسية</a>
 
-        <a href="categories.html">
-            الأقسام
-        </a>
+        <a href="categories.html">الأقسام</a>
 
-        <a href="about.html">
-            من نحن
-        </a>
+        <a href="about.html">من نحن</a>
 
-        <a href="contact.html">
-            اتصل بنا
-        </a>
+        <a href="contact.html">اتصل بنا</a>
 
-        <a href="cart.html">
-            🛒 السلة
-        </a>
+        <a href="cart.html">🛒 السلة</a>
 
-        <a href="seller/offer.html">
-            📦 اعرض سلعتك
-        </a>
+        <a href="seller/offer.html">📦 اعرض سلعتك</a>
 
     </nav>
 
@@ -492,18 +487,14 @@
 
     <div class="page-intro">
 
-        <h2>
-            🛍️ اختر القسم
-        </h2>
+        <h2>🛍️ الأقسام والسلع</h2>
 
         <p>
-            تصفح السلع المتاحة في القسم الذي تبحث عنه.
+            تصفح السلع مباشرة حسب القسم.
         </p>
 
     </div>
 
-
-    <!-- البحث في صفحة الأقسام -->
 
     <form
         class="page-search"
@@ -563,8 +554,6 @@
     </div>
 
 
-    <!-- البحث داخل نفس صفحة النتائج -->
-
     <form
         class="page-search"
         id="page-search-form"
@@ -586,9 +575,7 @@
     </form>
 
 
-    <div
-        id="category-products"
-    ></div>
+    <div id="category-products"></div>
 
 </section>
 
@@ -598,9 +585,7 @@
 
 <footer>
 
-    <p>
-        © 2026 لَحْقها 🛍️
-    </p>
+    <p>© 2026 لَحْقها 🛍️</p>
 
 </footer>
 
@@ -667,7 +652,6 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
 "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-";
-
 
 const supabaseClient =
 supabase.createClient(
@@ -742,10 +726,8 @@ new URLSearchParams(
     window.location.search
 );
 
-
 let selectedCategory =
 (params.get("category") || "").trim();
-
 
 let searchQuery =
 (params.get("search") || "").trim();
@@ -795,9 +777,6 @@ document.getElementById(
     "toast"
 );
 
-
-/* البحث في صفحة الأقسام */
-
 const categoriesSearchForm =
 document.getElementById(
     "page-search-form-categories"
@@ -807,9 +786,6 @@ const categoriesSearchInput =
 document.getElementById(
     "page-search-input-categories"
 );
-
-
-/* البحث داخل النتائج */
 
 const pageSearchForm =
 document.getElementById(
@@ -853,10 +829,8 @@ function imageUrl(path){
         return "";
     }
 
-
-    let value =
+    const value =
         String(path).trim();
-
 
     if(
         /^https?:\/\//i.test(value) ||
@@ -867,7 +841,6 @@ function imageUrl(path){
         return value;
 
     }
-
 
     return encodeURI(
         value.replace(
@@ -883,7 +856,6 @@ function getProductImages(product){
 
     let result = [];
 
-
     if(product && product.image){
 
         result.push(
@@ -891,7 +863,6 @@ function getProductImages(product){
         );
 
     }
-
 
     if(
         product &&
@@ -916,7 +887,6 @@ function getProductImages(product){
         );
 
     }
-
 
     return [
         ...new Set(
@@ -965,7 +935,7 @@ function sameCategory(a,b){
 
 
 /* =========================================
-   تطبيع البحث
+   البحث
 ========================================= */
 
 function normalizeSearch(value){
@@ -978,38 +948,29 @@ function normalizeSearch(value){
 }
 
 
-/* =========================================
-   مطابقة البحث
-========================================= */
-
 function matchesSearch(product, query){
 
     const normalizedQuery =
         normalizeSearch(query);
 
-
     if(!normalizedQuery){
-        return false;
-    }
 
+        return false;
+
+    }
 
     const searchableText = [
 
         product.title,
-
         product.name,
-
         product.description,
-
         product.category,
-
         product.author
 
     ]
     .filter(Boolean)
     .map(normalizeSearch)
     .join(" ");
-
 
     return searchableText.includes(
         normalizedQuery
@@ -1034,7 +995,6 @@ async function loadBooks(){
             }
         );
 
-
         if(!response.ok){
 
             throw new Error(
@@ -1043,27 +1003,23 @@ async function loadBooks(){
 
         }
 
-
         const data =
         await response.json();
 
-
         if(!Array.isArray(data)){
+
             return [];
+
         }
 
-
         return data
-
             .filter(product =>
                 product &&
                 product.available !== false
             )
-
             .map(product => ({
 
                 ...product,
-
                 source:"json"
 
             }));
@@ -1075,7 +1031,6 @@ async function loadBooks(){
             "خطأ books.json:",
             error
         );
-
 
         return [];
 
@@ -1097,23 +1052,15 @@ async function loadSupabaseProducts(){
             error
         } =
         await supabaseClient
-
             .from("products")
-
             .select("*")
-
-            .eq(
-                "available",
-                true
-            )
-
+            .eq("available",true)
             .order(
                 "id",
                 {
                     ascending:false
                 }
             );
-
 
         if(error){
 
@@ -1126,18 +1073,14 @@ async function loadSupabaseProducts(){
 
         }
 
-
         return (data || [])
-
             .filter(product =>
                 product &&
                 product.title
             )
-
             .map(product => ({
 
                 ...product,
-
                 source:"supabase"
 
             }));
@@ -1172,12 +1115,8 @@ async function getProducts(){
         loadSupabaseProducts()
     ]);
 
-
     const map =
         new Map();
-
-
-    /* الكتب */
 
     books.forEach(product => {
 
@@ -1187,9 +1126,6 @@ async function getProducts(){
         );
 
     });
-
-
-    /* منتجات Supabase */
 
     supabaseProducts.forEach(product => {
 
@@ -1201,7 +1137,6 @@ async function getProducts(){
 
         );
 
-
         if(same){
 
             map.delete(
@@ -1210,14 +1145,12 @@ async function getProducts(){
 
         }
 
-
         map.set(
             "supabase-" + product.id,
             product
         );
 
     });
-
 
     return [...map.values()]
         .filter(product =>
@@ -1244,7 +1177,6 @@ try{
         sessionStorage.getItem("cart") || "[]"
     );
 
-
     if(Array.isArray(saved)){
 
         cart = saved;
@@ -1265,7 +1197,9 @@ function saveCart(){
 
         if(!cart.length){
 
-            sessionStorage.removeItem("cart");
+            sessionStorage.removeItem(
+                "cart"
+            );
 
             return;
 
@@ -1302,7 +1236,6 @@ function addToCart(product){
         String(product.id)
 
     );
-
 
     if(existing){
 
@@ -1345,9 +1278,7 @@ function addToCart(product){
 
     }
 
-
     saveCart();
-
 
     showToast(
         `تمت إضافة «${product.title}» إلى السلة`
@@ -1365,16 +1296,13 @@ function showToast(message){
     toast.textContent =
         message;
 
-
     toast.classList.add(
         "show"
     );
 
-
     clearTimeout(
         showToast.timer
     );
-
 
     showToast.timer =
     setTimeout(
@@ -1392,7 +1320,7 @@ function showToast(message){
 
 
 /* =========================================
-   البحث والانتقال لنفس الصفحة
+   البحث الجديد
 ========================================= */
 
 async function performNewSearch(query){
@@ -1400,11 +1328,11 @@ async function performNewSearch(query){
     const value =
         String(query || "").trim();
 
-
     if(!value){
 
         if(
-            categoriesView.style.display !== "none"
+            categoriesView.style.display !==
+            "none"
         ){
 
             categoriesSearchInput.focus();
@@ -1420,27 +1348,21 @@ async function performNewSearch(query){
 
     }
 
-
     searchQuery =
         value;
 
     selectedCategory =
         "";
 
-
     const newUrl =
         "categories.html?search=" +
-        encodeURIComponent(
-            value
-        );
-
+        encodeURIComponent(value);
 
     window.history.pushState(
         {},
         "",
         newUrl
     );
-
 
     await renderSearch(
         value
@@ -1449,16 +1371,11 @@ async function performNewSearch(query){
 }
 
 
-/* =========================================
-   البحث من صفحة الأقسام
-========================================= */
-
 categoriesSearchForm.addEventListener(
     "submit",
     async event => {
 
         event.preventDefault();
-
 
         await performNewSearch(
             categoriesSearchInput.value
@@ -1468,16 +1385,11 @@ categoriesSearchForm.addEventListener(
 );
 
 
-/* =========================================
-   البحث من صفحة النتائج
-========================================= */
-
 pageSearchForm.addEventListener(
     "submit",
     async event => {
 
         event.preventDefault();
-
 
         await performNewSearch(
             pageSearchInput.value
@@ -1488,7 +1400,7 @@ pageSearchForm.addEventListener(
 
 
 /* =========================================
-   دعم زر الرجوع في المتصفح
+   زر الرجوع في المتصفح
 ========================================= */
 
 window.addEventListener(
@@ -1500,13 +1412,11 @@ window.addEventListener(
                 window.location.search
             );
 
-
         selectedCategory =
             (
                 currentParams.get("category") ||
                 ""
             ).trim();
-
 
         searchQuery =
             (
@@ -1514,121 +1424,10 @@ window.addEventListener(
                 ""
             ).trim();
 
-
         init();
 
     }
 );
-
-
-/* =========================================
-   عرض الأقسام
-========================================= */
-
-async function renderCategories(){
-
-    categoriesView.style.display =
-        "block";
-
-    productsView.style.display =
-        "none";
-
-
-    categoriesSearchInput.value =
-        "";
-
-
-    categoriesList.innerHTML = `
-
-        <div class="loading-box">
-
-            ⏳ جارٍ تحميل المنتجات...
-
-        </div>
-
-    `;
-
-
-    const products =
-        await getProducts();
-
-
-    categoriesList.innerHTML =
-        "";
-
-
-    categories.forEach(
-        category => {
-
-            const count =
-                products.filter(product =>
-
-                    sameCategory(
-                        product.category,
-                        category.name
-                    )
-
-                ).length;
-
-
-            const link =
-                document.createElement(
-                    "a"
-                );
-
-
-            link.className =
-                "category-card";
-
-
-            link.href =
-                "categories.html?category=" +
-                encodeURIComponent(
-                    category.name
-                );
-
-
-            link.innerHTML = `
-
-                <div class="category-icon">
-
-                    ${category.icon}
-
-                </div>
-
-                <h3>
-
-                    ${escapeHtml(
-                        category.name
-                    )}
-
-                </h3>
-
-                <p>
-
-                    ${escapeHtml(
-                        category.description
-                    )}
-
-                </p>
-
-                <span class="category-count">
-
-                    ${count} سلعة
-
-                </span>
-
-            `;
-
-
-            categoriesList.appendChild(
-                link
-            );
-
-        }
-    );
-
-}
 
 
 /* =========================================
@@ -1666,10 +1465,8 @@ function openProductModal(product){
     const images =
         getProductImages(product);
 
-
     modalThumbs.innerHTML =
         "";
-
 
     if(images.length){
 
@@ -1679,7 +1476,6 @@ function openProductModal(product){
         modalMainImage.alt =
             product.title;
 
-
         images.forEach(
             (image,index) => {
 
@@ -1688,10 +1484,8 @@ function openProductModal(product){
                         "button"
                     );
 
-
                 button.type =
                     "button";
-
 
                 button.className =
                     "modal-thumb" +
@@ -1701,25 +1495,20 @@ function openProductModal(product){
                         : ""
                     );
 
-
                 const img =
                     document.createElement(
                         "img"
                     );
 
-
                 img.src =
                     image;
-
 
                 img.alt =
                     `صورة ${index + 1}`;
 
-
                 button.appendChild(
                     img
                 );
-
 
                 button.addEventListener(
                     "click",
@@ -1727,7 +1516,6 @@ function openProductModal(product){
 
                         modalMainImage.src =
                             image;
-
 
                         document
                             .querySelectorAll(
@@ -1740,14 +1528,12 @@ function openProductModal(product){
                                     )
                             );
 
-
                         button.classList.add(
                             "active"
                         );
 
                     }
                 );
-
 
                 modalThumbs.appendChild(
                     button
@@ -1771,11 +1557,7 @@ function openProductModal(product){
     modalInfo.innerHTML = `
 
         <h2>
-
-            ${escapeHtml(
-                product.title
-            )}
-
+            ${escapeHtml(product.title)}
         </h2>
 
         ${
@@ -1783,13 +1565,8 @@ function openProductModal(product){
             ?
             `
             <p>
-
                 ✍️
-
-                ${escapeHtml(
-                    product.author
-                )}
-
+                ${escapeHtml(product.author)}
             </p>
             `
             :
@@ -1797,24 +1574,18 @@ function openProductModal(product){
         }
 
         <p>
-
             📂
-
             ${escapeHtml(
                 product.category ||
                 "غير مصنفة"
             )}
-
         </p>
 
         <p class="product-price">
-
             ${Number(
                 product.price || 0
             ).toLocaleString("ar-SA")}
-
             ريال
-
         </p>
 
         ${
@@ -1822,11 +1593,9 @@ function openProductModal(product){
             ?
             `
             <p>
-
                 ${escapeHtml(
                     product.description
                 )}
-
             </p>
             `
             :
@@ -1839,9 +1608,7 @@ function openProductModal(product){
             id="modal-add-to-cart"
             style="margin-top:15px;"
         >
-
             🛒 أضف إلى السلة
-
         </button>
 
         <a
@@ -1862,9 +1629,7 @@ function openProductModal(product){
                 border-radius:9px;
             "
         >
-
             🧺 الذهاب إلى السلة
-
         </a>
 
     `;
@@ -1874,7 +1639,6 @@ function openProductModal(product){
         document.getElementById(
             "modal-add-to-cart"
         );
-
 
     addButton.addEventListener(
         "click",
@@ -1945,7 +1709,7 @@ document.addEventListener(
 
 
 /* =========================================
-   إنشاء بطاقة المنتج
+   بطاقة المنتج
 ========================================= */
 
 function createProductCard(product){
@@ -1955,14 +1719,11 @@ function createProductCard(product){
             "article"
         );
 
-
     card.className =
         "product-card";
 
-
     const image =
         getMainImage(product);
-
 
     card.innerHTML = `
 
@@ -2004,11 +1765,7 @@ function createProductCard(product){
         <div class="product-info">
 
             <h3>
-
-                ${escapeHtml(
-                    product.title
-                )}
-
+                ${escapeHtml(product.title)}
             </h3>
 
 
@@ -2017,13 +1774,8 @@ function createProductCard(product){
                 ?
                 `
                 <p>
-
                     ✍️
-
-                    ${escapeHtml(
-                        product.author
-                    )}
-
+                    ${escapeHtml(product.author)}
                 </p>
                 `
                 :
@@ -2032,14 +1784,11 @@ function createProductCard(product){
 
 
             <p>
-
                 📂
-
                 ${escapeHtml(
                     product.category ||
                     "غير مصنفة"
                 )}
-
             </p>
 
 
@@ -2059,11 +1808,9 @@ function createProductCard(product){
                 ?
                 `
                 <p>
-
                     ${escapeHtml(
                         product.description
                     )}
-
                 </p>
                 `
                 :
@@ -2072,9 +1819,7 @@ function createProductCard(product){
 
 
             <p class="available">
-
                 🟢 متوفر
-
             </p>
 
         </div>
@@ -2084,9 +1829,7 @@ function createProductCard(product){
             type="button"
             class="add-product-btn"
         >
-
             🛒 أضف إلى السلة
-
         </button>
 
 
@@ -2108,9 +1851,7 @@ function createProductCard(product){
                 margin-top:8px;
             "
         >
-
             🧺 الذهاب إلى السلة
-
         </a>
 
     `;
@@ -2120,7 +1861,6 @@ function createProductCard(product){
         card.querySelector(
             ".product-image-button"
         );
-
 
     imageButton.addEventListener(
         "click",
@@ -2139,7 +1879,6 @@ function createProductCard(product){
             ".add-product-btn"
         );
 
-
     const goToCart =
         card.querySelector(
             ".go-to-cart-btn"
@@ -2153,7 +1892,6 @@ function createProductCard(product){
             addToCart(
                 product
             );
-
 
             if(goToCart){
 
@@ -2172,6 +1910,198 @@ function createProductCard(product){
 
 
 /* =========================================
+   عرض الأقسام مع المنتجات مباشرة
+========================================= */
+
+async function renderCategories(){
+
+    categoriesView.style.display =
+        "block";
+
+    productsView.style.display =
+        "none";
+
+    categoriesSearchInput.value =
+        "";
+
+    categoriesList.innerHTML = `
+
+        <div class="loading-box">
+
+            ⏳ جارٍ تحميل الأقسام والسلع...
+
+        </div>
+
+    `;
+
+
+    const products =
+        await getProducts();
+
+
+    categoriesList.innerHTML =
+        "";
+
+
+    let visibleCategories =
+        0;
+
+
+    categories.forEach(
+        category => {
+
+            const categoryProducts =
+                products.filter(product =>
+
+                    sameCategory(
+                        product.category,
+                        category.name
+                    )
+
+                );
+
+
+            if(!categoryProducts.length){
+
+                return;
+
+            }
+
+
+            visibleCategories++;
+
+
+            const previewProducts =
+                categoryProducts.slice(0,3);
+
+
+            const section =
+                document.createElement(
+                    "section"
+                );
+
+            section.className =
+                "category-section";
+
+
+            const header =
+                document.createElement(
+                    "div"
+                );
+
+            header.className =
+                "category-section-header";
+
+
+            header.innerHTML = `
+
+                <div>
+
+                    <h2 class="category-section-title">
+
+                        ${category.icon}
+
+                        ${escapeHtml(
+                            category.name
+                        )}
+
+                    </h2>
+
+                    <p class="category-section-description">
+
+                        ${escapeHtml(
+                            category.description
+                        )}
+
+                        ·
+
+                        ${categoryProducts.length}
+
+                        سلعة
+
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="categories.html?category=${encodeURIComponent(category.name)}"
+                    class="category-view-all"
+                >
+                    عرض الكل ←
+                </a>
+
+            `;
+
+
+            section.appendChild(
+                header
+            );
+
+
+            const grid =
+                document.createElement(
+                    "div"
+                );
+
+            grid.className =
+                "category-products-preview";
+
+
+            previewProducts.forEach(
+                product => {
+
+                    grid.appendChild(
+                        createProductCard(
+                            product
+                        )
+                    );
+
+                }
+            );
+
+
+            section.appendChild(
+                grid
+            );
+
+
+            categoriesList.appendChild(
+                section
+            );
+
+        }
+    );
+
+
+    if(!visibleCategories){
+
+        categoriesList.innerHTML = `
+
+            <div class="empty-box">
+
+                <div class="empty-icon">
+                    📭
+                </div>
+
+                <h3>
+                    لا توجد سلع متاحة حاليًا
+                </h3>
+
+                <p>
+                    ستظهر السلع هنا تلقائيًا عند إضافتها.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================
    عرض منتجات القسم
 ========================================= */
 
@@ -2183,14 +2113,11 @@ async function renderCategory(){
     productsView.style.display =
         "block";
 
-
     pageSearchInput.value =
         "";
 
-
     backLink.href =
         "categories.html";
-
 
     backLink.textContent =
         "← العودة للأقسام";
@@ -2223,9 +2150,7 @@ async function renderCategory(){
     productsContainer.innerHTML = `
 
         <div class="loading-box">
-
             ⏳ جارٍ تحميل السلع...
-
         </div>
 
     `;
@@ -2258,15 +2183,11 @@ async function renderCategory(){
                 </div>
 
                 <h3>
-
                     لا توجد سلع في هذا القسم حاليًا
-
                 </h3>
 
                 <p>
-
                     ستظهر السلع هنا تلقائيًا.
-
                 </p>
 
             </div>
@@ -2282,7 +2203,6 @@ async function renderCategory(){
         document.createElement(
             "div"
         );
-
 
     grid.className =
         "products-grid";
@@ -2322,22 +2242,17 @@ async function renderSearch(
     productsView.style.display =
         "block";
 
-
     pageSearchInput.value =
         query;
-
 
     backLink.href =
         "index.html";
 
-
     backLink.textContent =
         "← العودة للرئيسية";
 
-
     categoryTitle.textContent =
         "🔍 نتائج البحث";
-
 
     categorySubtitle.innerHTML = `
 
@@ -2390,9 +2305,7 @@ async function renderSearch(
                 </div>
 
                 <h3>
-
                     لم نجد نتائج مطابقة
-
                 </h3>
 
                 <p>
@@ -2423,7 +2336,6 @@ async function renderSearch(
             "div"
         );
 
-
     grid.className =
         "products-grid";
 
@@ -2434,9 +2346,9 @@ async function renderSearch(
             grid.appendChild(
                 createProductCard(
                     product
-                )
-            );
+                );
 
+            }
         }
     );
 
@@ -2474,10 +2386,6 @@ async function init(){
         ).trim();
 
 
-    /*
-       البحث له الأولوية
-    */
-
     if(searchQuery){
 
         await renderSearch(
@@ -2489,10 +2397,6 @@ async function init(){
     }
 
 
-    /*
-       القسم
-    */
-
     if(selectedCategory){
 
         await renderCategory();
@@ -2500,17 +2404,6 @@ async function init(){
         return;
 
     }
-
-
-    /*
-       الصفحة الرئيسية للأقسام
-    */
-
-    categoriesView.style.display =
-        "block";
-
-    productsView.style.display =
-        "none";
 
 
     await renderCategories();
