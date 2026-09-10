@@ -1,7 +1,7 @@
 ```html
 <!DOCTYPE html>
-
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -121,6 +121,51 @@
       margin-top: 5px;
     }
 
+    /* ==========================================
+       صندوق حساب العمولة
+       ========================================== */
+
+    .price-summary {
+      display: none;
+      margin-top: 12px;
+      padding: 15px;
+      border-radius: 10px;
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      line-height: 1.9;
+    }
+
+    .price-summary.show {
+      display: block;
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 5px 0;
+    }
+
+    .price-row.total {
+      margin-top: 8px;
+      padding-top: 10px;
+      border-top: 1px solid #ddd;
+      font-weight: bold;
+      font-size: 17px;
+    }
+
+    .price-value {
+      font-weight: bold;
+    }
+
+    .commission-value {
+      color: #c5221f;
+    }
+
+    .seller-value {
+      color: #137333;
+    }
+
     .images-box {
       border: 2px dashed #ccc;
       padding: 18px;
@@ -190,25 +235,32 @@
       cursor: not-allowed;
     }
 
+    /* ==========================================
+       الرسائل
+       ========================================== */
+
     .message {
       display: none;
       margin-top: 18px;
-      padding: 14px;
+      padding: 16px;
       border-radius: 9px;
       text-align: center;
       line-height: 1.7;
+      font-weight: bold;
     }
 
     .message.success {
       display: block;
       background: #e9f8ed;
       color: #137333;
+      border: 1px solid #b7dfc1;
     }
 
     .message.error {
       display: block;
       background: #fff0f0;
       color: #c5221f;
+      border: 1px solid #f0b8b8;
     }
 
     @media (max-width: 600px) {
@@ -223,9 +275,12 @@
       header h1 {
         font-size: 22px;
       }
+
+      .price-row {
+        font-size: 14px;
+      }
     }
   </style>
-
 </head>
 
 <body>
@@ -252,7 +307,10 @@
 
         <!-- اسم البائع -->
         <div class="field">
-          <label for="seller_name">اسم البائع *</label>
+
+          <label for="seller_name">
+            اسم البائع *
+          </label>
 
           <input
             id="seller_name"
@@ -270,12 +328,16 @@
             id="seller_name_error"
             class="field-error"
           ></small>
+
         </div>
 
 
         <!-- البريد الإلكتروني -->
         <div class="field">
-          <label for="seller_email">البريد الإلكتروني *</label>
+
+          <label for="seller_email">
+            البريد الإلكتروني *
+          </label>
 
           <input
             id="seller_email"
@@ -298,12 +360,16 @@
           <small class="field-hint">
             يجب إدخال بريد إلكتروني صحيح.
           </small>
+
         </div>
 
 
         <!-- رقم الجوال -->
         <div class="field">
-          <label for="phone">رقم الجوال *</label>
+
+          <label for="phone">
+            رقم الجوال *
+          </label>
 
           <input
             id="phone"
@@ -324,12 +390,16 @@
           <small class="field-hint">
             مثال: 05xxxxxxxx أو +9665xxxxxxxx
           </small>
+
         </div>
 
 
         <!-- المدينة -->
         <div class="field">
-          <label for="city">المدينة *</label>
+
+          <label for="city">
+            المدينة *
+          </label>
 
           <input
             id="city"
@@ -347,12 +417,16 @@
             id="city_error"
             class="field-error"
           ></small>
+
         </div>
 
 
         <!-- التصنيف -->
         <div class="field">
-          <label for="category">التصنيف *</label>
+
+          <label for="category">
+            التصنيف *
+          </label>
 
           <select
             id="category"
@@ -375,12 +449,16 @@
             id="category_error"
             class="field-error"
           ></small>
+
         </div>
 
 
         <!-- اسم المنتج -->
         <div class="field">
-          <label for="product_title">اسم المنتج *</label>
+
+          <label for="product_title">
+            اسم المنتج *
+          </label>
 
           <input
             id="product_title"
@@ -397,12 +475,16 @@
             id="product_title_error"
             class="field-error"
           ></small>
+
         </div>
 
 
         <!-- السعر -->
         <div class="field">
-          <label for="price">السعر بالريال *</label>
+
+          <label for="price">
+            السعر بالريال *
+          </label>
 
           <input
             id="price"
@@ -419,12 +501,72 @@
             id="price_error"
             class="field-error"
           ></small>
+
+
+          <!-- ملخص السعر -->
+          <div
+            id="priceSummary"
+            class="price-summary"
+          >
+
+            <div class="price-row">
+
+              <span>
+                سعر البيع
+              </span>
+
+              <span
+                id="salePriceDisplay"
+                class="price-value"
+              >
+                0.00 ريال
+              </span>
+
+            </div>
+
+
+            <div class="price-row">
+
+              <span>
+                عمولة الموقع (15%)
+              </span>
+
+              <span
+                id="commissionDisplay"
+                class="price-value commission-value"
+              >
+                0.00 ريال
+              </span>
+
+            </div>
+
+
+            <div class="price-row total">
+
+              <span>
+                المبلغ الذي سيحصل عليه البائع
+              </span>
+
+              <span
+                id="sellerAmountDisplay"
+                class="price-value seller-value"
+              >
+                0.00 ريال
+              </span>
+
+            </div>
+
+          </div>
+
         </div>
 
 
         <!-- الوصف -->
         <div class="field">
-          <label for="description">وصف المنتج *</label>
+
+          <label for="description">
+            وصف المنتج *
+          </label>
 
           <textarea
             id="description"
@@ -441,13 +583,16 @@
             id="description_error"
             class="field-error"
           ></small>
+
         </div>
 
 
         <!-- الصور -->
         <div class="field">
 
-          <label for="product_image">صور المنتج *</label>
+          <label for="product_image">
+            صور المنتج *
+          </label>
 
           <div class="images-box">
 
@@ -517,9 +662,13 @@
           إرسال المنتج للمراجعة
         </button>
 
+
+        <!-- رسالة النتيجة -->
         <div
           id="formMessage"
           class="message"
+          role="alert"
+          aria-live="polite"
         ></div>
 
       </form>
@@ -527,6 +676,7 @@
     </div>
 
   </main>
+
 
   <script>
 
@@ -543,25 +693,23 @@
     const STORAGE_BUCKET =
       "product-images";
 
-    const MAX_IMAGES =
-      4;
+    const MAX_IMAGES = 4;
+
+    const COMMISSION_RATE = 0.15;
 
 
     // ==========================================
     // إعدادات ضغط الصور
     // ==========================================
 
-    const MAX_IMAGE_DIMENSION =
-      2000;
+    const MAX_IMAGE_DIMENSION = 2000;
 
     const TARGET_IMAGE_SIZE =
       4.5 * 1024 * 1024;
 
-    const INITIAL_IMAGE_QUALITY =
-      0.85;
+    const INITIAL_IMAGE_QUALITY = 0.85;
 
-    const MIN_IMAGE_QUALITY =
-      0.55;
+    const MIN_IMAGE_QUALITY = 0.55;
 
 
     // ==========================================
@@ -610,9 +758,23 @@
     const formMessage =
       document.getElementById("formMessage");
 
+    const priceSummary =
+      document.getElementById("priceSummary");
+
+    const salePriceDisplay =
+      document.getElementById("salePriceDisplay");
+
+    const commissionDisplay =
+      document.getElementById("commissionDisplay");
+
+    const sellerAmountDisplay =
+      document.getElementById("sellerAmountDisplay");
+
 
     // ==========================================
-    // تنظيف الحقول عند فتح الصفحة
+    // تنظيف الحقول
+    // ملاحظة:
+    // هذه الدالة لا تمسح رسالة النجاح.
     // ==========================================
 
     function clearFormFields() {
@@ -630,9 +792,6 @@
 
       previewGrid.innerHTML = "";
 
-      formMessage.textContent = "";
-      formMessage.className = "message";
-
       sellerForm
         .querySelectorAll(
           "input, select, textarea"
@@ -643,6 +802,7 @@
             "valid",
             "invalid"
           );
+
         });
 
       sellerForm
@@ -652,12 +812,28 @@
         .forEach(function(element) {
 
           element.textContent = "";
+
         });
+
+      resetPriceSummary();
     }
 
 
     // ==========================================
-    // منع المتصفح من استرجاع البيانات السابقة
+    // تنظيف رسالة النموذج فقط
+    // ==========================================
+
+    function clearMessage() {
+
+      formMessage.textContent = "";
+
+      formMessage.className =
+        "message";
+    }
+
+
+    // ==========================================
+    // عند فتح الصفحة
     // ==========================================
 
     window.addEventListener(
@@ -665,6 +841,8 @@
       function() {
 
         clearFormFields();
+
+        clearMessage();
 
       }
     );
@@ -712,6 +890,7 @@
         phoneValue =
           "0" +
           phoneValue.substring(4);
+
       }
 
       if (
@@ -721,6 +900,7 @@
         phoneValue =
           "0" +
           phoneValue.substring(3);
+
       }
 
       return phoneValue;
@@ -1026,7 +1206,75 @@
 
 
     // ==========================================
-    // السعر
+    // حساب العمولة
+    // ==========================================
+
+    function updatePriceSummary() {
+
+      const rawValue =
+        normalizeArabicNumbers(
+          price.value
+        );
+
+      const productPrice =
+        Number(rawValue);
+
+      if (
+        !rawValue ||
+        !Number.isFinite(productPrice) ||
+        productPrice < 0
+      ) {
+
+        resetPriceSummary();
+
+        return;
+      }
+
+      const commission =
+        productPrice *
+        COMMISSION_RATE;
+
+      const sellerAmount =
+        productPrice -
+        commission;
+
+      salePriceDisplay.textContent =
+        productPrice.toFixed(2) +
+        " ريال";
+
+      commissionDisplay.textContent =
+        commission.toFixed(2) +
+        " ريال";
+
+      sellerAmountDisplay.textContent =
+        sellerAmount.toFixed(2) +
+        " ريال";
+
+      priceSummary.classList.add("show");
+    }
+
+
+    // ==========================================
+    // إعادة صندوق السعر للوضع الطبيعي
+    // ==========================================
+
+    function resetPriceSummary() {
+
+      priceSummary.classList.remove("show");
+
+      salePriceDisplay.textContent =
+        "0.00 ريال";
+
+      commissionDisplay.textContent =
+        "0.00 ريال";
+
+      sellerAmountDisplay.textContent =
+        "0.00 ريال";
+    }
+
+
+    // ==========================================
+    // التحقق من السعر
     // ==========================================
 
     function validatePrice() {
@@ -1040,6 +1288,8 @@
         value;
 
       if (!value) {
+
+        resetPriceSummary();
 
         setError(
           price,
@@ -1055,6 +1305,8 @@
 
       if (!Number.isFinite(number)) {
 
+        resetPriceSummary();
+
         setError(
           price,
           "price_error",
@@ -1065,6 +1317,8 @@
       }
 
       if (number < 0) {
+
+        resetPriceSummary();
 
         setError(
           price,
@@ -1079,6 +1333,8 @@
         price,
         "price_error"
       );
+
+      updatePriceSummary();
 
       return true;
     }
@@ -1344,11 +1600,17 @@
 
       formMessage.className =
         "message " + type;
+
+      // التأكد من أن الرسالة أصبحت مرئية
+      formMessage.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
     }
 
 
     // ==========================================
-    // تحويل الصورة إلى نسخة مضغوطة
+    // ضغط الصورة
     // ==========================================
 
     async function compressImage(file) {
@@ -1356,6 +1618,7 @@
       if (
         !file.type.startsWith("image/")
       ) {
+
         throw new Error(
           "الملف المحدد ليس صورة."
         );
@@ -1509,8 +1772,7 @@
             height
           );
 
-          quality =
-            0.75;
+          quality = 0.75;
 
           blob =
             await canvasToBlob(
@@ -1539,7 +1801,7 @@
 
 
     // ==========================================
-    // تحويل Canvas إلى Blob
+    // Canvas إلى Blob
     // ==========================================
 
     function canvasToBlob(
@@ -1603,10 +1865,7 @@
     // رفع الصورة إلى Supabase
     // ==========================================
 
-    async function uploadImage(
-      file,
-      index
-    ) {
+    async function uploadImage(file) {
 
       const compressedFile =
         await compressImage(file);
@@ -1733,11 +1992,7 @@
 
         event.preventDefault();
 
-        formMessage.className =
-          "message";
-
-        formMessage.textContent =
-          "";
+        clearMessage();
 
         const validName =
           validateSellerName();
@@ -1799,13 +2054,17 @@
           return;
         }
 
+
+        // منع الضغط المتكرر
         submitBtn.disabled =
           true;
 
         submitBtn.textContent =
           "جاري إرسال المنتج...";
 
+
         let uploadedPaths = [];
+
 
         try {
 
@@ -1815,6 +2074,11 @@
             );
 
           const uploadedImages = [];
+
+
+          // ==========================================
+          // رفع الصور
+          // ==========================================
 
           for (
             let i = 0;
@@ -1827,8 +2091,7 @@
 
             const result =
               await uploadImage(
-                files[i],
-                i + 1
+                files[i]
               );
 
             uploadedImages.push(
@@ -1839,6 +2102,11 @@
               result.path
             );
           }
+
+
+          // ==========================================
+          // قراءة بيانات النموذج
+          // ==========================================
 
           const sellerNameValue =
             sellerName.value.trim();
@@ -1863,8 +2131,14 @@
           const descriptionValue =
             description.value.trim();
 
+
+          // ==========================================
+          // حفظ الطلب
+          // ==========================================
+
           submitBtn.textContent =
             "جاري حفظ الطلب...";
+
 
           const insertResponse =
             await fetch(
@@ -1937,9 +2211,15 @@
 
                   image_url:
                     uploadedImages[0]
+
                 })
               }
             );
+
+
+          // ==========================================
+          // التأكد من نجاح الحفظ
+          // ==========================================
 
           if (
             !insertResponse.ok
@@ -1964,12 +2244,40 @@
               errorMessage
             );
           }
-clearFormFields();
 
-showMessage(
-  "✅ تم إرسال المنتج بنجاح. سيتم مراجعته قبل نشره في الموقع.",
-  "success"
-);
+
+          // ==========================================
+          // نجاح الإرسال
+          // ==========================================
+
+          /*
+            مهم جدًا:
+            نقوم بتنظيف الحقول أولًا،
+            لكن clearFormFields() لا تمسح formMessage.
+            وبعد ذلك نظهر رسالة النجاح.
+          */
+
+          clearFormFields();
+
+          showMessage(
+            "✅ تم إرسال منتجك بنجاح! سيتم مراجعته من الإدارة قبل نشره في الموقع.",
+            "success"
+          );
+
+
+          // التأكد من أن المستخدم يرى الرسالة
+          setTimeout(
+            function() {
+
+              formMessage.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+              });
+
+            },
+            100
+          );
+
 
         } catch (error) {
 
@@ -1978,6 +2286,8 @@ showMessage(
             error
           );
 
+
+          // حذف الصور التي تم رفعها
           if (
             uploadedPaths.length > 0
           ) {
@@ -1987,6 +2297,7 @@ showMessage(
             );
           }
 
+
           showMessage(
             "❌ لم يتم إرسال الطلب. " +
             (
@@ -1995,6 +2306,7 @@ showMessage(
             ),
             "error"
           );
+
 
         } finally {
 
