@@ -34,7 +34,7 @@ header h1 {
   font-size: 26px;
 }
 
-/* زر العودة للمتجر */
+/* ===== زر العودة للمتجر ===== */
 
 .back-to-store {
   display: inline-block;
@@ -48,11 +48,18 @@ header h1 {
   font-weight: bold;
   cursor: pointer;
   transition: 0.2s;
+  position: relative;
+  z-index: 1000;
+  pointer-events: auto;
 }
 
 .back-to-store:hover {
   background: #e9e9e9;
   transform: translateY(-1px);
+}
+
+.back-to-store:active {
+  transform: translateY(0);
 }
 
 /* ===== Container ===== */
@@ -329,9 +336,11 @@ textarea.valid {
 
   <h1>لَحْقها 🛍️</h1>
 
+  <!-- زر العودة للمتجر -->
   <a
     href="https://uv1010aa-ai.github.io/lahgha/index.html"
     class="back-to-store"
+    onclick="window.location.href='https://uv1010aa-ai.github.io/lahgha/index.html'; return false;"
   >
     ← العودة للمتجر
   </a>
