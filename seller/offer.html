@@ -1,2340 +1,1649 @@
 ```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إضافة منتج - لَحْقها 🛍️</title>
 
-  <title>إضافة منتج - لَحْقها 🛍️</title>
+<style>
+* {
+  box-sizing: border-box;
+}
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  color: #222;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f7f7f7;
-      color: #222;
-    }
+header {
+  background: #111;
+  color: white;
+  padding: 18px 20px;
+  text-align: center;
+}
 
-    header {
-      background: #111;
-      color: white;
-      padding: 18px 20px;
-      text-align: center;
-    }
+header h1 {
+  margin: 0;
+  font-size: 26px;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 26px;
-    }
+.back-to-store {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 18px;
+  background: white;
+  color: #111;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: 0.2s;
+}
 
-    .container {
-      width: 100%;
-      max-width: 700px;
-      margin: 30px auto;
-      padding: 0 15px;
-    }
+.back-to-store:hover {
+  background: #eee;
+}
 
-    .form-box {
-      background: white;
-      border-radius: 14px;
-      padding: 25px;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-    }
+.container {
+  width: 100%;
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 0 15px;
+}
 
-    .form-box h2 {
-      margin-top: 0;
-      text-align: center;
-    }
+.form-box {
+  background: white;
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 4px 18px rgba(0,0,0,.08);
+}
 
-    .intro {
-      text-align: center;
-      color: #666;
-      margin-bottom: 25px;
-      line-height: 1.7;
-    }
+.form-box h2 {
+  margin-top: 0;
+  text-align: center;
+}
 
-    .field {
-      margin-bottom: 18px;
-    }
+.intro {
+  text-align: center;
+  color: #666;
+  margin-bottom: 25px;
+  line-height: 1.7;
+}
 
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 7px;
-    }
+.field {
+  margin-bottom: 18px;
+}
 
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #ccc;
-      border-radius: 9px;
-      font-size: 16px;
-      outline: none;
-      background: white;
-    }
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
 
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: #111;
-    }
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ccc;
+  border-radius: 9px;
+  font-size: 16px;
+  outline: none;
+  background: white;
+}
 
-    textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #111;
+}
 
-    input.invalid,
-    select.invalid,
-    textarea.invalid {
-      border: 2px solid #d93025;
-      background: #fff7f7;
-    }
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
 
-    input.valid,
-    select.valid,
-    textarea.valid {
-      border: 2px solid #188038;
-      background: #f7fff8;
-    }
+input.invalid,
+select.invalid,
+textarea.invalid {
+  border: 2px solid #d93025;
+  background: #fff7f7;
+}
 
-    .field-error {
-      display: block;
-      min-height: 20px;
-      margin-top: 5px;
-      color: #d93025;
-      font-size: 14px;
-      line-height: 1.5;
-    }
+input.valid,
+select.valid,
+textarea.valid {
+  border: 2px solid #188038;
+  background: #f7fff8;
+}
 
-    .field-hint {
-      display: block;
-      color: #777;
-      font-size: 13px;
-      margin-top: 5px;
-    }
+.field-error {
+  display: block;
+  min-height: 20px;
+  margin-top: 5px;
+  color: #d93025;
+  font-size: 14px;
+  line-height: 1.5;
+}
 
-    /* ==========================================
-       صندوق حساب العمولة
-       ========================================== */
+.field-hint {
+  display: block;
+  color: #777;
+  font-size: 13px;
+  margin-top: 5px;
+}
 
-    .price-summary {
-      display: none;
-      margin-top: 12px;
-      padding: 15px;
-      border-radius: 10px;
-      background: #f8f8f8;
-      border: 1px solid #ddd;
-      line-height: 1.9;
-    }
+.price-summary {
+  display: none;
+  margin-top: 12px;
+  padding: 15px;
+  border-radius: 10px;
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  line-height: 1.9;
+}
 
-    .price-summary.show {
-      display: block;
-    }
+.price-summary.show {
+  display: block;
+}
 
-    .price-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      padding: 5px 0;
-    }
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 5px 0;
+}
 
-    .price-row.total {
-      margin-top: 8px;
-      padding-top: 10px;
-      border-top: 1px solid #ddd;
-      font-weight: bold;
-      font-size: 17px;
-    }
+.price-row.total {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+  font-weight: bold;
+  font-size: 17px;
+}
 
-    .price-value {
-      font-weight: bold;
-    }
+.price-value {
+  font-weight: bold;
+}
 
-    .commission-value {
-      color: #c5221f;
-    }
+.commission-value {
+  color: #c5221f;
+}
 
-    .seller-value {
-      color: #137333;
-    }
+.seller-value {
+  color: #137333;
+}
 
-    .images-box {
-      border: 2px dashed #ccc;
-      padding: 18px;
-      border-radius: 10px;
-      background: #fafafa;
-    }
+.images-box {
+  border: 2px dashed #ccc;
+  padding: 18px;
+  border-radius: 10px;
+  background: #fafafa;
+}
 
-    .preview-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 15px;
-    }
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 15px;
+}
 
-    .preview-item {
-      position: relative;
-      border-radius: 8px;
-      overflow: hidden;
-      background: #eee;
-      aspect-ratio: 1 / 1;
-    }
+.preview-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #eee;
+  aspect-ratio: 1 / 1;
+}
 
-    .preview-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+.preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
-    .terms {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      margin-top: 10px;
-    }
+.terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 10px;
+}
 
-    .terms input {
-      width: auto;
-      margin-top: 4px;
-    }
+.terms input {
+  width: auto;
+  margin-top: 4px;
+}
 
-    .terms label {
-      margin: 0;
-      font-weight: normal;
-      line-height: 1.6;
-    }
+.terms label {
+  margin: 0;
+  font-weight: normal;
+  line-height: 1.6;
+}
 
-    .submit-btn {
-      width: 100%;
-      padding: 15px;
-      margin-top: 20px;
-      border: none;
-      border-radius: 10px;
-      background: #111;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.submit-btn {
+  width: 100%;
+  padding: 15px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 10px;
+  background: #111;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    .submit-btn:hover {
-      background: #333;
-    }
+.submit-btn:hover {
+  background: #333;
+}
 
-    .submit-btn:disabled {
-      background: #999;
-      cursor: not-allowed;
-    }
+.submit-btn:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
 
-    /* ==========================================
-       الرسائل
-       ========================================== */
+.message {
+  display: none;
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 9px;
+  text-align: center;
+  line-height: 1.7;
+  font-weight: bold;
+}
 
-    .message {
-      display: none;
-      margin-top: 18px;
-      padding: 16px;
-      border-radius: 9px;
-      text-align: center;
-      line-height: 1.7;
-      font-weight: bold;
-    }
+.message.success {
+  display: block;
+  background: #e9f8ed;
+  color: #137333;
+  border: 1px solid #b7dfc1;
+}
 
-    .message.success {
-      display: block;
-      background: #e9f8ed;
-      color: #137333;
-      border: 1px solid #b7dfc1;
-    }
+.message.error {
+  display: block;
+  background: #fff0f0;
+  color: #c5221f;
+  border: 1px solid #f0b8b8;
+}
 
-    .message.error {
-      display: block;
-      background: #fff0f0;
-      color: #c5221f;
-      border: 1px solid #f0b8b8;
-    }
+@media (max-width: 600px) {
+  .form-box {
+    padding: 18px;
+  }
 
-    @media (max-width: 600px) {
-      .form-box {
-        padding: 18px;
-      }
+  .preview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-      .preview-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+  header h1 {
+    font-size: 22px;
+  }
 
-      header h1 {
-        font-size: 22px;
-      }
-
-      .price-row {
-        font-size: 14px;
-      }
-    }
-  </style>
+  .price-row {
+    font-size: 14px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <header>
-    <h1>لَحْقها 🛍️</h1>
-  </header>
-
-  <main class="container">
-
-    <div class="form-box">
-
-      <h2>إضافة منتج للبيع</h2>
-
-      <p class="intro">
-        أدخل معلوماتك ومعلومات المنتج بشكل صحيح، وسيتم مراجعة الطلب قبل نشره.
-      </p>
-
-      <form
-        id="sellerForm"
-        autocomplete="off"
-        novalidate
-      >
-
-        <!-- اسم البائع -->
-        <div class="field">
-
-          <label for="seller_name">
-            اسم البائع *
-          </label>
-
-          <input
-            id="seller_name"
-            name="seller_name"
-            type="text"
-            autocomplete="off"
-            autocapitalize="words"
-            spellcheck="false"
-            maxlength="60"
-            required
-            placeholder="اكتب اسمك"
-          >
-
-          <small
-            id="seller_name_error"
-            class="field-error"
-          ></small>
-
-        </div>
-
-
-        <!-- البريد الإلكتروني -->
-        <div class="field">
-
-          <label for="seller_email">
-            البريد الإلكتروني *
-          </label>
-
-          <input
-            id="seller_email"
-            name="seller_email"
-            type="email"
-            autocomplete="new-password"
-            autocapitalize="none"
-            spellcheck="false"
-            maxlength="120"
-            required
-            placeholder="example@email.com"
-            inputmode="email"
-          >
-
-          <small
-            id="seller_email_error"
-            class="field-error"
-          ></small>
-
-          <small class="field-hint">
-            يجب إدخال بريد إلكتروني صحيح.
-          </small>
-
-        </div>
-
-
-        <!-- رقم الجوال -->
-        <div class="field">
-
-          <label for="phone">
-            رقم الجوال *
-          </label>
-
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            autocomplete="off"
-            inputmode="numeric"
-            maxlength="16"
-            required
-            placeholder="05xxxxxxxx"
-          >
-
-          <small
-            id="phone_error"
-            class="field-error"
-          ></small>
-
-          <small class="field-hint">
-            مثال: 05xxxxxxxx أو +9665xxxxxxxx
-          </small>
-
-        </div>
-
-
-        <!-- المدينة -->
-        <div class="field">
-
-          <label for="city">
-            المدينة *
-          </label>
-
-          <input
-            id="city"
-            name="city"
-            type="text"
-            autocomplete="off"
-            autocapitalize="words"
-            spellcheck="false"
-            maxlength="50"
-            required
-            placeholder="مثال: جدة"
-          >
-
-          <small
-            id="city_error"
-            class="field-error"
-          ></small>
-
-        </div>
-
-
-        <!-- التصنيف -->
-        <div class="field">
-
-          <label for="category">
-            التصنيف *
-          </label>
-
-          <select
-            id="category"
-            name="category"
-            autocomplete="off"
-            required
-          >
-            <option value="">اختر التصنيف</option>
-            <option value="كمبيوتر">كمبيوتر 💻</option>
-            <option value="ألعاب">ألعاب 🎮</option>
-            <option value="أثاث">أثاث 🪑</option>
-            <option value="أجهزة">أجهزة 📺</option>
-            <option value="رياضة">رياضة 🚲</option>
-            <option value="أدوات">أدوات 🛠️</option>
-            <option value="ملابس">ملابس 👕</option>
-            <option value="أخرى">أخرى 📦</option>
-          </select>
-
-          <small
-            id="category_error"
-            class="field-error"
-          ></small>
-
-        </div>
-
-
-        <!-- اسم المنتج -->
-        <div class="field">
-
-          <label for="product_title">
-            اسم المنتج *
-          </label>
-
-          <input
-            id="product_title"
-            name="product_title"
-            type="text"
-            autocomplete="off"
-            spellcheck="false"
-            maxlength="120"
-            required
-            placeholder="مثال: جوال آيفون 15"
-          >
-
-          <small
-            id="product_title_error"
-            class="field-error"
-          ></small>
-
-        </div>
-
-
-        <!-- السعر -->
-        <div class="field">
-
-          <label for="price">
-            السعر بالريال *
-          </label>
-
-          <input
-            id="price"
-            name="price"
-            type="number"
-            autocomplete="off"
-            min="0"
-            step="0.01"
-            required
-            placeholder="مثال: 1500"
-          >
-
-          <small
-            id="price_error"
-            class="field-error"
-          ></small>
-
-
-          <!-- ملخص السعر -->
-          <div
-            id="priceSummary"
-            class="price-summary"
-          >
-
-            <div class="price-row">
-
-              <span>
-                سعر البيع
-              </span>
-
-              <span
-                id="salePriceDisplay"
-                class="price-value"
-              >
-                0.00 ريال
-              </span>
-
-            </div>
-
-
-            <div class="price-row">
-
-              <span id="commissionLabel">
-                عمولة الموقع
-              </span>
-
-              <span
-                id="commissionDisplay"
-                class="price-value commission-value"
-              >
-                0.00 ريال
-              </span>
-
-            </div>
-
-
-            <div class="price-row total">
-
-              <span>
-                المبلغ الذي سيحصل عليه البائع
-              </span>
-
-              <span
-                id="sellerAmountDisplay"
-                class="price-value seller-value"
-              >
-                0.00 ريال
-              </span>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- الوصف -->
-        <div class="field">
-
-          <label for="description">
-            وصف المنتج *
-          </label>
-
-          <textarea
-            id="description"
-            name="description"
-            autocomplete="off"
-            spellcheck="true"
-            minlength="5"
-            maxlength="2000"
-            required
-            placeholder="اكتب وصفًا واضحًا للمنتج وحالته..."
-          ></textarea>
-
-          <small
-            id="description_error"
-            class="field-error"
-          ></small>
-
-        </div>
-
-
-        <!-- الصور -->
-        <div class="field">
-
-          <label for="product_image">
-            صور المنتج *
-          </label>
-
-          <div class="images-box">
-
-            <input
-              id="product_image"
-              name="product_image"
-              type="file"
-              accept="image/*"
-              multiple
-              required
-            >
-
-            <small class="field-hint">
-              يمكنك إضافة من صورة واحدة إلى 4 صور، وسيقوم النظام تلقائيًا بضغط الصور وتصغيرها قبل رفعها.
-            </small>
-
-            <small
-              id="product_image_error"
-              class="field-error"
-            ></small>
-
-            <div
-              id="previewGrid"
-              class="preview-grid"
-            ></div>
-
-          </div>
-
-        </div>
-
-
-        <!-- الشروط -->
-        <div class="field">
-
-          <div class="terms">
-
-            <input
-              id="agree_terms"
-              name="agree_terms"
-              type="checkbox"
-              autocomplete="off"
-              required
-            >
-
-            <label for="agree_terms">
-              أقر بأن المعلومات التي أدخلتها صحيحة،
-              وأن المنتج المعروض للبيع يعود لي أو لدي الحق في بيعه،
-              وأوافق على شروط الموقع.
-            </label>
-
-          </div>
-
-          <small
-            id="agree_terms_error"
-            class="field-error"
-          ></small>
-
-        </div>
-
-
-        <!-- زر الإرسال -->
-        <button
-          id="submitBtn"
-          class="submit-btn"
-          type="submit"
+<header>
+  <h1>لَحْقها 🛍️</h1>
+  <a href="index.html" class="back-to-store">← العودة للمتجر</a>
+</header>
+
+<main class="container">
+
+  <div class="form-box">
+
+    <h2>إضافة منتج للبيع</h2>
+
+    <p class="intro">
+      أدخل معلوماتك ومعلومات المنتج بشكل صحيح،
+      وسيتم مراجعة الطلب قبل نشره.
+    </p>
+
+    <form id="sellerForm" autocomplete="off" novalidate>
+
+      <div class="field">
+        <label for="sellerName">اسم البائع *</label>
+        <input
+          type="text"
+          id="sellerName"
+          name="seller_name"
+          placeholder="أدخل اسمك"
         >
-          إرسال المنتج للمراجعة
-        </button>
+        <span id="sellerNameError" class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="sellerEmail">البريد الإلكتروني *</label>
+        <input
+          type="email"
+          id="sellerEmail"
+          name="seller_email"
+          placeholder="example@email.com"
+        >
+        <span id="sellerEmailError" class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="phone">رقم الجوال *</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          placeholder="05xxxxxxxx"
+        >
+        <span id="phoneError" class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="city">المدينة *</label>
+        <select id="city" name="city">
+          <option value="">اختر المدينة</option>
+          <option value="الرياض">الرياض</option>
+          <option value="جدة">جدة</option>
+          <option value="مكة المكرمة">مكة المكرمة</option>
+          <option value="المدينة المنورة">المدينة المنورة</option>
+          <option value="الدمام">الدمام</option>
+          <option value="الخبر">الخبر</option>
+          <option value="الطائف">الطائف</option>
+          <option value="تبوك">تبوك</option>
+          <option value="أبها">أبها</option>
+          <option value="بريدة">بريدة</option>
+          <option value="حائل">حائل</option>
+          <option value="جازان">جازان</option>
+          <option value="نجران">نجران</option>
+          <option value="أخرى">أخرى</option>
+        </select>
+        <span id="cityError" class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="category">تصنيف المنتج *</label>
+        <select id="category" name="category">
+          <option value="">اختر التصنيف</option>
+          <option value="إلكترونيات">إلكترونيات</option>
+          <option value="ملابس">ملابس</option>
+          <option value="أحذية">أحذية</option>
+          <option value="أثاث">أثاث</option>
+          <option value="سيارات">سيارات</option>
+          <option value="جوالات">جوالات</option>
+          <option value="أجهزة منزلية">أجهزة منزلية</option>
+          <option value="مستلزمات شخصية">مستلزمات شخصية</option>
+          <option value="أخرى">أخرى</option>
+        </select>
+        <span id="categoryError" class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="productTitle">اسم المنتج *</label>
+        <input
+          type="text"
+          id="productTitle"
+          name="product_title"
+          placeholder="مثال: آيفون 15 برو"
+        >
+        <span id="productTitleError" class="field-error"></span>
+      </div>
+
+      <div class="field">
+
+        <label for="price">سعر البيع *</label>
+
+        <input
+          type="number"
+          id="price"
+          name="price"
+          min="1"
+          step="0.01"
+          placeholder="مثال: 300"
+        >
+
+        <span class="field-hint">
+          يتم خصم عمولة الموقع بنسبة 20% من سعر البيع.
+        </span>
+
+        <span id="priceError" class="field-error"></span>
+
+        <div id="priceSummary" class="price-summary">
+
+          <div class="price-row">
+            <span>سعر البيع</span>
+            <span id="salePriceDisplay" class="price-value">
+              0.00 ريال
+            </span>
+          </div>
+
+          <div class="price-row">
+            <span id="commissionLabel">
+              عمولة الموقع
+            </span>
+
+            <span
+              id="commissionDisplay"
+              class="price-value commission-value"
+            >
+              0.00 ريال
+            </span>
+          </div>
+
+          <div class="price-row total">
+            <span>المبلغ الذي تحصل عليه</span>
+
+            <span
+              id="sellerAmountDisplay"
+              class="price-value seller-value"
+            >
+              0.00 ريال
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="field">
+
+        <label for="description">وصف المنتج *</label>
+
+        <textarea
+          id="description"
+          name="description"
+          placeholder="اكتب وصفًا واضحًا للمنتج وحالته ومميزاته..."
+        ></textarea>
+
+        <span id="descriptionError" class="field-error"></span>
+
+      </div>
+
+      <div class="field">
+
+        <label for="productImage">
+          صور المنتج *
+        </label>
+
+        <div class="images-box">
+
+          <input
+            type="file"
+            id="productImage"
+            name="product_image"
+            accept="image/*"
+            multiple
+          >
+
+          <span class="field-hint">
+            يمكنك اختيار حتى 4 صور للمنتج.
+          </span>
+
+          <span id="productImageError" class="field-error"></span>
+
+          <div
+            id="previewGrid"
+            class="preview-grid"
+          ></div>
+
+        </div>
+
+      </div>
+
+      <div class="terms">
+
+        <input
+          type="checkbox"
+          id="agreeTerms"
+          name="agree_terms"
+        >
+
+        <label for="agreeTerms">
+          أوافق على شروط بيع المنتجات، وأقر بأن المعلومات والصور
+          التي أدخلتها صحيحة.
+        </label>
+
+      </div>
+
+      <span id="agreeTermsError" class="field-error"></span>
+
+      <button
+        type="submit"
+        id="submitBtn"
+        class="submit-btn"
+      >
+        إرسال المنتج للمراجعة
+      </button>
+
+      <div
+        id="formMessage"
+        class="message"
+        role="status"
+        aria-live="polite"
+      ></div>
+
+    </form>
+
+  </div>
+
+</main>
+
+<script>
+const SUPABASE_URL =
+  "https://gyyyzavjzvcxzgrtukqu.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-";
+
+const STORAGE_BUCKET = "product-images";
+
+const MAX_IMAGES = 4;
+
+const COMMISSION_RATE = 0.20;
+
+const MAX_IMAGE_DIMENSION = 2000;
+
+const TARGET_IMAGE_SIZE = 4.5 * 1024 * 1024;
+
+const INITIAL_IMAGE_QUALITY = 0.85;
+
+const MIN_IMAGE_QUALITY = 0.55;
 
 
-        <!-- رسالة النتيجة -->
-        <div
-          id="formMessage"
-          class="message"
-          role="status"
-          aria-live="polite"
-        ></div>
+const sellerForm =
+  document.getElementById("sellerForm");
 
-      </form>
+const sellerName =
+  document.getElementById("sellerName");
 
-    </div>
+const sellerEmail =
+  document.getElementById("sellerEmail");
 
-  </main>
+const phone =
+  document.getElementById("phone");
 
+const city =
+  document.getElementById("city");
 
-  <script>
+const category =
+  document.getElementById("category");
 
-    // ==========================================
-    // إعداد Supabase
-    // ==========================================
+const productTitle =
+  document.getElementById("productTitle");
 
-    const SUPABASE_URL =
-      "https://gyyyzavjzvcxzgrtukqu.supabase.co";
+const price =
+  document.getElementById("price");
 
-    const SUPABASE_KEY =
-      "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-";
+const description =
+  document.getElementById("description");
 
-    const STORAGE_BUCKET =
-      "product-images";
+const productImage =
+  document.getElementById("productImage");
 
-    const MAX_IMAGES = 4;
+const agreeTerms =
+  document.getElementById("agreeTerms");
 
+const submitBtn =
+  document.getElementById("submitBtn");
 
-    // ==========================================
-    // نسبة عمولة الموقع
-    // ==========================================
-    // 0.20 = 20%
-    // 0.15 = 15%
-    // 0.25 = 25%
+const formMessage =
+  document.getElementById("formMessage");
 
-    const COMMISSION_RATE = 0.20;
+const previewGrid =
+  document.getElementById("previewGrid");
 
+const priceSummary =
+  document.getElementById("priceSummary");
 
-    // ==========================================
-    // إعدادات ضغط الصور
-    // ==========================================
+const salePriceDisplay =
+  document.getElementById("salePriceDisplay");
 
-    const MAX_IMAGE_DIMENSION = 2000;
+const commissionDisplay =
+  document.getElementById("commissionDisplay");
 
-    const TARGET_IMAGE_SIZE =
-      4.5 * 1024 * 1024;
+const sellerAmountDisplay =
+  document.getElementById("sellerAmountDisplay");
 
-    const INITIAL_IMAGE_QUALITY = 0.85;
-
-    const MIN_IMAGE_QUALITY = 0.55;
-
-
-    // ==========================================
-    // العناصر
-    // ==========================================
-
-    const sellerForm =
-      document.getElementById("sellerForm");
-
-    const sellerName =
-      document.getElementById("seller_name");
-
-    const sellerEmail =
-      document.getElementById("seller_email");
-
-    const phone =
-      document.getElementById("phone");
-
-    const city =
-      document.getElementById("city");
-
-    const category =
-      document.getElementById("category");
-
-    const productTitle =
-      document.getElementById("product_title");
-
-    const price =
-      document.getElementById("price");
-
-    const description =
-      document.getElementById("description");
-
-    const productImage =
-      document.getElementById("product_image");
-
-    const agreeTerms =
-      document.getElementById("agree_terms");
-
-    const previewGrid =
-      document.getElementById("previewGrid");
-
-    const submitBtn =
-      document.getElementById("submitBtn");
-
-    const formMessage =
-      document.getElementById("formMessage");
-
-    const priceSummary =
-      document.getElementById("priceSummary");
-
-    const salePriceDisplay =
-      document.getElementById("salePriceDisplay");
-
-    const commissionDisplay =
-      document.getElementById("commissionDisplay");
-
-    const sellerAmountDisplay =
-      document.getElementById("sellerAmountDisplay");
-
-    const commissionLabel =
-      document.getElementById("commissionLabel");
+const commissionLabel =
+  document.getElementById("commissionLabel");
 
 
-    // ==========================================
-    // تحديث عنوان العمولة تلقائيًا
-    // ==========================================
-
-    commissionLabel.textContent =
-      `عمولة الموقع (${COMMISSION_RATE * 100}%)`;
+commissionLabel.textContent =
+  `عمولة الموقع (${COMMISSION_RATE * 100}%)`;
 
 
-    // ==========================================
-    // تنظيف الحقول
-    // ملاحظة:
-    // هذه الدالة لا تمسح رسالة النجاح.
-    // ==========================================
+let selectedFiles = [];
 
-    function clearFormFields() {
 
-      sellerName.value = "";
-      sellerEmail.value = "";
-      phone.value = "";
-      city.value = "";
-      category.value = "";
-      productTitle.value = "";
-      price.value = "";
-      description.value = "";
+function showMessage(message, type) {
+  formMessage.textContent = message;
+  formMessage.className = "message " + type;
+}
+
+
+function clearMessage() {
+  formMessage.textContent = "";
+  formMessage.className = "message";
+}
+
+
+function setFieldError(input, errorId, message) {
+  const errorElement =
+    document.getElementById(errorId);
+
+  if (message) {
+    input.classList.add("invalid");
+    input.classList.remove("valid");
+    errorElement.textContent = message;
+    return false;
+  }
+
+  input.classList.remove("invalid");
+  input.classList.add("valid");
+  errorElement.textContent = "";
+
+  return true;
+}
+
+
+function clearFieldState(input, errorId) {
+  input.classList.remove("invalid");
+  input.classList.remove("valid");
+
+  const errorElement =
+    document.getElementById(errorId);
+
+  if (errorElement) {
+    errorElement.textContent = "";
+  }
+}
+
+
+function updatePriceSummary() {
+
+  const productPrice =
+    parseFloat(price.value);
+
+  if (
+    !productPrice ||
+    productPrice <= 0
+  ) {
+    resetPriceSummary();
+    return;
+  }
+
+  const commission =
+    productPrice * COMMISSION_RATE;
+
+  const sellerAmount =
+    productPrice - commission;
+
+  salePriceDisplay.textContent =
+    productPrice.toFixed(2) + " ريال";
+
+  commissionDisplay.textContent =
+    commission.toFixed(2) + " ريال";
+
+  sellerAmountDisplay.textContent =
+    sellerAmount.toFixed(2) + " ريال";
+
+  priceSummary.classList.add("show");
+}
+
+
+function resetPriceSummary() {
+
+  salePriceDisplay.textContent =
+    "0.00 ريال";
+
+  commissionDisplay.textContent =
+    "0.00 ريال";
+
+  sellerAmountDisplay.textContent =
+    "0.00 ريال";
+
+  priceSummary.classList.remove("show");
+}
+
+
+price.addEventListener(
+  "input",
+  updatePriceSummary
+);
+
+
+function validateForm() {
+
+  let valid = true;
+
+  const sellerNameValue =
+    sellerName.value.trim();
+
+  const sellerEmailValue =
+    sellerEmail.value.trim();
+
+  const phoneValue =
+    phone.value.trim();
+
+  const cityValue =
+    city.value.trim();
+
+  const categoryValue =
+    category.value.trim();
+
+  const productTitleValue =
+    productTitle.value.trim();
+
+  const priceValue =
+    parseFloat(price.value);
+
+  const descriptionValue =
+    description.value.trim();
+
+
+  if (sellerNameValue.length < 2) {
+    setFieldError(
+      sellerName,
+      "sellerNameError",
+      "يرجى إدخال اسم البائع."
+    );
+    valid = false;
+  } else {
+    setFieldError(
+      sellerName,
+      "sellerNameError",
+      ""
+    );
+  }
+
+
+  const emailPattern =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailPattern.test(sellerEmailValue)) {
+    setFieldError(
+      sellerEmail,
+      "sellerEmailError",
+      "يرجى إدخال بريد إلكتروني صحيح."
+    );
+    valid = false;
+  } else {
+    setFieldError(
+      sellerEmail,
+      "sellerEmailError",
+      ""
+    );
+  }
+
+
+  const phonePattern =
+    /^05\d{8}$/;
+
+  if (!phonePattern.test(phoneValue)) {
+    setFieldError(
+      phone,
+      "phoneError",
+      "يرجى إدخال رقم جوال صحيح مثل 05xxxxxxxx."
+    );
+    valid = false;
+  } else {
+    setFieldError(
+      phone,
+      "phoneError",
+      ""
+    );
+  }
+
+
+  if (!cityValue) {
+    setFieldError(
+      city,
+      "cityError",
+      "يرجى اختيار المدينة."
+    );
+    valid = false;
+  } else {
+    setFieldError(
+      city,
+      "cityError",
+      ""
+    );
+  }
+
+
+  if (!categoryValue) {
+    setFieldError(
+      category,
+      "categoryError",
+      "يرجى اختيار تصنيف المنتج."
+    );
+    valid = false;
+  } else {
+    setFieldError(
+      category,
+      "categoryError",
+      ""
+    );
+  }
+
+
+  if (productTitleValue.length < 2) {
+    setFieldError(
+      productTitle,
+      "productTitleError",
+      "يرجى إدخال اسم المنتج."
+    );
+    valid = false;
+  } else {
+    setFieldError(
+      productTitle,
+      "productTitleError",
+      ""
+    );
+  }
+
+
+  if (
+    !priceValue ||
+    priceValue <= 0
+  ) {
+    setFieldError(
+      price,
+      "priceError",
+      "يرجى إدخال سعر صحيح."
+    );
+    valid = false;
+  } else {
+    setFieldError(
+      price,
+      "priceError",
+      ""
+    );
+  }
+
+
+  if (descriptionValue.length < 10) {
+    setFieldError(
+      description,
+      "descriptionError",
+      "يرجى كتابة وصف واضح للمنتج."
+    );
+    valid = false;
+  } else {
+    setFieldError(
+      description,
+      "descriptionError",
+      ""
+    );
+  }
+
+
+  if (selectedFiles.length === 0) {
+    document.getElementById(
+      "productImageError"
+    ).textContent =
+      "يرجى اختيار صورة واحدة على الأقل.";
+    valid = false;
+  } else {
+    document.getElementById(
+      "productImageError"
+    ).textContent = "";
+  }
+
+
+  if (!agreeTerms.checked) {
+    document.getElementById(
+      "agreeTermsError"
+    ).textContent =
+      "يجب الموافقة على الشروط قبل الإرسال.";
+    valid = false;
+  } else {
+    document.getElementById(
+      "agreeTermsError"
+    ).textContent = "";
+  }
+
+
+  return valid;
+}
+
+
+productImage.addEventListener(
+  "change",
+  function () {
+
+    const files =
+      Array.from(productImage.files);
+
+    if (files.length > MAX_IMAGES) {
+
+      document.getElementById(
+        "productImageError"
+      ).textContent =
+        `يمكن اختيار ${MAX_IMAGES} صور كحد أقصى.`;
+
       productImage.value = "";
-      agreeTerms.checked = false;
+      selectedFiles = [];
+      renderPreviews();
 
-      previewGrid.innerHTML = "";
-
-      sellerForm
-        .querySelectorAll(
-          "input, select, textarea"
-        )
-        .forEach(function(element) {
-
-          element.classList.remove(
-            "valid",
-            "invalid"
-          );
-
-        });
-
-      sellerForm
-        .querySelectorAll(
-          ".field-error"
-        )
-        .forEach(function(element) {
-
-          element.textContent = "";
-
-        });
-
-      resetPriceSummary();
+      return;
     }
 
 
-    // ==========================================
-    // تنظيف رسالة النموذج فقط
-    // ==========================================
-
-    function clearMessage() {
-
-      formMessage.textContent = "";
-
-      formMessage.className =
-        "message";
-    }
-
-
-    // ==========================================
-    // عند فتح الصفحة
-    // ==========================================
-
-    window.addEventListener(
-      "pageshow",
-      function() {
-
-        clearFormFields();
-
-        clearMessage();
-
-      }
-    );
-
-
-    // ==========================================
-    // تحويل الأرقام العربية والفارسية
-    // ==========================================
-
-    function normalizeArabicNumbers(value) {
-
-      return String(value || "")
-        .replace(/[٠-٩]/g, function(digit) {
-
-          return String(
-            "٠١٢٣٤٥٦٧٨٩".indexOf(digit)
-          );
-
-        })
-        .replace(/[۰-۹]/g, function(digit) {
-
-          return String(
-            "۰۱۲۳۴۵۶۷۸۹".indexOf(digit)
-          );
-
-        });
-    }
-
-
-    // ==========================================
-    // تنظيف رقم الجوال
-    // ==========================================
-
-    function normalizePhone(value) {
-
-      let phoneValue =
-        normalizeArabicNumbers(value)
-          .trim()
-          .replace(/[\s()-]/g, "");
-
-      if (
-        phoneValue.startsWith("+966")
-      ) {
-
-        phoneValue =
-          "0" +
-          phoneValue.substring(4);
-
-      }
-
-      if (
-        phoneValue.startsWith("9665")
-      ) {
-
-        phoneValue =
-          "0" +
-          phoneValue.substring(3);
-
-      }
-
-      return phoneValue;
-    }
-
-
-    // ==========================================
-    // إظهار الخطأ
-    // ==========================================
-
-    function setError(
-      input,
-      errorId,
-      message
-    ) {
-
-      input.classList.remove("valid");
-      input.classList.add("invalid");
-
-      const error =
-        document.getElementById(errorId);
-
-      error.textContent =
-        "❌ " + message;
-    }
-
-
-    // ==========================================
-    // إظهار أن الحقل صحيح
-    // ==========================================
-
-    function setValid(
-      input,
-      errorId
-    ) {
-
-      input.classList.remove("invalid");
-      input.classList.add("valid");
-
-      const error =
-        document.getElementById(errorId);
-
-      error.textContent = "";
-    }
-
-
-    // ==========================================
-    // اسم البائع
-    // ==========================================
-
-    function validateSellerName() {
-
-      const value =
-        sellerName.value.trim();
-
-      if (!value) {
-
-        setError(
-          sellerName,
-          "seller_name_error",
-          "يجب إدخال اسم البائع."
-        );
-
-        return false;
-      }
-
-      if (value.length < 3) {
-
-        setError(
-          sellerName,
-          "seller_name_error",
-          "اسم البائع يجب أن يكون 3 أحرف على الأقل."
-        );
-
-        return false;
-      }
-
-      if (
-        !/^[\u0600-\u06FFa-zA-Z\s]+$/.test(value)
-      ) {
-
-        setError(
-          sellerName,
-          "seller_name_error",
-          "اكتب اسم البائع باستخدام الحروف فقط."
-        );
-
-        return false;
-      }
-
-      setValid(
-        sellerName,
-        "seller_name_error"
-      );
-
-      return true;
-    }
-
-
-    // ==========================================
-    // البريد الإلكتروني
-    // ==========================================
-
-    function validateEmail() {
-
-      const value =
-        sellerEmail.value.trim();
-
-      if (!value) {
-
-        setError(
-          sellerEmail,
-          "seller_email_error",
-          "يجب إدخال البريد الإلكتروني."
-        );
-
-        return false;
-      }
-
-      if (value.length > 120) {
-
-        setError(
-          sellerEmail,
-          "seller_email_error",
-          "البريد الإلكتروني طويل جدًا."
-        );
-
-        return false;
-      }
-
-      const emailRegex =
-        /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-      if (!emailRegex.test(value)) {
-
-        setError(
-          sellerEmail,
-          "seller_email_error",
-          "البريد الإلكتروني غير صحيح. مثال: example@email.com"
-        );
-
-        return false;
-      }
-
-      setValid(
-        sellerEmail,
-        "seller_email_error"
-      );
-
-      return true;
-    }
-
-
-    // ==========================================
-    // رقم الجوال
-    // ==========================================
-
-    function validatePhone() {
-
-      const normalized =
-        normalizePhone(phone.value);
-
-      phone.value =
-        normalized;
-
-      if (!normalized) {
-
-        setError(
-          phone,
-          "phone_error",
-          "يجب إدخال رقم الجوال."
-        );
-
-        return false;
-      }
-
-      if (
-        !/^05\d{8}$/.test(normalized)
-      ) {
-
-        setError(
-          phone,
-          "phone_error",
-          "رقم الجوال غير صحيح. يجب أن يكون مثل 05xxxxxxxx."
-        );
-
-        return false;
-      }
-
-      setValid(
-        phone,
-        "phone_error"
-      );
-
-      return true;
-    }
-
-
-    // ==========================================
-    // المدينة
-    // ==========================================
-
-    function validateCity() {
-
-      const value =
-        city.value.trim();
-
-      if (!value) {
-
-        setError(
-          city,
-          "city_error",
-          "يجب إدخال المدينة."
-        );
-
-        return false;
-      }
-
-      if (value.length < 2) {
-
-        setError(
-          city,
-          "city_error",
-          "اكتب اسم المدينة بشكل صحيح."
-        );
-
-        return false;
-      }
-
-      setValid(
-        city,
-        "city_error"
-      );
-
-      return true;
-    }
-
-
-    // ==========================================
-    // التصنيف
-    // ==========================================
-
-    function validateCategory() {
-
-      if (!category.value) {
-
-        setError(
-          category,
-          "category_error",
-          "يجب اختيار تصنيف المنتج."
-        );
-
-        return false;
-      }
-
-      setValid(
-        category,
-        "category_error"
-      );
-
-      return true;
-    }
-
-
-    // ==========================================
-    // اسم المنتج
-    // ==========================================
-
-    function validateProductTitle() {
-
-      const value =
-        productTitle.value.trim();
-
-      if (!value) {
-
-        setError(
-          productTitle,
-          "product_title_error",
-          "يجب إدخال اسم المنتج."
-        );
-
-        return false;
-      }
-
-      if (value.length < 2) {
-
-        setError(
-          productTitle,
-          "product_title_error",
-          "اسم المنتج قصير جدًا."
-        );
-
-        return false;
-      }
-
-      setValid(
-        productTitle,
-        "product_title_error"
-      );
-
-      return true;
-    }
-
-
-    // ==========================================
-    // حساب العمولة
-    // ==========================================
-
-    function updatePriceSummary() {
-
-      const rawValue =
-        normalizeArabicNumbers(
-          price.value
-        );
-
-      const productPrice =
-        Number(rawValue);
-
-      if (
-        !rawValue ||
-        !Number.isFinite(productPrice) ||
-        productPrice < 0
-      ) {
-
-        resetPriceSummary();
-
-        return;
-      }
-
-      const commission =
-        productPrice *
-        COMMISSION_RATE;
-
-      const sellerAmount =
-        productPrice -
-        commission;
-
-      salePriceDisplay.textContent =
-        productPrice.toFixed(2) +
-        " ريال";
-
-      commissionDisplay.textContent =
-        commission.toFixed(2) +
-        " ريال";
-
-      sellerAmountDisplay.textContent =
-        sellerAmount.toFixed(2) +
-        " ريال";
-
-      priceSummary.classList.add("show");
-    }
-
-
-    // ==========================================
-    // إعادة صندوق السعر للوضع الطبيعي
-    // ==========================================
-
-    function resetPriceSummary() {
-
-      priceSummary.classList.remove("show");
-
-      salePriceDisplay.textContent =
-        "0.00 ريال";
-
-      commissionDisplay.textContent =
-        "0.00 ريال";
-
-      sellerAmountDisplay.textContent =
-        "0.00 ريال";
-    }
-
-
-    // ==========================================
-    // التحقق من السعر
-    // ==========================================
-
-    function validatePrice() {
-
-      const value =
-        normalizeArabicNumbers(
-          price.value
-        );
-
-      price.value =
-        value;
-
-      if (!value) {
-
-        resetPriceSummary();
-
-        setError(
-          price,
-          "price_error",
-          "يجب إدخال سعر المنتج."
-        );
-
-        return false;
-      }
-
-      const number =
-        Number(value);
-
-      if (!Number.isFinite(number)) {
-
-        resetPriceSummary();
-
-        setError(
-          price,
-          "price_error",
-          "السعر غير صحيح."
-        );
-
-        return false;
-      }
-
-      if (number < 0) {
-
-        resetPriceSummary();
-
-        setError(
-          price,
-          "price_error",
-          "السعر لا يمكن أن يكون سالبًا."
-        );
-
-        return false;
-      }
-
-      setValid(
-        price,
-        "price_error"
-      );
-
-      updatePriceSummary();
-
-      return true;
-    }
-
-
-    // ==========================================
-    // الوصف
-    // ==========================================
-
-    function validateDescription() {
-
-      const value =
-        description.value.trim();
-
-      if (!value) {
-
-        setError(
-          description,
-          "description_error",
-          "يجب كتابة وصف للمنتج."
-        );
-
-        return false;
-      }
-
-      if (value.length < 5) {
-
-        setError(
-          description,
-          "description_error",
-          "الوصف يجب أن يكون 5 أحرف على الأقل."
-        );
-
-        return false;
-      }
-
-      setValid(
-        description,
-        "description_error"
-      );
-
-      return true;
-    }
-
-
-    // ==========================================
-    // الصور
-    // ==========================================
-
-    function validateImages() {
-
-      const files =
-        Array.from(
-          productImage.files || []
-        );
-
-      if (files.length === 0) {
-
-        setError(
-          productImage,
-          "product_image_error",
-          "يجب إضافة صورة واحدة على الأقل."
-        );
-
-        return false;
-      }
-
-      if (files.length > MAX_IMAGES) {
-
-        setError(
-          productImage,
-          "product_image_error",
-          "يمكنك إضافة 4 صور كحد أقصى."
-        );
-
-        return false;
-      }
-
-      for (const file of files) {
-
-        if (
+    const invalidFile =
+      files.find(
+        file =>
           !file.type.startsWith("image/")
-        ) {
-
-          setError(
-            productImage,
-            "product_image_error",
-            "كل الملفات يجب أن تكون صورًا."
-          );
-
-          return false;
-        }
-      }
-
-      setValid(
-        productImage,
-        "product_image_error"
       );
 
-      return true;
+    if (invalidFile) {
+
+      document.getElementById(
+        "productImageError"
+      ).textContent =
+        "يرجى اختيار ملفات صور فقط.";
+
+      productImage.value = "";
+      selectedFiles = [];
+      renderPreviews();
+
+      return;
     }
 
 
-    // ==========================================
-    // الشروط
-    // ==========================================
+    document.getElementById(
+      "productImageError"
+    ).textContent = "";
 
-    function validateTerms() {
+    selectedFiles = files;
 
-      const error =
-        document.getElementById(
-          "agree_terms_error"
-        );
+    renderPreviews();
+  }
+);
 
-      if (!agreeTerms.checked) {
 
-        error.textContent =
-          "❌ يجب الموافقة على الشروط قبل إرسال المنتج.";
+function renderPreviews() {
 
-        return false;
-      }
+  previewGrid.innerHTML = "";
 
-      error.textContent = "";
+  selectedFiles.forEach(
+    file => {
 
-      return true;
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "preview-item";
+
+      const img =
+        document.createElement("img");
+
+      img.alt =
+        "صورة المنتج";
+
+      const reader =
+        new FileReader();
+
+      reader.onload =
+        function (event) {
+          img.src =
+            event.target.result;
+        };
+
+      reader.readAsDataURL(file);
+
+      item.appendChild(img);
+
+      previewGrid.appendChild(item);
     }
+  );
+}
 
 
-    // ==========================================
-    // معاينة الصور
-    // ==========================================
+function clearFormFields() {
 
-    productImage.addEventListener(
-      "change",
-      function() {
+  sellerForm.reset();
 
-        previewGrid.innerHTML = "";
+  selectedFiles = [];
 
-        const files =
-          Array.from(
-            productImage.files || []
-          );
+  productImage.value = "";
 
-        if (
-          files.length > MAX_IMAGES
-        ) {
+  previewGrid.innerHTML = "";
 
-          setError(
-            productImage,
-            "product_image_error",
-            "يمكنك إضافة 4 صور كحد أقصى."
-          );
+  clearFieldState(
+    sellerName,
+    "sellerNameError"
+  );
 
-          productImage.value = "";
+  clearFieldState(
+    sellerEmail,
+    "sellerEmailError"
+  );
 
-          return;
-        }
+  clearFieldState(
+    phone,
+    "phoneError"
+  );
 
-        files.forEach(
-          function(file) {
+  clearFieldState(
+    city,
+    "cityError"
+  );
 
-            if (
-              !file.type.startsWith("image/")
-            ) {
-              return;
-            }
+  clearFieldState(
+    category,
+    "categoryError"
+  );
 
-            const item =
-              document.createElement("div");
+  clearFieldState(
+    productTitle,
+    "productTitleError"
+  );
 
-            item.className =
-              "preview-item";
+  clearFieldState(
+    price,
+    "priceError"
+  );
 
-            const img =
-              document.createElement("img");
+  clearFieldState(
+    description,
+    "descriptionError"
+  );
 
-            img.src =
-              URL.createObjectURL(file);
+  document.getElementById(
+    "productImageError"
+  ).textContent = "";
 
-            img.alt =
-              "معاينة صورة المنتج";
+  document.getElementById(
+    "agreeTermsError"
+  ).textContent = "";
 
-            item.appendChild(img);
-
-            previewGrid.appendChild(item);
-          }
-        );
-
-        validateImages();
-      }
-    );
+  resetPriceSummary();
+}
 
 
-    // ==========================================
-    // التحقق أثناء الكتابة
-    // ==========================================
+function createSafeFileName(
+  originalName
+) {
 
-    sellerName.addEventListener(
-      "input",
-      validateSellerName
-    );
+  const extension =
+    originalName.includes(".")
+      ? originalName
+          .split(".")
+          .pop()
+          .toLowerCase()
+      : "webp";
 
-    sellerEmail.addEventListener(
-      "input",
-      validateEmail
-    );
+  let randomPart;
 
-    phone.addEventListener(
-      "input",
-      function() {
+  if (
+    window.crypto &&
+    crypto.randomUUID
+  ) {
+    randomPart =
+      crypto.randomUUID();
+  } else {
+    randomPart =
+      Date.now() +
+      "-" +
+      Math.random()
+        .toString(36)
+        .substring(2);
+  }
 
-        phone.value =
-          normalizePhone(
-            phone.value
-          );
-
-        validatePhone();
-      }
-    );
-
-    city.addEventListener(
-      "input",
-      validateCity
-    );
-
-    category.addEventListener(
-      "change",
-      validateCategory
-    );
-
-    productTitle.addEventListener(
-      "input",
-      validateProductTitle
-    );
-
-    price.addEventListener(
-      "input",
-      validatePrice
-    );
-
-    description.addEventListener(
-      "input",
-      validateDescription
-    );
-
-    agreeTerms.addEventListener(
-      "change",
-      validateTerms
-    );
+  return (
+    "product-" +
+    randomPart +
+    "." +
+    extension
+  );
+}
 
 
-    // ==========================================
-    // الرسائل
-    // ==========================================
+function loadImage(file) {
 
-    function showMessage(
-      message,
-      type
-    ) {
+  return new Promise(
+    (resolve, reject) => {
 
-      formMessage.textContent =
-        message;
+      const reader =
+        new FileReader();
 
-      formMessage.className =
-        "message " + type;
+      reader.onload =
+        function () {
 
-      formMessage.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
+          const img =
+            new Image();
+
+          img.onload =
+            function () {
+              resolve(img);
+            };
+
+          img.onerror =
+            reject;
+
+          img.src =
+            reader.result;
+        };
+
+      reader.onerror =
+        reject;
+
+      reader.readAsDataURL(file);
     }
+  );
+}
 
 
-    // ==========================================
-    // ضغط الصورة
-    // ==========================================
+async function compressImage(file) {
 
-    async function compressImage(file) {
+  const img =
+    await loadImage(file);
 
-      if (
-        !file.type.startsWith("image/")
-      ) {
+  let width =
+    img.width;
 
-        throw new Error(
-          "الملف المحدد ليس صورة."
+  let height =
+    img.height;
+
+
+  if (
+    width > MAX_IMAGE_DIMENSION ||
+    height > MAX_IMAGE_DIMENSION
+  ) {
+
+    if (width > height) {
+
+      height =
+        Math.round(
+          height *
+          MAX_IMAGE_DIMENSION /
+          width
         );
-      }
 
-      const imageUrl =
-        URL.createObjectURL(file);
+      width =
+        MAX_IMAGE_DIMENSION;
 
-      try {
+    } else {
 
-        const image =
-          await new Promise(
-            function(resolve, reject) {
-
-              const img =
-                new Image();
-
-              img.onload =
-                function() {
-                  resolve(img);
-                };
-
-              img.onerror =
-                function() {
-                  reject(
-                    new Error(
-                      "تعذر قراءة الصورة."
-                    )
-                  );
-                };
-
-              img.src =
-                imageUrl;
-            }
-          );
-
-        let width =
-          image.naturalWidth;
-
-        let height =
-          image.naturalHeight;
-
-        if (
-          width > MAX_IMAGE_DIMENSION ||
-          height > MAX_IMAGE_DIMENSION
-        ) {
-
-          const scale =
-            Math.min(
-              MAX_IMAGE_DIMENSION / width,
-              MAX_IMAGE_DIMENSION / height
-            );
-
-          width =
-            Math.round(
-              width * scale
-            );
-
-          height =
-            Math.round(
-              height * scale
-            );
-        }
-
-        const canvas =
-          document.createElement("canvas");
-
-        canvas.width =
-          width;
-
-        canvas.height =
-          height;
-
-        const context =
-          canvas.getContext("2d");
-
-        if (!context) {
-
-          throw new Error(
-            "تعذر تجهيز الصورة للضغط."
-          );
-        }
-
-        context.drawImage(
-          image,
-          0,
-          0,
-          width,
+      width =
+        Math.round(
+          width *
+          MAX_IMAGE_DIMENSION /
           height
         );
 
-        let quality =
-          INITIAL_IMAGE_QUALITY;
+      height =
+        MAX_IMAGE_DIMENSION;
+    }
+  }
 
-        let blob =
-          await canvasToBlob(
-            canvas,
+
+  const canvas =
+    document.createElement("canvas");
+
+  canvas.width =
+    width;
+
+  canvas.height =
+    height;
+
+
+  const ctx =
+    canvas.getContext("2d");
+
+  ctx.drawImage(
+    img,
+    0,
+    0,
+    width,
+    height
+  );
+
+
+  let quality =
+    INITIAL_IMAGE_QUALITY;
+
+  let blob =
+    await new Promise(
+      resolve =>
+        canvas.toBlob(
+          resolve,
+          "image/webp",
+          quality
+        )
+    );
+
+
+  while (
+    blob &&
+    blob.size > TARGET_IMAGE_SIZE &&
+    quality > MIN_IMAGE_QUALITY
+  ) {
+
+    quality -= 0.05;
+
+    blob =
+      await new Promise(
+        resolve =>
+          canvas.toBlob(
+            resolve,
             "image/webp",
             quality
-          );
-
-        while (
-          blob.size > TARGET_IMAGE_SIZE &&
-          quality > MIN_IMAGE_QUALITY
-        ) {
-
-          quality -= 0.05;
-
-          blob =
-            await canvasToBlob(
-              canvas,
-              "image/webp",
-              quality
-            );
-        }
-
-        while (
-          blob.size > TARGET_IMAGE_SIZE &&
-          width > 1000 &&
-          height > 1000
-        ) {
-
-          width =
-            Math.round(
-              width * 0.85
-            );
-
-          height =
-            Math.round(
-              height * 0.85
-            );
-
-          canvas.width =
-            width;
-
-          canvas.height =
-            height;
-
-          context.clearRect(
-            0,
-            0,
-            width,
-            height
-          );
-
-          context.drawImage(
-            image,
-            0,
-            0,
-            width,
-            height
-          );
-
-          quality = 0.75;
-
-          blob =
-            await canvasToBlob(
-              canvas,
-              "image/webp",
-              quality
-            );
-        }
-
-        return new File(
-          [blob],
-          "product-image.webp",
-          {
-            type: "image/webp",
-            lastModified: Date.now()
-          }
-        );
-
-      } finally {
-
-        URL.revokeObjectURL(
-          imageUrl
-        );
-      }
-    }
-
-
-    // ==========================================
-    // Canvas إلى Blob
-    // ==========================================
-
-    function canvasToBlob(
-      canvas,
-      type,
-      quality
-    ) {
-
-      return new Promise(
-        function(resolve, reject) {
-
-          canvas.toBlob(
-            function(blob) {
-
-              if (!blob) {
-
-                reject(
-                  new Error(
-                    "تعذر ضغط الصورة."
-                  )
-                );
-
-                return;
-              }
-
-              resolve(blob);
-
-            },
-            type,
-            quality
-          );
-        }
+          )
       );
+  }
+
+
+  if (!blob) {
+    throw new Error(
+      "تعذر معالجة إحدى الصور."
+    );
+  }
+
+
+  return new File(
+    [blob],
+    createSafeFileName(
+      file.name
+    ),
+    {
+      type: "image/webp"
     }
-
-
-    // ==========================================
-    // إنشاء اسم آمن للصورة
-    // ==========================================
-
-    function createSafeFileName() {
-
-      const randomPart =
-        crypto.randomUUID
-          ? crypto.randomUUID()
-          : Date.now() +
-            "-" +
-            Math.random()
-              .toString(36)
-              .substring(2, 12);
-
-      return (
-        "product-" +
-        randomPart +
-        ".webp"
-      );
-    }
-
-
-    // ==========================================
-    // رفع الصورة إلى Supabase
-    // ==========================================
-
-    async function uploadImage(file) {
-
-      const compressedFile =
-        await compressImage(file);
-
-      const fileName =
-        createSafeFileName();
-
-      const filePath =
-        "seller-products/" +
-        fileName;
-
-      const response =
-        await fetch(
-          SUPABASE_URL +
-          "/storage/v1/object/" +
-          STORAGE_BUCKET +
-          "/" +
-          filePath,
-          {
-            method: "POST",
-
-            headers: {
-              "Authorization":
-                "Bearer " +
-                SUPABASE_KEY,
-
-              "apikey":
-                SUPABASE_KEY,
-
-              "Content-Type":
-                "image/webp"
-            },
-
-            body: compressedFile
-          }
-        );
-
-      if (!response.ok) {
-
-        let errorText =
-          "فشل رفع الصورة.";
-
-        try {
-
-          const data =
-            await response.json();
-
-          errorText =
-            data.message ||
-            data.error ||
-            errorText;
-
-        } catch (error) {}
-
-        throw new Error(
-          errorText
-        );
-      }
-
-      const publicUrl =
-        SUPABASE_URL +
-        "/storage/v1/object/public/" +
-        STORAGE_BUCKET +
-        "/" +
-        filePath;
-
-      return {
-        url: publicUrl,
-        path: filePath
-      };
-    }
-
-
-    // ==========================================
-    // حذف الصور عند حدوث خطأ
-    // ==========================================
-
-    async function deleteUploadedImages(
-      paths
-    ) {
-
-      for (const path of paths) {
-
-        try {
-
-          await fetch(
-            SUPABASE_URL +
-            "/storage/v1/object/" +
-            STORAGE_BUCKET +
-            "/" +
-            path,
-            {
-              method: "DELETE",
-
-              headers: {
-                "Authorization":
-                  "Bearer " +
-                  SUPABASE_KEY,
-
-                "apikey":
-                  SUPABASE_KEY
-              }
-            }
-          );
-
-        } catch (error) {
-
-          console.warn(
-            "تعذر حذف الصورة:",
-            path
-          );
-        }
-      }
-    }
-
-
-    // ==========================================
-    // إرسال النموذج
-    // ==========================================
-
-    sellerForm.addEventListener(
-      "submit",
-      async function(event) {
-
-        event.preventDefault();
-
-        clearMessage();
-
-        const validName =
-          validateSellerName();
-
-        const validEmail =
-          validateEmail();
-
-        const validPhone =
-          validatePhone();
-
-        const validCity =
-          validateCity();
-
-        const validCategory =
-          validateCategory();
-
-        const validTitle =
-          validateProductTitle();
-
-        const validPrice =
-          validatePrice();
-
-        const validDescription =
-          validateDescription();
-
-        const validImages =
-          validateImages();
-
-        const validTerms =
-          validateTerms();
-
-        if (
-          !validName ||
-          !validEmail ||
-          !validPhone ||
-          !validCity ||
-          !validCategory ||
-          !validTitle ||
-          !validPrice ||
-          !validDescription ||
-          !validImages ||
-          !validTerms
-        ) {
-
-          showMessage(
-            "❌ يرجى تصحيح البيانات الموجودة باللون الأحمر قبل إرسال الطلب.",
-            "error"
-          );
-
-          const firstInvalid =
-            sellerForm.querySelector(
-              ".invalid"
-            );
-
-          if (firstInvalid) {
-            firstInvalid.focus();
-          }
-
-          return;
-        }
-
-
-        // منع الضغط المتكرر
-        submitBtn.disabled =
-          true;
-
-        submitBtn.textContent =
-          "جاري إرسال المنتج...";
-
-
-        let uploadedPaths = [];
-
-
-        try {
-
-          const files =
-            Array.from(
-              productImage.files
-            );
-
-          const uploadedImages = [];
-
-
-          // ==========================================
-          // رفع الصور
-          // ==========================================
-
-          for (
-            let i = 0;
-            i < files.length;
-            i++
-          ) {
-
-            submitBtn.textContent =
-              `جاري تجهيز الصورة ${i + 1} من ${files.length}...`;
-
-            const result =
-              await uploadImage(
-                files[i]
-              );
-
-            uploadedImages.push(
-              result.url
-            );
-
-            uploadedPaths.push(
-              result.path
-            );
-          }
-
-
-          // ==========================================
-          // قراءة بيانات النموذج
-          // ==========================================
-
-          const sellerNameValue =
-            sellerName.value.trim();
-
-          const phoneValue =
-            normalizePhone(
-              phone.value
-            );
-
-          const cityValue =
-            city.value.trim();
-
-          const categoryValue =
-            category.value;
-
-          const productName =
-            productTitle.value.trim();
-
-          const productPrice =
-            Number(price.value);
-
-          const descriptionValue =
-            description.value.trim();
-
-
-          // ==========================================
-          // حفظ الطلب
-          // ==========================================
-
-          submitBtn.textContent =
-            "جاري حفظ الطلب...";
-
-
-          const insertResponse =
-            await fetch(
-              SUPABASE_URL +
-              "/rest/v1/seller_requests",
-              {
-                method: "POST",
-
-                headers: {
-                  "Content-Type":
-                    "application/json",
-
-                  "apikey":
-                    SUPABASE_KEY,
-
-                  "Authorization":
-                    "Bearer " +
-                    SUPABASE_KEY,
-
-                  "Prefer":
-                    "return=minimal"
-                },
-
-                body: JSON.stringify({
-
-                  product_name:
-                    productName,
-
-                  seller_name:
-                    sellerNameValue,
-
-                  phone:
-                    phoneValue,
-
-                  city:
-                    cityValue,
-
-                  category:
-                    categoryValue,
-
-                  price:
-                    productPrice,
-
-                  quantity:
-                    1,
-
-                  description:
-                    descriptionValue,
-
-                  notes:
-                    "",
-
-                  agreement_accepted:
-                    true,
-
-                  agreement_accepted_at:
-                    new Date().toISOString(),
-
-                  status:
-                    "pending",
-
-                  published:
-                    false,
-
-                  image:
-                    uploadedImages[0],
-
-                  images:
-                    uploadedImages,
-
-                  image_url:
-                    uploadedImages[0]
-
-                })
-              }
-            );
-
-
-          // ==========================================
-          // التأكد من نجاح الحفظ
-          // ==========================================
-
-          if (
-            !insertResponse.ok
-          ) {
-
-            let errorMessage =
-              "حدث خطأ أثناء حفظ الطلب.";
-
-            try {
-
-              const errorData =
-                await insertResponse.json();
-
-              errorMessage =
-                errorData.message ||
-                errorData.error ||
-                errorMessage;
-
-            } catch (error) {}
-
-            throw new Error(
-              errorMessage
-            );
-          }
-
-
-          // ==========================================
-          // نجاح الإرسال
-          // ==========================================
-
-          // تنظيف الحقول
-          // بدون حذف رسالة النجاح
-          clearFormFields();
-
-          // إظهار رسالة النجاح
-          showMessage(
-            "✅ تم إرسال منتجك بنجاح! سيتم مراجعته من الإدارة قبل نشره في الموقع.",
-            "success"
-          );
-
-
-          // التأكد من أن المستخدم يرى الرسالة
-          setTimeout(
-            function() {
-
-              formMessage.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-              });
-
-            },
-            100
-          );
-
-
-        } catch (error) {
-
-          console.error(
-            "Seller form error:",
-            error
-          );
-
-
-          // حذف الصور التي تم رفعها
-          if (
-            uploadedPaths.length > 0
-          ) {
-
-            await deleteUploadedImages(
-              uploadedPaths
-            );
-          }
-
-
-          showMessage(
-            "❌ لم يتم إرسال الطلب. " +
-            (
-              error.message ||
-              "حدث خطأ غير متوقع."
-            ),
-            "error"
-          );
-
-
-        } finally {
-
-          submitBtn.disabled =
-            false;
-
-          submitBtn.textContent =
-            "إرسال المنتج للمراجعة";
-        }
-
+  );
+}
+
+
+async function uploadImage(
+  file
+) {
+
+  const path =
+    "seller-products/" +
+    createSafeFileName(
+      file.name
+    );
+
+  const response =
+    await fetch(
+      SUPABASE_URL +
+      "/storage/v1/object/" +
+      STORAGE_BUCKET +
+      "/" +
+      path,
+      {
+        method: "POST",
+
+        headers: {
+          "Authorization":
+            "Bearer " +
+            SUPABASE_KEY,
+
+          "apikey":
+            SUPABASE_KEY,
+
+          "Content-Type":
+            file.type,
+
+          "x-upsert":
+            "false"
+        },
+
+        body: file
       }
     );
 
-  </script>
+
+  if (!response.ok) {
+
+    let errorText =
+      "فشل رفع الصورة.";
+
+    try {
+      const data =
+        await response.json();
+
+      if (data.message) {
+        errorText =
+          data.message;
+      }
+    } catch (error) {}
+
+    throw new Error(
+      errorText
+    );
+  }
+
+
+  return (
+    SUPABASE_URL +
+    "/storage/v1/object/public/" +
+    STORAGE_BUCKET +
+    "/" +
+    path
+  );
+}
+
+
+async function deleteUploadedImages(
+  imageUrls
+) {
+
+  for (
+    const imageUrl of imageUrls
+  ) {
+
+    try {
+
+      const marker =
+        "/storage/v1/object/public/" +
+        STORAGE_BUCKET +
+        "/";
+
+      const index =
+        imageUrl.indexOf(marker);
+
+      if (index === -1) {
+        continue;
+      }
+
+      const path =
+        imageUrl.substring(
+          index + marker.length
+        );
+
+      await fetch(
+        SUPABASE_URL +
+        "/storage/v1/object/" +
+        STORAGE_BUCKET +
+        "/" +
+        path,
+        {
+          method: "DELETE",
+
+          headers: {
+            "Authorization":
+              "Bearer " +
+              SUPABASE_KEY,
+
+            "apikey":
+              SUPABASE_KEY
+          }
+        }
+      );
+
+    } catch (error) {
+      console.error(
+        "تعذر حذف الصورة:",
+        error
+      );
+    }
+  }
+}
+
+
+async function submitSellerRequest(
+  data
+) {
+
+  const response =
+    await fetch(
+      SUPABASE_URL +
+      "/rest/v1/seller_requests",
+      {
+        method: "POST",
+
+        headers: {
+          "Authorization":
+            "Bearer " +
+            SUPABASE_KEY,
+
+          "apikey":
+            SUPABASE_KEY,
+
+          "Content-Type":
+            "application/json",
+
+          "Prefer":
+            "return=minimal"
+        },
+
+        body:
+          JSON.stringify(data)
+      }
+    );
+
+
+  if (!response.ok) {
+
+    let message =
+      "تعذر إرسال طلبك.";
+
+    try {
+
+      const errorData =
+        await response.json();
+
+      if (
+        errorData.message
+      ) {
+        message =
+          errorData.message;
+      }
+
+    } catch (error) {}
+
+    throw new Error(
+      message
+    );
+  }
+}
+
+
+sellerForm.addEventListener(
+  "submit",
+  async function (event) {
+
+    event.preventDefault();
+
+    clearMessage();
+
+
+    if (!validateForm()) {
+
+      showMessage(
+        "⚠️ يرجى تصحيح البيانات المطلوبة قبل الإرسال.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    submitBtn.disabled = true;
+
+    submitBtn.textContent =
+      "جاري إرسال المنتج...";
+
+
+    let uploadedImages = [];
+
+
+    try {
+
+      const productName =
+        productTitle.value.trim();
+
+      const sellerNameValue =
+        sellerName.value.trim();
+
+      const phoneValue =
+        phone.value.trim();
+
+      const cityValue =
+        city.value.trim();
+
+      const categoryValue =
+        category.value.trim();
+
+      const productPrice =
+        parseFloat(price.value);
+
+      const descriptionValue =
+        description.value.trim();
+
+
+      for (
+        const file of selectedFiles
+      ) {
+
+        const compressedFile =
+          await compressImage(file);
+
+        const imageUrl =
+          await uploadImage(
+            compressedFile
+          );
+
+        uploadedImages.push(
+          imageUrl
+        );
+      }
+
+
+      const requestData = {
+
+        product_name:
+          productName,
+
+        seller_name:
+          sellerNameValue,
+
+        phone:
+          phoneValue,
+
+        city:
+          cityValue,
+
+        category:
+          categoryValue,
+
+        price:
+          productPrice,
+
+        quantity:
+          1,
+
+        description:
+          descriptionValue,
+
+        notes:
+          "",
+
+        agreement_accepted:
+          true,
+
+        agreement_accepted_at:
+          new Date().toISOString(),
+
+        status:
+          "pending",
+
+        published:
+          false,
+
+        image:
+          uploadedImages[0],
+
+        images:
+          uploadedImages,
+
+        image_url:
+          uploadedImages[0]
+      };
+
+
+      await submitSellerRequest(
+        requestData
+      );
+
+
+      clearFormFields();
+
+
+      showMessage(
+        "✅ تم إرسال منتجك بنجاح! سيتم مراجعته من الإدارة قبل نشره في الموقع.",
+        "success"
+      );
+
+
+      setTimeout(
+        function () {
+
+          formMessage.scrollIntoView(
+            {
+              behavior: "smooth",
+              block: "center"
+            }
+          );
+
+        },
+        100
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "Submit error:",
+        error
+      );
+
+
+      if (
+        uploadedImages.length > 0
+      ) {
+
+        await deleteUploadedImages(
+          uploadedImages
+        );
+      }
+
+
+      showMessage(
+        "❌ حدث خطأ أثناء إرسال المنتج. " +
+        (
+          error.message ||
+          "يرجى المحاولة مرة أخرى."
+        ),
+        "error"
+      );
+
+    } finally {
+
+      submitBtn.disabled =
+        false;
+
+      submitBtn.textContent =
+        "إرسال المنتج للمراجعة";
+    }
+  }
+);
+
+
+window.addEventListener(
+  "pageshow",
+  function () {
+
+    clearFormFields();
+
+    clearMessage();
+  }
+);
+</script>
 
 </body>
 </html>
