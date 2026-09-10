@@ -527,8 +527,8 @@
 
             <div class="price-row">
 
-              <span>
-                عمولة الموقع (15%)
+              <span id="commissionLabel">
+                عمولة الموقع
               </span>
 
               <span
@@ -667,7 +667,7 @@
         <div
           id="formMessage"
           class="message"
-          role="alert"
+          role="status"
           aria-live="polite"
         ></div>
 
@@ -694,6 +694,14 @@
       "product-images";
 
     const MAX_IMAGES = 4;
+
+
+    // ==========================================
+    // نسبة عمولة الموقع
+    // ==========================================
+    // 0.20 = 20%
+    // 0.15 = 15%
+    // 0.25 = 25%
 
     const COMMISSION_RATE = 0.20;
 
@@ -769,6 +777,17 @@
 
     const sellerAmountDisplay =
       document.getElementById("sellerAmountDisplay");
+
+    const commissionLabel =
+      document.getElementById("commissionLabel");
+
+
+    // ==========================================
+    // تحديث عنوان العمولة تلقائيًا
+    // ==========================================
+
+    commissionLabel.textContent =
+      `عمولة الموقع (${COMMISSION_RATE * 100}%)`;
 
 
     // ==========================================
@@ -1601,7 +1620,6 @@
       formMessage.className =
         "message " + type;
 
-      // التأكد من أن الرسالة أصبحت مرئية
       formMessage.scrollIntoView({
         behavior: "smooth",
         block: "center"
@@ -2250,15 +2268,11 @@
           // نجاح الإرسال
           // ==========================================
 
-          /*
-            مهم جدًا:
-            نقوم بتنظيف الحقول أولًا،
-            لكن clearFormFields() لا تمسح formMessage.
-            وبعد ذلك نظهر رسالة النجاح.
-          */
-
+          // تنظيف الحقول
+          // بدون حذف رسالة النجاح
           clearFormFields();
 
+          // إظهار رسالة النجاح
           showMessage(
             "✅ تم إرسال منتجك بنجاح! سيتم مراجعته من الإدارة قبل نشره في الموقع.",
             "success"
