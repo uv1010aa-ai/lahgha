@@ -192,10 +192,6 @@
             font-weight: bold;
         }
 
-        /* =========================
-           طريقة التوصيل
-        ========================== */
-
         .delivery-button {
             width: 100%;
             margin-top: 18px;
@@ -390,10 +386,6 @@
     </a>
 
 
-    <!-- =========================
-         المنتجات
-    ========================== -->
-
     <section class="box">
 
         <h2>
@@ -414,10 +406,6 @@
     </section>
 
 
-    <!-- =========================
-         بيانات المشتري
-    ========================== -->
-
     <section class="box">
 
         <h2>
@@ -427,8 +415,6 @@
 
         <form id="checkoutForm" novalidate>
 
-
-            <!-- الاسم -->
 
             <label for="buyerName">
                 الاسم الكامل
@@ -450,8 +436,6 @@
             ></small>
 
 
-            <!-- الجوال -->
-
             <label for="buyerPhone">
                 رقم الجوال
             </label>
@@ -471,8 +455,6 @@
                 class="field-error"
             ></small>
 
-
-            <!-- المدينة -->
 
             <label for="buyerCity">
                 مدينة التوصيل
@@ -500,8 +482,6 @@
             ></small>
 
 
-            <!-- العنوان -->
-
             <label for="buyerAddress">
                 العنوان
             </label>
@@ -520,10 +500,6 @@
                 class="field-error"
             ></small>
 
-
-            <!-- =========================
-                 طريقة التوصيل
-            ========================== -->
 
             <button
                 type="button"
@@ -549,8 +525,6 @@
 
             </div>
 
-
-            <!-- الدفع -->
 
             <label for="paymentMethod">
                 طريقة الدفع
@@ -584,10 +558,6 @@
 
             </div>
 
-
-            <!-- =========================
-                 الملخص
-            ========================== -->
 
             <div class="summary">
 
@@ -671,7 +641,6 @@ const supabaseClient =
 
 /* =====================================================
    المدن التي يشملها الدفع عند الاستلام
-   لاحقًا يمكن إضافة مدن هنا
 ===================================================== */
 
 const cashOnDeliveryCities = [
@@ -681,7 +650,6 @@ const cashOnDeliveryCities = [
 
 /* =====================================================
    السلة
-   تستخدم sessionStorage
 ===================================================== */
 
 let cart = [];
@@ -982,7 +950,7 @@ function validateBuyerName() {
 
 
 /* =====================================================
-   التحقق من الجوال السعودي
+   التحقق من الجوال
 ===================================================== */
 
 function validateBuyerPhone() {
@@ -1177,10 +1145,6 @@ function updateDeliveryInfo() {
 
         `;
 
-        /*
-         * إذا كانت المدينة تسمح بالدفع عند الاستلام
-         * نعيد تفعيل الخيار.
-         */
 
         const cashOption =
             [...paymentMethod.options]
@@ -1227,10 +1191,6 @@ function updateDeliveryInfo() {
 
         `;
 
-
-        /*
-         * المدن الأخرى لا تسمح بالدفع عند الاستلام.
-         */
 
         const cashOption =
             [...paymentMethod.options]
@@ -1756,6 +1716,134 @@ paymentMethod.addEventListener(
 
 
 /* =====================================================
+   إنشاء / استرجاع ملف المشتري
+===================================================== */
+
+async function getOrCreateBuyerProfile(
+    buyerName,
+    buyerPhone,
+    buyerCity,
+    buyerAddress
+) {
+
+    /*
+     * البحث عن المشتري بواسطة رقم الجوال.
+     */
+
+    const {
+        data: existingBuyer,
+        error: findError
+    } =
+        await supabaseClient
+            .from("buyer_profiles")
+            .select("id")
+            .eq("phone", buyerPhone)
+            .maybeSingle();
+
+
+    if (findError) {
+
+        console.error(
+            "Buyer profile lookup error:",
+            findError
+        );
+
+        throw findError;
+
+    }
+
+
+    /*
+     * المشتري موجود:
+     * نحدّث بياناته ونستخدم نفس الهوية.
+     */
+
+    if (existingBuyer) {
+
+        const {
+            data: updatedBuyer,
+            error: updateError
+        } =
+            await supabaseClient
+                .from("buyer_profiles")
+                .update({
+                    full_name: buyerName,
+                    city: buyerCity,
+                    address: buyerAddress,
+                    updated_at:
+                        new Date().toISOString()
+                })
+                .eq(
+                    "id",
+                    existingBuyer.id
+                )
+                .select("id")
+                .single();
+
+
+        if (updateError) {
+
+            console.error(
+                "Buyer profile update error:",
+                updateError
+            );
+
+            throw updateError;
+
+        }
+
+
+        return updatedBuyer.id;
+
+    }
+
+
+    /*
+     * المشتري جديد:
+     * إنشاء ملف جديد.
+     */
+
+    const {
+        data: newBuyer,
+        error: createError
+    } =
+        await supabaseClient
+            .from("buyer_profiles")
+            .insert([{
+                full_name:
+                    buyerName,
+
+                phone:
+                    buyerPhone,
+
+                city:
+                    buyerCity,
+
+                address:
+                    buyerAddress
+            }])
+            .select("id")
+            .single();
+
+
+    if (createError) {
+
+        console.error(
+            "Buyer profile creation error:",
+            createError
+        );
+
+        throw createError;
+
+    }
+
+
+    return newBuyer.id;
+
+}
+
+
+/* =====================================================
    إرسال الطلب
 ===================================================== */
 
@@ -1887,7 +1975,7 @@ form.addEventListener(
 
             /*
              * أخذ seller_request_id
-             * من جدول products
+             * من جدول products.
              */
 
             products =
@@ -1924,17 +2012,26 @@ form.addEventListener(
             );
 
 
+            /*
+             * إنشاء / استرجاع هوية المشتري.
+             */
+
+            const buyerId =
+                await getOrCreateBuyerProfile(
+                    buyerName,
+                    buyerPhone,
+                    buyerCity,
+                    buyerAddress
+                );
+
+
             const orderNumber =
                 "ORD-" +
                 Date.now();
 
 
             /*
-             * نحافظ على جدول orders الحالي
-             * بدون الحاجة لإضافة أعمدة جديدة.
-             *
-             * يتم تضمين المدينة ومعلومة التوصيل
-             * داخل عنوان المشتري.
+             * الحفاظ على طريقة تخزين العنوان الحالية.
              */
 
             const deliveryNote =
@@ -1962,10 +2059,17 @@ form.addEventListener(
                 deliveryNote;
 
 
+            /*
+             * بيانات الطلب.
+             */
+
             const orderData = {
 
                 order_number:
                     orderNumber,
+
+                buyer_id:
+                    buyerId,
 
                 buyer_name:
                     buyerName,
@@ -2036,10 +2140,6 @@ form.addEventListener(
 
                 cart = [];
 
-
-                /*
-                 * التأكد من أن السلة حُذفت فعليًا
-                 */
 
                 if (
                     sessionStorage.getItem(
@@ -2128,7 +2228,7 @@ form.addEventListener(
             ) {
 
                 errorText =
-                    "❌ رقم الطلب مكرر.";
+                    "❌ رقم الطلب أو رقم الجوال مستخدم مسبقًا.";
 
             }
             else if (
