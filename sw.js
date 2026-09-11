@@ -1,4 +1,4 @@
-const CACHE_NAME = "lahgha-v132";
+const CACHE_NAME = "lahgha-v133"; // تم التحديث إلى v133 لتنشيط التعديلات الجديدة
 
 const CORE_FILES = [
     "./",
