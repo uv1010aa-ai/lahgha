@@ -2598,6 +2598,9 @@ sellerForm.addEventListener(
 
 
       /* رسالة النجاح */
+// أضف هذا السطر لحفظ الكمية في ذاكرة المتصفح ليراها المشتري
+const productQuantityValue = Number(document.getElementById("productQuantity").value);
+localStorage.setItem('main_product_stock', productQuantityValue);
 
       showMessage(
         "✅ تم إرسال منتجك بنجاح! سيتم مراجعته من الإدارة قبل نشره في الموقع.",
