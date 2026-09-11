@@ -1,715 +1,720 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 
 <head>
 
-    <meta charset="UTF-8">
+```
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>لوحة التحكم | لَحْقها</title>
+<title>لوحة التحكم | لَحْقها</title>
 
-    <meta
-        http-equiv="Cache-Control"
-        content="no-cache, no-store, must-revalidate"
-    >
+<meta
+    http-equiv="Cache-Control"
+    content="no-cache, no-store, must-revalidate"
+>
 
-    <meta
-        http-equiv="Pragma"
-        content="no-cache"
-    >
+<meta
+    http-equiv="Pragma"
+    content="no-cache"
+>
 
-    <meta
-        http-equiv="Expires"
-        content="0"
-    >
+<meta
+    http-equiv="Expires"
+    content="0"
+>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <style>
+<style>
 
-        * {
-            box-sizing: border-box;
-        }
+    * {
+        box-sizing: border-box;
+    }
 
-        body {
-            margin: 0;
-            font-family: Tahoma, Arial, sans-serif;
-            background: #f4f6f8;
-            color: #172033;
-            line-height: 1.7;
-        }
+    body {
+        margin: 0;
+        font-family: Tahoma, Arial, sans-serif;
+        background: #f4f6f8;
+        color: #172033;
+        line-height: 1.7;
+    }
 
-        button,
-        input,
-        select {
-            font-family: inherit;
-        }
+    button,
+    input,
+    select {
+        font-family: inherit;
+    }
 
-        .topbar {
-            background: #111827;
-            color: #fff;
-            padding: 18px 22px;
-        }
+    .topbar {
+        background: #111827;
+        color: #fff;
+        padding: 18px 22px;
+    }
 
-        .topbar-inner {
-            width: min(1400px, 95%);
-            margin: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
+    .topbar-inner {
+        width: min(1400px, 95%);
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
 
-        .logo {
-            font-size: 23px;
-            font-weight: 900;
-        }
+    .logo {
+        font-size: 23px;
+        font-weight: 900;
+    }
 
-        .subtitle {
-            margin-top: 5px;
-            color: #cbd5e1;
-            font-size: 13px;
-        }
+    .subtitle {
+        margin-top: 5px;
+        color: #cbd5e1;
+        font-size: 13px;
+    }
 
-        .top-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+    .top-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
 
-        .top-button {
-            border: 0;
-            background: #fff;
-            color: #111827;
-            padding: 11px 18px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 900;
-            text-decoration: none;
-            display: inline-block;
-        }
+    .top-button {
+        border: 0;
+        background: #fff;
+        color: #111827;
+        padding: 11px 18px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 900;
+        text-decoration: none;
+        display: inline-block;
+    }
 
-        .top-button:disabled {
-            opacity: .6;
-            cursor: not-allowed;
-        }
+    .top-button:disabled {
+        opacity: .6;
+        cursor: not-allowed;
+    }
 
-        .container {
-            width: min(1400px, 95%);
-            margin: 25px auto 50px;
-        }
+    .container {
+        width: min(1400px, 95%);
+        margin: 25px auto 50px;
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .stat {
+        background: #fff;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
+    }
+
+    .stat-title {
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .stat-number {
+        font-size: 30px;
+        font-weight: 900;
+    }
+
+    .tabs {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+    }
+
+    .tab {
+        border: 0;
+        padding: 12px 19px;
+        border-radius: 10px;
+        background: #e2e8f0;
+        cursor: pointer;
+        font-weight: 900;
+    }
+
+    .tab.active {
+        background: #111827;
+        color: #fff;
+    }
+
+    .panel {
+        background: #fff;
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
+    }
+
+    .panel-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .panel-title {
+        font-size: 21px;
+        font-weight: 900;
+    }
+
+    .connection {
+        font-size: 13px;
+        color: #64748b;
+    }
+
+    .orders {
+        display: grid;
+        gap: 16px;
+    }
+
+    .card {
+        border: 1px solid #e2e8f0;
+        border-radius: 15px;
+        padding: 18px;
+        background: #fff;
+    }
+
+    .card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 900;
+        margin-bottom: 8px;
+    }
+
+    .badge-buyer {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .badge-seller {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .badge-product {
+        background: #ede9fe;
+        color: #6d28d9;
+    }
+
+    .order-number {
+        color: #64748b;
+        font-size: 13px;
+        word-break: break-all;
+    }
+
+    .status {
+        padding: 7px 12px;
+        border-radius: 8px;
+        background: #fef3c7;
+        color: #92400e;
+        font-size: 12px;
+        font-weight: 900;
+    }
+
+    .status.transfer {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .status.approved {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .status.hidden {
+        background: #e2e8f0;
+        color: #475569;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+
+    .info {
+        background: #f8fafc;
+        border-radius: 10px;
+        padding: 12px;
+        min-height: 68px;
+    }
+
+    .label {
+        color: #64748b;
+        font-size: 12px;
+        margin-bottom: 7px;
+    }
+
+    .value {
+        font-size: 14px;
+        font-weight: 800;
+        word-break: break-word;
+    }
+
+    .product {
+        margin-top: 14px;
+        padding: 14px;
+        background: #f8fafc;
+        border-radius: 11px;
+    }
+
+    .product-name {
+        font-weight: 900;
+    }
+
+    .product-extra {
+        margin-top: 7px;
+        color: #64748b;
+        font-size: 13px;
+        line-height: 1.8;
+    }
+
+    .payment-box {
+        margin-top: 14px;
+        padding: 15px;
+        border-radius: 12px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+    }
+
+    .payment-title {
+        font-weight: 900;
+        margin-bottom: 7px;
+        color: #1e3a8a;
+    }
+
+    .payment-value {
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+    .transfer-warning {
+        margin-top: 8px;
+        color: #1d4ed8;
+        font-size: 13px;
+        font-weight: 900;
+    }
+
+    .seller-images {
+        margin-top: 15px;
+        padding: 15px;
+        background: #f8fafc;
+        border-radius: 12px;
+    }
+
+    .seller-images-title {
+        font-size: 14px;
+        font-weight: 900;
+        margin-bottom: 12px;
+    }
+
+    .images-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+    }
+
+    .product-image {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        display: block;
+        border-radius: 11px;
+        border: 1px solid #e2e8f0;
+        background: #e5e7eb;
+        cursor: pointer;
+        transition: transform .2s, box-shadow .2s;
+    }
+
+    .product-image:hover {
+        transform: scale(1.02);
+        box-shadow: 0 5px 18px rgba(0, 0, 0, .15);
+    }
+
+    .no-image {
+        padding: 20px;
+        text-align: center;
+        color: #64748b;
+        font-size: 13px;
+        background: #fff;
+        border-radius: 10px;
+        border: 1px dashed #cbd5e1;
+    }
+
+    .actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+        padding-top: 15px;
+        border-top: 1px solid #edf0f3;
+    }
+
+    .action {
+        border: 0;
+        padding: 9px 15px;
+        border-radius: 9px;
+        cursor: pointer;
+        font-weight: 900;
+    }
+
+    .action:disabled {
+        opacity: .6;
+        cursor: not-allowed;
+    }
+
+    .accept {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .delete {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .wait {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .hide {
+        background: #e2e8f0;
+        color: #334155;
+    }
+
+    .show {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .loading,
+    .empty,
+    .error {
+        text-align: center;
+        padding: 50px 15px;
+        color: #64748b;
+    }
+
+    .error {
+        color: #b91c1c;
+    }
+
+    .error strong {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .image-modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        inset: 0;
+        background: rgba(0, 0, 0, .85);
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .image-modal.open {
+        display: flex;
+    }
+
+    .image-modal img {
+        max-width: 95vw;
+        max-height: 90vh;
+        object-fit: contain;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, .4);
+    }
+
+    .close-modal {
+        position: absolute;
+        top: 20px;
+        left: 25px;
+        width: 44px;
+        height: 44px;
+        border: 0;
+        border-radius: 50%;
+        background: #fff;
+        color: #111827;
+        font-size: 25px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    @media (max-width: 1150px) {
 
         .stats {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stat {
-            background: #fff;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
-        }
-
-        .stat-title {
-            color: #64748b;
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-
-        .stat-number {
-            font-size: 30px;
-            font-weight: 900;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 18px;
-        }
-
-        .tab {
-            border: 0;
-            padding: 12px 19px;
-            border-radius: 10px;
-            background: #e2e8f0;
-            cursor: pointer;
-            font-weight: 900;
-        }
-
-        .tab.active {
-            background: #111827;
-            color: #fff;
-        }
-
-        .panel {
-            background: #fff;
-            border-radius: 18px;
-            padding: 20px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
-        }
-
-        .panel-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        .panel-title {
-            font-size: 21px;
-            font-weight: 900;
-        }
-
-        .connection {
-            font-size: 13px;
-            color: #64748b;
-        }
-
-        .orders {
-            display: grid;
-            gap: 16px;
-        }
-
-        .card {
-            border: 1px solid #e2e8f0;
-            border-radius: 15px;
-            padding: 18px;
-            background: #fff;
-        }
-
-        .card-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 900;
-            margin-bottom: 8px;
-        }
-
-        .badge-buyer {
-            background: #dbeafe;
-            color: #1d4ed8;
-        }
-
-        .badge-seller {
-            background: #dcfce7;
-            color: #15803d;
-        }
-
-        .badge-product {
-            background: #ede9fe;
-            color: #6d28d9;
-        }
-
-        .order-number {
-            color: #64748b;
-            font-size: 13px;
-            word-break: break-all;
-        }
-
-        .status {
-            padding: 7px 12px;
-            border-radius: 8px;
-            background: #fef3c7;
-            color: #92400e;
-            font-size: 12px;
-            font-weight: 900;
-        }
-
-        .status.transfer {
-            background: #dbeafe;
-            color: #1d4ed8;
-        }
-
-        .status.approved {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .status.hidden {
-            background: #e2e8f0;
-            color: #475569;
+            grid-template-columns: repeat(3, 1fr);
         }
 
         .info-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-
-        .info {
-            background: #f8fafc;
-            border-radius: 10px;
-            padding: 12px;
-            min-height: 68px;
-        }
-
-        .label {
-            color: #64748b;
-            font-size: 12px;
-            margin-bottom: 7px;
-        }
-
-        .value {
-            font-size: 14px;
-            font-weight: 800;
-            word-break: break-word;
-        }
-
-        .product {
-            margin-top: 14px;
-            padding: 14px;
-            background: #f8fafc;
-            border-radius: 11px;
-        }
-
-        .product-name {
-            font-weight: 900;
-        }
-
-        .product-extra {
-            margin-top: 7px;
-            color: #64748b;
-            font-size: 13px;
-            line-height: 1.8;
-        }
-
-        .payment-box {
-            margin-top: 14px;
-            padding: 15px;
-            border-radius: 12px;
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-        }
-
-        .payment-title {
-            font-weight: 900;
-            margin-bottom: 7px;
-            color: #1e3a8a;
-        }
-
-        .payment-value {
-            font-size: 14px;
-            font-weight: 800;
-        }
-
-        .transfer-warning {
-            margin-top: 8px;
-            color: #1d4ed8;
-            font-size: 13px;
-            font-weight: 900;
-        }
-
-        .seller-images {
-            margin-top: 15px;
-            padding: 15px;
-            background: #f8fafc;
-            border-radius: 12px;
-        }
-
-        .seller-images-title {
-            font-size: 14px;
-            font-weight: 900;
-            margin-bottom: 12px;
+            grid-template-columns: repeat(2, 1fr);
         }
 
         .images-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(4, 1fr);
         }
 
-        .product-image {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
-            display: block;
-            border-radius: 11px;
-            border: 1px solid #e2e8f0;
-            background: #e5e7eb;
-            cursor: pointer;
-            transition: transform .2s, box-shadow .2s;
+    }
+
+    @media (max-width: 800px) {
+
+        .stats {
+            grid-template-columns: repeat(2, 1fr);
         }
 
-        .product-image:hover {
-            transform: scale(1.02);
-            box-shadow: 0 5px 18px rgba(0, 0, 0, .15);
+        .images-grid {
+            grid-template-columns: repeat(3, 1fr);
         }
 
-        .no-image {
-            padding: 20px;
-            text-align: center;
-            color: #64748b;
-            font-size: 13px;
-            background: #fff;
-            border-radius: 10px;
-            border: 1px dashed #cbd5e1;
+    }
+
+    @media (max-width: 600px) {
+
+        .topbar-inner {
+            flex-direction: column;
+            align-items: flex-start;
         }
 
-        .actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 16px;
-            padding-top: 15px;
-            border-top: 1px solid #edf0f3;
+        .container {
+            width: 96%;
         }
 
-        .action {
-            border: 0;
-            padding: 9px 15px;
-            border-radius: 9px;
-            cursor: pointer;
-            font-weight: 900;
+        .stats {
+            grid-template-columns: 1fr;
         }
 
-        .action:disabled {
-            opacity: .6;
-            cursor: not-allowed;
+        .info-grid {
+            grid-template-columns: 1fr;
         }
 
-        .accept {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .delete {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .wait {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .hide {
-            background: #e2e8f0;
-            color: #334155;
-        }
-
-        .show {
-            background: #dbeafe;
-            color: #1d4ed8;
-        }
-
-        .loading,
-        .empty,
-        .error {
-            text-align: center;
-            padding: 50px 15px;
-            color: #64748b;
-        }
-
-        .error {
-            color: #b91c1c;
-        }
-
-        .error strong {
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        .image-modal {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            inset: 0;
-            background: rgba(0, 0, 0, .85);
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .image-modal.open {
-            display: flex;
-        }
-
-        .image-modal img {
-            max-width: 95vw;
-            max-height: 90vh;
-            object-fit: contain;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, .4);
+        .images-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
 
         .close-modal {
-            position: absolute;
-            top: 20px;
-            left: 25px;
-            width: 44px;
-            height: 44px;
-            border: 0;
-            border-radius: 50%;
-            background: #fff;
-            color: #111827;
-            font-size: 25px;
-            font-weight: bold;
-            cursor: pointer;
+            top: 10px;
+            left: 10px;
         }
 
-        @media (max-width: 1150px) {
-
-            .stats {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .info-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .images-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-
+        .top-actions {
+            width: 100%;
         }
 
-        @media (max-width: 800px) {
-
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .images-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
+        .top-button {
+            flex: 1;
+            text-align: center;
         }
 
-        @media (max-width: 600px) {
+    }
 
-            .topbar-inner {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .container {
-                width: 96%;
-            }
-
-            .stats {
-                grid-template-columns: 1fr;
-            }
-
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .images-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .close-modal {
-                top: 10px;
-                left: 10px;
-            }
-
-            .top-actions {
-                width: 100%;
-            }
-
-            .top-button {
-                flex: 1;
-                text-align: center;
-            }
-
-        }
-
-    </style>
+</style>
+```
 
 </head>
-
 
 <body>
 
 <header class="topbar">
 
-    <div class="topbar-inner">
+```
+<div class="topbar-inner">
 
-        <div>
+    <div>
 
-            <div class="logo">
-                🔐 لوحة التحكم — لَحْقها
-            </div>
-
-            <div class="subtitle">
-                إدارة طلبات المشترين والبائعين والمنتجات
-            </div>
-
+        <div class="logo">
+            🔐 لوحة التحكم — لَحْقها
         </div>
 
-        <div class="top-actions">
-
-            <a
-                href="../index.html"
-                target="_blank"
-                rel="noopener"
-                class="top-button"
-            >
-                🏠 زيارة الموقع
-            </a>
-
-            <button
-                id="refreshButton"
-                class="top-button"
-                type="button"
-            >
-                🔄 تحديث
-            </button>
-
+        <div class="subtitle">
+            إدارة طلبات المشترين والبائعين والمنتجات
         </div>
 
     </div>
 
-</header>
+    <div class="top-actions">
 
+        <a
+            href="../index.html"
+            target="_blank"
+            rel="noopener"
+            class="top-button"
+        >
+            🏠 زيارة الموقع
+        </a>
+
+        <button
+            id="refreshButton"
+            class="top-button"
+            type="button"
+        >
+            🔄 تحديث
+        </button>
+
+    </div>
+
+</div>
+```
+
+</header>
 
 <main class="container">
 
-    <section class="stats">
+```
+<section class="stats">
 
-        <div class="stat">
-            <div class="stat-title">إجمالي الطلبات</div>
-            <div id="totalOrders" class="stat-number">0</div>
-        </div>
+    <div class="stat">
+        <div class="stat-title">إجمالي الطلبات</div>
+        <div id="totalOrders" class="stat-number">0</div>
+    </div>
 
-        <div class="stat">
-            <div class="stat-title">طلبات المشترين</div>
-            <div id="buyerOrders" class="stat-number">0</div>
-        </div>
+    <div class="stat">
+        <div class="stat-title">طلبات المشترين</div>
+        <div id="buyerOrders" class="stat-number">0</div>
+    </div>
 
-        <div class="stat">
-            <div class="stat-title">طلبات البائعين</div>
-            <div id="sellerOrders" class="stat-number">0</div>
-        </div>
+    <div class="stat">
+        <div class="stat-title">طلبات البائعين</div>
+        <div id="sellerOrders" class="stat-number">0</div>
+    </div>
 
-        <div class="stat">
-            <div class="stat-title">قيد الانتظار</div>
-            <div id="pendingOrders" class="stat-number">0</div>
-        </div>
+    <div class="stat">
+        <div class="stat-title">قيد الانتظار</div>
+        <div id="pendingOrders" class="stat-number">0</div>
+    </div>
 
-        <div class="stat">
-            <div class="stat-title">المنتجات المنشورة</div>
-            <div id="publishedProducts" class="stat-number">0</div>
-        </div>
+    <div class="stat">
+        <div class="stat-title">المنتجات المنشورة</div>
+        <div id="publishedProducts" class="stat-number">0</div>
+    </div>
 
-    </section>
+</section>
 
 
-    <section class="tabs">
+<section class="tabs">
 
-        <button
-            class="tab active"
-            data-view="all"
-            type="button"
+    <button
+        class="tab active"
+        data-view="all"
+        type="button"
+    >
+        📋 كل الطلبات
+    </button>
+
+    <button
+        class="tab"
+        data-view="buyer"
+        type="button"
+    >
+        🛒 طلبات المشترين
+    </button>
+
+    <button
+        class="tab"
+        data-view="seller"
+        type="button"
+    >
+        📦 طلبات البائعين
+    </button>
+
+    <button
+        class="tab"
+        data-view="products"
+        type="button"
+    >
+        🏪 المنتجات المنشورة
+    </button>
+
+</section>
+
+
+<section class="panel">
+
+    <div class="panel-head">
+
+        <div
+            id="panelTitle"
+            class="panel-title"
         >
-            📋 كل الطلبات
-        </button>
-
-        <button
-            class="tab"
-            data-view="buyer"
-            type="button"
-        >
-            🛒 طلبات المشترين
-        </button>
-
-        <button
-            class="tab"
-            data-view="seller"
-            type="button"
-        >
-            📦 طلبات البائعين
-        </button>
-
-        <button
-            class="tab"
-            data-view="products"
-            type="button"
-        >
-            🏪 المنتجات المنشورة
-        </button>
-
-    </section>
-
-
-    <section class="panel">
-
-        <div class="panel-head">
-
-            <div
-                id="panelTitle"
-                class="panel-title"
-            >
-                كل الطلبات
-            </div>
-
-            <div
-                id="connectionStatus"
-                class="connection"
-            >
-                جاري الاتصال...
-            </div>
-
+            كل الطلبات
         </div>
 
         <div
-            id="ordersContainer"
-            class="orders"
+            id="connectionStatus"
+            class="connection"
         >
-
-            <div class="loading">
-                جاري تحميل البيانات...
-            </div>
-
+            جاري الاتصال...
         </div>
 
-    </section>
+    </div>
+
+    <div
+        id="ordersContainer"
+        class="orders"
+    >
+
+        <div class="loading">
+            جاري تحميل البيانات...
+        </div>
+
+    </div>
+
+</section>
+```
 
 </main>
-
 
 <div
     id="imageModal"
     class="image-modal"
 >
 
-    <button
-        id="closeModal"
-        class="close-modal"
-        type="button"
-    >
-        ×
-    </button>
+```
+<button
+    id="closeModal"
+    class="close-modal"
+    type="button"
+>
+    ×
+</button>
 
-    <img
-        id="modalImage"
-        src=""
-        alt="صورة المنتج"
-    >
+<img
+    id="modalImage"
+    src=""
+    alt="صورة المنتج"
+>
+```
 
 </div>
-
 
 <script>
 
@@ -1940,7 +1945,7 @@ async function loadSellerOrders() {
 
 /* =========================================================
    بناء بيانات المنتج
-   FIX: حفظ بيانات البائع والربط بطلب البائع
+   FIX: نقل كمية البائع إلى مخزون المنتج
 ========================================================= */
 
 function buildProductData(seller) {
@@ -2048,6 +2053,35 @@ function buildProductData(seller) {
         );
 
 
+    /*
+     * الكمية التي أدخلها البائع
+     * في seller_requests.
+     */
+    const quantityValue =
+        pick(
+            raw,
+            [
+                "quantity",
+                "qty"
+            ]
+        );
+
+
+    const quantityNumber =
+        Number(
+            quantityValue
+        );
+
+
+    const productQuantity =
+        Number.isInteger(
+            quantityNumber
+        ) &&
+        quantityNumber >= 0
+            ? quantityNumber
+            : 0;
+
+
     const productData = {
 
         title:
@@ -2091,7 +2125,10 @@ function buildProductData(seller) {
             sellerNameValue,
 
         seller_request_id:
-            sellerRequestId
+            sellerRequestId,
+
+        quantity:
+            productQuantity
 
     };
 
@@ -2113,7 +2150,7 @@ function buildProductData(seller) {
 
 /* =========================================================
    نشر المنتج
-   FIX: استخدام seller_request_id لمنع تكرار نفس الطلب
+   FIX: نقل المخزون عند النشر الأول فقط
 ========================================================= */
 
 async function publishSellerProduct(seller) {
@@ -2162,9 +2199,14 @@ async function publishSellerProduct(seller) {
 
 
     /*
-     * إذا كان المنتج موجودًا مسبقًا
-     * بنفس seller_request_id:
-     * نحدّث بياناته بدل إنشاء نسخة أخرى.
+     * إذا كان المنتج موجودًا مسبقًا:
+     *
+     * نحدّث بيانات المنتج فقط،
+     * لكن لا نرسل quantity في التحديث.
+     *
+     * السبب:
+     * المخزون قد يكون تغيّر بسبب مبيعات سابقة،
+     * ولا نريد إعادته إلى كمية البائع الأصلية.
      */
 
     if (
@@ -2178,11 +2220,55 @@ async function publishSellerProduct(seller) {
                 .id;
 
 
+        const updateExistingData = {
+
+            title:
+                productData.title,
+
+            description:
+                productData.description,
+
+            price:
+                productData.price,
+
+            category:
+                productData.category,
+
+            image:
+                productData.image,
+
+            available:
+                productData.available,
+
+            images:
+                productData.images,
+
+            family_name:
+                productData.family_name,
+
+            family_slug:
+                productData.family_slug,
+
+            family_page:
+                productData.family_page,
+
+            seller_id:
+                productData.seller_id,
+
+            seller_name:
+                productData.seller_name,
+
+            seller_request_id:
+                productData.seller_request_id
+
+        };
+
+
         const updateExisting =
             await db
                 .from(PRODUCTS_TABLE)
                 .update(
-                    productData
+                    updateExistingData
                 )
                 .eq(
                     "id",
@@ -2217,12 +2303,10 @@ async function publishSellerProduct(seller) {
 
 
     /*
-     * لا نستخدم title + price + category
-     * لتحديد التكرار، لأن بائعين مختلفين
-     * قد يبيعون نفس المنتج.
-     *
-     * لذلك يتم إنشاء المنتج وربطه
-     * بطلب البائع الحالي.
+     * المنتج جديد:
+     * هنا فقط نرسل quantity،
+     * وبالتالي تنتقل كمية البائع
+     * إلى مخزون المنتج.
      */
 
     const result =
@@ -3721,7 +3805,7 @@ async function toggleProduct(
 
                 :
 
-                "✓ تم إخفاء المنتج في المتجر."
+                "✓ تم إخفاء المنتج من المتجر."
 
         );
 
