@@ -316,26 +316,15 @@
        كود التشغيل والربط بـ Supabase تلقائياً باستخدام حقل quantity
     ========================================= -->
     <script>
-        // 1. إعداد الاتصال بـ Supabase (ضع مفاتيحك الخاصة هنا لتفعيلها فوراً)
-        const SUPABASE_URL = "YOUR_SUPABASE_URL";
-        const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
-        const supabase = bootstrapSupabase();
-
-        function bootstrapSupabase() {
-            if(SUPABASE_URL !== "YOUR_SUPABASE_URL") {
-                return supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            }
-            return null;
-        }
+        // 1. إعداد الاتصال بـ Supabase الفعلي لموقعك
+        const SUPABASE_URL = "https://supabase.co";
+        const SUPABASE_KEY = "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-";
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // 2. دالة جلب وعرض المنتجات مع فحص المخزون
         async function loadProducts() {
             const container = document.getElementById('productsContainer');
-            if (!supabase) {
-                container.innerHTML = '<p style="text-align:center; padding:20px;">يرجى وضع روابط الـ Supabase الخاصة بموقعك ليعمل سحب السلع وتتبع المخزون.</p>';
-                return;
-            }
-
+            
             const { data: products, error } = await supabase
                 .from('products')
                 .select('*');
@@ -347,3 +336,8 @@
 
             container.innerHTML = '';
             products.forEach(product => {
+                // فحص المخزون المتناقص تلقائياً باستخدام حقل quantity الحالي لجدولك
+                const isOutOfStock = product.quantity <= 0;
+
+                container.innerHTML += `
+                    <div class="home-product-card">
