@@ -2609,60 +2609,56 @@ sellerForm.addEventListener(
 
       /* بيانات الطلب */
 
-      const requestData = {
+const requestData = {
 
-        product_name:
-          productName,
+  product_name:
+    productName,
 
-        seller_name:
-          sellerNameValue,
+  seller_name:
+    sellerNameValue,
 
-        seller_email:
-          sellerEmail.value.trim(),
+  phone:
+    normalizeSaudiPhone(phoneValue),
 
-        phone:
-          normalizeSaudiPhone(phoneValue),
+  city:
+    cityValue,
 
-        city:
-          cityValue,
+  category:
+    categoryValue,
 
-        category:
-          categoryValue,
+  price:
+    productPrice,
 
-        price:
-          productPrice,
+  quantity:
+    productQuantity,
 
-        quantity:
-          productQuantity,
+  description:
+    descriptionValue,
 
-        description:
-          descriptionValue,
+  notes:
+    "",
 
-        notes:
-          "",
+  agreement_accepted:
+    true,
 
-        agreement_accepted:
-          true,
+  agreement_accepted_at:
+    new Date().toISOString(),
 
-        agreement_accepted_at:
-          new Date().toISOString(),
+  status:
+    "pending",
 
-        status:
-          "pending",
+  published:
+    false,
 
-        published:
-          false,
+  image:
+    uploadedImages[0],
 
-        image:
-          uploadedImages[0],
+  images:
+    uploadedImages,
 
-        images:
-          uploadedImages,
-
-        image_url:
-          uploadedImages[0]
-      };
-
+  image_url:
+    uploadedImages[0]
+};
 
       /* إرسال الطلب */
 
