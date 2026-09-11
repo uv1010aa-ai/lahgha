@@ -1505,6 +1505,228 @@ function validateSellerLinks(
 
 
 /* =====================================================
+   خصم المخزون الحقيقي من جدول products
+===================================================== */
+
+async function decreaseProductStock(products) {
+
+    const changedProducts = [];
+
+    try {
+
+        for (const product of products) {
+
+            const productId =
+                String(
+                    product.product_id || ""
+                ).trim();
+
+            const requestedQuantity =
+                Number(
+                    product.quantity
+                );
+
+
+            if (
+                !productId ||
+                !Number.isInteger(requestedQuantity) ||
+                requestedQuantity <= 0
+            ) {
+
+                throw new Error(
+                    `بيانات الكمية للمنتج «${product.name}» غير صحيحة.`
+                );
+
+            }
+
+
+            const {
+                data: stockRow,
+                error: stockError
+            } =
+                await supabaseClient
+                    .from("products")
+                    .select(
+                        "id, quantity, available"
+                    )
+                    .eq(
+                        "id",
+                        productId
+                    )
+                    .maybeSingle();
+
+
+            if (stockError) {
+
+                throw stockError;
+
+            }
+
+
+            if (!stockRow) {
+
+                throw new Error(
+                    `المنتج «${product.name}» غير موجود.`
+                );
+
+            }
+
+
+            const currentStock =
+                Number(
+                    stockRow.quantity
+                );
+
+
+            if (
+                !Number.isInteger(currentStock) ||
+                currentStock < 0
+            ) {
+
+                throw new Error(
+                    `مخزون المنتج «${product.name}» غير صالح.`
+                );
+
+            }
+
+
+            if (!stockRow.available) {
+
+                throw new Error(
+                    `المنتج «${product.name}» غير متاح حاليًا.`
+                );
+
+            }
+
+
+            if (
+                requestedQuantity >
+                currentStock
+            ) {
+
+                throw new Error(
+                    `الكمية المطلوبة من «${product.name}» أكبر من المخزون المتوفر. المتوفر حاليًا: ${currentStock}`
+                );
+
+            }
+
+
+            const newStock =
+                currentStock -
+                requestedQuantity;
+
+
+            const {
+                data: updatedRows,
+                error: updateError
+            } =
+                await supabaseClient
+                    .from("products")
+                    .update({
+                        quantity:
+                            newStock
+                    })
+                    .eq(
+                        "id",
+                        productId
+                    )
+                    .eq(
+                        "quantity",
+                        currentStock
+                    )
+                    .select(
+                        "id, quantity"
+                    );
+
+
+            if (updateError) {
+
+                throw updateError;
+
+            }
+
+
+            if (
+                !updatedRows ||
+                updatedRows.length === 0
+            ) {
+
+                throw new Error(
+                    `تغير مخزون المنتج «${product.name}» أثناء تأكيد الطلب. حاول مرة أخرى.`
+                );
+
+            }
+
+
+            changedProducts.push({
+
+                id:
+                    productId,
+
+                oldQuantity:
+                    currentStock,
+
+                newQuantity:
+                    newStock
+
+            });
+
+        }
+
+
+        return changedProducts;
+
+    }
+    catch (error) {
+
+        /*
+         * إذا فشل خصم أي منتج،
+         * نعيد المنتجات التي تم خصمها
+         * قبل ظهور الخطأ.
+         */
+
+        for (
+            const changed of changedProducts
+        ) {
+
+            try {
+
+                await supabaseClient
+                    .from("products")
+                    .update({
+                        quantity:
+                            changed.oldQuantity
+                    })
+                    .eq(
+                        "id",
+                        changed.id
+                    )
+                    .eq(
+                        "quantity",
+                        changed.newQuantity
+                    );
+
+            }
+            catch (restoreError) {
+
+                console.error(
+                    "تعذر استرجاع المخزون:",
+                    restoreError
+                );
+
+            }
+
+        }
+
+
+        throw error;
+
+    }
+
+}
+
+
+/* =====================================================
    عرض المنتجات
 ===================================================== */
 
@@ -1726,10 +1948,6 @@ async function getOrCreateBuyerProfile(
     buyerAddress
 ) {
 
-    /*
-     * البحث عن المشتري بواسطة رقم الجوال.
-     */
-
     const {
         data: existingBuyer,
         error: findError
@@ -1752,11 +1970,6 @@ async function getOrCreateBuyerProfile(
 
     }
 
-
-    /*
-     * المشتري موجود:
-     * نحدّث بياناته ونستخدم نفس الهوية.
-     */
 
     if (existingBuyer) {
 
@@ -1797,11 +2010,6 @@ async function getOrCreateBuyerProfile(
 
     }
 
-
-    /*
-     * المشتري جديد:
-     * إنشاء ملف جديد.
-     */
 
     const {
         data: newBuyer,
@@ -1853,10 +2061,6 @@ form.addEventListener(
 
         event.preventDefault();
 
-
-        /* =========================
-           التحقق من البيانات
-        ========================== */
 
         const nameIsValid =
             validateBuyerName();
@@ -1943,11 +2147,6 @@ form.addEventListener(
             paymentMethod.value;
 
 
-        /*
-         * حماية إضافية:
-         * خارج المدن المشمولة لا يسمح بالدفع عند الاستلام.
-         */
-
         if (
             !isCashOnDeliveryAvailable(
                 buyerCity
@@ -1967,16 +2166,14 @@ form.addEventListener(
             "⏳ جاري تجهيز الطلب...";
 
 
+        let changedStock = [];
+
+
         try {
 
             let products =
                 prepareProducts();
 
-
-            /*
-             * أخذ seller_request_id
-             * من جدول products.
-             */
 
             products =
                 await attachSellerRequestIds(
@@ -2025,14 +2222,24 @@ form.addEventListener(
                 );
 
 
+            /*
+             * خصم المخزون الحقيقي
+             * قبل إنشاء الطلب.
+             *
+             * إذا لم تتوفر الكمية:
+             * لن يتم إنشاء الطلب.
+             */
+
+            changedStock =
+                await decreaseProductStock(
+                    products
+                );
+
+
             const orderNumber =
                 "ORD-" +
                 Date.now();
 
-
-            /*
-             * الحفاظ على طريقة تخزين العنوان الحالية.
-             */
 
             const deliveryNote =
                 isCashOnDeliveryAvailable(
@@ -2058,10 +2265,6 @@ form.addEventListener(
                 "التوصيل: " +
                 deliveryNote;
 
-
-            /*
-             * بيانات الطلب.
-             */
 
             const orderData = {
 
@@ -2128,9 +2331,10 @@ form.addEventListener(
             );
 
 
-            /* =========================================
-               تفريغ السلة بعد نجاح الطلب فقط
-            ========================================= */
+            /*
+             * الطلب والمخزون تم تسجيلهما بنجاح.
+             * الآن نفرغ السلة.
+             */
 
             try {
 
@@ -2166,27 +2370,6 @@ form.addEventListener(
 
             }
 
-// ========================================================
-// تفعيل المخزون التناقصي الذكي بعد نجاح الطلب
-// ========================================================
-
-// 1. نقرأ المخزون الحالي المسجل من صفحة البائع
-let currentStock = localStorage.getItem("main_product_stock");
-
-if (currentStock !== null) {
-    // 2. نفترض أن العميل اشترى قطعة واحدة (أو يمكنك استبدال رقم 1 بمتغير الكمية المشتراة في صفحتك)
-    let quantityPurchased = 1; 
-    
-    // 3. نقوم بحساب الكمية المتبقية
-    let newStock = parseInt(currentStock) - quantityPurchased;
-    
-    // لضمان عدم نزول المخزون تحت الصفر
-    if (newStock < 0) newStock = 0; 
-    
-    // 4. حفظ الكمية الجديدة في الذاكرة لتحديث نظام البائع والمشتري فوراً
-    localStorage.setItem("main_product_stock", newStock);
-}
-// ========================================================
 
             showMessage(
                 "✅ تم إرسال طلبك بنجاح. رقم الطلب: " +
@@ -2230,6 +2413,52 @@ if (currentStock !== null) {
             );
 
 
+            /*
+             * إذا تم خصم المخزون ثم فشل إنشاء الطلب،
+             * نحاول إعادة الكمية كما كانت.
+             */
+
+            if (
+                changedStock.length
+            ) {
+
+                for (
+                    const changed
+                    of changedStock
+                ) {
+
+                    try {
+
+                        await supabaseClient
+                            .from("products")
+                            .update({
+                                quantity:
+                                    changed.oldQuantity
+                            })
+                            .eq(
+                                "id",
+                                changed.id
+                            )
+                            .eq(
+                                "quantity",
+                                changed.newQuantity
+                            );
+
+                    }
+                    catch (restoreError) {
+
+                        console.error(
+                            "تعذر استرجاع المخزون بعد فشل الطلب:",
+                            restoreError
+                        );
+
+                    }
+
+                }
+
+            }
+
+
             let errorText =
                 "❌ تعذر إرسال الطلب.";
 
@@ -2257,9 +2486,9 @@ if (currentStock !== null) {
                 error.message
             ) {
 
-                console.error(
-                    error.message
-                );
+                errorText =
+                    "❌ " +
+                    error.message;
 
             }
 
