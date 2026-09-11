@@ -235,6 +235,14 @@
     font-weight:bold;
 }
 
+.available.out-of-stock{
+    color:#c62828!important;
+}
+
+.available.low-stock{
+    color:#b26a00!important;
+}
+
 .add-product-btn{
     width:100%;
     border:0;
@@ -245,6 +253,12 @@
     font-size:16px;
     font-weight:bold;
     cursor:pointer;
+}
+
+.add-product-btn:disabled{
+    background:#cfd4d8;
+    color:#68727b;
+    cursor:not-allowed;
 }
 
 
@@ -371,6 +385,18 @@
 
 .modal-info h2{
     color:#1e3a5f;
+}
+
+.modal-stock{
+    font-weight:bold;
+}
+
+.modal-stock.available{
+    color:#25823a!important;
+}
+
+.modal-stock.out-of-stock{
+    color:#c62828!important;
 }
 
 
@@ -503,8 +529,6 @@
     </div>
 
 
-    <!-- البحث في صفحة الأقسام -->
-
     <form
         class="page-search"
         id="page-search-form-categories"
@@ -563,8 +587,6 @@
     </div>
 
 
-    <!-- البحث داخل نفس صفحة النتائج -->
-
     <form
         class="page-search"
         id="page-search-form"
@@ -605,16 +627,8 @@
 </footer>
 
 
-<!-- =========================================
-     التنبيه
-========================================= -->
-
 <div id="toast"></div>
 
-
-<!-- =========================================
-     نافذة المنتج
-========================================= -->
 
 <div
     class="product-modal"
@@ -796,8 +810,6 @@ document.getElementById(
 );
 
 
-/* البحث في صفحة الأقسام */
-
 const categoriesSearchForm =
 document.getElementById(
     "page-search-form-categories"
@@ -808,8 +820,6 @@ document.getElementById(
     "page-search-input-categories"
 );
 
-
-/* البحث داخل النتائج */
 
 const pageSearchForm =
 document.getElementById(
@@ -936,6 +946,48 @@ function getMainImage(product){
         getProductImages(product);
 
     return images[0] || "";
+
+}
+
+
+/* =========================================
+   المخزون
+========================================= */
+
+/*
+ * نعتبر quantity صالحًا عندما يكون رقمًا صحيحًا
+ * وأكبر من أو يساوي صفر.
+ *
+ * المنتجات القديمة التي لا تحتوي quantity
+ * تستمر بالعمل بالطريقة السابقة.
+ */
+
+function hasStockValue(product){
+
+    const quantity =
+        Number(
+            product?.quantity
+        );
+
+
+    return Number.isInteger(quantity) &&
+           quantity >= 0;
+
+}
+
+
+function getStock(product){
+
+    if(!hasStockValue(product)){
+
+        return null;
+
+    }
+
+
+    return Number(
+        product.quantity
+    );
 
 }
 
@@ -1177,8 +1229,6 @@ async function getProducts(){
         new Map();
 
 
-    /* الكتب */
-
     books.forEach(product => {
 
         map.set(
@@ -1188,8 +1238,6 @@ async function getProducts(){
 
     });
 
-
-    /* منتجات Supabase */
 
     supabaseProducts.forEach(product => {
 
@@ -1237,6 +1285,7 @@ async function getProducts(){
 
 let cart = [];
 
+
 try{
 
     const saved =
@@ -1271,6 +1320,7 @@ function saveCart(){
 
         }
 
+
         sessionStorage.setItem(
             "cart",
             JSON.stringify(cart)
@@ -1293,7 +1343,15 @@ function saveCart(){
 }
 
 
+/* =========================================
+   إضافة المنتج إلى السلة مع فحص المخزون
+========================================= */
+
 function addToCart(product){
+
+    const stock =
+        getStock(product);
+
 
     const existing =
     cart.find(item =>
@@ -1304,10 +1362,63 @@ function addToCart(product){
     );
 
 
+    const currentQuantity =
+        existing
+            ? Number(existing.quantity) || 0
+            : 0;
+
+
+    /*
+     * إذا كان المنتج مرتبطًا بالمخزون
+     * وكمية المخزون صفرًا
+     */
+
+    if(stock !== null && stock <= 0){
+
+        showToast(
+            "🔴 نفد مخزون هذا المنتج"
+        );
+
+        return false;
+
+    }
+
+
+    /*
+     * منع تجاوز المخزون
+     */
+
+    if(
+        stock !== null &&
+        currentQuantity >= stock
+    ){
+
+        showToast(
+            `⚠️ المتوفر فقط: ${stock} حبة`
+        );
+
+        return false;
+
+    }
+
+
     if(existing){
 
         existing.quantity =
-        (Number(existing.quantity) || 1) + 1;
+            currentQuantity + 1;
+
+
+        /*
+         * تحديث المخزون المحفوظ في السلة
+         * ليستخدمه cart.html كحد أقصى.
+         */
+
+        if(stock !== null){
+
+            existing.stock =
+                stock;
+
+        }
 
     }
     else{
@@ -1339,6 +1450,13 @@ function addToCart(product){
             seller_request_id:
                 product.seller_request_id || null,
 
+            /*
+             * المخزون الحقيقي للمنتج
+             */
+
+            stock:
+                stock,
+
             quantity:1
 
         });
@@ -1352,6 +1470,9 @@ function addToCart(product){
     showToast(
         `تمت إضافة «${product.title}» إلى السلة`
     );
+
+
+    return true;
 
 }
 
@@ -1449,10 +1570,6 @@ async function performNewSearch(query){
 }
 
 
-/* =========================================
-   البحث من صفحة الأقسام
-========================================= */
-
 categoriesSearchForm.addEventListener(
     "submit",
     async event => {
@@ -1468,10 +1585,6 @@ categoriesSearchForm.addEventListener(
 );
 
 
-/* =========================================
-   البحث من صفحة النتائج
-========================================= */
-
 pageSearchForm.addEventListener(
     "submit",
     async event => {
@@ -1486,10 +1599,6 @@ pageSearchForm.addEventListener(
     }
 );
 
-
-/* =========================================
-   دعم زر الرجوع في المتصفح
-========================================= */
 
 window.addEventListener(
     "popstate",
@@ -1667,6 +1776,10 @@ function openProductModal(product){
         getProductImages(product);
 
 
+    const stock =
+        getStock(product);
+
+
     modalThumbs.innerHTML =
         "";
 
@@ -1768,6 +1881,46 @@ function openProductModal(product){
     }
 
 
+    const stockAvailable =
+        stock === null ||
+        stock > 0;
+
+
+    let stockHtml = "";
+
+
+    if(stock !== null){
+
+        if(stock <= 0){
+
+            stockHtml = `
+
+                <p class="modal-stock out-of-stock">
+
+                    🔴 نفد المخزون
+
+                </p>
+
+            `;
+
+        }
+        else{
+
+            stockHtml = `
+
+                <p class="modal-stock available">
+
+                    🟢 المتوفر: ${stock} حبة
+
+                </p>
+
+            `;
+
+        }
+
+    }
+
+
     modalInfo.innerHTML = `
 
         <h2>
@@ -1817,6 +1970,8 @@ function openProductModal(product){
 
         </p>
 
+        ${stockHtml}
+
         ${
             product.description
             ?
@@ -1838,9 +1993,14 @@ function openProductModal(product){
             class="add-product-btn"
             id="modal-add-to-cart"
             style="margin-top:15px;"
+            ${stock !== null && !stockAvailable ? "disabled" : ""}
         >
 
-            🛒 أضف إلى السلة
+            ${
+                stock !== null && !stockAvailable
+                ? "🔴 نفد المخزون"
+                : "🛒 أضف إلى السلة"
+            }
 
         </button>
 
@@ -1876,16 +2036,60 @@ function openProductModal(product){
         );
 
 
-    addButton.addEventListener(
-        "click",
-        () => {
+    if(addButton){
 
-            addToCart(
-                product
-            );
+        addButton.addEventListener(
+            "click",
+            () => {
 
-        }
-    );
+                const added =
+                    addToCart(
+                        product
+                    );
+
+
+                /*
+                 * إذا تمت الإضافة بنجاح،
+                 * نحدّث الزر إذا وصلنا للمخزون.
+                 */
+
+                if(
+                    added &&
+                    stock !== null
+                ){
+
+                    const existing =
+                        cart.find(
+                            item =>
+                                String(item.id) ===
+                                String(product.id)
+                        );
+
+
+                    const currentQuantity =
+                        existing
+                            ? Number(existing.quantity) || 0
+                            : 0;
+
+
+                    if(
+                        currentQuantity >= stock
+                    ){
+
+                        addButton.disabled =
+                            true;
+
+                        addButton.textContent =
+                            "📦 اكتملت الكمية المتوفرة";
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
 
 
     productModal.classList.add(
@@ -1962,6 +2166,55 @@ function createProductCard(product){
 
     const image =
         getMainImage(product);
+
+
+    const stock =
+        getStock(product);
+
+
+    const hasStock =
+        stock !== null;
+
+
+    const outOfStock =
+        hasStock &&
+        stock <= 0;
+
+
+    let stockText =
+        "🟢 متوفر";
+
+
+    let stockClass =
+        "";
+
+
+    if(hasStock){
+
+        if(outOfStock){
+
+            stockText =
+                "🔴 نفد المخزون";
+
+            stockClass =
+                "out-of-stock";
+
+        }
+        else{
+
+            stockText =
+                `🟢 المتوفر: ${stock} حبة`;
+
+            if(stock <= 3){
+
+                stockClass =
+                    "low-stock";
+
+            }
+
+        }
+
+    }
 
 
     card.innerHTML = `
@@ -2071,9 +2324,9 @@ function createProductCard(product){
             }
 
 
-            <p class="available">
+            <p class="available ${stockClass}">
 
-                🟢 متوفر
+                ${stockText}
 
             </p>
 
@@ -2083,9 +2336,14 @@ function createProductCard(product){
         <button
             type="button"
             class="add-product-btn"
+            ${outOfStock ? "disabled" : ""}
         >
 
-            🛒 أضف إلى السلة
+            ${
+                outOfStock
+                ? "🔴 نفد المخزون"
+                : "🛒 أضف إلى السلة"
+            }
 
         </button>
 
@@ -2150,15 +2408,58 @@ function createProductCard(product){
         "click",
         () => {
 
-            addToCart(
-                product
-            );
+            const added =
+                addToCart(
+                    product
+                );
 
 
-            if(goToCart){
+            if(
+                added &&
+                goToCart
+            ){
 
                 goToCart.style.display =
                     "block";
+
+            }
+
+
+            /*
+             * إذا وصلت الكمية في السلة
+             * إلى كامل المخزون، نعطّل زر الإضافة.
+             */
+
+            if(
+                added &&
+                stock !== null
+            ){
+
+                const existing =
+                    cart.find(
+                        item =>
+                            String(item.id) ===
+                            String(product.id)
+                    );
+
+
+                const currentQuantity =
+                    existing
+                        ? Number(existing.quantity) || 0
+                        : 0;
+
+
+                if(
+                    currentQuantity >= stock
+                ){
+
+                    addButton.disabled =
+                        true;
+
+                    addButton.textContent =
+                        "📦 اكتملت الكمية المتوفرة";
+
+                }
 
             }
 
@@ -2474,10 +2775,6 @@ async function init(){
         ).trim();
 
 
-    /*
-       البحث له الأولوية
-    */
-
     if(searchQuery){
 
         await renderSearch(
@@ -2489,10 +2786,6 @@ async function init(){
     }
 
 
-    /*
-       القسم
-    */
-
     if(selectedCategory){
 
         await renderCategory();
@@ -2501,10 +2794,6 @@ async function init(){
 
     }
 
-
-    /*
-       الصفحة الرئيسية للأقسام
-    */
 
     categoriesView.style.display =
         "block";
