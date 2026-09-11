@@ -243,7 +243,7 @@
         }
 
         /* =========================================
-           إضافات المخزون الجديدة 📦
+           إضافات المخزون المتوافقة مع حقل quantity 📦
         ========================================= */
         .product-stock-status {
             font-size: 13px;
@@ -313,7 +313,7 @@
     </div>
 
     <!-- =========================================
-       كود التشغيل والربط بـ Supabase تلقائياً
+       كود التشغيل والربط بـ Supabase تلقائياً باستخدام حقل quantity
     ========================================= -->
     <script>
         // 1. إعداد الاتصال بـ Supabase (ضع مفاتيحك الخاصة هنا لتفعيلها فوراً)
@@ -332,7 +332,7 @@
         async function loadProducts() {
             const container = document.getElementById('productsContainer');
             if (!supabase) {
-                container.innerHTML = '<p style="text-align:center; padding:20px;">يرجى وضع روابط ميكانيكية الـ Supabase الخاصة بموقعك ليعمل سحب السلع.</p>';
+                container.innerHTML = '<p style="text-align:center; padding:20px;">يرجى وضع روابط الـ Supabase الخاصة بموقعك ليعمل سحب السلع وتتبع المخزون.</p>';
                 return;
             }
 
@@ -347,4 +347,3 @@
 
             container.innerHTML = '';
             products.forEach(product => {
-                // فحص المخزون المتناقص تلقائياً
