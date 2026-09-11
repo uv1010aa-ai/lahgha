@@ -741,6 +741,37 @@ textarea.valid {
       </div>
 
 
+      <!-- الكمية المتوفرة -->
+
+      <div class="field">
+
+        <label for="quantity">
+          📦 الكمية المتوفرة *
+        </label>
+
+        <input
+          type="number"
+          id="quantity"
+          name="quantity"
+          min="1"
+          max="1000000"
+          step="1"
+          inputmode="numeric"
+          placeholder="مثال: 10"
+        >
+
+        <span class="field-hint">
+          اكتب عدد القطع المتوفرة لديك للبيع.
+        </span>
+
+        <span
+          id="quantityError"
+          class="field-error"
+        ></span>
+
+      </div>
+
+
       <!-- الوصف -->
 
       <div class="field">
@@ -942,6 +973,9 @@ const productTitle =
 
 const price =
   document.getElementById("price");
+
+const quantity =
+  document.getElementById("quantity");
 
 const description =
   document.getElementById("description");
@@ -1221,6 +1255,17 @@ function isValidDescription(value) {
 }
 
 
+function isValidQuantity(value) {
+
+  const number =
+    Number(value);
+
+  return Number.isInteger(number) &&
+         number >= 1 &&
+         number <= 1000000;
+}
+
+
 function setSimpleError(id, message) {
 
   const el = document.getElementById(id);
@@ -1261,6 +1306,9 @@ function validateForm() {
 
   const priceValue =
     Number(price.value);
+
+  const quantityValue =
+    Number(quantity.value);
 
   const descriptionValue =
     description.value.trim();
@@ -1427,6 +1475,28 @@ function validateForm() {
   }
 
 
+  /* الكمية المتوفرة */
+
+  if (!isValidQuantity(quantityValue)) {
+
+    setFieldError(
+      quantity,
+      "quantityError",
+      "يرجى إدخال كمية صحيحة من 1 إلى 1,000,000."
+    );
+
+    valid = false;
+
+  } else {
+
+    setFieldError(
+      quantity,
+      "quantityError",
+      ""
+    );
+  }
+
+
   /* الوصف */
 
   if (!isValidDescription(descriptionValue)) {
@@ -1574,16 +1644,6 @@ function validateFieldLive(input) {
         : "اسم المنتج غير صالح."
     );
 
-  } else if (input === description) {
-
-    setFieldError(
-      description,
-      "descriptionError",
-      isValidDescription(value)
-        ? ""
-        : "الوصف يجب أن يكون 10 أحرف على الأقل."
-    );
-
   } else if (input === price) {
 
     const n = Number(input.value);
@@ -1595,6 +1655,28 @@ function validateFieldLive(input) {
         ? ""
         : "أدخل سعرًا صحيحًا."
     );
+
+  } else if (input === quantity) {
+
+    const n = Number(input.value);
+
+    setFieldError(
+      quantity,
+      "quantityError",
+      isValidQuantity(n)
+        ? ""
+        : "أدخل كمية صحيحة من 1 إلى 1,000,000."
+    );
+
+  } else if (input === description) {
+
+    setFieldError(
+      description,
+      "descriptionError",
+      isValidDescription(value)
+        ? ""
+        : "الوصف يجب أن يكون 10 أحرف على الأقل."
+    );
   }
 }
 
@@ -1605,6 +1687,7 @@ function validateFieldLive(input) {
   phone,
   productTitle,
   price,
+  quantity,
   description
 ].forEach(input => {
 
@@ -1951,6 +2034,11 @@ function clearFormFields() {
   clearFieldState(
     price,
     "priceError"
+  );
+
+  clearFieldState(
+    quantity,
+    "quantityError"
   );
 
   clearFieldState(
@@ -2485,6 +2573,12 @@ sellerForm.addEventListener(
           price.value
         );
 
+      const productQuantity =
+        parseInt(
+          quantity.value,
+          10
+        );
+
       const descriptionValue =
         description.value.trim();
 
@@ -2539,7 +2633,7 @@ sellerForm.addEventListener(
           productPrice,
 
         quantity:
-          1,
+          productQuantity,
 
         description:
           descriptionValue,
