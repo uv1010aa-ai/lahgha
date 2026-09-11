@@ -207,6 +207,50 @@ textarea.valid {
   background: #fafafa;
 }
 
+.image-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.image-action-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 13px 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.image-action-btn:hover {
+  transform: translateY(-1px);
+}
+
+.image-action-btn:active {
+  transform: translateY(0);
+}
+
+.camera-btn {
+  background: #111;
+  color: #fff;
+}
+
+.camera-btn:hover {
+  background: #333;
+}
+
+.gallery-btn {
+  background: #eee;
+  color: #111;
+  border: 1px solid #ccc;
+}
+
+.gallery-btn:hover {
+  background: #e2e2e2;
+}
+
 .preview-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -307,6 +351,10 @@ textarea.valid {
     padding: 18px;
   }
 
+  .image-actions {
+    grid-template-columns: 1fr;
+  }
+
   .preview-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -358,7 +406,7 @@ textarea.valid {
 
     <p class="intro">
       أدخل معلوماتك ومعلومات المنتج بشكل صحيح،
-      وسيتم مراجعة الطلب قبل نشره.
+      وسيتم التحقق من البيانات ومراجعة الطلب قبل نشره.
     </p>
 
 
@@ -427,7 +475,7 @@ textarea.valid {
           type="tel"
           id="phone"
           name="phone"
-          placeholder="05xxxxxxxx"
+          placeholder="05xxxxxxxx أو +9665xxxxxxxx"
         >
 
         <span
@@ -725,16 +773,47 @@ textarea.valid {
 
         <div class="images-box">
 
+          <div class="image-actions">
+
+            <button
+              type="button"
+              id="takePhotoBtn"
+              class="image-action-btn camera-btn"
+            >
+              📷 تصوير السلعة
+            </button>
+
+            <button
+              type="button"
+              id="chooseImagesBtn"
+              class="image-action-btn gallery-btn"
+            >
+              🖼️ اختيار من المعرض
+            </button>
+
+          </div>
+
+          <!-- اختيار الصور من المعرض -->
           <input
             type="file"
             id="productImage"
             name="product_image"
             accept="image/*"
             multiple
+            hidden
+          >
+
+          <!-- فتح الكاميرا الخلفية في الجوال -->
+          <input
+            type="file"
+            id="cameraInput"
+            accept="image/*"
+            capture="environment"
+            hidden
           >
 
           <span class="field-hint">
-            يمكنك اختيار حتى 4 صور للمنتج.
+            يمكنك إضافة حتى 4 صور. يمكنك تصوير السلعة مباشرة أو اختيار الصور من جهازك.
           </span>
 
           <span
@@ -869,6 +948,15 @@ const description =
 
 const productImage =
   document.getElementById("productImage");
+
+const cameraInput =
+  document.getElementById("cameraInput");
+
+const takePhotoBtn =
+  document.getElementById("takePhotoBtn");
+
+const chooseImagesBtn =
+  document.getElementById("chooseImagesBtn");
 
 const agreeTerms =
   document.getElementById("agreeTerms");
@@ -1059,13 +1147,99 @@ price.addEventListener(
 
 
 /* =========================
+   أدوات تنظيف وتحقق البيانات
+========================= */
+
+/*
+  مهم:
+  التحقق من صيغة الجوال لا يثبت أن الرقم حقيقي أو أن البائع يملكه.
+  لإثبات الملكية يجب إضافة OTP عبر SMS من الخادم/Edge Function.
+*/
+
+function normalizeSaudiPhone(value) {
+
+  let v = String(value || "").trim();
+
+  // تحويل الأرقام العربية إلى إنجليزية
+  const arabicDigits = "٠١٢٣٤٥٦٧٨٩";
+  v = v.replace(/[٠-٩]/g, d => arabicDigits.indexOf(d));
+
+  // إزالة المسافات والشرطات والأقواس
+  v = v.replace(/[\s\-()]/g, "");
+
+  if (v.startsWith("+966")) {
+    v = "0" + v.slice(4);
+  } else if (v.startsWith("966")) {
+    v = "0" + v.slice(3);
+  }
+
+  return v;
+}
+
+
+function isValidSaudiMobile(value) {
+
+  const normalized = normalizeSaudiPhone(value);
+
+  // أرقام الجوال السعودية المحلية: 05xxxxxxxx
+  return /^05\d{8}$/.test(normalized);
+}
+
+
+function isValidEmail(value) {
+
+  // تحقق عملي من الصيغة، مع منع المسافات
+  return /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+$/.test(value)
+    && value.length <= 254;
+}
+
+
+function isValidPersonName(value) {
+
+  // عربي/إنجليزي مع المسافات وبعض علامات الاسم الطبيعية
+  if (value.length < 2 || value.length > 80) {
+    return false;
+  }
+
+  return /^[\u0600-\u06FFa-zA-Z][\u0600-\u06FFa-zA-Z\s.'’-]*$/.test(value);
+}
+
+
+function isValidProductTitle(value) {
+
+  return value.length >= 2 &&
+         value.length <= 120 &&
+         !/[\u0000-\u001F]/.test(value);
+}
+
+
+function isValidDescription(value) {
+
+  return value.length >= 10 &&
+         value.length <= 3000 &&
+         !/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/.test(value);
+}
+
+
+function setSimpleError(id, message) {
+
+  const el = document.getElementById(id);
+
+  if (el) {
+    el.textContent = message;
+  }
+
+  return !message;
+}
+
+
+/* =========================
    التحقق من النموذج
 ========================= */
 
 function validateForm() {
 
   let valid = true;
-
 
   const sellerNameValue =
     sellerName.value.trim();
@@ -1074,7 +1248,7 @@ function validateForm() {
     sellerEmail.value.trim();
 
   const phoneValue =
-    phone.value.trim();
+    normalizeSaudiPhone(phone.value);
 
   const cityValue =
     city.value.trim();
@@ -1086,7 +1260,7 @@ function validateForm() {
     productTitle.value.trim();
 
   const priceValue =
-    parseFloat(price.value);
+    Number(price.value);
 
   const descriptionValue =
     description.value.trim();
@@ -1094,14 +1268,12 @@ function validateForm() {
 
   /* اسم البائع */
 
-  if (
-    sellerNameValue.length < 2
-  ) {
+  if (!isValidPersonName(sellerNameValue)) {
 
     setFieldError(
       sellerName,
       "sellerNameError",
-      "يرجى إدخال اسم البائع."
+      "يرجى إدخال اسم صحيح من حرفين على الأقل."
     );
 
     valid = false;
@@ -1118,14 +1290,7 @@ function validateForm() {
 
   /* البريد */
 
-  const emailPattern =
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (
-    !emailPattern.test(
-      sellerEmailValue
-    )
-  ) {
+  if (!isValidEmail(sellerEmailValue)) {
 
     setFieldError(
       sellerEmail,
@@ -1147,24 +1312,20 @@ function validateForm() {
 
   /* الجوال */
 
-  const phonePattern =
-    /^05\d{8}$/;
-
-  if (
-    !phonePattern.test(
-      phoneValue
-    )
-  ) {
+  if (!isValidSaudiMobile(phoneValue)) {
 
     setFieldError(
       phone,
       "phoneError",
-      "يرجى إدخال رقم جوال صحيح مثل 05xxxxxxxx."
+      "رقم الجوال غير صحيح. استخدم 05xxxxxxxx أو +9665xxxxxxxx."
     );
 
     valid = false;
 
   } else {
+
+    // تخزين الصيغة الموحدة داخل الحقل
+    phone.value = phoneValue;
 
     setFieldError(
       phone,
@@ -1220,14 +1381,12 @@ function validateForm() {
 
   /* اسم المنتج */
 
-  if (
-    productTitleValue.length < 2
-  ) {
+  if (!isValidProductTitle(productTitleValue)) {
 
     setFieldError(
       productTitle,
       "productTitleError",
-      "يرجى إدخال اسم المنتج."
+      "يرجى إدخال اسم منتج صحيح."
     );
 
     valid = false;
@@ -1245,14 +1404,15 @@ function validateForm() {
   /* السعر */
 
   if (
-    !priceValue ||
-    priceValue <= 0
+    !Number.isFinite(priceValue) ||
+    priceValue <= 0 ||
+    priceValue > 100000000
   ) {
 
     setFieldError(
       price,
       "priceError",
-      "يرجى إدخال سعر صحيح."
+      "يرجى إدخال سعر صحيح أكبر من صفر."
     );
 
     valid = false;
@@ -1269,14 +1429,12 @@ function validateForm() {
 
   /* الوصف */
 
-  if (
-    descriptionValue.length < 10
-  ) {
+  if (!isValidDescription(descriptionValue)) {
 
     setFieldError(
       description,
       "descriptionError",
-      "يرجى كتابة وصف واضح للمنتج."
+      "يرجى كتابة وصف واضح من 10 أحرف على الأقل."
     );
 
     valid = false;
@@ -1293,45 +1451,67 @@ function validateForm() {
 
   /* الصور */
 
-  if (
-    selectedFiles.length === 0
-  ) {
+  if (selectedFiles.length === 0) {
 
-    document.getElementById(
-      "productImageError"
-    ).textContent =
-      "يرجى اختيار صورة واحدة على الأقل.";
+    setSimpleError(
+      "productImageError",
+      "يرجى اختيار صورة واحدة على الأقل."
+    );
+
+    valid = false;
+
+  } else if (selectedFiles.length > MAX_IMAGES) {
+
+    setSimpleError(
+      "productImageError",
+      `يمكن اختيار ${MAX_IMAGES} صور كحد أقصى.`
+    );
 
     valid = false;
 
   } else {
 
-    document.getElementById(
-      "productImageError"
-    ).textContent =
-      "";
+    const invalidImage = selectedFiles.find(file =>
+      !file.type.startsWith("image/") ||
+      file.size > 10 * 1024 * 1024
+    );
+
+    if (invalidImage) {
+
+      setSimpleError(
+        "productImageError",
+        "كل صورة يجب أن تكون صورة فعلية وحجمها لا يتجاوز 10MB."
+      );
+
+      valid = false;
+
+    } else {
+
+      setSimpleError(
+        "productImageError",
+        ""
+      );
+    }
   }
 
 
   /* الشروط */
 
-  if (
-    !agreeTerms.checked
-  ) {
+  if (!agreeTerms.checked) {
 
-    document.getElementById(
-      "agreeTermsError"
-    ).textContent =
-      "يجب الموافقة على الشروط قبل الإرسال.";
+    setSimpleError(
+      "agreeTermsError",
+      "يجب الموافقة على الشروط قبل الإرسال."
+    );
 
     valid = false;
 
   } else {
 
-    document.getElementById(
-      "agreeTermsError"
-    ).textContent =
-      "";
+    setSimpleError(
+      "agreeTermsError",
+      ""
+    );
   }
 
 
@@ -1340,77 +1520,271 @@ function validateForm() {
 
 
 /* =========================
+   تحقق تفاعلي أثناء الكتابة
+========================= */
+
+function validateFieldLive(input) {
+
+  const value = input.value.trim();
+
+  if (!value) {
+    clearFieldState(input, input.id + "Error");
+    return;
+  }
+
+  if (input === sellerName) {
+
+    setFieldError(
+      sellerName,
+      "sellerNameError",
+      isValidPersonName(value)
+        ? ""
+        : "اكتب اسمًا صحيحًا من حرفين على الأقل."
+    );
+
+  } else if (input === sellerEmail) {
+
+    setFieldError(
+      sellerEmail,
+      "sellerEmailError",
+      isValidEmail(value)
+        ? ""
+        : "صيغة البريد الإلكتروني غير صحيحة."
+    );
+
+  } else if (input === phone) {
+
+    const normalized = normalizeSaudiPhone(value);
+
+    setFieldError(
+      phone,
+      "phoneError",
+      isValidSaudiMobile(normalized)
+        ? ""
+        : "استخدم رقمًا سعوديًا صحيحًا مثل 05xxxxxxxx."
+    );
+
+  } else if (input === productTitle) {
+
+    setFieldError(
+      productTitle,
+      "productTitleError",
+      isValidProductTitle(value)
+        ? ""
+        : "اسم المنتج غير صالح."
+    );
+
+  } else if (input === description) {
+
+    setFieldError(
+      description,
+      "descriptionError",
+      isValidDescription(value)
+        ? ""
+        : "الوصف يجب أن يكون 10 أحرف على الأقل."
+    );
+
+  } else if (input === price) {
+
+    const n = Number(input.value);
+
+    setFieldError(
+      price,
+      "priceError",
+      Number.isFinite(n) && n > 0 && n <= 100000000
+        ? ""
+        : "أدخل سعرًا صحيحًا."
+    );
+  }
+}
+
+
+[
+  sellerName,
+  sellerEmail,
+  phone,
+  productTitle,
+  price,
+  description
+].forEach(input => {
+
+  input.addEventListener("input", () => {
+    validateFieldLive(input);
+  });
+
+  input.addEventListener("blur", () => {
+    validateFieldLive(input);
+  });
+});
+
+
+city.addEventListener("change", () => {
+
+  setFieldError(
+    city,
+    "cityError",
+    city.value ? "" : "يرجى اختيار المدينة."
+  );
+});
+
+
+category.addEventListener("change", () => {
+
+  setFieldError(
+    category,
+    "categoryError",
+    category.value ? "" : "يرجى اختيار تصنيف المنتج."
+  );
+});
+
+
+agreeTerms.addEventListener("change", () => {
+
+  setSimpleError(
+    "agreeTermsError",
+    agreeTerms.checked
+      ? ""
+      : "يجب الموافقة على الشروط قبل الإرسال."
+  );
+});
+
+
+/* =========================
    اختيار الصور
 ========================= */
 
+function addSelectedImages(files) {
+
+  const incomingFiles =
+    Array.from(files || []);
+
+  if (!incomingFiles.length) {
+    return;
+  }
+
+  const availableSlots =
+    MAX_IMAGES - selectedFiles.length;
+
+  if (availableSlots <= 0) {
+
+    setSimpleError(
+      "productImageError",
+      `تم الوصول إلى الحد الأقصى وهو ${MAX_IMAGES} صور.`
+    );
+
+    return;
+  }
+
+  const filesToAdd =
+    incomingFiles.slice(0, availableSlots);
+
+  const invalidFile =
+    filesToAdd.find(file =>
+      !file.type.startsWith("image/") ||
+      file.size > 10 * 1024 * 1024
+    );
+
+  if (invalidFile) {
+
+    setSimpleError(
+      "productImageError",
+      "كل صورة يجب أن تكون صورة فعلية وحجمها لا يتجاوز 10MB."
+    );
+
+    return;
+  }
+
+  selectedFiles =
+    selectedFiles.concat(filesToAdd);
+
+  if (incomingFiles.length > availableSlots) {
+
+    setSimpleError(
+      "productImageError",
+      `يمكن إضافة ${MAX_IMAGES} صور كحد أقصى.`
+    );
+
+  } else {
+
+    setSimpleError(
+      "productImageError",
+      ""
+    );
+  }
+
+  renderPreviews();
+}
+
+
+/* اختيار من المعرض */
+
+chooseImagesBtn.addEventListener(
+  "click",
+  function() {
+
+    if (selectedFiles.length >= MAX_IMAGES) {
+
+      setSimpleError(
+        "productImageError",
+        `تم الوصول إلى الحد الأقصى وهو ${MAX_IMAGES} صور.`
+      );
+
+      return;
+    }
+
+    productImage.click();
+  }
+);
+
+
+/* تصوير السلعة مباشرة */
+
+takePhotoBtn.addEventListener(
+  "click",
+  function() {
+
+    if (selectedFiles.length >= MAX_IMAGES) {
+
+      setSimpleError(
+        "productImageError",
+        `تم الوصول إلى الحد الأقصى وهو ${MAX_IMAGES} صور.`
+      );
+
+      return;
+    }
+
+    cameraInput.click();
+  }
+);
+
+
+/* صور المعرض */
+
 productImage.addEventListener(
   "change",
-  function () {
+  function() {
 
-    const files =
-      Array.from(
-        productImage.files
-      );
+    addSelectedImages(
+      productImage.files
+    );
 
-
-    if (
-      files.length > MAX_IMAGES
-    ) {
-
-      document.getElementById(
-        "productImageError"
-      ).textContent =
-        `يمكن اختيار ${MAX_IMAGES} صور كحد أقصى.`;
-
-      productImage.value =
-        "";
-
-      selectedFiles =
-        [];
-
-      renderPreviews();
-
-      return;
-    }
+    // السماح باختيار نفس الملف مرة أخرى
+    productImage.value = "";
+  }
+);
 
 
-    const invalidFile =
-      files.find(
-        file =>
-          !file.type.startsWith(
-            "image/"
-          )
-      );
+/* الصور الملتقطة بالكاميرا */
 
+cameraInput.addEventListener(
+  "change",
+  function() {
 
-    if (invalidFile) {
+    addSelectedImages(
+      cameraInput.files
+    );
 
-      document.getElementById(
-        "productImageError"
-      ).textContent =
-        "يرجى اختيار ملفات صور فقط.";
-
-      productImage.value =
-        "";
-
-      selectedFiles =
-        [];
-
-      renderPreviews();
-
-      return;
-    }
-
-
-    document.getElementById(
-      "productImageError"
-    ).textContent =
-      "";
-
-    selectedFiles =
-      files;
-
-    renderPreviews();
+    cameraInput.value = "";
   }
 );
 
@@ -1421,26 +1795,32 @@ productImage.addEventListener(
 
 function renderPreviews() {
 
-  previewGrid.innerHTML =
-    "";
+  previewGrid.innerHTML = "";
 
+  const counter =
+    document.createElement("div");
+
+  counter.textContent =
+    `${selectedFiles.length} / ${MAX_IMAGES} صور`;
+
+  counter.style.gridColumn = "1 / -1";
+  counter.style.fontWeight = "bold";
+  counter.style.marginBottom = "2px";
+
+  previewGrid.appendChild(counter);
 
   selectedFiles.forEach(
-    file => {
+    (file, index) => {
 
       const item =
-        document.createElement(
-          "div"
-        );
+        document.createElement("div");
 
       item.className =
         "preview-item";
 
 
       const img =
-        document.createElement(
-          "img"
-        );
+        document.createElement("img");
 
       img.alt =
         "صورة المنتج";
@@ -1458,18 +1838,63 @@ function renderPreviews() {
         };
 
 
-      reader.readAsDataURL(
-        file
+      reader.readAsDataURL(file);
+
+
+      const removeBtn =
+        document.createElement("button");
+
+      removeBtn.type =
+        "button";
+
+      removeBtn.textContent =
+        "×";
+
+      removeBtn.title =
+        "حذف الصورة";
+
+      removeBtn.setAttribute(
+        "aria-label",
+        "حذف الصورة"
+      );
+
+      removeBtn.style.position = "absolute";
+      removeBtn.style.top = "6px";
+      removeBtn.style.right = "6px";
+      removeBtn.style.width = "30px";
+      removeBtn.style.height = "30px";
+      removeBtn.style.border = "none";
+      removeBtn.style.borderRadius = "50%";
+      removeBtn.style.background = "rgba(0,0,0,.7)";
+      removeBtn.style.color = "#fff";
+      removeBtn.style.fontSize = "22px";
+      removeBtn.style.lineHeight = "30px";
+      removeBtn.style.cursor = "pointer";
+      removeBtn.style.zIndex = "2";
+
+      removeBtn.addEventListener(
+        "click",
+        function() {
+
+          selectedFiles.splice(index, 1);
+
+          renderPreviews();
+
+          if (selectedFiles.length < MAX_IMAGES) {
+
+            setSimpleError(
+              "productImageError",
+              ""
+            );
+          }
+        }
       );
 
 
-      item.appendChild(
-        img
-      );
+      item.appendChild(img);
+      item.appendChild(removeBtn);
 
-      previewGrid.appendChild(
-        item
-      );
+      previewGrid.appendChild(item);
     }
   );
 }
@@ -2098,8 +2523,11 @@ sellerForm.addEventListener(
         seller_name:
           sellerNameValue,
 
+        seller_email:
+          sellerEmail.value.trim(),
+
         phone:
-          phoneValue,
+          normalizeSaudiPhone(phoneValue),
 
         city:
           cityValue,
