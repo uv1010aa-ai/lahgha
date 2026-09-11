@@ -242,9 +242,7 @@
             font-weight: 900;
         }
 
-        /* =========================================
-           إضافات المخزون المتوافقة مع حقل quantity 📦
-        ========================================= */
+        /* إضافات المخزون المتناقص لتتبع الـ quantity 📦 */
         .product-stock-status {
             font-size: 13px;
             font-weight: bold;
@@ -279,65 +277,107 @@
             cursor: not-allowed;
             transform: none !important;
         }
+
+        /* =========================================
+           المميزات وقوائم الموقع الكاملة المسترجعة 
+        ========================================= */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .feature-card {
+            background: #fff;
+            border: 1px solid #e4e9ee;
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(30,55,80,.05);
+        }
+
+        .feature-icon {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: #edf4fa;
+            font-size: 28px;
+        }
+
+        .feature-card h3 {
+            margin: 0 0 8px;
+            color: #263f59;
+            font-size: 18px;
+        }
+
+        .feature-card p {
+            margin: 0;
+            color: #727f8b;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .seller-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            padding: 32px;
+            border-radius: 22px;
+            background: #fff;
+            border: 1px solid #dfe6ec;
+            box-shadow: 0 7px 25px rgba(30,55,80,.06);
+            margin-top: 40px;
+        }
+
+        .seller-banner-text h2 {
+            margin: 0 0 8px;
+            color: #173a63;
+            font-size: 24px;
+            font-weight: 900;
+        }
+
+        .seller-banner-text p {
+            margin: 0;
+            color: #687585;
+            font-size: 15px;
+        }
+
+        .seller-banner-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            border-radius: 12px;
+            background: #173a63;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .seller-banner-btn:hover {
+            background: #285784;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #727f8b;
+            font-size: 14px;
+            border-top: 1px solid #e4e9ee;
+            margin-top: 60px;
+        }
     </style>
 </head>
 
 <body>
 
     <div class="home-page">
-        <section class="main-hero">
-            <div class="hero-content">
-                <div class="hero-badge"><span></span> شفتها؟ لَحْقها قبل تروح!</div>
-                <h2>سوق <strong>لَحْقها 🛍️</strong></h2>
-                <p class="hero-description">اكتشف السلع المميزة والمعتمدة، وتصفح المنتجات بسهولة من مكان واحد.</p>
-                <div class="home-search">
-                    <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
-                    <button onclick="searchProducts()">بحث</button>
-                </div>
-            </div>
-        </section>
-
-        <section class="home-section">
-            <div class="section-heading">
-                <div class="section-heading-text">
-                    <h2>أحدث السلع</h2>
-                    <p>آخر المنتجات التي تمت إضافتها إلى لَحْقها</p>
-                </div>
-            </div>
-
-            <!-- حاوية عرض المنتجات تلقائياً -->
-            <div class="home-products" id="productsContainer">
-                <p>جاري تحميل السلع...</p>
-            </div>
-        </section>
-    </div>
-
-    <!-- =========================================
-       كود التشغيل والربط بـ Supabase تلقائياً باستخدام حقل quantity
-    ========================================= -->
-    <script>
-        // 1. إعداد الاتصال بـ Supabase الفعلي لموقعك
-        const SUPABASE_URL = "https://supabase.co";
-        const SUPABASE_KEY = "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-";
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        // 2. دالة جلب وعرض المنتجات مع فحص المخزون
-        async function loadProducts() {
-            const container = document.getElementById('productsContainer');
-            
-            const { data: products, error } = await supabase
-                .from('products')
-                .select('*');
-
-            if (error || !products) {
-                container.innerHTML = '<p>حدث خطأ أثناء تحميل السلع.</p>';
-                return;
-            }
-
-            container.innerHTML = '';
-            products.forEach(product => {
-                // فحص المخزون المتناقص تلقائياً باستخدام حقل quantity الحالي لجدولك
-                const isOutOfStock = product.quantity <= 0;
-
-                container.innerHTML += `
-                    <div class="home-product-card">
+        <!-- البطل الرئيسي العلوي -->
