@@ -3,9 +3,10 @@
 <html lang="ar" dir="rtl">
 
 <head>
-    <meta charset="UTF-8">
 
 ```
+<meta charset="UTF-8">
+
 <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -31,6 +32,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
     * {
         box-sizing: border-box;
     }
@@ -48,7 +50,7 @@
     }
 
     .header {
-        background: #ffffff;
+        background: #fff;
         border-radius: 18px;
         padding: 24px;
         text-align: center;
@@ -92,6 +94,18 @@
     .error-icon {
         font-size: 42px;
         margin-bottom: 12px;
+    }
+
+    .error-details {
+        margin-top: 15px;
+        padding: 12px;
+        background: #fff5f5;
+        border-radius: 10px;
+        color: #8b0000;
+        font-size: 12px;
+        direction: ltr;
+        text-align: left;
+        word-break: break-word;
     }
 
     .order-head {
@@ -359,6 +373,7 @@
     }
 
     @media (max-width: 650px) {
+
         .page {
             width: min(100% - 18px, 900px);
             margin-top: 12px;
@@ -426,6 +441,7 @@
             grid-template-columns: 1fr;
         }
     }
+
 </style>
 ```
 
@@ -448,8 +464,17 @@
     </div>
 
     <div id="error" class="card error" style="display:none;">
+
         <div class="error-icon">⚠️</div>
+
         <div id="error-message"></div>
+
+        <div
+            id="error-details"
+            class="error-details"
+            style="display:none;"
+        ></div>
+
     </div>
 
     <div id="content" style="display:none;">
@@ -472,23 +497,46 @@
             <div class="welcome">
                 أهلاً بك في <strong>لَحْقها</strong> 🌷
                 <br>
-                يمكنك متابعة حالة طلبك من هذه الصفحة، وسيتم تحديث الحالة تلقائيًا.
+                يمكنك متابعة حالة طلبك من هذه الصفحة،
+                وسيتم تحديث الحالة تلقائيًا.
             </div>
 
-            <h2 class="section-title">📦 حالة الطلب</h2>
+            <h2 class="section-title">
+                📦 حالة الطلب
+            </h2>
 
             <div id="timeline" class="timeline"></div>
 
             <div class="order-info">
 
                 <div class="info-box">
-                    <div class="info-label">اسم العميل</div>
-                    <div id="buyer-name" class="info-value">—</div>
+
+                    <div class="info-label">
+                        اسم العميل
+                    </div>
+
+                    <div
+                        id="buyer-name"
+                        class="info-value"
+                    >
+                        —
+                    </div>
+
                 </div>
 
                 <div class="info-box">
-                    <div class="info-label">تاريخ الطلب</div>
-                    <div id="created-at" class="info-value">—</div>
+
+                    <div class="info-label">
+                        تاريخ الطلب
+                    </div>
+
+                    <div
+                        id="created-at"
+                        class="info-value"
+                    >
+                        —
+                    </div>
+
                 </div>
 
             </div>
@@ -497,13 +545,28 @@
 
         <section class="card">
 
-            <h2 class="section-title">🛒 المنتجات</h2>
+            <h2 class="section-title">
+                🛒 المنتجات
+            </h2>
 
-            <div id="items" class="items"></div>
+            <div
+                id="items"
+                class="items"
+            ></div>
 
             <div class="summary">
-                <div class="summary-label">الإجمالي</div>
-                <div id="order-total" class="summary-total">0 ر.س</div>
+
+                <div class="summary-label">
+                    الإجمالي
+                </div>
+
+                <div
+                    id="order-total"
+                    class="summary-total"
+                >
+                    0 ر.س
+                </div>
+
             </div>
 
             <button
@@ -514,7 +577,10 @@
                 🔄 تحديث حالة الطلب
             </button>
 
-            <div id="last-update" class="last-update"></div>
+            <div
+                id="last-update"
+                class="last-update"
+            ></div>
 
         </section>
 
@@ -537,6 +603,7 @@
     const SUPABASE_KEY =
         "sb_publishable_Rj6F5Fp2tHJSWzbRRdLVZQ_8D5wL8p-";
 
+
     const db =
         window.supabase.createClient(
             SUPABASE_URL,
@@ -544,11 +611,14 @@
         );
 
 
-    const params =
-        new URLSearchParams(window.location.search);
+    const urlParams =
+        new URLSearchParams(
+            window.location.search
+        );
+
 
     const trackingToken =
-        (params.get("t") || "").trim();
+        (urlParams.get("t") || "").trim();
 
 
     let firstLoad = true;
@@ -577,13 +647,14 @@
 
     function formatMoney(value) {
 
-        const number =
-            numberValue(value);
-
-        return number.toLocaleString("ar-SA", {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2
-        }) + " ر.س";
+        return (
+            numberValue(value)
+                .toLocaleString("ar-SA", {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2
+                })
+            + " ر.س"
+        );
     }
 
 
@@ -593,16 +664,24 @@
             return "—";
         }
 
-        const date = new Date(value);
+        const date =
+            new Date(value);
 
-        if (Number.isNaN(date.getTime())) {
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
             return "—";
         }
 
-        return date.toLocaleString("ar-SA", {
-            dateStyle: "medium",
-            timeStyle: "short"
-        });
+        return date.toLocaleString(
+            "ar-SA",
+            {
+                dateStyle: "medium",
+                timeStyle: "short"
+            }
+        );
     }
 
 
@@ -613,6 +692,7 @@
                 .trim()
                 .toLowerCase();
 
+
         if (
             value === "approved" ||
             value === "accepted" ||
@@ -620,6 +700,7 @@
         ) {
             return "processing";
         }
+
 
         return value;
     }
@@ -630,7 +711,8 @@
         const normalized =
             normalizeStatus(status);
 
-        const data = {
+
+        const statuses = {
 
             pending: {
                 text: "طلب جديد",
@@ -639,7 +721,7 @@
             },
 
             waiting_transfer: {
-                text: "💳 بانتظار التحقق من التحويل",
+                text: "بانتظار التحقق من التحويل",
                 icon: "💳",
                 className: "waiting"
             },
@@ -676,11 +758,15 @@
 
         };
 
-        return data[normalized] || {
-            text: "قيد الانتظار",
-            icon: "⏳",
-            className: ""
-        };
+
+        return (
+            statuses[normalized] ||
+            {
+                text: "قيد الانتظار",
+                icon: "⏳",
+                className: ""
+            }
+        );
     }
 
 
@@ -688,6 +774,7 @@
 
         const normalized =
             normalizeStatus(status);
+
 
         const ranks = {
 
@@ -707,6 +794,7 @@
 
         };
 
+
         return Object.prototype.hasOwnProperty.call(
             ranks,
             normalized
@@ -722,6 +810,7 @@
             return value;
         }
 
+
         if (typeof value === "string") {
 
             try {
@@ -735,9 +824,15 @@
 
             } catch (error) {
 
+                console.error(
+                    "Items JSON error:",
+                    error
+                );
+
                 return [];
             }
         }
+
 
         return [];
     }
@@ -763,9 +858,11 @@
             item.imageUrl ||
             "";
 
+
         if (!image) {
             return "";
         }
+
 
         try {
 
@@ -774,6 +871,7 @@
                     String(image),
                     window.location.href
                 );
+
 
             if (
                 url.protocol === "http:" ||
@@ -784,6 +882,7 @@
 
         } catch (error) {}
 
+
         return "";
     }
 
@@ -792,6 +891,7 @@
 
         const currentRank =
             getStatusRank(status);
+
 
         const steps = [
 
@@ -828,34 +928,44 @@
         ];
 
 
-        const html =
-            steps.map((step, index) => {
+        document.getElementById("timeline")
+            .innerHTML =
+                steps.map(
+                    (step, index) => {
 
-                let className = "";
-
-                if (index < currentRank) {
-                    className = "done";
-                } else if (index === currentRank) {
-                    className = "current";
-                }
-
-                return `
-                    <div class="step ${className}">
-                        <div class="step-circle">
-                            ${step.icon}
-                        </div>
-
-                        <div class="step-label">
-                            ${step.label}
-                        </div>
-                    </div>
-                `;
-
-            }).join("");
+                        let className = "";
 
 
-        document.getElementById("timeline").innerHTML =
-            html;
+                        if (
+                            index <
+                            currentRank
+                        ) {
+                            className = "done";
+
+                        } else if (
+                            index ===
+                            currentRank
+                        ) {
+                            className = "current";
+                        }
+
+
+                        return `
+                            <div class="step ${className}">
+
+                                <div class="step-circle">
+                                    ${step.icon}
+                                </div>
+
+                                <div class="step-label">
+                                    ${step.label}
+                                </div>
+
+                            </div>
+                        `;
+
+                    }
+                ).join("");
     }
 
 
@@ -886,6 +996,7 @@
 
                 const title =
                     getItemTitle(item);
+
 
                 const quantity =
                     Math.max(
@@ -944,9 +1055,10 @@
 
                             <div class="item-details">
                                 الكمية: ${quantity}
-                                ${price > 0
-                                    ? ` • ${formatMoney(price)} للقطعة`
-                                    : ""
+                                ${
+                                    price > 0
+                                        ? ` • ${formatMoney(price)} للقطعة`
+                                        : ""
                                 }
                             </div>
 
@@ -966,32 +1078,44 @@
     function renderOrder(order) {
 
         const status =
-            normalizeStatus(order.status);
+            normalizeStatus(
+                order.status
+            );
+
 
         const statusData =
-            getStatusData(order.status);
+            getStatusData(
+                order.status
+            );
 
 
-        document.getElementById("order-number")
-            .textContent =
-                order.order_number ||
-                order.id ||
-                "—";
+        document.getElementById(
+            "order-number"
+        ).textContent =
+            order.order_number ||
+            order.id ||
+            "—";
 
 
-        document.getElementById("buyer-name")
-            .textContent =
-                order.buyer_name ||
-                "عميل لَحْقها";
+        document.getElementById(
+            "buyer-name"
+        ).textContent =
+            order.buyer_name ||
+            "عميل لَحْقها";
 
 
-        document.getElementById("created-at")
-            .textContent =
-                formatDate(order.created_at);
+        document.getElementById(
+            "created-at"
+        ).textContent =
+            formatDate(
+                order.created_at
+            );
 
 
         const badge =
-            document.getElementById("status-badge");
+            document.getElementById(
+                "status-badge"
+            );
 
 
         badge.className =
@@ -1007,55 +1131,99 @@
 
         renderTimeline(status);
 
+
         renderItems(
-            parseItems(order.items)
+            parseItems(
+                order.items
+            )
         );
 
 
-        document.getElementById("order-total")
-            .textContent =
-                formatMoney(order.total);
+        document.getElementById(
+            "order-total"
+        ).textContent =
+            formatMoney(
+                order.total
+            );
 
 
-        document.getElementById("last-update")
-            .textContent =
-                "آخر تحديث: " +
-                formatDate(
-                    order.updated_at ||
-                    order.created_at
-                );
+        document.getElementById(
+            "last-update"
+        ).textContent =
+            "آخر تحديث: " +
+            formatDate(
+                order.updated_at ||
+                order.created_at
+            );
 
 
-        document.getElementById("loading")
-            .style.display = "none";
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
 
 
-        document.getElementById("error")
-            .style.display = "none";
+        document.getElementById(
+            "error"
+        ).style.display =
+            "none";
 
 
-        document.getElementById("content")
-            .style.display = "block";
+        document.getElementById(
+            "content"
+        ).style.display =
+            "block";
     }
 
 
-    function showError(message) {
+    function showError(
+        message,
+        technicalDetails = ""
+    ) {
 
-        document.getElementById("loading")
-            .style.display = "none";
-
-
-        document.getElementById("content")
-            .style.display = "none";
-
-
-        document.getElementById("error")
-            .style.display = "block";
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
 
 
-        document.getElementById("error-message")
-            .textContent =
-                message;
+        document.getElementById(
+            "content"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "error"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "error-message"
+        ).textContent =
+            message;
+
+
+        const details =
+            document.getElementById(
+                "error-details"
+            );
+
+
+        if (technicalDetails) {
+
+            details.textContent =
+                technicalDetails;
+
+            details.style.display =
+                "block";
+
+        } else {
+
+            details.style.display =
+                "none";
+        }
     }
 
 
@@ -1073,39 +1241,68 @@
 
         if (firstLoad) {
 
-            document.getElementById("loading")
-                .style.display = "block";
-
+            document.getElementById(
+                "loading"
+            ).style.display =
+                "block";
         }
 
 
         try {
 
-            const {
-                data,
-                error
-            } = await db
-                .from("orders")
-                .select(
-                    "id,order_number,buyer_name,total,status,created_at,updated_at,items"
-                )
-                .eq(
-                    "tracking_token",
-                    trackingToken
-                )
-                .limit(1)
-                .maybeSingle();
+            console.log(
+                "Tracking token:",
+                trackingToken
+            );
+
+
+            const result =
+                await db
+                    .from("orders")
+                    .select(
+                        "id,order_number,buyer_name,total,status,created_at,updated_at,items"
+                    )
+                    .eq(
+                        "tracking_token",
+                        trackingToken
+                    )
+                    .limit(1)
+                    .maybeSingle();
+
+
+            console.log(
+                "Supabase result:",
+                result
+            );
+
+
+            const data =
+                result.data;
+
+            const error =
+                result.error;
 
 
             if (error) {
 
                 console.error(
-                    "Tracking error:",
+                    "Supabase tracking error:",
                     error
                 );
 
+
                 showError(
-                    "تعذر تحميل بيانات الطلب حاليًا. تأكد من صحة الرابط وحاول مرة أخرى."
+                    "حدث خطأ أثناء قراءة الطلب من قاعدة البيانات.",
+                    JSON.stringify(
+                        {
+                            message: error.message,
+                            details: error.details,
+                            hint: error.hint,
+                            code: error.code
+                        },
+                        null,
+                        2
+                    )
                 );
 
                 return;
@@ -1115,11 +1312,19 @@
             if (!data) {
 
                 showError(
-                    "لم يتم العثور على الطلب. تأكد من أن رابط التتبع صحيح."
+                    "لم يتم العثور على طلب مرتبط برمز التتبع هذا.",
+                    "tracking_token = " +
+                    trackingToken
                 );
 
                 return;
             }
+
+
+            console.log(
+                "Order found:",
+                data
+            );
 
 
             renderOrder(data);
@@ -1134,13 +1339,16 @@
                         ".refresh-btn"
                     );
 
+
                 if (button) {
 
                     const oldText =
                         button.textContent;
 
+
                     button.textContent =
                         "✅ تم تحديث الحالة";
+
 
                     setTimeout(() => {
 
@@ -1158,8 +1366,11 @@
                 error
             );
 
+
             showError(
-                "حدث خطأ أثناء تحميل الطلب. حاول مرة أخرى."
+                "حدث خطأ غير متوقع أثناء تحميل الطلب.",
+                error.message ||
+                String(error)
             );
         }
     }
@@ -1168,11 +1379,12 @@
     loadOrder();
 
 
-    setInterval(() => {
-
-        loadOrder(false);
-
-    }, 30000);
+    setInterval(
+        () => {
+            loadOrder(false);
+        },
+        30000
+    );
 
 </script>
 
