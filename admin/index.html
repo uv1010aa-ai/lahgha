@@ -4,7 +4,6 @@
 
 <head>
 
-```
 <meta charset="UTF-8">
 
 <meta
@@ -253,6 +252,26 @@
         color: #475569;
     }
 
+    .status.shipped {
+        background: #ede9fe;
+        color: #6d28d9;
+    }
+
+    .status.delivered {
+        background: #cffafe;
+        color: #155e75;
+    }
+
+    .status.confirmed {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .status.completed {
+        background: #dcfce7;
+        color: #166534;
+    }
+
     .info-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -320,6 +339,74 @@
         color: #1d4ed8;
         font-size: 13px;
         font-weight: 900;
+    }
+
+    /* =====================================================
+       التتبع
+    ===================================================== */
+
+    .tracking-box {
+        margin-top: 16px;
+        padding: 16px;
+        border-radius: 13px;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+    }
+
+    .tracking-title {
+        font-weight: 900;
+        color: #166534;
+        margin-bottom: 10px;
+    }
+
+    .tracking-url {
+        background: #fff;
+        border: 1px solid #d1d5db;
+        border-radius: 9px;
+        padding: 10px 12px;
+        font-size: 12px;
+        direction: ltr;
+        text-align: left;
+        word-break: break-all;
+        color: #334155;
+    }
+
+    .tracking-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+
+    .tracking-button {
+        border: 0;
+        padding: 9px 14px;
+        border-radius: 9px;
+        cursor: pointer;
+        font-weight: 900;
+    }
+
+    .tracking-button.whatsapp {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .tracking-button.copy {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .tracking-warning {
+        margin-top: 8px;
+        color: #991b1b;
+        font-size: 13px;
+        font-weight: 900;
+    }
+
+    .last-update {
+        margin-top: 8px;
+        color: #64748b;
+        font-size: 12px;
     }
 
     .seller-images {
@@ -413,6 +500,21 @@
     .show {
         background: #dbeafe;
         color: #1d4ed8;
+    }
+
+    .shipping {
+        background: #ede9fe;
+        color: #6d28d9;
+    }
+
+    .delivered-action {
+        background: #cffafe;
+        color: #155e75;
+    }
+
+    .complete-action {
+        background: #d1fae5;
+        color: #065f46;
     }
 
     .loading,
@@ -538,7 +640,6 @@
     }
 
 </style>
-```
 
 </head>
 
@@ -546,7 +647,6 @@
 
 <header class="topbar">
 
-```
 <div class="topbar-inner">
 
     <div>
@@ -583,13 +683,11 @@
     </div>
 
 </div>
-```
 
 </header>
 
 <main class="container">
 
-```
 <section class="stats">
 
     <div class="stat">
@@ -618,7 +716,6 @@
     </div>
 
 </section>
-
 
 <section class="tabs">
 
@@ -656,7 +753,6 @@
 
 </section>
 
-
 <section class="panel">
 
     <div class="panel-head">
@@ -689,7 +785,6 @@
     </div>
 
 </section>
-```
 
 </main>
 
@@ -698,7 +793,6 @@
     class="image-modal"
 >
 
-```
 <button
     id="closeModal"
     class="close-modal"
@@ -712,7 +806,6 @@
     src=""
     alt="صورة المنتج"
 >
-```
 
 </div>
 
@@ -962,17 +1055,32 @@ function getStatus(value) {
     const status =
         clean(value).toLowerCase();
 
+
     if (
-        status === "approved" ||
-        status === "accepted" ||
-        status === "confirmed" ||
-        status === "مقبول"
+        status === "pending"
     ) {
 
         return {
 
             text:
-                "مقبول",
+                "طلب جديد",
+
+            className:
+                ""
+
+        };
+
+    }
+
+
+    if (
+        status === "processing"
+    ) {
+
+        return {
+
+            text:
+                "قيد التجهيز",
 
             className:
                 "approved"
@@ -980,6 +1088,94 @@ function getStatus(value) {
         };
 
     }
+
+
+    if (
+        status === "shipped"
+    ) {
+
+        return {
+
+            text:
+                "تم الشحن",
+
+            className:
+                "shipped"
+
+        };
+
+    }
+
+
+    if (
+        status === "delivered"
+    ) {
+
+        return {
+
+            text:
+                "تم التسليم",
+
+            className:
+                "delivered"
+
+        };
+
+    }
+
+
+    if (
+        status === "confirmed"
+    ) {
+
+        return {
+
+            text:
+                "أكد المشتري الاستلام",
+
+            className:
+                "confirmed"
+
+        };
+
+    }
+
+
+    if (
+        status === "completed"
+    ) {
+
+        return {
+
+            text:
+                "مكتمل",
+
+            className:
+                "completed"
+
+        };
+
+    }
+
+
+    if (
+        status === "approved" ||
+        status === "accepted" ||
+        status === "مقبول"
+    ) {
+
+        return {
+
+            text:
+                "قيد التجهيز",
+
+            className:
+                "approved"
+
+        };
+
+    }
+
 
     if (
         status === "waiting_transfer"
@@ -997,6 +1193,7 @@ function getStatus(value) {
 
     }
 
+
     return {
 
         text:
@@ -1006,6 +1203,248 @@ function getStatus(value) {
             ""
 
     };
+
+}
+
+
+/* =========================================================
+   رابط التتبع
+========================================================= */
+
+function getTrackingUrl(order) {
+
+    if (
+        !order ||
+        !order.trackingToken
+    ) {
+
+        return "";
+
+    }
+
+
+    try {
+
+        const url =
+            new URL(
+                "../track.html",
+                window.location.href
+            );
+
+
+        url.searchParams.set(
+            "t",
+            order.trackingToken
+        );
+
+
+        return url.href;
+
+    }
+    catch (error) {
+
+        return "";
+
+    }
+
+}
+
+
+/* =========================================================
+   تحويل رقم الجوال إلى صيغة واتساب
+========================================================= */
+
+function normalizeWhatsAppPhone(phone) {
+
+    let value =
+        clean(phone)
+            .replace(/[^\d+]/g, "");
+
+
+    if (
+        value.startsWith("+")
+    ) {
+
+        value =
+            value.slice(1);
+
+    }
+
+
+    if (
+        value.startsWith("00")
+    ) {
+
+        value =
+            value.slice(2);
+
+    }
+
+
+    if (
+        value.startsWith("05")
+    ) {
+
+        value =
+            "966" +
+            value.slice(1);
+
+    }
+    else if (
+        value.startsWith("5") &&
+        value.length === 9
+    ) {
+
+        value =
+            "966" +
+            value;
+
+    }
+
+
+    return value;
+
+}
+
+
+/* =========================================================
+   فتح واتساب مع رابط التتبع
+========================================================= */
+
+function openTrackingWhatsApp(order) {
+
+    const trackingUrl =
+        getTrackingUrl(order);
+
+
+    const phone =
+        normalizeWhatsAppPhone(
+            order.phone
+        );
+
+
+    if (!trackingUrl) {
+
+        alert(
+            "رابط التتبع غير موجود لهذا الطلب."
+        );
+
+        return;
+
+    }
+
+
+    if (!phone) {
+
+        alert(
+            "رقم جوال المشتري غير موجود أو غير صالح."
+        );
+
+        return;
+
+    }
+
+
+    const message =
+        `السلام عليكم، تم قبول طلبك في لَحْقها 🌷\n\n` +
+        `يمكنك متابعة طلبك من هنا:\n${trackingUrl}`;
+
+
+    const whatsappUrl =
+        `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+
+    window.open(
+        whatsappUrl,
+        "_blank",
+        "noopener,noreferrer"
+    );
+
+}
+
+
+/* =========================================================
+   نسخ رابط التتبع
+========================================================= */
+
+async function copyTrackingLink(order) {
+
+    const trackingUrl =
+        getTrackingUrl(order);
+
+
+    if (!trackingUrl) {
+
+        alert(
+            "رابط التتبع غير موجود لهذا الطلب."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        if (
+            navigator.clipboard &&
+            window.isSecureContext
+        ) {
+
+            await navigator.clipboard.writeText(
+                trackingUrl
+            );
+
+        }
+        else {
+
+            const textarea =
+                document.createElement("textarea");
+
+
+            textarea.value =
+                trackingUrl;
+
+
+            textarea.style.position =
+                "fixed";
+
+            textarea.style.opacity =
+                "0";
+
+
+            document.body.appendChild(
+                textarea
+            );
+
+
+            textarea.focus();
+
+            textarea.select();
+
+
+            document.execCommand(
+                "copy"
+            );
+
+
+            textarea.remove();
+
+        }
+
+
+        alert(
+            "✓ تم نسخ رابط التتبع."
+        );
+
+    }
+    catch (error) {
+
+        alert(
+            "تعذر نسخ الرابط. يمكنك تحديده ونسخه يدويًا."
+        );
+
+    }
 
 }
 
@@ -1022,6 +1461,7 @@ function getSellerImages(row) {
         row
             ? row.images
             : null;
+
 
     if (
         typeof images === "string"
@@ -1041,6 +1481,7 @@ function getSellerImages(row) {
         }
 
     }
+
 
     if (
         Array.isArray(images)
@@ -1071,6 +1512,7 @@ function getSellerImages(row) {
                         item.image ||
                         item.image_url;
 
+
                     if (url) {
 
                         result.push(
@@ -1086,6 +1528,7 @@ function getSellerImages(row) {
 
     }
 
+
     const oldImage =
         row
             ? (
@@ -1093,6 +1536,7 @@ function getSellerImages(row) {
                 row.image_url
             )
             : "";
+
 
     if (
         oldImage &&
@@ -1106,6 +1550,7 @@ function getSellerImages(row) {
         );
 
     }
+
 
     return [
         ...new Set(
@@ -1140,6 +1585,7 @@ function sellerImagesHtml(images) {
         `;
 
     }
+
 
     return `
 
@@ -1667,6 +2113,30 @@ function mapBuyer(row) {
                 ["created_at"]
             ),
 
+        updatedAt:
+            pick(
+                row,
+                [
+                    "updated_at",
+                    "updatedAt"
+                ]
+            ),
+
+        trackingToken:
+            pick(
+                row,
+                [
+                    "tracking_token",
+                    "trackingToken"
+                ]
+            ),
+
+        sellerPaid:
+            row.seller_paid === true,
+
+        issueReported:
+            row.issue_reported === true,
+
         items:
             items,
 
@@ -1711,6 +2181,7 @@ function sellerExtra(row) {
             ]
         );
 
+
     const category =
         normalizeCategory(
             pick(
@@ -1722,6 +2193,7 @@ function sellerExtra(row) {
             )
         );
 
+
     if (quantity) {
 
         parts.push(
@@ -1731,6 +2203,7 @@ function sellerExtra(row) {
 
     }
 
+
     if (category) {
 
         parts.push(
@@ -1739,6 +2212,7 @@ function sellerExtra(row) {
         );
 
     }
+
 
     return parts.join(
         " — "
@@ -1877,6 +2351,7 @@ async function loadBuyerOrders() {
                 }
             );
 
+
     if (result.error) {
 
         throw new Error(
@@ -1885,6 +2360,7 @@ async function loadBuyerOrders() {
         );
 
     }
+
 
     return (
         result.data || []
@@ -1902,6 +2378,7 @@ async function loadSellerOrders() {
             .from(SELLER_TABLE)
             .select("*");
 
+
     if (result.error) {
 
         throw new Error(
@@ -1910,6 +2387,7 @@ async function loadSellerOrders() {
         );
 
     }
+
 
     const rows =
         result.data || [];
@@ -2053,10 +2531,6 @@ function buildProductData(seller) {
         );
 
 
-    /*
-     * الكمية التي أدخلها البائع
-     * في seller_requests.
-     */
     const quantityValue =
         pick(
             raw,
@@ -2172,11 +2646,6 @@ async function publishSellerProduct(seller) {
     }
 
 
-    /*
-     * نبحث أولًا عن المنتج المرتبط
-     * بنفس طلب البائع.
-     */
-
     const existingByRequest =
         await db
             .from(PRODUCTS_TABLE)
@@ -2197,17 +2666,6 @@ async function publishSellerProduct(seller) {
 
     }
 
-
-    /*
-     * إذا كان المنتج موجودًا مسبقًا:
-     *
-     * نحدّث بيانات المنتج فقط،
-     * لكن لا نرسل quantity في التحديث.
-     *
-     * السبب:
-     * المخزون قد يكون تغيّر بسبب مبيعات سابقة،
-     * ولا نريد إعادته إلى كمية البائع الأصلية.
-     */
 
     if (
         existingByRequest.data &&
@@ -2302,13 +2760,6 @@ async function publishSellerProduct(seller) {
     }
 
 
-    /*
-     * المنتج جديد:
-     * هنا فقط نرسل quantity،
-     * وبالتالي تنتقل كمية البائع
-     * إلى مخزون المنتج.
-     */
-
     const result =
         await db
             .from(PRODUCTS_TABLE)
@@ -2362,6 +2813,7 @@ async function loadProducts() {
             .from(PRODUCTS_TABLE)
             .select("*");
 
+
     if (result.error) {
 
         throw new Error(
@@ -2370,6 +2822,7 @@ async function loadProducts() {
         );
 
     }
+
 
     const rows =
         result.data || [];
@@ -2812,11 +3265,9 @@ function updateStats() {
                     ).toLowerCase();
 
 
-                return ![
-                    "approved",
-                    "accepted",
-                    "confirmed",
-                    "مقبول"
+                return [
+                    "pending",
+                    "waiting_transfer"
                 ].includes(
                     status
                 );
@@ -2961,6 +3412,369 @@ function render() {
                 createCard
             )
             .join("");
+
+}
+
+
+/* =========================================================
+   صندوق تتبع الطلب
+========================================================= */
+
+function trackingBoxHtml(order) {
+
+    const trackingUrl =
+        getTrackingUrl(order);
+
+
+    if (!trackingUrl) {
+
+        return `
+
+            <div class="tracking-box">
+
+                <div class="tracking-title">
+                    🔗 تتبع الطلب
+                </div>
+
+                <div class="tracking-warning">
+                    ⚠️ رابط التتبع غير متوفر لهذا الطلب.
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    return `
+
+        <div class="tracking-box">
+
+            <div class="tracking-title">
+                🔗 رابط تتبع الطلب
+            </div>
+
+            <div class="tracking-url">
+                ${safe(trackingUrl)}
+            </div>
+
+            <div class="tracking-actions">
+
+                <button
+                    class="tracking-button copy"
+                    type="button"
+                    onclick="copyTrackingLink(
+                        getOrderById('${safe(order.id)}')
+                    )"
+                >
+                    📋 نسخ الرابط
+                </button>
+
+
+                <button
+                    class="tracking-button whatsapp"
+                    type="button"
+                    onclick="openTrackingWhatsApp(
+                        getOrderById('${safe(order.id)}')
+                    )"
+                >
+                    💬 فتح واتساب وإرسال الرابط
+                </button>
+
+            </div>
+
+
+            ${
+                order.updatedAt
+                    ? `
+
+                        <div class="last-update">
+                            آخر تحديث:
+                            ${dateText(order.updatedAt)}
+                        </div>
+
+                    `
+                    : ""
+            }
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   الحصول على الطلب من القائمة
+========================================================= */
+
+function getOrderById(id) {
+
+    return allOrders.find(
+        function(order) {
+
+            return (
+                String(order.id) ===
+                String(id)
+            );
+
+        }
+    ) || null;
+
+}
+
+
+/* =========================================================
+   أزرار حالات طلب المشتري
+========================================================= */
+
+function buyerStatusActions(order) {
+
+    const status =
+        clean(
+            order.status
+        ).toLowerCase();
+
+
+    const id =
+        safe(order.id);
+
+
+    /*
+     * تحويل الحالات القديمة
+     */
+
+    if (
+        status === "approved" ||
+        status === "accepted" ||
+        status === "مقبول"
+    ) {
+
+        return `
+
+            <button
+                class="action shipping"
+                type="button"
+                onclick="changeStatus(
+                    '${id}',
+                    'buyer',
+                    'shipped'
+                )"
+            >
+                📦 تم الشحن
+            </button>
+
+        `;
+
+    }
+
+
+    /*
+     * طلب جديد
+     */
+
+    if (
+        status === "pending"
+    ) {
+
+        return `
+
+            <button
+                class="action accept"
+                type="button"
+                onclick="changeStatus(
+                    '${id}',
+                    'buyer',
+                    'processing'
+                )"
+            >
+                ✓ قبول الطلب / بدء التجهيز
+            </button>
+
+        `;
+
+    }
+
+
+    /*
+     * بانتظار التحويل البنكي
+     */
+
+    if (
+        status === "waiting_transfer"
+    ) {
+
+        return `
+
+            <button
+                class="action accept"
+                type="button"
+                onclick="changeStatus(
+                    '${id}',
+                    'buyer',
+                    'processing'
+                )"
+            >
+                ✓ تم استلام المبلغ — بدء التجهيز
+            </button>
+
+        `;
+
+    }
+
+
+    /*
+     * قيد التجهيز
+     */
+
+    if (
+        status === "processing"
+    ) {
+
+        return `
+
+            <button
+                class="action shipping"
+                type="button"
+                onclick="changeStatus(
+                    '${id}',
+                    'buyer',
+                    'shipped'
+                )"
+            >
+                📦 تم الشحن
+            </button>
+
+        `;
+
+    }
+
+
+    /*
+     * تم الشحن
+     */
+
+    if (
+        status === "shipped"
+    ) {
+
+        return `
+
+            <button
+                class="action delivered-action"
+                type="button"
+                onclick="changeStatus(
+                    '${id}',
+                    'buyer',
+                    'delivered'
+                )"
+            >
+                🚚 تم التسليم
+            </button>
+
+        `;
+
+    }
+
+
+    /*
+     * تم التسليم:
+     * ننتظر تأكيد المشتري.
+     */
+
+    if (
+        status === "delivered"
+    ) {
+
+        return `
+
+            <div
+                style="
+                    padding:9px 13px;
+                    border-radius:9px;
+                    background:#cffafe;
+                    color:#155e75;
+                    font-weight:900;
+                "
+            >
+                ⏳ بانتظار تأكيد المشتري للاستلام
+            </div>
+
+        `;
+
+    }
+
+
+    /*
+     * أكد المشتري الاستلام
+     */
+
+    if (
+        status === "confirmed"
+    ) {
+
+        return `
+
+            <button
+                class="action complete-action"
+                type="button"
+                onclick="changeStatus(
+                    '${id}',
+                    'buyer',
+                    'completed'
+                )"
+            >
+                ✓ إكمال الطلب
+            </button>
+
+        `;
+
+    }
+
+
+    /*
+     * مكتمل
+     */
+
+    if (
+        status === "completed"
+    ) {
+
+        return `
+
+            <div
+                style="
+                    padding:9px 13px;
+                    border-radius:9px;
+                    background:#dcfce7;
+                    color:#166534;
+                    font-weight:900;
+                "
+            >
+                ✓ الطلب مكتمل
+            </div>
+
+        `;
+
+    }
+
+
+    return `
+
+        <button
+            class="action accept"
+            type="button"
+            onclick="changeStatus(
+                '${id}',
+                'buyer',
+                'processing'
+            )"
+        >
+            ✓ قبول الطلب / بدء التجهيز
+        </button>
+
+    `;
 
 }
 
@@ -3178,6 +3992,53 @@ function createCard(order) {
                 </div>
 
 
+                ${
+                    isBuyer && order.updatedAt
+                        ? `
+
+                            <div class="info">
+
+                                <div class="label">
+                                    آخر تحديث
+                                </div>
+
+                                <div class="value">
+                                    ${dateText(
+                                        order.updatedAt
+                                    )}
+                                </div>
+
+                            </div>
+
+                        `
+                        : ""
+                }
+
+
+                ${
+                    isBuyer && order.sellerPaid
+                        ? `
+
+                            <div class="info">
+
+                                <div class="label">
+                                    تسوية البائع
+                                </div>
+
+                                <div
+                                    class="value"
+                                    style="color:#166534;"
+                                >
+                                    ✓ تمت التسوية
+                                </div>
+
+                            </div>
+
+                        `
+                        : ""
+                }
+
+
             </div>
 
 
@@ -3230,6 +4091,11 @@ function createCard(order) {
 
                         ${buyerItemsHtml(
                             order.items
+                        )}
+
+
+                        ${trackingBoxHtml(
+                            order
                         )}
 
                     `
@@ -3287,25 +4153,11 @@ function createCard(order) {
 
 
                 ${
-                    isBuyer && isTransfer
+                    isBuyer
 
                         ?
 
-                        `
-
-                            <button
-                                class="action accept"
-                                type="button"
-                                onclick="changeStatus(
-                                    '${id}',
-                                    'buyer',
-                                    'approved'
-                                )"
-                            >
-                                ✓ تم استلام المبلغ — قبول الطلب
-                            </button>
-
-                        `
+                        buyerStatusActions(order)
 
                         :
 
@@ -3316,7 +4168,7 @@ function createCard(order) {
                                 type="button"
                                 onclick="changeStatus(
                                     '${id}',
-                                    '${safe(order.type)}',
+                                    'seller',
                                     'approved'
                                 )"
                             >
@@ -3339,17 +4191,31 @@ function createCard(order) {
                 </button>
 
 
-                <button
-                    class="action wait"
-                    type="button"
-                    onclick="changeStatus(
-                        '${id}',
-                        '${safe(order.type)}',
-                        'pending'
-                    )"
-                >
-                    ↻ قيد الانتظار
-                </button>
+                ${
+                    isBuyer &&
+                    clean(order.status).toLowerCase() !== "completed"
+                        ?
+
+                        `
+
+                            <button
+                                class="action wait"
+                                type="button"
+                                onclick="changeStatus(
+                                    '${id}',
+                                    'buyer',
+                                    'pending'
+                                )"
+                            >
+                                ↻ قيد الانتظار
+                            </button>
+
+                        `
+
+                        :
+
+                        ""
+                }
 
 
             </div>
@@ -3363,7 +4229,6 @@ function createCard(order) {
 
 /* =========================================================
    حذف الطلب
-   لم يتم تغييره
 ========================================================= */
 
 async function deleteOrder(
@@ -3525,8 +4390,13 @@ async function changeStatus(
             await db
                 .from(BUYER_TABLE)
                 .update({
+
                     status:
-                        status
+                        status,
+
+                    updated_at:
+                        new Date().toISOString()
+
                 })
                 .eq(
                     "id",
@@ -3805,7 +4675,7 @@ async function toggleProduct(
 
                 :
 
-                "✓ تم إخفاء المنتج من المتجر."
+                "✓ تم إخفاء المنتج في المتجر."
 
         );
 
@@ -3830,7 +4700,6 @@ async function toggleProduct(
 
 /* =========================================================
    حذف المنتج
-   لم يتم تغييره
 ========================================================= */
 
 async function deleteProduct(
