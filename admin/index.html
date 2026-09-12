@@ -1311,8 +1311,7 @@ function normalizeWhatsAppPhone(phone) {
    فتح واتساب مع رابط التتبع
 ========================================================= */
 
-function openTrackingWhatsApp(order) {
-
+async function copyTrackingMessage(order) {
     const trackingUrl =
         getTrackingUrl(order);
 
