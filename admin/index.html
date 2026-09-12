@@ -1414,52 +1414,7 @@ async function copyTrackingMessage(order) {
     }
 
 }
-    const trackingUrl =
-        getTrackingUrl(order);
-
-    const phone =
-        normalizeWhatsAppPhone(
-            order.phone
-        );
-
-    if (!trackingUrl) {
-
-        alert(
-            "رابط التتبع غير موجود لهذا الطلب."
-        );
-
-        return;
-
-    }
-
-    if (!phone) {
-
-        alert(
-            "رقم جوال المشتري غير موجود أو غير صالح."
-        );
-
-        return;
-
-    }
-
-    const message =
-        `السلام عليكم ${order.name || "عزيزي المشتري"} 🌷\n\n` +
-        `تم استلام طلبك من لَحْقها 🛍️\n\n` +
-        `📦 رقم الطلب: ${order.number || "—"}\n` +
-        `💰 إجمالي الطلب: ${money(order.total)}\n\n` +
-        `🔎 لمتابعة حالة طلبك:\n` +
-        `${trackingUrl}\n\n` +
-        `يمكنك فتح الرابط في أي وقت لمعرفة آخر تحديث على طلبك.\n\n` +
-        `شكرًا لتسوقك معنا 🌷`;
-
-    const whatsappUrl =
-        `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-
-    window.open(
-        whatsappUrl,
-        "_blank",
-        "noopener,noreferrer"
-    );
+    
 
 }
 
@@ -3572,16 +3527,15 @@ function trackingBoxHtml(order) {
                 </button>
 
 
-                <button
-                    class="tracking-button whatsapp"
-                    type="button"
-                    onclick="openTrackingWhatsApp(
-                        getOrderById('${safe(order.id)}')
-                    )"
-                >
-                    💬 فتح واتساب وإرسال الرابط
-                </button>
-
+               <button
+    class="tracking-button whatsapp"
+    type="button"
+    onclick="copyTrackingMessage(
+        getOrderById('${safe(order.id)}')
+    )"
+>
+    📋 نسخ رسالة التتبع
+</button>
             </div>
 
 
