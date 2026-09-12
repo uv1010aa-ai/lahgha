@@ -1310,8 +1310,21 @@ function normalizeWhatsAppPhone(phone) {
 /* =========================================================
    فتح واتساب مع رابط التتبع
 ========================================================= */
+/* =========================================================
+   نسخ رسالة التتبع
+========================================================= */
 
 async function copyTrackingMessage(order) {
+
+    if (!order) {
+
+        alert(
+            "تعذر العثور على بيانات الطلب."
+        );
+
+        return;
+
+    }
 
     const trackingUrl =
         getTrackingUrl(order);
@@ -1376,7 +1389,10 @@ async function copyTrackingMessage(order) {
             textarea.style.position =
                 "fixed";
 
-            textarea.style.opacity =
+            textarea.style.left =
+                "-9999px";
+
+            textarea.style.top =
                 "0";
 
             document.body.appendChild(
@@ -1414,10 +1430,11 @@ async function copyTrackingMessage(order) {
     }
 
 }
-    
 
-}
 
+/* =========================================================
+   نسخ رابط التتبع
+========================================================= */
 /* =========================================================
    نسخ رابط التتبع
 ========================================================= */
