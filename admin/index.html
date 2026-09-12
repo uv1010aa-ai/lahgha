@@ -1316,12 +1316,10 @@ function openTrackingWhatsApp(order) {
     const trackingUrl =
         getTrackingUrl(order);
 
-
     const phone =
         normalizeWhatsAppPhone(
             order.phone
         );
-
 
     if (!trackingUrl) {
 
@@ -1333,7 +1331,6 @@ function openTrackingWhatsApp(order) {
 
     }
 
-
     if (!phone) {
 
         alert(
@@ -1344,15 +1341,18 @@ function openTrackingWhatsApp(order) {
 
     }
 
-
     const message =
-        `السلام عليكم، تم قبول طلبك في لَحْقها 🌷\n\n` +
-        `يمكنك متابعة طلبك من هنا:\n${trackingUrl}`;
-
+        `السلام عليكم ${order.name || "عزيزي المشتري"} 🌷\n\n` +
+        `تم استلام طلبك من لَحْقها 🛍️\n\n` +
+        `📦 رقم الطلب: ${order.number || "—"}\n` +
+        `💰 إجمالي الطلب: ${money(order.total)}\n\n` +
+        `🔎 لمتابعة حالة طلبك:\n` +
+        `${trackingUrl}\n\n` +
+        `يمكنك فتح الرابط في أي وقت لمعرفة آخر تحديث على طلبك.\n\n` +
+        `شكرًا لتسوقك معنا 🌷`;
 
     const whatsappUrl =
         `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-
 
     window.open(
         whatsappUrl,
@@ -1361,7 +1361,6 @@ function openTrackingWhatsApp(order) {
     );
 
 }
-
 
 /* =========================================================
    نسخ رابط التتبع
