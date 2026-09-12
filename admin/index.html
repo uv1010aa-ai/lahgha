@@ -1312,6 +1312,108 @@ function normalizeWhatsAppPhone(phone) {
 ========================================================= */
 
 async function copyTrackingMessage(order) {
+
+    const trackingUrl =
+        getTrackingUrl(order);
+
+    if (!trackingUrl) {
+
+        alert(
+            "رابط التتبع غير موجود لهذا الطلب."
+        );
+
+        return;
+
+    }
+
+    const items =
+        Array.isArray(order.items)
+            ? order.items
+            : [];
+
+    const productNames =
+        items
+            .map(
+                item =>
+                    item.name ||
+                    item.title ||
+                    ""
+            )
+            .filter(Boolean)
+            .join("، ");
+
+    const message =
+        `🛍️ لَحْقها\n\n` +
+        `السلام عليكم ${order.name || "عزيزي المشتري"} 🌷\n\n` +
+        `تم تأكيد طلبك${productNames ? `: ${productNames}` : ""}\n` +
+        `📦 رقم الطلب: ${order.number || "—"}\n` +
+        `💰 الإجمالي: ${money(order.total)}\n\n` +
+        `🔎 لمتابعة طلبك:\n` +
+        `${trackingUrl}\n\n` +
+        `يمكنك فتح الرابط في أي وقت لمعرفة آخر تحديث على طلبك.\n\n` +
+        `شكرًا لتسوقك معنا 🌷`;
+
+    try {
+
+        if (
+            navigator.clipboard &&
+            window.isSecureContext
+        ) {
+
+            await navigator.clipboard.writeText(
+                message
+            );
+
+        }
+        else {
+
+            const textarea =
+                document.createElement("textarea");
+
+            textarea.value =
+                message;
+
+            textarea.style.position =
+                "fixed";
+
+            textarea.style.opacity =
+                "0";
+
+            document.body.appendChild(
+                textarea
+            );
+
+            textarea.focus();
+
+            textarea.select();
+
+            document.execCommand(
+                "copy"
+            );
+
+            textarea.remove();
+
+        }
+
+        alert(
+            "✓ تم نسخ رسالة التتبع.\n\nيمكنك الآن لصقها وإرسالها للمشتري."
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "COPY TRACKING MESSAGE ERROR:",
+            error
+        );
+
+        alert(
+            "تعذر نسخ رسالة التتبع."
+        );
+
+    }
+
+}
     const trackingUrl =
         getTrackingUrl(order);
 
