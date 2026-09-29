@@ -1,4 +1,4 @@
-```js
+js
 const CACHE = "lahgha-v132";
 
 const ASSETS = [
@@ -183,4 +183,4 @@ self.addEventListener("fetch", event => {
     );
 
 });
-```
+
