@@ -1,5 +1,5 @@
 // js
-const CACHE = "lahgha-v132";
+const CACHE = "lahgha-v133";
 
 const ASSETS = [
     "./",
