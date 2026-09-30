@@ -1,4 +1,4 @@
-js
+// js
 const CACHE = "lahgha-v132";
 
 const ASSETS = [
